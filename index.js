@@ -1,4 +1,5 @@
 const Application = require("./src/server");
-require("dotenv").config();
 
-new Application(process.env.PORT);
+const DB_URI = `${process.env.BASE_URL}/clubManagement`;
+
+new Application(process.env.PORT, DB_URI);

@@ -2,6 +2,9 @@ const express = require("express");
 const createHttpError = require("http-errors");
 const { StatusCodes } = require("http-status-codes");
 const { AllRouter } = require("./api/routes/router");
+const { connectToMongoDB } = require("./config/db");
+require("dotenv").config();
+
 module.exports = class Application {
   #app = express();
   #PORT;
@@ -11,6 +14,7 @@ module.exports = class Application {
     this.#DB_URL = DB_URI;
 
     this.createServer();
+    this.connectToDatabase();
     this.configApplication();
     this.errorHandling();
   }
@@ -21,7 +25,9 @@ module.exports = class Application {
       console.log("run > http://localhost:" + this.#PORT);
     });
   }
-  connectToMongoDB() {}
+  connectToDatabase() {
+    connectToMongoDB(this.#DB_URL);
+  }
 
   createRoutes() {
     this.#app.use(AllRouter);
