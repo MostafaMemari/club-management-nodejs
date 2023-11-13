@@ -10,7 +10,7 @@ const adminSchema = new mongoose.Schema(
   { timestamps: true, versionKey: false }
 );
 
-const adminModel = mongoose.model("Admin", adminSchema);
+const adminModel = mongoose.model("admin", adminSchema);
 
 module.exports = {
   adminModel,
