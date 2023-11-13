@@ -4,7 +4,7 @@ const sportSchema = new mongoose.Schema(
   {
     name: { type: String, required: true },
   },
-  { timestamps: true, versionKey: false }
+  { versionKey: false }
 );
 
 const sportModel = mongoose.model("sport", sportSchema);

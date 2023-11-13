@@ -10,7 +10,7 @@ const clubSchema = new mongoose.Schema(
 
     sportID: { type: Types.ObjectId, required: true },
   },
-  { timestamps: true, versionKey: false }
+  { versionKey: false }
 );
 
 const clubModel = mongoose.model("club", clubSchema);
