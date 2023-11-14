@@ -1,13 +1,12 @@
 const asyncHandler = require("express-async-handler");
-
-const { userModel } = require("../../models/staff/userModel");
-
-const { userRegisterSchema } = require("../../validations/authSchema");
-const { copyObject, deleteInvalidPropertyInObject } = require("../../helpers/function");
 const { StatusCodes } = require("http-status-codes");
 const createError = require("http-errors");
-const { hashPassword, isPassMatched } = require("../../services/hashPassword");
-const { generateToken } = require("../../services/generateToken");
+
+const { userModel } = require("../../models/staff/userModel");
+const { userRegisterSchema } = require("../../validations/authSchema");
+const { copyObject, deleteInvalidPropertyInObject } = require("../../helpers/function");
+const { hashPassword, isPassMatched } = require("../../services/passwordServices");
+const { generateToken } = require("../../services/tokenServices");
 
 //@desc User Register
 //@route POST /api/v1/users/register
@@ -57,11 +56,22 @@ module.exports.loginUser = asyncHandler(async (req, res) => {
 
   const token = generateToken({ id: userFound._id });
 
-  res.status(StatusCodes.CREATED).json({
+  res.status(StatusCodes.OK).json({
     status: "success",
     message: "با موفقیت وارد سیستم شدید",
     data: {
       token,
     },
+  });
+});
+
+//@desc Get Profile User
+//@route POST /api/v1/users/
+//@acess  Private only Users
+module.exports.userProfile = asyncHandler(async (req, res) => {
+  res.status(StatusCodes.OK).json({
+    status: "success",
+    message: "تمام کاربران با موفقیت دریافت شدند",
+    data: {},
   });
 });

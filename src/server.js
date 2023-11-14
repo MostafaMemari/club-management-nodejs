@@ -50,7 +50,7 @@ module.exports = class Application {
 
       return res.status(statusCode).json({
         errors: {
-          statusCode,
+          status: "failed",
           message,
         },
       });
