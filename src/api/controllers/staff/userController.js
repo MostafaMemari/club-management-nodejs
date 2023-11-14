@@ -66,12 +66,12 @@ module.exports.loginUser = asyncHandler(async (req, res) => {
 });
 
 //@desc Get Profile User
-//@route POST /api/v1/users/
+//@route POST /api/v1/users/profile
 //@acess  Private only Users
 module.exports.userProfile = asyncHandler(async (req, res) => {
   res.status(StatusCodes.OK).json({
     status: "success",
     message: "تمام کاربران با موفقیت دریافت شدند",
-    data: {},
+    data: req.userAuth,
   });
 });
