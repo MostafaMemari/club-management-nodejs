@@ -1,7 +1,8 @@
 const express = require("express");
-const createHttpError = require("http-errors");
+const createError = require("http-errors");
 const { StatusCodes } = require("http-status-codes");
 const { AllRouter } = require("./api/routes/router");
+const morgan = require("morgan");
 const { connectToMongoDB } = require("./config/db");
 require("dotenv").config();
 
@@ -14,12 +15,16 @@ module.exports = class Application {
     this.#DB_URL = DB_URI;
 
     this.createServer();
-    this.connectToDatabase();
     this.configApplication();
+    this.createRoutes();
+    this.connectToDatabase();
     this.errorHandling();
   }
 
-  configApplication() {}
+  configApplication() {
+    this.#app.use(express.json());
+    this.#app.use(morgan("dev"));
+  }
   createServer() {
     this.#app.listen(this.#PORT, () => {
       console.log("run > http://localhost:" + this.#PORT);
@@ -32,14 +37,14 @@ module.exports = class Application {
   createRoutes() {
     this.#app.use(AllRouter);
   }
+
   errorHandling() {
     this.#app.use((req, res, next) => {
-      next(createHttpError.NotFound("صفحه مورد نظر یافت نشد !"));
+      next(createError.NotFound("صفحه مورد نظر یافت نشد"));
     });
 
     this.#app.use((error, req, res, next) => {
-      const serverError = createHttpError.InternalServerError;
-
+      const serverError = createError.InternalServerError();
       const statusCode = error.status || serverError.status;
       const message = error.message || serverError.message;
 

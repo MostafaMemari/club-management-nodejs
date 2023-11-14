@@ -2,16 +2,17 @@ const mongoose = require("mongoose");
 
 const { Types } = mongoose;
 
-const memberSchema = new mongoose.Schema(
+const studentSchema = new mongoose.Schema(
   {
     firstName: { tpye: String, required: true },
     lastName: { tpye: String, required: true },
     nationalID: { tpye: Number, required: true },
-    role: { tpye: String, default: "Member" },
-    image_url: { tpye: String },
+    role: { tpye: String, default: "Student" },
+
+    phone: { tpye: Number },
+    imageUrl: { tpye: String },
     memberShipValidity: { tpye: Number },
     address: { type: String },
-    phone: { tpye: Number },
     mobile: { tpye: Number },
     registerDate: { type: Date },
     birthday: { type: Date },
@@ -28,8 +29,8 @@ const memberSchema = new mongoose.Schema(
   }
 );
 
-const memberModel = mongoose.model("member", memberSchema);
+const studentModel = mongoose.model("student", studentSchema);
 
 module.exports = {
-  memberModel,
+  studentModel,
 };
