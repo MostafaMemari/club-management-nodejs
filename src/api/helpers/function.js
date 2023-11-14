@@ -1,5 +1,3 @@
-const becrypt = require("bcrypt");
-
 module.exports.deleteInvalidPropertyInObject = (data = {}, blackListFields = []) => {
   let nullishData = ["", " ", "0", 0, null, undefined];
   Object.keys(data).forEach((key) => {
@@ -13,15 +11,4 @@ module.exports.deleteInvalidPropertyInObject = (data = {}, blackListFields = [])
 
 module.exports.copyObject = (object) => {
   return JSON.parse(JSON.stringify(object));
-};
-
-//hash password
-module.exports.hashPassword = async (password) => {
-  const salt = await becrypt.genSalt(10);
-  const hash = await becrypt.hash(password, salt);
-  return hash;
-};
-
-module.exports.isPassMatched = async (password, hash) => {
-  return await becrypt.compare(password, hash);
 };
