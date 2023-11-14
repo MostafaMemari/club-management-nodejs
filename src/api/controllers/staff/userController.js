@@ -75,3 +75,29 @@ module.exports.userProfile = asyncHandler(async (req, res) => {
     data: req.userAuth,
   });
 });
+
+//@desc Update User
+//@route PUT /api/v1/users/
+//@acess  Private only Users
+module.exports.updateUser = asyncHandler(async (req, res) => {
+  const data = copyObject(req.body);
+  const blackListFields = ["role"];
+  deleteInvalidPropertyInObject(data, blackListFields);
+
+  const { password } = data;
+  let profileUpdateResult = null;
+
+  if (password) {
+    const hashedPassword = await hashPassword(password);
+    profileUpdateResult = await userModel.updateOne({ _id: req.userAuth._id }, { $set: { ...data, password: hashedPassword } });
+  } else {
+    profileUpdateResult = await userModel.updateOne({ _id: req.userAuth._id }, { $set: data });
+  }
+  if (!profileUpdateResult.modifiedCount) throw new createError.InternalServerError("به روزسانی انجام نشد");
+
+  res.status(StatusCodes.OK).json({
+    status: "success",
+    message: "ویرایش کاربر با موفقیت انجام شد",
+    data: req.userAuth,
+  });
+});
