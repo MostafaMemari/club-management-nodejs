@@ -29,11 +29,17 @@ const ageGroupUpdateSchema = Joi.object({
   toDateIR: Joi.string().error(new Error("تاریخ پایان رده سنی معتبر نمی باشد")),
 }).options({ stripUnknown: true });
 
+const beltSchema = Joi.object({
+  name: Joi.string().required().min(2).max(15).error(new Error("نام کمربند وارد شده معتبر نمی باشد")),
+  duration: Joi.number().required().error(new Error("مدت زمان وارد شده معتبر نمی باشد")),
+}).options({ stripUnknown: true });
+
 module.exports = {
   clubSchema,
   sportSchema,
   ageGroupSchema,
   ageGroupUpdateSchema,
+  beltSchema,
 };
 
 // .regex(/^(098|0098|98|\+98|0)?9(0[0-5]|[1 3]\d|2[0-3]|9[0-9]|41)\d{7}$/)

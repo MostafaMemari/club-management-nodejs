@@ -6,7 +6,7 @@ const { sportModel } = require("../../models/club/sportModel");
 const createError = require("http-errors");
 
 //@desc Create Sport
-//@route POST /api/v1/Sports
+//@route POST /api/v1/sports
 //@acess  Private Admin Only
 module.exports.createSport = AsyncHandler(async (req, res) => {
   const data = copyObject(req.body);
