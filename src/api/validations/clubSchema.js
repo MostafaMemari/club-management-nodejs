@@ -21,10 +21,19 @@ const ageGroupSchema = Joi.object({
   toDateIR: Joi.string().required().error(new Error("تاریخ پایان رده سنی معتبر نمی باشد")),
 }).options({ stripUnknown: true });
 
+const ageGroupUpdateSchema = Joi.object({
+  id: Joi.string().hex().length(24).error(new Error("شناسه وارد شده صحیح نمی باشد")),
+  name: Joi.string().min(2).max(50).error(new Error("رده سنی وارد شده معتبر نمی باشد")),
+  description: Joi.string().min(10).max(100).error(new Error("توضیحات وارد شده معتبر نمی باشد")),
+  fromDateIR: Joi.string().error(new Error("تاریخ شروع رده سنی معتبر نمی باشد")),
+  toDateIR: Joi.string().error(new Error("تاریخ پایان رده سنی معتبر نمی باشد")),
+}).options({ stripUnknown: true });
+
 module.exports = {
   clubSchema,
   sportSchema,
   ageGroupSchema,
+  ageGroupUpdateSchema,
 };
 
 // .regex(/^(098|0098|98|\+98|0)?9(0[0-5]|[1 3]\d|2[0-3]|9[0-9]|41)\d{7}$/)

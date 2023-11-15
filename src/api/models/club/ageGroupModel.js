@@ -19,6 +19,20 @@ ageGroupSchema.pre("save", function (next) {
 
   next();
 });
+ageGroupSchema.pre("updateOne", function (next) {
+  const { fromDateIR, toDateIR } = this._update;
+
+  if (fromDateIR) {
+    this.fromDateEN = moment.from(fromDateIR, "fa", "YYYY/MM/DD").format("YYYY/MM/DD");
+    this.set({ fromDateEN: this.fromDateEN });
+  }
+  if (toDateIR) {
+    this.toDateEN = moment.from(toDateIR, "fa", "YYYY/MM/DD").format("YYYY/MM/DD");
+    this.set({ toDateEN: this.toDateEN });
+  }
+
+  next();
+});
 
 const ageGroupModel = mongoose.model("ageGroup", ageGroupSchema);
 
