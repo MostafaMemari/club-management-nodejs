@@ -5,7 +5,7 @@ const { Types } = mongoose;
 const clubSchema = new mongoose.Schema(
   {
     name: { type: String, required: true },
-    gender: { type: String, enum: ["مرد", "زن"], default: "مرد" },
+    gender: { type: String, enum: ["آقایان", "بانوان"], default: "آقایان" },
     address: { type: String },
     phone: { type: String },
 

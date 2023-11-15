@@ -12,12 +12,16 @@ module.exports.createSport = AsyncHandler(async (req, res) => {
   const data = copyObject(req.body);
   deleteInvalidPropertyInObject(data);
 
-  const { name } = data;
-  const sportFound = await sportModel.findOne({ name });
-  if (sportFound) throw createError.InternalServerError("رشته ورزشی مورد نظر قبلا ثبت شده است");
-
+  // validate
   await sportSchema.validateAsync(data);
 
+  const { name } = data;
+
+  // find sport
+  const sportFound = await sportModel.findOne({ name });
+  if (sportFound) throw createError.Conflict("رشته ورزشی تکراری می باشد");
+
+  // create
   const sportCreated = new sportModel(data);
   await sportCreated.save();
   if (!sportCreated) throw createError.InternalServerError("ثبت رشته ورزشی با خطا مواجه شد");

@@ -2,10 +2,10 @@ const Joi = require("joi");
 
 const clubSchema = Joi.object({
   name: Joi.string().min(3).max(50).required().error(new Error("نام وارد شده صحیح نمی باشد")),
-  gender: Joi.string().valid("مرد", "زن").required().error(new Error("جنسیت وارد شده صحیح نمی باشد")),
+  gender: Joi.string().valid("آقایان", "بانوان").required().error(new Error("جنسیت وارد شده صحیح نمی باشد")),
   address: Joi.string().min(3).max(100).error(new Error("آدرس وارد شده صحیح نمی باشد")),
   phone: Joi.string().min(9).max(12).error(new Error("شماره وارد شده صحیح نمی باشد")),
-  sportID: Joi.string().hex().length(24).error(new Error("باشگاه وارد شده یافت نشد")),
+  sportID: Joi.string().hex().length(24).error(new Error("رشته ورزشی مورد نظر یافت نشد")),
 }).options({ stripUnknown: true });
 
 const sportSchema = Joi.object({
