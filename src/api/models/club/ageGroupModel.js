@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-var moment = require("jalali-moment");
+const { shamsiToMiladi } = require("../../helpers/dateConvarter");
 
 const ageGroupSchema = new mongoose.Schema(
   {
@@ -14,20 +14,19 @@ const ageGroupSchema = new mongoose.Schema(
 );
 
 ageGroupSchema.pre("save", function (next) {
-  this.fromDateEN = moment.from(this.fromDateIR, "fa", "YYYY/MM/DD").format("YYYY/MM/DD");
-  this.toDateEN = moment.from(this.toDateIR, "fa", "YYYY/MM/DD").format("YYYY/MM/DD");
-
+  this.fromDateEN = shamsiToMiladi(this.fromDateIR);
+  this.toDateEN = shamsiToMiladi(this.toDateIR);
   next();
 });
 ageGroupSchema.pre("updateOne", function (next) {
   const { fromDateIR, toDateIR } = this._update;
 
   if (fromDateIR) {
-    this.fromDateEN = moment.from(fromDateIR, "fa", "YYYY/MM/DD").format("YYYY/MM/DD");
+    this.fromDateEN = shamsiToMiladi(fromDateIR);
     this.set({ fromDateEN: this.fromDateEN });
   }
   if (toDateIR) {
-    this.toDateEN = moment.from(toDateIR, "fa", "YYYY/MM/DD").format("YYYY/MM/DD");
+    this.toDateEN = shamsiToMiladi(toDateIR);
     this.set({ toDateEN: this.toDateEN });
   }
 

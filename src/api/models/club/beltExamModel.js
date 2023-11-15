@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-var moment = require("jalali-moment");
+const { shamsiToMiladi } = require("../../helpers/dateConvarter");
 
 const { Types } = mongoose;
 
@@ -19,9 +19,8 @@ const beltExamSchema = new mongoose.Schema(
 );
 
 beltExamSchema.pre("save", function (next) {
-  this.eventDateEN = moment.from(this.eventDateIR, "fa", "YYYY/MM/DD").format("YYYY/MM/DD");
-  this.registerDateEN = moment.from(this.registerDateIR, "fa", "YYYY/MM/DD").format("YYYY/MM/DD");
-
+  this.eventDateEN = shamsiToMiladi(this.eventDateIR);
+  this.registerDateEN = shamsiToMiladi(this.registerDateIR);
   next();
 });
 
