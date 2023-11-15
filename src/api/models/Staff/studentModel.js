@@ -8,6 +8,7 @@ const studentSchema = new mongoose.Schema(
     lastName: { tpye: String, required: true },
     nationalID: { tpye: Number, required: true },
     role: { tpye: String, default: "Student" },
+    gender: { type: String, enum: ["آقایان", "بانوان"], default: "آقایان" },
 
     phone: { tpye: Number },
     imageUrl: { tpye: String },

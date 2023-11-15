@@ -34,12 +34,23 @@ const beltSchema = Joi.object({
   duration: Joi.number().required().error(new Error("مدت زمان وارد شده معتبر نمی باشد")),
 }).options({ stripUnknown: true });
 
+const beltExamSchema = Joi.object({
+  name: Joi.string().required().min(2).max(40).error(new Error("آزمون وارد شده معتبر نمی باشد")),
+  description: Joi.string().min(10).max(100).error(new Error("توضیحات وارد شده معتبر نمی باشد")),
+  eventPlace: Joi.string().min(2).max(50).error(new Error("محل برگزاری معتبر نمی باشد")),
+  gender: Joi.string().valid("آقایان", "بانوان").required().error(new Error("جنسیت وارد شده صحیح نمی باشد")),
+  // beltID: Joi.string().hex().length(24).error(new Error("شناسه وارد شده صحیح نمی باشد")),
+  eventDateIR: Joi.string().required().error(new Error("تاریخ آزمون معتبر نمی باشد")),
+  registerDateIR: Joi.string().required().error(new Error("تاریخ ثبت نام آزمون معتبر نمی باشد")),
+}).options({ stripUnknown: true });
+
 module.exports = {
   clubSchema,
   sportSchema,
   ageGroupSchema,
   ageGroupUpdateSchema,
   beltSchema,
+  beltExamSchema,
 };
 
 // .regex(/^(098|0098|98|\+98|0)?9(0[0-5]|[1 3]\d|2[0-3]|9[0-9]|41)\d{7}$/)

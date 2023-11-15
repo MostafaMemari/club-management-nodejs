@@ -8,6 +8,7 @@ const coachSchema = new mongoose.Schema(
     lastName: { tpye: String, required: true },
     nationalID: { tpye: Number, required: true },
     role: { tpye: String, default: "Coach" },
+    gender: { type: String, enum: ["آقایان", "بانوان"], default: "آقایان" },
 
     phone: { tpye: Number },
     imageUrl: { tpye: String },

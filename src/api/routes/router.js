@@ -1,4 +1,5 @@
 const { ageGroupRouter } = require("./club/ageGroupRouter.js");
+const { beltExamRouter } = require("./club/beltExamRouter.js");
 const { beltRouter } = require("./club/beltRouter.js");
 const { clubRouter } = require("./club/clubRouter");
 const { sportRouter } = require("./club/sportRouter.js");
@@ -11,6 +12,7 @@ router.use("/api/v1/clubs", clubRouter);
 router.use("/api/v1/sports", sportRouter);
 router.use("/api/v1/ages", ageGroupRouter);
 router.use("/api/v1/belts", beltRouter);
+router.use("/api/v1/belt-exams", beltExamRouter);
 
 module.exports = {
   AllRouter: router,
