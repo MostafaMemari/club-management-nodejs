@@ -4,6 +4,8 @@ const { beltSchema } = require("../../validations/clubSchema");
 const { StatusCodes } = require("http-status-codes");
 const { beltModel } = require("../../models/club/beltModel");
 const createError = require("http-errors");
+const { isValidObjectId } = require("mongoose");
+const { studentModel } = require("../../models/staff/studentModel");
 
 //@desc Create Belt
 //@route POST /api/v1/belts
@@ -29,6 +31,30 @@ module.exports.createBelt = AsyncHandler(async (req, res) => {
   res.status(StatusCodes.CREATED).json({
     status: "success",
     message: "رشته ورزشی مورد نظر با موفقیت ثبت شد",
-    data,
+    beltCreated,
   });
 });
+
+//@desc Delete Belt
+//@route PUT /api/v1/belts/:id
+//@acess  Private Admin Only
+module.exports.deleteBelt = AsyncHandler(async (req, res) => {
+  if (!isValidObjectId(req.params.id)) throw createError.BadRequest("شناسه وارد شده کمربند صحیح نمی باشد");
+  await checkExistBelts(req.params.id);
+
+  const deletedBelt = await beltModel.deleteOne({ _id: req.params.id });
+  if (!deletedBelt.deletedCount) throw createError.InternalServerError("حذف زده کمربند با خطا مواجه شد");
+
+  const result = await studentModel.updateMany({ beltID: req.params.id }, { $unset: { beltID: 1 } });
+
+  res.status(StatusCodes.OK).json({
+    status: "success",
+    message: "حذف کمربند با موفقیت انجام شد",
+  });
+});
+
+const checkExistBelts = async (id) => {
+  // find Belt
+  const beltFound = await beltModel.findById(id);
+  if (!beltFound) throw createError.NotFound("کمربند وارد شده یافت نشد");
+};

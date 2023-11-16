@@ -70,10 +70,10 @@ module.exports.updateAgeGourp = AsyncHandler(async (req, res) => {
 //@acess  Private Admin Only
 module.exports.deleteAgeGroup = AsyncHandler(async (req, res) => {
   if (!isValidObjectId(req.params.id)) throw createError.BadRequest("شناسه وارد شده رده سنی صحیح نمی باشد");
-  // await checkExistAgeGroup(req.params.id);
+  await checkExistAgeGroup(req.params.id);
 
-  const ageGroup = await ageGroupModel.deleteOne({ _id: req.params.id }).select("-fromDateEN -toDateEN").lean();
-  if (!ageGroup.deletedCount) throw createError.InternalServerError("حذف زده سنی با خطا مواجه شد");
+  const deletedAgeGroup = await ageGroupModel.deleteOne({ _id: req.params.id });
+  if (!deletedAgeGroup.deletedCount) throw createError.InternalServerError("حذف زده سنی با خطا مواجه شد");
 
   await studentModel.updateMany({ ageGroupID: req.params.id }, { $pull: { ageGroupID: req.params.id } });
 
