@@ -4,6 +4,7 @@ const { copyObject, deleteInvalidPropertyInObject } = require("../../helpers/fun
 const createError = require("http-errors");
 const { ageGroupModel } = require("../../models/club/ageGroupModel");
 const { ageGroupSchema, ageGroupUpdateSchema } = require("../../validations/clubSchema");
+const { isValidObjectId } = require("mongoose");
 
 //@desc Create Age group
 //@route POST /api/v1/ages
@@ -63,9 +64,25 @@ module.exports.updateAgeGourp = AsyncHandler(async (req, res) => {
   });
 });
 
+//@desc Get Single Age group
+//@route PUT /api/v1/ages/:id
+//@acess  Private Admin Only
+module.exports.getAgeGroup = AsyncHandler(async (req, res) => {
+  if (!isValidObjectId(req.params.id)) throw createError.BadRequest("شناسه وارد شده رده سنی صحیح نمی باشد");
+
+  const ageGroup = await ageGroupModel.findById(req.params.id).select("-fromDateEN -toDateEN").lean();
+  if (!ageGroup) throw createError.InternalServerError("دریافت رده سنی با خطا مواجه شد");
+
+  res.status(StatusCodes.OK).json({
+    status: "success",
+    message: "دریافت رده های سنی با موفقیت انجام شد",
+    data: ageGroup,
+  });
+});
+
 //@desc Get All Age group
 //@route PUT /api/v1/ages/
-//@acess  Private Admin Only
+//@acess  Public
 module.exports.getAgeGroups = AsyncHandler(async (req, res) => {
   const ageGroups = await ageGroupModel.find({}).select("name description").lean();
   if (!ageGroups) throw createError.InternalServerError("دریافت رده های سنی با خطا مواجه شد");
