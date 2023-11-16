@@ -90,13 +90,13 @@ module.exports.deleteAgeGroup = AsyncHandler(async (req, res) => {
 module.exports.getAgeGroup = AsyncHandler(async (req, res) => {
   if (!isValidObjectId(req.params.id)) throw createError.BadRequest("شناسه وارد شده رده سنی صحیح نمی باشد");
 
-  const ageGroup = await ageGroupModel.findById(req.params.id).select("-fromDateEN -toDateEN").lean();
-  if (!ageGroup) throw createError.InternalServerError("دریافت رده سنی با خطا مواجه شد");
+  const ageGroupFound = await ageGroupModel.findById(req.params.id).select("-fromDateEN -toDateEN").lean();
+  if (!ageGroupFound) throw createError.InternalServerError("دریافت رده سنی با خطا مواجه شد");
 
   res.status(StatusCodes.OK).json({
     status: "success",
     message: "دریافت رده های سنی با موفقیت انجام شد",
-    data: ageGroup,
+    data: ageGroupFound,
   });
 });
 

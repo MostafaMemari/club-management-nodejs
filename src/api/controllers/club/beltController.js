@@ -53,6 +53,37 @@ module.exports.deleteBelt = AsyncHandler(async (req, res) => {
   });
 });
 
+//@desc Get Single Belt
+//@route PUT /api/v1/belts/:id
+//@acess  Private Admin Only
+module.exports.getBelt = AsyncHandler(async (req, res) => {
+  if (!isValidObjectId(req.params.id)) throw createError.BadRequest("شناسه وارد شده کمربند صحیح نمی باشد");
+  await checkExistBelts(req.params.id);
+
+  const beltFound = await beltModel.findById(req.params.id).select("-duration").lean();
+  if (!beltFound) throw createError.InternalServerError("دریافت کمربند با خطا مواجه شد");
+
+  res.status(StatusCodes.OK).json({
+    status: "success",
+    message: "دریافت کمربند با موفقیت انجام شد",
+    data: beltFound,
+  });
+});
+
+//@desc Get Single Belt
+//@route PUT /api/v1/belts/
+//@acess  Public
+module.exports.getBelts = AsyncHandler(async (req, res) => {
+  const beltsFound = await beltModel.find({}).select("-duration").lean();
+  if (!beltsFound) throw createError.InternalServerError("دریافت کمربند با خطا مواجه شد");
+
+  res.status(StatusCodes.OK).json({
+    status: "success",
+    message: "دریافت کمربند با موفقیت انجام شد",
+    data: beltsFound,
+  });
+});
+
 const checkExistBelts = async (id) => {
   // find Belt
   const beltFound = await beltModel.findById(id);
