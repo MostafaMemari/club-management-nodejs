@@ -17,19 +17,18 @@ const studentSchema = new mongoose.Schema(
     gender: { type: String, enum: ["مرد", "زن"], default: "مرد" },
     imageUrl: { type: String, default: "profile.jpg" },
 
+    mobile: { type: String },
     fatherName: { type: String },
     address: { type: String },
-    mobile: { type: String },
     phone: { type: String },
-
-    clubID: { type: Types.ObjectId, ref: "club" },
-    beltID: { type: Types.ObjectId, ref: "belt" },
 
     birthDayIR: { type: String },
     registerDateIR: { type: String },
-
     birthDayEN: { type: Date },
     registerDateEN: { type: Date },
+
+    clubID: { type: Types.ObjectId, ref: "club" },
+    beltID: { type: Types.ObjectId, ref: "belt" },
 
     ageGroupID: [{ type: Types.ObjectId, ref: "ageGroup" }],
 

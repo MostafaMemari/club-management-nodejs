@@ -7,7 +7,7 @@ const userRegisterSchema = Joi.object({
   email: Joi.string().email().error(new Error("ایمیل وارد شده صحیح نمی باشد")),
 }).options({ stripUnknown: true });
 
-const studentRegisterSchema = Joi.object({
+const studentAndCoachRegisterSchema = Joi.object({
   firstName: Joi.string().min(2).max(50).error(new Error("نام وارد شده صحیح نمی باشد")),
   lastName: Joi.string().min(2).max(50).error(new Error("نام خانوادگی وارد شده صحیح نمی باشد")),
   nationalID: Joi.string().length(10).error(new Error("کد ملی وارد شده صحیح نمی باشد")),
@@ -36,5 +36,5 @@ const studentRegisterSchema = Joi.object({
 
 module.exports = {
   userRegisterSchema,
-  studentRegisterSchema,
+  studentAndCoachRegisterSchema,
 };
