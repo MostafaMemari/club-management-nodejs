@@ -5,6 +5,7 @@ const { StatusCodes } = require("http-status-codes");
 const { sportModel } = require("../../models/club/sportModel");
 const createError = require("http-errors");
 const { clubModel } = require("../../models/club/clubModel");
+const { isValidObjectId } = require("mongoose");
 
 //@desc Create Club
 //@route POST /api/v1/clubs
@@ -35,5 +36,34 @@ module.exports.createClub = AsyncHandler(async (req, res) => {
     status: "success",
     message: "باشگاه با موفقیت ثبت شد",
     data,
+  });
+});
+
+//@desc Get All club
+//@route GET /api/v1/clubs
+//@acess  Private Admin Only
+module.exports.getClubs = AsyncHandler(async (req, res) => {
+  const clubFound = await clubModel.find({}).populate("sportID").lean();
+  if (!clubFound) throw createError.InternalServerError("دریافت اطلاعات با خطا مواجه شد");
+  res.status(StatusCodes.OK).json({
+    status: "success",
+    message: "دریافت اطلاعات با موفقیت انجام شد",
+    data: clubFound,
+  });
+});
+
+//@desc Get Single club
+//@route GET /api/v1/club/:id
+//@acess  Private Admin Only
+module.exports.getClub = AsyncHandler(async (req, res) => {
+  // validate
+  if (!isValidObjectId(req.params.id)) throw createError("شناسه وارد شده اشتباه می باشد");
+
+  const clubFound = await clubModel.findById(req.params.id).lean();
+  if (!clubFound) throw createError.InternalServerError("دریافت اطلاعات با خطا مواجه شد");
+  res.status(StatusCodes.OK).json({
+    status: "success",
+    message: "دریافت اطلاعات با موفقیت انجام شد",
+    data: clubFound,
   });
 });

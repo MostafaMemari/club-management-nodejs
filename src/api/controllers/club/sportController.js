@@ -43,11 +43,11 @@ module.exports.getSports = AsyncHandler(async (req, res) => {
   res.status(StatusCodes.OK).json({
     status: "success",
     message: "دریافت اطلاعات با موفقیت انجام شد",
-    sportFound,
+    data: sportFound,
   });
 });
 
-//@desc Get Single Sports
+//@desc Get Single Sport
 //@route GET /api/v1/sports/:id
 //@acess  Private Admin Only
 module.exports.getSport = AsyncHandler(async (req, res) => {
@@ -59,6 +59,6 @@ module.exports.getSport = AsyncHandler(async (req, res) => {
   res.status(StatusCodes.OK).json({
     status: "success",
     message: "دریافت اطلاعات با موفقیت انجام شد",
-    sportFound,
+    data: sportFound,
   });
 });

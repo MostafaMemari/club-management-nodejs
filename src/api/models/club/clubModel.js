@@ -9,7 +9,7 @@ const clubSchema = new mongoose.Schema(
     address: { type: String },
     phone: { type: String },
 
-    sportID: [{ type: Types.ObjectId, required: true }],
+    sportID: [{ type: Types.ObjectId, ref: "sport" }],
   },
   { versionKey: false }
 );
