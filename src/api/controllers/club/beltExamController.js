@@ -91,7 +91,6 @@ module.exports.addBeltToBeltExam = AsyncHandler(async (req, res, next) => {
   await checkExistBeltExam(req.params.id);
 
   const { beltID } = data;
-
   // find Belt
   for (const i in beltID) {
     if (typeof beltID == "string") {
@@ -107,12 +106,48 @@ module.exports.addBeltToBeltExam = AsyncHandler(async (req, res, next) => {
 
   // update
   const beltExamUpdated = await beltExamModel.updateOne({ _id: req.params.id }, { $addToSet: { beltID } });
-  if (!beltExamUpdated.modifiedCount) throw createError.InternalServerError("ویرایش آزمون با خطا مواجه شد");
+  if (!beltExamUpdated.modifiedCount) throw createError.InternalServerError("ایجاد کمربند با خطا مواجه شد");
 
   res.status(StatusCodes.OK).json({
     status: "success",
-    message: "آزمون مورد نظر با موفقیت ویرایش شد",
+    message: "کمربند مورد نظر با موفقیت به آزمون اضافه شد",
     // beltExamUpdated,
+  });
+});
+
+//@desc Remove Belt to beltExam
+//@route PATCH /api/v1/belt-exams/:id/belt/:beltID/remove
+//@acess  Private Admin Only
+module.exports.removeBeltToBeltExam = AsyncHandler(async (req, res, next) => {
+  const data = copyObject(req.body);
+  const blackListFields = ["name", "description", "eventPlace", "gender", "eventDateIR", "registerDateIR", "eventDateEN", "registerDateEN"];
+  deleteInvalidPropertyInObject(data, blackListFields);
+
+  const { id: examID, beltID } = req.params;
+
+  // validate
+  if (!isValidObjectId(examID)) throw createError.BadRequest("شناسه آزمون کمربند معتبر نمی باشد");
+  if (!isValidObjectId(beltID)) throw createError.BadRequest("شناسه کمربند معتبر نمی باشد");
+
+  // find belt exam
+  const beltExamFound = await checkExistBeltExam(examID);
+
+  // find belt
+  if (beltID) {
+    const beltFound = await beltModel.findById(beltID).lean();
+    if (!beltFound) throw createError.NotFound("شناسه کمربند معتبر نمی باشد");
+  }
+
+  // check belt in beltExam
+  if (!beltExamFound.beltID.includes(beltID)) throw createError.NotFound("کمربند وارد شده یافت نشد");
+
+  // remove belt
+  beltExamFound.beltID.pull(beltID);
+  beltExamFound.save();
+
+  res.status(StatusCodes.OK).json({
+    status: "success",
+    message: "کمربند مورد نظر با موفقیت از آزمون حذف شد",
   });
 });
 
