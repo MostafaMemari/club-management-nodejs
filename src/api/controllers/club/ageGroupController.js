@@ -5,6 +5,7 @@ const createError = require("http-errors");
 const { ageGroupModel } = require("../../models/club/ageGroupModel");
 const { ageGroupSchema, ageGroupUpdateSchema } = require("../../validations/clubSchema");
 const { isValidObjectId } = require("mongoose");
+const { studentModel } = require("../../models/staff/studentModel");
 
 //@desc Create Age group
 //@route POST /api/v1/ages
@@ -61,6 +62,25 @@ module.exports.updateAgeGourp = AsyncHandler(async (req, res) => {
   res.status(StatusCodes.OK).json({
     status: "success",
     message: "رده سنی با موفقیت ویرایش شد",
+  });
+});
+
+//@desc Delete Age group
+//@route PUT /api/v1/ages/:id
+//@acess  Private Admin Only
+module.exports.deleteAgeGroup = AsyncHandler(async (req, res) => {
+  if (!isValidObjectId(req.params.id)) throw createError.BadRequest("شناسه وارد شده رده سنی صحیح نمی باشد");
+  // await checkExistAgeGroup(req.params.id);
+
+  const ageGroup = await ageGroupModel.deleteOne({ _id: req.params.id }).select("-fromDateEN -toDateEN").lean();
+  if (!ageGroup.deletedCount) throw createError.InternalServerError("حذف زده سنی با خطا مواجه شد");
+
+  await studentModel.updateMany({ ageGroupID: req.params.id }, { $pull: { ageGroupID: req.params.id } });
+
+  res.status(StatusCodes.OK).json({
+    status: "success",
+    message: "حذف رده سنی با موفقیت انجام شد",
+    reuslt,
   });
 });
 
