@@ -26,12 +26,43 @@ module.exports.createBelt = AsyncHandler(async (req, res) => {
   // create
   const beltCreated = new beltModel(data);
   await beltCreated.save();
-  if (!beltCreated) throw createError.InternalServerError("ثبت رشته ورزشی با خطا مواجه شد");
+  if (!beltCreated) throw createError.InternalServerError("ثبت کمربند جدید با خطا مواجه شد");
 
   res.status(StatusCodes.CREATED).json({
     status: "success",
-    message: "رشته ورزشی مورد نظر با موفقیت ثبت شد",
+    message: "ثبت کمربند با موفقیت انجام شد",
     beltCreated,
+  });
+});
+
+//@desc Update Belt
+//@route PUT /api/v1/belts/:id
+//@acess  Private Admin Only
+module.exports.updateBelt = AsyncHandler(async (req, res) => {
+  if (!isValidObjectId(req.params.id)) throw createError.BadRequest("شناسه وارد شده کمربند صحیح نمی باشد");
+  await checkExistBelts(req.params.id);
+
+  const data = copyObject(req.body);
+  deleteInvalidPropertyInObject(data);
+
+  const { name, duration } = data;
+
+  // validate duration
+  if (isNaN(duration)) throw createError.BadRequest("مدت زمان وارد شده معتبر نمی باشد");
+
+  // validate name
+  if (name) {
+    const beltFound = await beltModel.findOne({ name });
+    if (beltFound) throw createError.Conflict("کمربند وارد شده تکراری می باشد");
+  }
+
+  // updated
+  const beltUpdated = await beltModel.updateOne({ _id: req.params.id }, data);
+  if (!beltUpdated.modifiedCount) throw createError.InternalServerError("ویرایش کمربند با خطا مواجه شد");
+
+  res.status(StatusCodes.OK).json({
+    status: "success",
+    message: "کمربند با موفقیت ویرایش شد",
   });
 });
 
@@ -45,7 +76,7 @@ module.exports.deleteBelt = AsyncHandler(async (req, res) => {
   const deletedBelt = await beltModel.deleteOne({ _id: req.params.id });
   if (!deletedBelt.deletedCount) throw createError.InternalServerError("حذف زده کمربند با خطا مواجه شد");
 
-  const result = await studentModel.updateMany({ beltID: req.params.id }, { $unset: { beltID: 1 } });
+  await studentModel.updateMany({ beltID: req.params.id }, { $unset: { beltID: 1 } });
 
   res.status(StatusCodes.OK).json({
     status: "success",
