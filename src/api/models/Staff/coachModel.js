@@ -4,16 +4,16 @@ const { Types } = mongoose;
 
 const coachSchema = new mongoose.Schema(
   {
-    firstName: { tpye: String, required: true },
-    lastName: { tpye: String, required: true },
-    nationalID: { tpye: Number, required: true },
-    role: { tpye: String, default: "Coach" },
-    mobile: { tpye: Number },
+    firstName: { type: String, required: true },
+    lastName: { type: String, required: true },
+    nationalID: { type: Number, required: true },
+    role: { type: String, default: "Coach" },
+    mobile: { type: Number },
 
-    gender: { type: String, enum: ["آقایان", "بانوان"], default: "آقایان" },
+    gender: { type: String, enum: ["مرد", "زن"], default: "مرد" },
 
-    imageUrl: { tpye: String },
-    memberShipValidity: { tpye: Number },
+    imageUrl: { type: String },
+    memberShipValidity: { type: Number },
     address: { type: String },
     registerDate: { type: Date },
     birthday: { type: Date },

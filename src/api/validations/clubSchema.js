@@ -17,16 +17,25 @@ const sportSchema = Joi.object({
 const ageGroupSchema = Joi.object({
   name: Joi.string().min(2).max(50).required().error(new Error("رده سنی وارد شده معتبر نمی باشد")),
   description: Joi.string().min(10).max(100).error(new Error("توضیحات وارد شده معتبر نمی باشد")),
-  fromDateIR: Joi.string().required().error(new Error("تاریخ شروع رده سنی معتبر نمی باشد")),
-  toDateIR: Joi.string().required().error(new Error("تاریخ پایان رده سنی معتبر نمی باشد")),
+  fromDateIR: Joi.string()
+    .regex(/^[1-4]\d{3}\/((0[1-6]\/((3[0-1])|([1-2][0-9])|(0[1-9])))|((1[0-2]|(0[7-9]))\/(30|31|([1-2][0-9])|(0[1-9]))))$/)
+    .required()
+    .error(new Error("تاریخ شروع رده سنی معتبر نمی باشد")),
+  toDateIR: Joi.string()
+    .regex(/^[1-4]\d{3}\/((0[1-6]\/((3[0-1])|([1-2][0-9])|(0[1-9])))|((1[0-2]|(0[7-9]))\/(30|31|([1-2][0-9])|(0[1-9]))))$/)
+    .required()
+    .error(new Error("تاریخ پایان رده سنی معتبر نمی باشد")),
 }).options({ stripUnknown: true });
 
 const ageGroupUpdateSchema = Joi.object({
-  id: Joi.string().hex().length(24).error(new Error("شناسه وارد شده صحیح نمی باشد")),
+  id: Joi.string().hex().length(24).error(new Error("شناسه وارد شده معتبر نمی باشد")),
   name: Joi.string().min(2).max(50).error(new Error("رده سنی وارد شده معتبر نمی باشد")),
-  description: Joi.string().min(10).max(100).error(new Error("توضیحات وارد شده معتبر نمی باشد")),
-  fromDateIR: Joi.string().error(new Error("تاریخ شروع رده سنی معتبر نمی باشد")),
-  toDateIR: Joi.string().error(new Error("تاریخ پایان رده سنی معتبر نمی باشد")),
+  fromDateIR: Joi.string()
+    .regex(/^[1-4]\d{3}\/((0[1-6]\/((3[0-1])|([1-2][0-9])|(0[1-9])))|((1[0-2]|(0[7-9]))\/(30|31|([1-2][0-9])|(0[1-9]))))$/)
+    .error(new Error("تاریخ شروع رده سنی معتبر نمی باشد")),
+  toDateIR: Joi.string()
+    .regex(/^[1-4]\d{3}\/((0[1-6]\/((3[0-1])|([1-2][0-9])|(0[1-9])))|((1[0-2]|(0[7-9]))\/(30|31|([1-2][0-9])|(0[1-9]))))$/)
+    .error(new Error("تاریخ پایان رده سنی معتبر نمی باشد")),
 }).options({ stripUnknown: true });
 
 const beltSchema = Joi.object({

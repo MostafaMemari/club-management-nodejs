@@ -12,15 +12,33 @@ const beltExamSchema = new mongoose.Schema(
     beltID: [{ type: Types.ObjectId, ref: "belt" }],
     eventDateIR: { type: String, required: true },
     registerDateIR: { type: String, required: true },
-    eventDateEN: { type: Date },
-    registerDateEN: { type: Date },
+    eventDateEN: {
+      type: Date,
+      default: function () {
+        return shamsiToMiladi(this.eventDateIR);
+      },
+    },
+    registerDateEN: {
+      type: Date,
+      default: function () {
+        return shamsiToMiladi(this.registerDateIR);
+      },
+    },
   },
   { versionKey: false }
 );
 
-beltExamSchema.pre("save", function (next) {
-  this.eventDateEN = shamsiToMiladi(this.eventDateIR);
-  this.registerDateEN = shamsiToMiladi(this.registerDateIR);
+beltExamSchema.pre("updateOne", function (next) {
+  const { eventDateIR, registerDateIR } = this._update;
+
+  if (eventDateIR) {
+    this.eventDateEN = shamsiToMiladi(eventDateIR);
+    this.set({ eventDateEN: this.eventDateEN });
+  }
+  if (registerDateIR) {
+    this.registerDateEN = shamsiToMiladi(registerDateIR);
+    this.set({ registerDateEN: this.registerDateEN });
+  }
   next();
 });
 
