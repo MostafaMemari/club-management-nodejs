@@ -5,7 +5,7 @@ const createError = require("http-errors");
 const { ageGroupModel } = require("../../models/club/ageGroupModel");
 const { ageGroupSchema, ageGroupUpdateSchema } = require("../../validations/clubSchema");
 
-//@desc Create age group
+//@desc Create Age group
 //@route POST /api/v1/ages
 //@acess  Private Admin Only
 module.exports.createAgeGourp = AsyncHandler(async (req, res) => {
@@ -33,7 +33,7 @@ module.exports.createAgeGourp = AsyncHandler(async (req, res) => {
   });
 });
 
-//@desc Update age group
+//@desc Update Age group
 //@route PUT /api/v1/ages/:id
 //@acess  Private Admin Only
 module.exports.updateAgeGourp = AsyncHandler(async (req, res) => {
@@ -57,9 +57,23 @@ module.exports.updateAgeGourp = AsyncHandler(async (req, res) => {
   const ageGroupUpdated = await ageGroupModel.updateOne({ _id: req.params.id }, data);
   if (!ageGroupUpdated.modifiedCount) throw createError.InternalServerError("ویرایش رده سنی با خطا مواجه شد");
 
-  res.status(StatusCodes.CREATED).json({
+  res.status(StatusCodes.OK).json({
     status: "success",
     message: "رده سنی با موفقیت ویرایش شد",
+  });
+});
+
+//@desc Get All Age group
+//@route PUT /api/v1/ages/
+//@acess  Private Admin Only
+module.exports.getAgeGroups = AsyncHandler(async (req, res) => {
+  const ageGroups = await ageGroupModel.find({}).select("name description").lean();
+  if (!ageGroups) throw createError.InternalServerError("دریافت رده های سنی با خطا مواجه شد");
+
+  res.status(StatusCodes.OK).json({
+    status: "success",
+    message: "دریافت رده های سنی با موفقیت انجام شد",
+    data: ageGroups,
   });
 });
 
