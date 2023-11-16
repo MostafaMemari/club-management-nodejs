@@ -77,6 +77,7 @@ module.exports.updateBeltExam = AsyncHandler(async (req, res, next) => {
     message: "آزمون مورد نظر با موفقیت ویرایش شد",
   });
 });
+
 //@desc Remove Belt Exam
 //@route DELETE /api/v1/belt-exams/:id
 //@acess  Private Admin Only
@@ -92,6 +93,20 @@ module.exports.removeBeltExam = AsyncHandler(async (req, res, next) => {
   res.status(StatusCodes.OK).json({
     status: "success",
     message: "آزمون مورد نظر با موفقیت حذف شد",
+  });
+});
+
+//@desc Get All Belt Exams
+//@route GET /api/v1/belt-exams/
+//@acess  Public
+module.exports.getBeltExams = AsyncHandler(async (req, res, next) => {
+  const beltExamFound = await beltExamModel.find({}).populate("beltID", "name").lean();
+  if (!beltExamFound) throw createError.InternalServerError("دریافت آزمون ها با خطا مواجه شد");
+
+  res.status(StatusCodes.OK).json({
+    status: "success",
+    message: "دریافت آزمون های کمربند با موفقیت انجام شد ",
+    beltExamFound,
   });
 });
 

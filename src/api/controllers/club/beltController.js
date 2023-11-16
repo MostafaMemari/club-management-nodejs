@@ -101,7 +101,7 @@ module.exports.getBelt = AsyncHandler(async (req, res) => {
   });
 });
 
-//@desc Get Single Belt
+//@desc Get All Belt
 //@route PUT /api/v1/belts/
 //@acess  Public
 module.exports.getBelts = AsyncHandler(async (req, res) => {
