@@ -100,12 +100,33 @@ module.exports.removeBeltExam = AsyncHandler(async (req, res, next) => {
 //@route GET /api/v1/belt-exams/
 //@acess  Public
 module.exports.getBeltExams = AsyncHandler(async (req, res, next) => {
-  const beltExamFound = await beltExamModel.find({}).populate("beltID", "name").lean();
+  const beltExamFound = await beltExamModel.find({}).populate("beltID", "name").select("-eventDateEN -registerDateEN").lean();
   if (!beltExamFound) throw createError.InternalServerError("دریافت آزمون ها با خطا مواجه شد");
 
   res.status(StatusCodes.OK).json({
     status: "success",
     message: "دریافت آزمون های کمربند با موفقیت انجام شد ",
+    beltExamFound,
+  });
+});
+
+//@desc Get Single Belt Exam
+//@route GET /api/v1/belt-exams/:id
+//@acess  Private Admin Only
+module.exports.getBeltExam = AsyncHandler(async (req, res, next) => {
+  // validate
+  if (!isValidObjectId(req.params.id)) throw createError.BadRequest("شناسه آزمون کمربند معتبر نمی باشد");
+
+  const beltExamFound = await beltExamModel
+    .findById(req.params.id)
+    .populate("beltID", "-duration")
+    .select("-eventDateEN -registerDateEN")
+    .lean();
+  if (!beltExamFound) throw createError.InternalServerError("دریافت آزمون با خطا مواجه شد");
+
+  res.status(StatusCodes.OK).json({
+    status: "success",
+    message: "دریافت آزمون با موفقیت انجام شد ",
     beltExamFound,
   });
 });
