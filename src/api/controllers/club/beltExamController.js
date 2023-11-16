@@ -77,6 +77,23 @@ module.exports.updateBeltExam = AsyncHandler(async (req, res, next) => {
     message: "آزمون مورد نظر با موفقیت ویرایش شد",
   });
 });
+//@desc Remove Belt Exam
+//@route DELETE /api/v1/belt-exams/:id
+//@acess  Private Admin Only
+module.exports.removeBeltExam = AsyncHandler(async (req, res, next) => {
+  // validate
+  if (!isValidObjectId(req.params.id)) throw createError.BadRequest("شناسه آزمون کمربند معتبر نمی باشد");
+  await checkExistBeltExam(req.params.id);
+
+  // update
+  const beltExamRemoved = await beltExamModel.deleteOne({ _id: req.params.id });
+  if (!beltExamRemoved.deletedCount) throw createError.InternalServerError("حذف آزمون با خطا مواجه شد");
+
+  res.status(StatusCodes.OK).json({
+    status: "success",
+    message: "آزمون مورد نظر با موفقیت حذف شد",
+  });
+});
 
 //@desc Add Belt to beltExam
 //@route PATCH /api/v1/belt-exams/:id/belt/add
@@ -154,6 +171,6 @@ module.exports.removeBeltToBeltExam = AsyncHandler(async (req, res, next) => {
 const checkExistBeltExam = async (id) => {
   // find Belt Exam
   const beltExamFound = await beltExamModel.findById(id);
-  if (!beltExamFound) throw createError.NotFound("دوره آزمون مورد نظر یافت نشد");
+  if (!beltExamFound) throw createError.NotFound("آزمون مورد نظر یافت نشد");
   return beltExamFound;
 };

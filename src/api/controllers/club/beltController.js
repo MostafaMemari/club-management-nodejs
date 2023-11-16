@@ -74,7 +74,7 @@ module.exports.deleteBelt = AsyncHandler(async (req, res) => {
   await checkExistBelts(req.params.id);
 
   const deletedBelt = await beltModel.deleteOne({ _id: req.params.id });
-  if (!deletedBelt.deletedCount) throw createError.InternalServerError("حذف زده کمربند با خطا مواجه شد");
+  if (!deletedBelt.deletedCount) throw createError.InternalServerError("حذف رده کمربند با خطا مواجه شد");
 
   await studentModel.updateMany({ beltID: req.params.id }, { $unset: { beltID: 1 } });
 
