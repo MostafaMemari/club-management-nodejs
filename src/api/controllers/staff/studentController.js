@@ -82,7 +82,7 @@ exports.updateStudent = asyncHandler(async (req, res) => {
   const blackListFields = ["ageGroupID", "createdBy", "birthDayEN", "registerDateEN", "beltID"];
   deleteInvalidPropertyInObject(data, blackListFields);
 
-  // validate
+  // validatek
   await studentAndCoachRegisterSchema.validateAsync(data);
 
   //validate firstName And lastName
@@ -110,11 +110,9 @@ exports.updateStudent = asyncHandler(async (req, res) => {
   });
   if (!studentCreated.modifiedCount) throw createError.InternalServerError("بروزرسانی اطلاعات با خطا مواجه شد");
 
-  res.status(StatusCodes.CREATED).json({
+  res.status(StatusCodes.OK).json({
     status: "success",
     message: "بروزرسانی اطلاعات با موفقیت انجام شد",
-    // data: studentCreated,
-    data,
   });
 });
 
@@ -132,7 +130,21 @@ exports.getStudents = asyncHandler(async (req, res) => {
   if (!students) throw createError.InternalServerError("دریافت هنرجویان با خطا مواجه شد");
   res.status(StatusCodes.OK).json({
     status: "success",
-    message: "دریافت هنرجویان با موفقیت انجام شد",
+    message: "دریافت اطلاعات با موفقیت انجام شد",
+    data: students,
+  });
+});
+
+//@desc Get Single Student
+//@route GET /api/v1/students/:id
+//@acess
+exports.getStudent = asyncHandler(async (req, res) => {
+  const students = await checkExistStudent(req.params.id);
+
+  if (!students) throw createError.InternalServerError("دریافت اطلاعات با خطا مواجه شد");
+  res.status(StatusCodes.OK).json({
+    status: "success",
+    message: "دریافت اطلاعات با موفقیت انجام شد",
     data: students,
   });
 });
@@ -141,7 +153,12 @@ const checkExistStudent = async (id) => {
   if (!isValidObjectId(id)) throw createError.BadRequest("شناسه وارد شده معتبر نمی باشد");
 
   // find student
-  const studentFound = await studentModel.findById(id);
-  if (!studentFound) throw createError.NotFound("دریافت اطلاعات هنرجو با خطا مواجه شد");
+  const studentFound = await studentModel
+    .findById(id)
+    .populate("clubID", "name")
+    .populate("beltID", "name")
+    .populate("ageGroupID", "name description")
+    .populate("coachID", "firstName lastName");
+  if (!studentFound) throw createError.NotFound("دریافت اطلاعات با خطا مواجه شد");
   return studentFound;
 };

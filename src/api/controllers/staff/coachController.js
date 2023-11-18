@@ -53,7 +53,7 @@ exports.registerCoach = AsyncHandler(async (req, res) => {
 
   res.status(StatusCodes.CREATED).json({
     status: "success",
-    message: "هنرجو با موفقیت ثبت شد",
+    message: "ثبت مربی با موفقیت انجام شد ",
     data: coachCreated,
   });
 });
