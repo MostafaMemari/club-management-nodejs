@@ -52,6 +52,21 @@ studentSchema.pre("save", async function () {
   }
 });
 
+studentSchema.pre("updateOne", async function (next) {
+  const { birthDayIR, registerDateIR } = this._update;
+
+  if (birthDayIR) {
+    this.birthDayEN = shamsiToMiladi(birthDayIR);
+    this.set({ birthDayEN: this.birthDayEN });
+    this.set({ ageGroupID: await assignAgeGroupsByBirthDay(this.birthDayEN) });
+  }
+  if (registerDateIR) {
+    this.registerDateEN = shamsiToMiladi(registerDateIR);
+    this.set({ registerDateEN: this.registerDateEN });
+  }
+  next();
+});
+
 const studentModel = mongoose.model("student", studentSchema);
 
 module.exports = {

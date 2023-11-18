@@ -31,8 +31,8 @@ module.exports.normalizeCalendar = (dateShamsi) => {
   return `${year}/${month}/${day}`;
 };
 
-module.exports.assignAgeGroupsByBirthDay = async (birthDay) => {
-  const ageGroups = await ageGroupModel.find({ $and: [{ toDateEN: { $gt: birthDay } }, { fromDateEN: { $lt: birthDay } }] });
+module.exports.assignAgeGroupsByBirthDay = async (birthDayEN) => {
+  const ageGroups = await ageGroupModel.find({ $and: [{ toDateEN: { $gt: birthDayEN } }, { fromDateEN: { $lt: birthDayEN } }] });
   if (ageGroups.length == 1) return [ageGroups[0]._id];
   if (ageGroups.length == 2) return [ageGroups[0]._id, ageGroups[1]._id];
 };

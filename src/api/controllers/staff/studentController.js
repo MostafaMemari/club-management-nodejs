@@ -7,6 +7,7 @@ const { studentModel } = require("../../models/staff/studentModel");
 const { clubModel } = require("../../models/club/clubModel");
 const { beltModel } = require("../../models/club/beltModel");
 const { coachModel } = require("../../models/staff/coachModel");
+const { isValidObjectId } = require("mongoose");
 
 //@desc Register Student
 //@route POST /api/v1/students
@@ -20,7 +21,8 @@ exports.registerStudent = asyncHandler(async (req, res) => {
   registerDateIR ? (data.registerDateIR = normalizeCalendar(registerDateIR)) : false;
   mobile ? (data.mobile = normalizePhoneNumber(mobile)) : false;
 
-  deleteInvalidPropertyInObject(data);
+  const blackListFields = ["ageGroupID", "createdBy", "birthDayEN", "registerDateEN"];
+  deleteInvalidPropertyInObject(data, blackListFields);
 
   // validate
   await studentAndCoachRegisterSchema.validateAsync(data);
@@ -46,7 +48,7 @@ exports.registerStudent = asyncHandler(async (req, res) => {
     const beltFound = await beltModel.findById(beltID);
     if (!beltFound) throw createError.NotFound("کمربند مورد نظر یافت نشد");
   }
-  //find belt
+  //find coach
   if (coachID) {
     const coachFound = await coachModel.findById(coachID);
     if (!coachFound) throw createError.NotFound("مربی مورد نظر یافت نشد");
@@ -54,12 +56,65 @@ exports.registerStudent = asyncHandler(async (req, res) => {
 
   //create
   const studentCreated = await studentModel.create(data);
-  if (!studentCreated) throw createError.InternalServerError("ثبت نام شاگرد با خطا مواجه شد");
+  if (!studentCreated) throw createError.InternalServerError("ثبت نام با خطا مواجه شد");
 
   res.status(StatusCodes.CREATED).json({
     status: "success",
-    message: "هنرجو با موفقیت ثبت شد",
+    message: "ثبت نام هنرجو با موفقیت انجام شد",
     data: studentCreated,
+  });
+});
+
+//@desc Update Student
+//@route PUT /api/v1/students/:id
+//@acess
+exports.updateStudent = asyncHandler(async (req, res) => {
+  await checkExistStudent(req.params.id);
+
+  const data = copyObject(req.body);
+
+  // normalize Data
+  let { birthDayIR, registerDateIR, mobile } = data;
+  birthDayIR ? (data.birthDayIR = normalizeCalendar(birthDayIR)) : false;
+  registerDateIR ? (data.registerDateIR = normalizeCalendar(registerDateIR)) : false;
+  mobile ? (data.mobile = normalizePhoneNumber(mobile)) : false;
+
+  const blackListFields = ["ageGroupID", "createdBy", "birthDayEN", "registerDateEN", "beltID"];
+  deleteInvalidPropertyInObject(data, blackListFields);
+
+  // validate
+  await studentAndCoachRegisterSchema.validateAsync(data);
+
+  //validate firstName And lastName
+  const { nationalID, clubID, coachID } = data;
+
+  // find student By nationalID
+  if (nationalID) {
+    const studentFound = await studentModel.findOne({ nationalID });
+    if (studentFound) throw createError.Conflict("کد ملی وارد شده تکراری است");
+  }
+  // find club
+  if (clubID) {
+    const clubFound = await clubModel.findById(clubID);
+    if (!clubFound) throw createError.NotFound("باشگاه مورد نظر یافت نشد");
+  }
+  //find coach
+  if (coachID) {
+    const coachFound = await coachModel.findById(coachID);
+    if (!coachFound) throw createError.NotFound("مربی مورد نظر یافت نشد");
+  }
+
+  // update
+  const studentCreated = await studentModel.updateOne({ _id: req.params.id }, data, {
+    new: true,
+  });
+  if (!studentCreated.modifiedCount) throw createError.InternalServerError("بروزرسانی اطلاعات با خطا مواجه شد");
+
+  res.status(StatusCodes.CREATED).json({
+    status: "success",
+    message: "بروزرسانی اطلاعات با موفقیت انجام شد",
+    // data: studentCreated,
+    data,
   });
 });
 
@@ -81,3 +136,12 @@ exports.getStudents = asyncHandler(async (req, res) => {
     data: students,
   });
 });
+
+const checkExistStudent = async (id) => {
+  if (!isValidObjectId(id)) throw createError.BadRequest("شناسه وارد شده معتبر نمی باشد");
+
+  // find student
+  const studentFound = await studentModel.findById(id);
+  if (!studentFound) throw createError.NotFound("دریافت اطلاعات هنرجو با خطا مواجه شد");
+  return studentFound;
+};

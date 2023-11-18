@@ -39,7 +39,6 @@ module.exports.createBelt = AsyncHandler(async (req, res) => {
 //@route PUT /api/v1/belts/:id
 //@acess  Private Admin Only
 module.exports.updateBelt = AsyncHandler(async (req, res) => {
-  if (!isValidObjectId(req.params.id)) throw createError.BadRequest("شناسه وارد شده کمربند صحیح نمی باشد");
   await checkExistBelts(req.params.id);
 
   const data = copyObject(req.body);
@@ -70,7 +69,6 @@ module.exports.updateBelt = AsyncHandler(async (req, res) => {
 //@route PUT /api/v1/belts/:id
 //@acess  Private Admin Only
 module.exports.deleteBelt = AsyncHandler(async (req, res) => {
-  if (!isValidObjectId(req.params.id)) throw createError.BadRequest("شناسه وارد شده کمربند صحیح نمی باشد");
   await checkExistBelts(req.params.id);
 
   const deletedBelt = await beltModel.deleteOne({ _id: req.params.id });
@@ -88,7 +86,6 @@ module.exports.deleteBelt = AsyncHandler(async (req, res) => {
 //@route PUT /api/v1/belts/:id
 //@acess  Private Admin Only
 module.exports.getBelt = AsyncHandler(async (req, res) => {
-  if (!isValidObjectId(req.params.id)) throw createError.BadRequest("شناسه وارد شده کمربند صحیح نمی باشد");
   await checkExistBelts(req.params.id);
 
   const beltFound = await beltModel.findById(req.params.id).select("-duration").lean();
@@ -116,7 +113,10 @@ module.exports.getBelts = AsyncHandler(async (req, res) => {
 });
 
 const checkExistBelts = async (id) => {
+  if (!isValidObjectId(id)) throw createError.BadRequest("شناسه وارد شده معتبر نمی باشد");
+
   // find Belt
   const beltFound = await beltModel.findById(id);
   if (!beltFound) throw createError.NotFound("کمربند وارد شده یافت نشد");
+  return beltFound;
 };
