@@ -134,6 +134,21 @@ exports.getStudent = AsyncHandler(async (req, res) => {
   });
 });
 
+//@desc Delete Student
+//@route DELETE /api/v1/students/:id
+//@acess
+exports.deleteStudent = AsyncHandler(async (req, res) => {
+  if (!isValidObjectId(req.params.id)) throw createError.BadRequest("شناسه وارد شده معتبر نمی باشد");
+
+  const deletedStudent = await studentModel.deleteOne({ _id: req.params.id });
+  if (!deletedStudent.deletedCount) throw createError.InternalServerError("حذف هنرجو با خطا مواجه شد");
+
+  res.status(StatusCodes.OK).json({
+    status: "success",
+    message: "حذف هنرجو با موفقیت انجام شد",
+  });
+});
+
 const checkExistStudent = async (id) => {
   if (!isValidObjectId(id)) throw createError.BadRequest("شناسه وارد شده معتبر نمی باشد");
 

@@ -58,7 +58,7 @@ exports.registerCoach = async (req, res, next) => {
 };
 
 //@desc Update Coach By Admin
-//@route PUT /api/v1/coachs/:id/admin/update
+//@route PUT /api/v1/coachs/:id/admin
 //@acess Private Admin Only
 exports.updateCoach = async (req, res, next) => {
   try {
@@ -105,7 +105,7 @@ exports.updateCoach = async (req, res, next) => {
   }
 };
 
-//@desc Get Single Student
+//@desc Get Single Coach
 //@route GET /api/v1/coachs/:id/admin
 //@acess Private Admin Only
 exports.getCoach = AsyncHandler(async (req, res) => {
@@ -119,7 +119,7 @@ exports.getCoach = AsyncHandler(async (req, res) => {
   });
 });
 
-//@desc Get All Students
+//@desc Get All Coachs
 //@route GET /api/v1/coachs
 //@acess Private Admin Only
 exports.getCoachs = AsyncHandler(async (req, res) => {
@@ -140,6 +140,21 @@ exports.getCoachs = AsyncHandler(async (req, res) => {
     status: "success",
     message: "دریافت اطلاعات با موفقیت انجام شد",
     data: coachs,
+  });
+});
+
+//@desc Delete Coach
+//@route DELETE /api/v1/coachs/:id/admin
+//@acess Private Admin Only
+exports.deleteCoach = AsyncHandler(async (req, res) => {
+  if (!isValidObjectId(req.params.id)) throw createError.BadRequest("شناسه وارد شده معتبر نمی باشد");
+
+  const deletedCoach = await coachModel.deleteOne({ _id: req.params.id });
+  if (!deletedCoach.deletedCount) throw createError.InternalServerError("حذف مربی با خطا مواجه شد");
+
+  res.status(StatusCodes.OK).json({
+    status: "success",
+    message: "حذف مربی با موفقیت انجام شد",
   });
 });
 
