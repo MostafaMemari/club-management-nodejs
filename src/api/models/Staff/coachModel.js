@@ -42,6 +42,20 @@ coachSchema.pre("save", async function () {
   birthDayIR ? (this.birthDayEN = shamsiToMiladi(birthDayIR)) : false;
 });
 
+coachSchema.pre("updateOne", async function (next) {
+  const { birthDayIR, registerDateIR } = this._update;
+
+  if (birthDayIR) {
+    this.birthDayEN = shamsiToMiladi(birthDayIR);
+    this.set({ birthDayEN: this.birthDayEN });
+  }
+  if (registerDateIR) {
+    this.registerDateEN = shamsiToMiladi(registerDateIR);
+    this.set({ registerDateEN: this.registerDateEN });
+  }
+  next();
+});
+
 const coachModel = mongoose.model("coach", coachSchema);
 
 module.exports = {

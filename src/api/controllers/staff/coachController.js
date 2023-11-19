@@ -13,6 +13,7 @@ const { beltModel } = require("../../models/club/beltModel");
 const { StatusCodes } = require("http-status-codes");
 const createError = require("http-errors");
 const path = require("path");
+const { isValidObjectId } = require("mongoose");
 
 //@desc Register Coach By Admin
 //@route POST /api/v1/coachs/admin/register
@@ -40,7 +41,6 @@ exports.registerCoach = async (req, res, next) => {
 
     // validate firstName And lastName
     const { firstName, lastName, nationalID, clubID, beltID } = data;
-    console.log(data);
 
     if (!firstName) throw createError.BadRequest("نام وارد شده معتبر نمی باشد");
     if (!lastName) throw createError.BadRequest("نام خانوادگی وارد شده معتبر نمی باشد");
@@ -81,11 +81,12 @@ exports.registerCoach = async (req, res, next) => {
 };
 
 //@desc Update Coach By Admin
-//@route PUT /api/v1/coachs/:id/admin/
+//@route PUT /api/v1/coachs/:id/admin/update
 //@acess Private Admin Only
-exports.registerCoach = async (req, res, next) => {
-  await checkExistCoachs(req.params.id);
+exports.updateCoach = async (req, res, next) => {
   try {
+    const coachFound = await checkExistCoach(req.params.id);
+
     const { fileUploadPath, filename } = req.body;
     if (fileUploadPath && filename) {
       const urlPath = path.join(fileUploadPath, filename);
@@ -94,6 +95,7 @@ exports.registerCoach = async (req, res, next) => {
       delete req.body["fileUploadPath"];
       delete req.body["filename"];
     }
+
     const data = copyObject(req.body);
 
     // normalize Data
@@ -106,12 +108,7 @@ exports.registerCoach = async (req, res, next) => {
     deleteInvalidPropertyInObject(data, blackListFields);
 
     // validate firstName And lastName
-    const { firstName, lastName, nationalID, clubID, beltID } = data;
-    console.log(data);
-
-    if (!firstName) throw createError.BadRequest("نام وارد شده معتبر نمی باشد");
-    if (!lastName) throw createError.BadRequest("نام خانوادگی وارد شده معتبر نمی باشد");
-    if (!nationalID) throw createError.BadRequest("کد ملی وارد شده معتبر نمی باشد");
+    const { nationalID, clubID, beltID } = data;
 
     // validate
     await studentAndCoachRegisterSchema.validateAsync(data);
@@ -126,23 +123,34 @@ exports.registerCoach = async (req, res, next) => {
       const clubFound = await clubModel.findById(clubID);
       if (!clubFound) throw createError.NotFound("باشگاه مورد نظر یافت نشد");
     }
-    //find belt
+    // find belt
     if (beltID) {
       const beltFound = await beltModel.findById(beltID);
       if (!beltFound) throw createError.NotFound("کمربند مورد نظر یافت نشد");
     }
 
-    //create
-    const coachCreated = await coachModel.create(data);
-    if (!coachCreated) throw createError.InternalServerError("ثبت نام مربی با خطا مواجه شد");
+    // updated
+    const coachUpdated = await coachModel.updateOne({ _id: req.params.id }, data);
+    if (!coachUpdated.modifiedCount) throw createError.InternalServerError("ویرایش اطلاعات با خطا مواجه شد");
+
+    if (data.imageUrl) deleteFileInPublic(coachFound.imageUrl);
 
     res.status(StatusCodes.CREATED).json({
       status: "success",
-      message: "ثبت مربی با موفقیت انجام شد ",
-      data: coachCreated,
+      message: "ویرایش اطلاعات با موفقیت انجام شد",
+      // data
     });
   } catch (error) {
     deleteFileInPublic(req.body.imageUrl);
     next(error);
   }
+};
+
+const checkExistCoach = async (id) => {
+  if (!isValidObjectId(id)) throw createError.BadRequest("شناسه وارد شده معتبر نمی باشد");
+
+  // find Coachs
+  const coachFound = await coachModel.findById(id).lean();
+  if (!coachFound) throw createError.NotFound("مربی مورد نظر یافت نشد");
+  return coachFound;
 };
