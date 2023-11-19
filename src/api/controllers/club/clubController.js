@@ -56,14 +56,20 @@ module.exports.getClubs = AsyncHandler(async (req, res) => {
 //@route GET /api/v1/club/:id
 //@acess  Private Admin Only
 module.exports.getClub = AsyncHandler(async (req, res) => {
-  // validate
-  if (!isValidObjectId(req.params.id)) throw createError("شناسه وارد شده اشتباه می باشد");
+  const clubFound = await checkExistClub(req.params.id);
 
-  const clubFound = await clubModel.findById(req.params.id).lean();
-  if (!clubFound) throw createError.InternalServerError("دریافت اطلاعات با خطا مواجه شد");
   res.status(StatusCodes.OK).json({
     status: "success",
     message: "دریافت اطلاعات با موفقیت انجام شد",
     data: clubFound,
   });
 });
+
+const checkExistClub = async (id) => {
+  if (!isValidObjectId(id)) throw createError.BadRequest("شناسه وارد شده معتبر نمی باشد");
+
+  // find age group
+  const clubFound = await clubModel.findById(id);
+  if (!clubFound) throw createError.NotFound("باشگاه وارد شده یافت نشد");
+  return clubFound;
+};

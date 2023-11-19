@@ -69,7 +69,6 @@ module.exports.updateAgeGourp = AsyncHandler(async (req, res) => {
 //@route PUT /api/v1/ages/:id
 //@acess  Private Admin Only
 module.exports.deleteAgeGroup = AsyncHandler(async (req, res) => {
-  if (!isValidObjectId(req.params.id)) throw createError.BadRequest("شناسه وارد شده رده سنی صحیح نمی باشد");
   await checkExistAgeGroup(req.params.id);
 
   const deletedAgeGroup = await ageGroupModel.deleteOne({ _id: req.params.id });
@@ -115,6 +114,8 @@ module.exports.getAgeGroups = AsyncHandler(async (req, res) => {
 });
 
 const checkExistAgeGroup = async (id) => {
+  if (!isValidObjectId(id)) throw createError.BadRequest("شناسه وارد شده معتبر نمی باشد");
+
   // find age group
   const ageGroupFound = await ageGroupModel.findById(id);
   if (!ageGroupFound) throw createError.NotFound("رده سنی وارد شده یافت نشد");

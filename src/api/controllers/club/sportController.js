@@ -51,10 +51,8 @@ module.exports.getSports = AsyncHandler(async (req, res) => {
 //@route GET /api/v1/sports/:id
 //@acess  Private Admin Only
 module.exports.getSport = AsyncHandler(async (req, res) => {
-  // validate
-  if (!isValidObjectId(req.params.id)) throw createError("شناسه وارد شده اشتباه می باشد");
+  const sportFound = await checkExistSport(req.params.id);
 
-  const sportFound = await sportModel.findById(req.params.id).lean();
   if (!sportFound) throw createError.InternalServerError("دریافت اطلاعات با خطا مواجه شد");
   res.status(StatusCodes.OK).json({
     status: "success",
@@ -62,3 +60,12 @@ module.exports.getSport = AsyncHandler(async (req, res) => {
     data: sportFound,
   });
 });
+
+const checkExistSport = async (id) => {
+  if (!isValidObjectId(id)) throw createError.BadRequest("شناسه وارد شده معتبر نمی باشد");
+
+  // find Sports
+  const clubFound = await clubModel.findById(id).lean();
+  if (!clubFound) throw createError.NotFound("ورزش مورد نظر یافت نشد");
+  return clubFound;
+};

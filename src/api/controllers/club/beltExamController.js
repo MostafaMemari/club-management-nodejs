@@ -83,7 +83,6 @@ module.exports.updateBeltExam = AsyncHandler(async (req, res, next) => {
 //@acess  Private Admin Only
 module.exports.removeBeltExam = AsyncHandler(async (req, res, next) => {
   // validate
-  if (!isValidObjectId(req.params.id)) throw createError.BadRequest("شناسه آزمون کمربند معتبر نمی باشد");
   await checkExistBeltExam(req.params.id);
 
   // update
@@ -140,7 +139,6 @@ module.exports.addBeltToBeltExam = AsyncHandler(async (req, res, next) => {
   deleteInvalidPropertyInObject(data, blackListFields);
 
   // validate
-  if (!isValidObjectId(req.params.id)) throw createError.BadRequest("شناسه آزمون کمربند معتبر نمی باشد");
   await checkExistBeltExam(req.params.id);
 
   const { beltID } = data;
@@ -179,7 +177,6 @@ module.exports.removeBeltToBeltExam = AsyncHandler(async (req, res, next) => {
   const { id: examID, beltID } = req.params;
 
   // validate
-  if (!isValidObjectId(examID)) throw createError.BadRequest("شناسه آزمون کمربند معتبر نمی باشد");
   if (!isValidObjectId(beltID)) throw createError.BadRequest("شناسه کمربند معتبر نمی باشد");
 
   // find belt exam
@@ -205,6 +202,8 @@ module.exports.removeBeltToBeltExam = AsyncHandler(async (req, res, next) => {
 });
 
 const checkExistBeltExam = async (id) => {
+  if (!isValidObjectId(req.params.id)) throw createError.BadRequest("شناسه وارد شده رده سنی صحیح نمی باشد");
+
   // find Belt Exam
   const beltExamFound = await beltExamModel.findById(id);
   if (!beltExamFound) throw createError.NotFound("آزمون مورد نظر یافت نشد");
