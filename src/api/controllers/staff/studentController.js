@@ -27,8 +27,8 @@ exports.registerStudent = async (req, res, next) => {
     const data = copyObject(req.body);
 
     // normalize Data
-    let { birthDayIR, registerDateIR, sportsInsuranceIR, mobile } = data;
-    normalizeDataDates(data, birthDayIR, registerDateIR, sportsInsuranceIR);
+    let { birthDayIR, registerDateIR, sportsInsuranceIR, beltDateIR, mobile } = data;
+    normalizeDataDates(data, birthDayIR, registerDateIR, sportsInsuranceIR, beltDateIR);
     mobile ? (data.mobile = normalizePhoneNumber(mobile)) : false;
 
     const blackListFields = ["ageGroupID", "createdBy", "birthDayEN", "sportsInsuranceEN", "fileUploadPath", "filename"];
@@ -76,7 +76,7 @@ exports.updateStudent = async (req, res, next) => {
     normalizeDataDates(data, birthDayIR, registerDateIR, sportsInsuranceIR);
     mobile ? (data.mobile = normalizePhoneNumber(mobile)) : false;
 
-    const blackListFields = ["ageGroupID", "createdBy", "birthDayEN", "registerDateEN", "beltID"];
+    const blackListFields = ["ageGroupID", "createdBy", "birthDayEN", "registerDateEN", "beltID", "beltDateIR", "beltDateEN"];
     deleteInvalidPropertyInObject(data, blackListFields);
 
     // validate

@@ -25,10 +25,12 @@ const studentSchema = new mongoose.Schema(
     birthDayIR: { type: String },
     registerDateIR: { type: String },
     sportsInsuranceIR: { type: String },
+    beltDateIR: { type: String },
 
     birthDayEN: { type: Date },
     registerDateEN: { type: Date },
     sportsInsuranceEN: { type: Date },
+    beltDateEN: { type: Date },
 
     clubID: { type: Types.ObjectId, ref: "club" },
     beltID: { type: Types.ObjectId, ref: "belt" },
@@ -45,9 +47,10 @@ const studentSchema = new mongoose.Schema(
 );
 
 studentSchema.pre("save", async function () {
-  const { birthDayIR, registerDateIR, sportsInsuranceIR } = this;
+  const { birthDayIR, registerDateIR, sportsInsuranceIR, beltDateIR } = this;
   registerDateIR ? (this.registerDateEN = shamsiToMiladi(registerDateIR)) : false;
   sportsInsuranceIR ? (this.sportsInsuranceEN = shamsiToMiladi(sportsInsuranceIR)) : false;
+  beltDateIR ? (this.beltDateEN = shamsiToMiladi(beltDateIR)) : false;
 
   if (birthDayIR) {
     this.birthDayEN = shamsiToMiladi(birthDayIR);

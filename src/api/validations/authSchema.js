@@ -29,7 +29,10 @@ const studentAndCoachSchema = Joi.object({
     .error(new Error("تاریخ تولد معتبر نمی باشد")),
   sportsInsuranceIR: Joi.string()
     .regex(/^[1-4]\d{3}\/((0[1-6]\/((3[0-1])|([1-2][0-9])|(0[1-9])))|((1[0-2]|(0[7-9]))\/(30|31|([1-2][0-9])|(0[1-9]))))$/)
-    .error(new Error("تاریخ تولد معتبر نمی باشد")),
+    .error(new Error("تاریخ بیمه ورزشی معتبر نمی باشد")),
+  beltDateIR: Joi.string()
+    .regex(/^[1-4]\d{3}\/((0[1-6]\/((3[0-1])|([1-2][0-9])|(0[1-9])))|((1[0-2]|(0[7-9]))\/(30|31|([1-2][0-9])|(0[1-9]))))$/)
+    .error(new Error("تاریخ اخذ کمربند معتبر نمی باشد")),
 
   coachID: Joi.string().hex().length(24).error(new Error("شناسه مربی معتبر نمی باشد")),
   clubID: Joi.string().hex().length(24).error(new Error("شناسه رده باشگاه معتبر نمی باشد")),
