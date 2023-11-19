@@ -1,4 +1,6 @@
 const { ageGroupModel } = require("../models/club/ageGroupModel");
+const path = require("path");
+const fs = require("fs");
 
 module.exports.deleteInvalidPropertyInObject = (data = {}, blackListFields = []) => {
   let nullishData = ["", " ", "0", 0, null, undefined];
@@ -29,6 +31,13 @@ module.exports.normalizeCalendar = (dateShamsi) => {
   day = day.length === 1 ? `0${day}` : day;
 
   return `${year}/${month}/${day}`;
+};
+
+module.exports.deleteFileInPublic = (fileAddress) => {
+  if (fileAddress) {
+    const pathFile = path.join(__dirname, "..", "..", "public", fileAddress);
+    if (fs.existsSync(pathFile)) fs.unlinkSync(pathFile);
+  }
 };
 
 module.exports.assignAgeGroupsByBirthDay = async (birthDayEN) => {

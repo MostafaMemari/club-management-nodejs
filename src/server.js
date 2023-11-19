@@ -1,10 +1,13 @@
 const express = require("express");
-const createError = require("http-errors");
-const { StatusCodes } = require("http-status-codes");
-const { AllRouter } = require("./api/routes/router");
 const morgan = require("morgan");
-const { connectToMongoDB } = require("./config/db");
+const cors = require("cors");
+const path = require("path");
+
+const createError = require("http-errors");
 require("dotenv").config();
+
+const { AllRouter } = require("./api/routes/router");
+const { connectToMongoDB } = require("./config/db");
 
 module.exports = class Application {
   #app = express();
@@ -22,9 +25,11 @@ module.exports = class Application {
   }
 
   configApplication() {
+    this.#app.use(cors());
+    this.#app.use(morgan("dev"));
     this.#app.use(express.urlencoded({ extended: false }));
     this.#app.use(express.json());
-    this.#app.use(morgan("dev"));
+    this.#app.use(express.static(path.join(__dirname, "public")));
   }
   createServer() {
     this.#app.listen(this.#PORT, () => {
