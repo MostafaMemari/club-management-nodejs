@@ -5,7 +5,6 @@ const {
   deleteInvalidPropertyInObject,
   normalizePhoneNumber,
   normalizeCalendar,
-  normalizeImageUrl,
   deleteFileInPublic,
 } = require("../../helpers/function");
 const createError = require("http-errors");
