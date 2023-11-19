@@ -1,5 +1,5 @@
 const AsyncHandler = require("express-async-handler");
-const { studentAndCoachRegisterSchema } = require("../../validations/authSchema");
+const { studentAndCoachSchema } = require("../../validations/authSchema");
 const { copyObject, deleteInvalidPropertyInObject, deleteFileInPublic } = require("../../helpers/function");
 const createError = require("http-errors");
 const { StatusCodes } = require("http-status-codes");
@@ -7,7 +7,7 @@ const { studentModel } = require("../../models/staff/studentModel");
 
 const { isValidObjectId } = require("mongoose");
 const path = require("path");
-const { normalize_birthDayIR_registerDateIR_mobile } = require("../../helpers/normalizeData");
+const { normalizeDataDates, normalizePhoneNumber } = require("../../helpers/normalizeData");
 const { validate_nationalId_clubId_coachId_beltId } = require("../../helpers/validateFoundDB");
 
 //@desc Register Student
@@ -27,14 +27,15 @@ exports.registerStudent = async (req, res, next) => {
     const data = copyObject(req.body);
 
     // normalize Data
-    let { birthDayIR, registerDateIR, mobile } = data;
-    normalize_birthDayIR_registerDateIR_mobile(data, birthDayIR, registerDateIR, mobile);
+    let { birthDayIR, registerDateIR, sportsInsuranceIR, mobile } = data;
+    normalizeDataDates(data, birthDayIR, registerDateIR, sportsInsuranceIR);
+    mobile ? (data.mobile = normalizePhoneNumber(mobile)) : false;
 
-    const blackListFields = ["ageGroupID", "createdBy", "birthDayEN", "fileUploadPath", "filename"];
+    const blackListFields = ["ageGroupID", "createdBy", "birthDayEN", "sportsInsuranceEN", "fileUploadPath", "filename"];
     deleteInvalidPropertyInObject(data, blackListFields);
 
     // validate
-    await studentAndCoachRegisterSchema.validateAsync(data);
+    await studentAndCoachSchema.validateAsync(data);
 
     //validate firstName And lastName
     const { firstName, lastName, nationalID, clubID, beltID, coachID } = data;
@@ -46,13 +47,14 @@ exports.registerStudent = async (req, res, next) => {
     await validate_nationalId_clubId_coachId_beltId(nationalID, clubID, coachID, beltID);
 
     // create
-    const studentCreated = await studentModel.create(data);
-    if (!studentCreated) throw createError.InternalServerError("ثبت نام با خطا مواجه شد");
+    // const studentCreated = await studentModel.create(data);
+    // if (!studentCreated) throw createError.InternalServerError("ثبت نام با خطا مواجه شد");
 
     res.status(StatusCodes.CREATED).json({
       status: "success",
       message: "ثبت نام هنرجو با موفقیت انجام شد",
-      data: studentCreated,
+      data,
+      // data: studentCreated,
     });
   } catch (error) {
     deleteFileInPublic(req.body.imageUrl);
@@ -70,14 +72,15 @@ exports.updateStudent = async (req, res, next) => {
     const data = copyObject(req.body);
 
     // normalize Data
-    let { birthDayIR, registerDateIR, mobile } = data;
-    normalize_birthDayIR_registerDateIR_mobile(data, birthDayIR, registerDateIR, mobile);
+    let { birthDayIR, registerDateIR, sportsInsuranceIR, mobile } = data;
+    normalizeDataDates(data, birthDayIR, registerDateIR, sportsInsuranceIR);
+    mobile ? (data.mobile = normalizePhoneNumber(mobile)) : false;
 
     const blackListFields = ["ageGroupID", "createdBy", "birthDayEN", "registerDateEN", "beltID"];
     deleteInvalidPropertyInObject(data, blackListFields);
 
     // validate
-    await studentAndCoachRegisterSchema.validateAsync(data);
+    await studentAndCoachSchema.validateAsync(data);
 
     //validate clubID , coachID and nationalID
     const { nationalID, clubID, coachID } = data;

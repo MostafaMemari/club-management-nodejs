@@ -24,8 +24,11 @@ const studentSchema = new mongoose.Schema(
 
     birthDayIR: { type: String },
     registerDateIR: { type: String },
+    sportsInsuranceIR: { type: String },
+
     birthDayEN: { type: Date },
     registerDateEN: { type: Date },
+    sportsInsuranceEN: { type: Date },
 
     clubID: { type: Types.ObjectId, ref: "club" },
     beltID: { type: Types.ObjectId, ref: "belt" },
@@ -42,8 +45,9 @@ const studentSchema = new mongoose.Schema(
 );
 
 studentSchema.pre("save", async function () {
-  const { birthDayIR, registerDateIR } = this;
+  const { birthDayIR, registerDateIR, sportsInsuranceIR } = this;
   registerDateIR ? (this.registerDateEN = shamsiToMiladi(registerDateIR)) : false;
+  sportsInsuranceIR ? (this.sportsInsuranceEN = shamsiToMiladi(sportsInsuranceIR)) : false;
 
   if (birthDayIR) {
     this.birthDayEN = shamsiToMiladi(birthDayIR);
@@ -52,7 +56,7 @@ studentSchema.pre("save", async function () {
 });
 
 studentSchema.pre("updateOne", async function (next) {
-  const { birthDayIR, registerDateIR } = this._update;
+  const { birthDayIR, registerDateIR, sportsInsuranceIR } = this._update;
 
   if (birthDayIR) {
     this.birthDayEN = shamsiToMiladi(birthDayIR);
@@ -62,6 +66,10 @@ studentSchema.pre("updateOne", async function (next) {
   if (registerDateIR) {
     this.registerDateEN = shamsiToMiladi(registerDateIR);
     this.set({ registerDateEN: this.registerDateEN });
+  }
+  if (sportsInsuranceIR) {
+    this.sportsInsuranceEN = shamsiToMiladi(sportsInsuranceIR);
+    this.set({ sportsInsuranceEN: this.sportsInsuranceEN });
   }
   next();
 });

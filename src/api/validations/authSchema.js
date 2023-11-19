@@ -7,7 +7,7 @@ const userRegisterSchema = Joi.object({
   email: Joi.string().email().error(new Error("ایمیل وارد شده معتبر نمی باشد")),
 }).options({ stripUnknown: true });
 
-const studentAndCoachRegisterSchema = Joi.object({
+const studentAndCoachSchema = Joi.object({
   firstName: Joi.string().min(2).max(50).error(new Error("نام وارد شده معتبر نمی باشد")),
   lastName: Joi.string().min(2).max(50).error(new Error("نام خانوادگی وارد شده معتبر نمی باشد")),
   nationalID: Joi.string().length(10).error(new Error("کد ملی وارد شده معتبر نمی باشد")),
@@ -27,6 +27,9 @@ const studentAndCoachRegisterSchema = Joi.object({
   birthDayIR: Joi.string()
     .regex(/^[1-4]\d{3}\/((0[1-6]\/((3[0-1])|([1-2][0-9])|(0[1-9])))|((1[0-2]|(0[7-9]))\/(30|31|([1-2][0-9])|(0[1-9]))))$/)
     .error(new Error("تاریخ تولد معتبر نمی باشد")),
+  sportsInsuranceIR: Joi.string()
+    .regex(/^[1-4]\d{3}\/((0[1-6]\/((3[0-1])|([1-2][0-9])|(0[1-9])))|((1[0-2]|(0[7-9]))\/(30|31|([1-2][0-9])|(0[1-9]))))$/)
+    .error(new Error("تاریخ تولد معتبر نمی باشد")),
 
   coachID: Joi.string().hex().length(24).error(new Error("شناسه مربی معتبر نمی باشد")),
   clubID: Joi.string().hex().length(24).error(new Error("شناسه رده باشگاه معتبر نمی باشد")),
@@ -36,5 +39,5 @@ const studentAndCoachRegisterSchema = Joi.object({
 
 module.exports = {
   userRegisterSchema,
-  studentAndCoachRegisterSchema,
+  studentAndCoachSchema,
 };

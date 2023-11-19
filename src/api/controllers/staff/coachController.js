@@ -1,13 +1,13 @@
 const AsyncHandler = require("express-async-handler");
 const { copyObject, deleteInvalidPropertyInObject, deleteFileInPublic } = require("../../helpers/function");
-const { studentAndCoachRegisterSchema } = require("../../validations/authSchema");
+const { studentAndCoachSchema } = require("../../validations/authSchema");
 const { coachModel } = require("../../models/staff/coachModel");
 const { StatusCodes } = require("http-status-codes");
 const createError = require("http-errors");
 const path = require("path");
 const { isValidObjectId } = require("mongoose");
-const { normalize_birthDayIR_registerDateIR_mobile } = require("../../helpers/normalizeData");
 const { validate_nationalId_clubId_coachId_beltId } = require("../../helpers/validateFoundDB");
+const { normalizeDataDates, normalizePhoneNumber } = require("../../helpers/normalizeData");
 
 //@desc Register Coach By Admin
 //@route POST /api/v1/coachs/admin/register
@@ -25,8 +25,9 @@ exports.registerCoach = async (req, res, next) => {
     const data = copyObject(req.body);
 
     // normalize Data
-    let { birthDayIR, mobile, registerDateIR } = data;
-    normalize_birthDayIR_registerDateIR_mobile(data, birthDayIR, registerDateIR, mobile);
+    let { birthDayIR, registerDateIR, mobile } = data;
+    normalizeDataDates(data, birthDayIR, registerDateIR);
+    mobile ? (data.mobile = normalizePhoneNumber(mobile)) : false;
 
     const blackListFields = ["phone", "ageGroupID", "coachID", "birthDayEN", "registerDateEN", "createdBy"];
     deleteInvalidPropertyInObject(data, blackListFields);
@@ -39,7 +40,7 @@ exports.registerCoach = async (req, res, next) => {
     if (!nationalID) throw createError.BadRequest("کد ملی وارد شده معتبر نمی باشد");
 
     // validate
-    await studentAndCoachRegisterSchema.validateAsync(data);
+    await studentAndCoachSchema.validateAsync(data);
 
     await validate_nationalId_clubId_coachId_beltId(nationalID, clubID, "", beltID);
     //create
@@ -77,7 +78,8 @@ exports.updateCoach = async (req, res, next) => {
 
     // normalize Data
     let { birthDayIR, registerDateIR, mobile } = data;
-    normalize_birthDayIR_registerDateIR_mobile(data, birthDayIR, registerDateIR, mobile);
+    normalizeDataDates(data, birthDayIR, registerDateIR);
+    mobile ? (data.mobile = normalizePhoneNumber(mobile)) : false;
 
     const blackListFields = ["phone", "ageGroupID", "coachID", "birthDayEN", "registerDateEN", "createdBy"];
     deleteInvalidPropertyInObject(data, blackListFields);
@@ -87,7 +89,7 @@ exports.updateCoach = async (req, res, next) => {
     await validate_nationalId_clubId_coachId_beltId(nationalID, clubID, "", beltID);
 
     // validate
-    await studentAndCoachRegisterSchema.validateAsync(data);
+    await studentAndCoachSchema.validateAsync(data);
 
     // updated
     const coachUpdated = await coachModel.updateOne({ _id: req.params.id }, data);

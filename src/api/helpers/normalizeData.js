@@ -14,8 +14,8 @@ module.exports.normalizeCalendar = (dateShamsi) => {
   return `${year}/${month}/${day}`;
 };
 
-module.exports.normalize_birthDayIR_registerDateIR_mobile = async (data, birthDayIR, registerDateIR, mobile) => {
-  birthDayIR ? (data.birthDayIR = this.normalizeCalendar(birthDayIR)) : false;
-  registerDateIR ? (data.registerDateIR = this.normalizeCalendar(registerDateIR)) : false;
-  mobile ? (data.mobile = this.normalizePhoneNumber(mobile)) : false;
+module.exports.normalizeDataDates = async (data, birthDay, registerDate, sportsInsurance) => {
+  birthDay ? (data.birthDayIR = this.normalizeCalendar(birthDay)) : false;
+  registerDate ? (data.registerDateIR = this.normalizeCalendar(registerDate)) : false;
+  sportsInsurance ? (data.sportsInsuranceIR = this.normalizeCalendar(sportsInsurance)) : false;
 };
