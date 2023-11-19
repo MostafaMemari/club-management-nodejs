@@ -1,19 +1,13 @@
 const AsyncHandler = require("express-async-handler");
-const {
-  copyObject,
-  deleteInvalidPropertyInObject,
-  normalizeCalendar,
-  normalizePhoneNumber,
-  deleteFileInPublic,
-} = require("../../helpers/function");
+const { copyObject, deleteInvalidPropertyInObject, deleteFileInPublic } = require("../../helpers/function");
 const { studentAndCoachRegisterSchema } = require("../../validations/authSchema");
 const { coachModel } = require("../../models/staff/coachModel");
-const { clubModel } = require("../../models/club/clubModel");
-const { beltModel } = require("../../models/club/beltModel");
 const { StatusCodes } = require("http-status-codes");
 const createError = require("http-errors");
 const path = require("path");
 const { isValidObjectId } = require("mongoose");
+const { normalize_birthDayIR_registerDateIR_mobile } = require("../../helpers/normalizeData");
+const { validate_nationalId_clubId_coachId_beltId } = require("../../helpers/validateFoundDB");
 
 //@desc Register Coach By Admin
 //@route POST /api/v1/coachs/admin/register
@@ -32,9 +26,7 @@ exports.registerCoach = async (req, res, next) => {
 
     // normalize Data
     let { birthDayIR, mobile, registerDateIR } = data;
-    birthDayIR ? (data.birthDayIR = normalizeCalendar(birthDayIR)) : false;
-    registerDateIR ? (data.registerDateIR = normalizeCalendar(registerDateIR)) : false;
-    mobile ? (data.mobile = normalizePhoneNumber(mobile)) : false;
+    normalize_birthDayIR_registerDateIR_mobile(data, birthDayIR, registerDateIR, mobile);
 
     const blackListFields = ["phone", "ageGroupID", "coachID", "birthDayEN", "registerDateEN", "createdBy"];
     deleteInvalidPropertyInObject(data, blackListFields);
@@ -49,22 +41,7 @@ exports.registerCoach = async (req, res, next) => {
     // validate
     await studentAndCoachRegisterSchema.validateAsync(data);
 
-    // find coach By nationalID
-    if (nationalID) {
-      const coachFound = await coachModel.findOne({ nationalID });
-      if (coachFound) throw createError.Conflict("کد ملی وارد شده تکراری است");
-    }
-    // find club
-    if (clubID) {
-      const clubFound = await clubModel.findById(clubID);
-      if (!clubFound) throw createError.NotFound("باشگاه مورد نظر یافت نشد");
-    }
-    //find belt
-    if (beltID) {
-      const beltFound = await beltModel.findById(beltID);
-      if (!beltFound) throw createError.NotFound("کمربند مورد نظر یافت نشد");
-    }
-
+    await validate_nationalId_clubId_coachId_beltId(nationalID, clubID, "", beltID);
     //create
     const coachCreated = await coachModel.create(data);
     if (!coachCreated) throw createError.InternalServerError("ثبت نام مربی با خطا مواجه شد");
@@ -99,35 +76,18 @@ exports.updateCoach = async (req, res, next) => {
     const data = copyObject(req.body);
 
     // normalize Data
-    let { birthDayIR, mobile, registerDateIR } = data;
-    birthDayIR ? (data.birthDayIR = normalizeCalendar(birthDayIR)) : false;
-    registerDateIR ? (data.registerDateIR = normalizeCalendar(registerDateIR)) : false;
-    mobile ? (data.mobile = normalizePhoneNumber(mobile)) : false;
+    let { birthDayIR, registerDateIR, mobile } = data;
+    normalize_birthDayIR_registerDateIR_mobile(data, birthDayIR, registerDateIR, mobile);
 
     const blackListFields = ["phone", "ageGroupID", "coachID", "birthDayEN", "registerDateEN", "createdBy"];
     deleteInvalidPropertyInObject(data, blackListFields);
 
     // validate firstName And lastName
     const { nationalID, clubID, beltID } = data;
+    await validate_nationalId_clubId_coachId_beltId(nationalID, clubID, "", beltID);
 
     // validate
     await studentAndCoachRegisterSchema.validateAsync(data);
-
-    // find coach By nationalID
-    if (nationalID) {
-      const coachFound = await coachModel.findOne({ nationalID });
-      if (coachFound) throw createError.Conflict("کد ملی وارد شده تکراری است");
-    }
-    // find club
-    if (clubID) {
-      const clubFound = await clubModel.findById(clubID);
-      if (!clubFound) throw createError.NotFound("باشگاه مورد نظر یافت نشد");
-    }
-    // find belt
-    if (beltID) {
-      const beltFound = await beltModel.findById(beltID);
-      if (!beltFound) throw createError.NotFound("کمربند مورد نظر یافت نشد");
-    }
 
     // updated
     const coachUpdated = await coachModel.updateOne({ _id: req.params.id }, data);

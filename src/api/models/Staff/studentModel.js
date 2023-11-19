@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const { shamsiToMiladi } = require("../../helpers/dateConvarter");
-const { assignAgeGroupsByBirthDay } = require("../../helpers/function");
+const { assignAgeGroups } = require("../../helpers/assignAgeGroups");
 
 const { Types } = mongoose;
 
@@ -43,12 +43,11 @@ const studentSchema = new mongoose.Schema(
 
 studentSchema.pre("save", async function () {
   const { birthDayIR, registerDateIR } = this;
-
   registerDateIR ? (this.registerDateEN = shamsiToMiladi(registerDateIR)) : false;
 
   if (birthDayIR) {
     this.birthDayEN = shamsiToMiladi(birthDayIR);
-    this.ageGroupID = await assignAgeGroupsByBirthDay(this.birthDayEN);
+    this.ageGroupID = await assignAgeGroups(this.birthDayEN);
   }
 });
 
@@ -58,7 +57,7 @@ studentSchema.pre("updateOne", async function (next) {
   if (birthDayIR) {
     this.birthDayEN = shamsiToMiladi(birthDayIR);
     this.set({ birthDayEN: this.birthDayEN });
-    this.set({ ageGroupID: await assignAgeGroupsByBirthDay(this.birthDayEN) });
+    this.set({ ageGroupID: await assignAgeGroups(this.birthDayEN) });
   }
   if (registerDateIR) {
     this.registerDateEN = shamsiToMiladi(registerDateIR);
