@@ -91,14 +91,13 @@ exports.updateCoach = async (req, res, next) => {
 
     // updated
     const coachUpdated = await coachModel.updateOne({ _id: req.params.id }, data);
-    if (!coachUpdated.modifiedCount) throw createError.InternalServerError("ویرایش اطلاعات با خطا مواجه شد");
+    if (!coachUpdated.modifiedCount) throw createError.InternalServerError("بروزرسانی اطلاعات با خطا مواجه شد");
 
     if (data.imageUrl) deleteFileInPublic(coachFound.imageUrl);
 
     res.status(StatusCodes.CREATED).json({
       status: "success",
-      message: "ویرایش اطلاعات با موفقیت انجام شد",
-      // data
+      message: "بروزرسانی اطلاعات با موفقیت انجام شد",
     });
   } catch (error) {
     deleteFileInPublic(req.body.imageUrl);
@@ -106,11 +105,59 @@ exports.updateCoach = async (req, res, next) => {
   }
 };
 
+//@desc Get Single Student
+//@route GET /api/v1/coachs/:id/admin
+//@acess Private Admin Only
+exports.getCoach = AsyncHandler(async (req, res) => {
+  const coach = await checkExistCoach(req.params.id);
+
+  if (!coach) throw createError.InternalServerError("دریافت اطلاعات با خطا مواجه شد");
+  res.status(StatusCodes.OK).json({
+    status: "success",
+    message: "دریافت اطلاعات با موفقیت انجام شد",
+    data: coach,
+  });
+});
+
+//@desc Get All Students
+//@route GET /api/v1/coachs
+//@acess Private Admin Only
+exports.getCoachs = AsyncHandler(async (req, res) => {
+  const coachs = await coachModel
+    .find({})
+    .lean()
+    .populate({
+      path: "clubID",
+      populate: {
+        path: "sportID",
+      },
+    })
+    .populate("beltID")
+    .select("-createdAt -updatedAt -registerDateEN -birthDayEN");
+
+  if (!coachs) throw createError.InternalServerError("دریافت اطلاعات با خطا مواجه شد");
+  res.status(StatusCodes.OK).json({
+    status: "success",
+    message: "دریافت اطلاعات با موفقیت انجام شد",
+    data: coachs,
+  });
+});
+
 const checkExistCoach = async (id) => {
   if (!isValidObjectId(id)) throw createError.BadRequest("شناسه وارد شده معتبر نمی باشد");
 
   // find Coachs
-  const coachFound = await coachModel.findById(id).lean();
+  const coachFound = await coachModel
+    .findById(id)
+    .lean()
+    .populate({
+      path: "clubID",
+      populate: {
+        path: "sportID",
+      },
+    })
+    .populate("beltID")
+    .select("-createdAt -updatedAt -registerDateEN -birthDayEN");
   if (!coachFound) throw createError.NotFound("مربی مورد نظر یافت نشد");
   return coachFound;
 };

@@ -8,15 +8,15 @@ const coachSchema = new mongoose.Schema(
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },
 
-    nationalID: { type: Number, required: true },
+    nationalID: { type: String, required: true },
 
     memberShipValidity: { type: Number },
 
     role: { type: String, default: "Coach" },
     gender: { type: String, enum: ["مرد", "زن"], default: "مرد" },
-    imageUrl: { type: String, default: "profile.jpg" },
+    imageUrl: { type: String, default: "uploads/profile-coachs.jpg" },
 
-    mobile: { type: Number },
+    mobile: { type: String },
     fatherName: { type: String },
     address: { type: String },
 

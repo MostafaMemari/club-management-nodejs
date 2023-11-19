@@ -15,7 +15,7 @@ const studentSchema = new mongoose.Schema(
 
     role: { type: String, default: "Student" },
     gender: { type: String, enum: ["مرد", "زن"], default: "مرد" },
-    imageUrl: { type: String, default: "profile.jpg" },
+    imageUrl: { type: String, default: "uploads/profile-students.jpg" },
 
     mobile: { type: String },
     fatherName: { type: String },

@@ -1,4 +1,4 @@
-const asyncHandler = require("express-async-handler");
+const AsyncHandler = require("express-async-handler");
 const { studentAndCoachRegisterSchema } = require("../../validations/authSchema");
 const { copyObject, deleteInvalidPropertyInObject, deleteFileInPublic } = require("../../helpers/function");
 const createError = require("http-errors");
@@ -65,7 +65,7 @@ exports.registerStudent = async (req, res, next) => {
 //@acess
 exports.updateStudent = async (req, res, next) => {
   try {
-    await checkExistStudent(req.params.id);
+    const studentFound = await checkExistStudent(req.params.id);
 
     const data = copyObject(req.body);
 
@@ -89,11 +89,14 @@ exports.updateStudent = async (req, res, next) => {
     });
     if (!studentCreated.modifiedCount) throw createError.InternalServerError("بروزرسانی اطلاعات با خطا مواجه شد");
 
+    if (data.imageUrl) deleteFileInPublic(studentFound.imageUrl);
+
     res.status(StatusCodes.OK).json({
       status: "success",
       message: "بروزرسانی اطلاعات با موفقیت انجام شد",
     });
   } catch (error) {
+    deleteFileInPublic(req.body.imageUrl);
     next(error);
   }
 };
@@ -101,7 +104,7 @@ exports.updateStudent = async (req, res, next) => {
 //@desc Get All Students
 //@route GET /api/v1/students
 //@acess
-exports.getStudents = asyncHandler(async (req, res) => {
+exports.getStudents = AsyncHandler(async (req, res) => {
   const students = await studentModel
     .find({})
     .populate("clubID", "name")
@@ -109,7 +112,7 @@ exports.getStudents = asyncHandler(async (req, res) => {
     .populate("ageGroupID", "name description")
     .populate("coachID", "firstName lastName");
 
-  if (!students) throw createError.InternalServerError("دریافت هنرجویان با خطا مواجه شد");
+  if (!students) throw createError.InternalServerError("دریافت اطلاعات با خطا مواجه شد");
   res.status(StatusCodes.OK).json({
     status: "success",
     message: "دریافت اطلاعات با موفقیت انجام شد",
@@ -120,7 +123,7 @@ exports.getStudents = asyncHandler(async (req, res) => {
 //@desc Get Single Student
 //@route GET /api/v1/students/:id
 //@acess
-exports.getStudent = asyncHandler(async (req, res) => {
+exports.getStudent = AsyncHandler(async (req, res) => {
   const students = await checkExistStudent(req.params.id);
 
   if (!students) throw createError.InternalServerError("دریافت اطلاعات با خطا مواجه شد");
