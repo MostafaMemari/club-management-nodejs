@@ -1,6 +1,6 @@
-const { registerUser, loginUser, userProfile, updateUser } = require("../../controllers/staff/userController");
+const { userProfile, registerUser, loginUser, updateUser } = require("../../controllers/Admin/userController");
 const { isAuth } = require("../../middlewares/isAuth");
-const { userModel } = require("../../models/staff/userModel");
+const { userModel } = require("../../models/admin/userModel");
 
 const userRouter = require("express").Router();
 

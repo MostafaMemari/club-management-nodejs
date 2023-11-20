@@ -1,7 +1,8 @@
-const { clubModel } = require("../models/club/clubModel");
-const { studentModel } = require("../models/staff/studentModel");
-const { coachModel } = require("../models/staff/coachModel");
-const { beltModel } = require("../models/club/beltModel");
+const { beltModel } = require("../models/Admin/baseData/beltModel");
+const { clubModel } = require("../models/Management/clubModel");
+const { coachModel } = require("../models/Management/coachModel");
+const { studentModel } = require("../models/Management/studentModel");
+
 module.exports.validate_nationalId_clubId_coachId_beltId = async (nationalID, clubID, coachID, beltID) => {
   // find student By nationalID
   if (nationalID) {

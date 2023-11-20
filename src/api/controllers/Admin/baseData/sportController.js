@@ -1,8 +1,8 @@
 const { StatusCodes } = require("http-status-codes");
-const { sportSchema } = require("../../validations/clubSchema");
+const { sportSchema } = require("../../../validations/clubSchema");
 const AsyncHandler = require("express-async-handler");
-const { copyObject, deleteInvalidPropertyInObject } = require("../../helpers/function");
-const { sportModel } = require("../../models/club/sportModel");
+const { copyObject, deleteInvalidPropertyInObject } = require("../../../helpers/function");
+const { sportModel } = require("../../../models/Admin/baseData/sportModel");
 const createError = require("http-errors");
 const { isValidObjectId } = require("mongoose");
 

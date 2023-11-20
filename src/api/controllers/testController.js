@@ -1,10 +1,10 @@
-const { normalizenationalID } = require("../../helpers/normalizeData");
-const { beltModel } = require("../../models/club/beltModel");
-const { studentModel } = require("../../models/staff/studentModel");
+const { normalizenationalID } = require("../helpers/normalizeData");
+const { beltModel } = require("../models/baseData/beltModel");
+const { studentModel } = require("../../models/Admin/studentModel");
 
 module.exports.insertStudetnsJSON = async (req, res, next) => {
   try {
-    const students = require("../../../../students.json");
+    const students = require("../../../students.json");
     console.log(students);
 
     for (const i in students) {

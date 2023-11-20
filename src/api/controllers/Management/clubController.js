@@ -1,11 +1,11 @@
 const AsyncHandler = require("express-async-handler");
 const { copyObject, deleteInvalidPropertyInObject } = require("../../helpers/function");
-const { clubSchema } = require("../../validations/clubSchema");
 const { StatusCodes } = require("http-status-codes");
-const { sportModel } = require("../../models/club/sportModel");
+const { sportModel } = require("../../models/Management/clubModel");
 const createError = require("http-errors");
-const { clubModel } = require("../../models/club/clubModel");
+const { clubModel } = require("../../models/Management/clubModel");
 const { isValidObjectId } = require("mongoose");
+const { clubSchema } = require("../../validations/clubSchema");
 
 //@desc Create Club
 //@route POST /api/v1/clubs

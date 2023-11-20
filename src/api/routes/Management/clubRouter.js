@@ -1,6 +1,6 @@
-const { createClub, getClub, getClubs } = require("../../controllers/club/clubController");
+const { createClub, getClubs, getClub } = require("../../controllers/Management/clubController");
 const { isAuth } = require("../../middlewares/isAuth");
-const { userModel } = require("../../models/staff/userModel");
+const { userModel } = require("../../models/admin/userModel");
 
 const clubRouter = require("express").Router();
 

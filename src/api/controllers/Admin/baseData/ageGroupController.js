@@ -1,11 +1,13 @@
-const { StatusCodes } = require("http-status-codes");
 const AsyncHandler = require("express-async-handler");
-const { copyObject, deleteInvalidPropertyInObject } = require("../../helpers/function");
 const createError = require("http-errors");
-const { ageGroupModel } = require("../../models/club/ageGroupModel");
-const { ageGroupSchema, ageGroupUpdateSchema } = require("../../validations/clubSchema");
+const { StatusCodes } = require("http-status-codes");
 const { isValidObjectId } = require("mongoose");
-const { studentModel } = require("../../models/staff/studentModel");
+
+const { copyObject, deleteInvalidPropertyInObject } = require("../../../helpers/function");
+
+const { studentModel } = require("../../../models/Management/studentModel");
+const { ageGroupSchema, ageGroupUpdateSchema } = require("../../../validations/clubSchema");
+const { ageGroupModel } = require("../../../models/admin/baseData/ageGroupModel");
 
 //@desc Create Age group
 //@route POST /api/v1/ages

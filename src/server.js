@@ -6,8 +6,8 @@ const path = require("path");
 const createError = require("http-errors");
 require("dotenv").config();
 
-const { AllRouter } = require("./api/routes/router");
 const { connectToMongoDB } = require("./config/db");
+const { AllRouter } = require("./api/routes/router");
 
 module.exports = class Application {
   #app = express();

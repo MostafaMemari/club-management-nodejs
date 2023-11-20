@@ -1,6 +1,11 @@
-const { registerStudent, getStudents, updateStudent, getStudent, deleteStudent } = require("../../controllers/staff/studentController");
+const {
+  getStudents,
+  updateStudent,
+  getStudent,
+  deleteStudent,
+  registerStudent,
+} = require("../../controllers/Management/studentController");
 const { advancedResult } = require("../../middlewares/advancedResult");
-const { studentModel } = require("../../models/staff/studentModel");
 const { uploadMulter } = require("../../services/multer");
 
 const studentRouter = require("express").Router();

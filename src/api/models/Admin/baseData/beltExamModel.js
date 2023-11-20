@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { shamsiToMiladi } = require("../../helpers/dateConvarter");
+const { shamsiToMiladi } = require("../../../helpers/dateConvarter");
 
 const { Types } = mongoose;
 

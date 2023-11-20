@@ -1,12 +1,11 @@
-const { insertStudetnsJSON } = require("../controllers/club/testController.js");
-const { ageGroupRouter } = require("./club/ageGroupRouter.js");
-const { beltExamRouter } = require("./club/beltExamRouter.js");
-const { beltRouter } = require("./club/beltRouter.js");
-const { clubRouter } = require("./club/clubRouter");
-const { sportRouter } = require("./club/sportRouter.js");
-const { coachRouter } = require("./staff/coachRouter.js");
-const { studentRouter } = require("./staff/studentRouter.js");
-const { userRouter } = require("./staff/userRouter");
+const { ageGroupRouter } = require("./Admin/baseData/ageGroupRouter.js");
+const { beltExamFedRouter } = require("./Admin/baseData/beltExamRouter.js");
+const { beltRouter } = require("./Admin/baseData/beltRouter.js");
+const { sportRouter } = require("./Admin/baseData/sportRouter.js");
+const { userRouter } = require("./Admin/userRouter");
+const { clubRouter } = require("./management/clubRouter");
+const { coachRouter } = require("./management/coachRouter");
+const { studentRouter } = require("./management/studentRouter");
 
 const router = require("express").Router();
 
@@ -18,9 +17,9 @@ router.use("/api/v1/clubs", clubRouter);
 router.use("/api/v1/sports", sportRouter);
 router.use("/api/v1/ages", ageGroupRouter);
 router.use("/api/v1/belts", beltRouter);
-router.use("/api/v1/belt-exams", beltExamRouter);
+router.use("/api/v1/belt-exams", beltExamFedRouter);
 
-router.get("/api/v1/test", insertStudetnsJSON);
+// router.get("/api/v1/test", insertStudetnsJSON);
 
 module.exports = {
   AllRouter: router,

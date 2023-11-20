@@ -2,7 +2,7 @@ const asyncHandler = require("express-async-handler");
 const { StatusCodes } = require("http-status-codes");
 const createError = require("http-errors");
 
-const { userModel } = require("../../models/staff/userModel");
+const { userModel } = require("../../models/admin/userModel");
 const { userRegisterSchema } = require("../../validations/authSchema");
 const { copyObject, deleteInvalidPropertyInObject } = require("../../helpers/function");
 const { hashPassword, isPassMatched } = require("../../services/passwordServices");
