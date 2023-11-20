@@ -1,3 +1,4 @@
+const { insertStudetnsJSON } = require("../controllers/club/testController.js");
 const { ageGroupRouter } = require("./club/ageGroupRouter.js");
 const { beltExamRouter } = require("./club/beltExamRouter.js");
 const { beltRouter } = require("./club/beltRouter.js");
@@ -18,6 +19,8 @@ router.use("/api/v1/sports", sportRouter);
 router.use("/api/v1/ages", ageGroupRouter);
 router.use("/api/v1/belts", beltRouter);
 router.use("/api/v1/belt-exams", beltExamRouter);
+
+router.get("/api/v1/test", insertStudetnsJSON);
 
 module.exports = {
   AllRouter: router,

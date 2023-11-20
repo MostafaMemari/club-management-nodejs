@@ -5,6 +5,15 @@ module.exports.normalizePhoneNumber = (phoneNumber) => {
   if (phoneNumber.length === 13) return `0${phoneNumber.substring(3)}`;
   if (phoneNumber.length === 14) return `0${phoneNumber.substring(4)}`;
 };
+module.exports.normalizenationalID = (nationalID) => {
+  if (nationalID.length === 4) return `000000${nationalID}`;
+  if (nationalID.length === 5) return `00000${nationalID}`;
+  if (nationalID.length === 6) return `0000${nationalID}`;
+  if (nationalID.length === 7) return `000${nationalID}`;
+  if (nationalID.length === 8) return `00${nationalID}`;
+  if (nationalID.length === 9) return `0${nationalID}`;
+  if (nationalID.length === 10) return `${nationalID}`;
+};
 
 module.exports.normalizeCalendar = (dateShamsi) => {
   let [year, month, day] = dateShamsi.split("/");

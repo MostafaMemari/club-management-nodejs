@@ -108,13 +108,13 @@ exports.updateStudent = async (req, res, next) => {
 //@route GET /api/v1/students
 //@acess
 exports.getStudents = AsyncHandler(async (req, res) => {
+  // res.status(200).json(res.result);
   const students = await studentModel
     .find({})
     .populate("clubID", "name")
     .populate("beltID", "name")
     .populate("ageGroupID", "name description")
     .populate("coachID", "firstName lastName");
-
   if (!students) throw createError.InternalServerError("دریافت اطلاعات با خطا مواجه شد");
   res.status(StatusCodes.OK).json({
     status: "success",
