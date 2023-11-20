@@ -5,6 +5,7 @@ const { copyObject, deleteInvalidPropertyInObject } = require("../../../helpers/
 const { sportModel } = require("../../../models/Admin/baseData/sportModel");
 const createError = require("http-errors");
 const { isValidObjectId } = require("mongoose");
+const { clubModel } = require("../../../models/Management/clubModel");
 
 //@desc Create Sport
 //@route POST /api/v1/sports
@@ -61,11 +62,29 @@ module.exports.getSport = AsyncHandler(async (req, res) => {
   });
 });
 
+//@desc Remove Sport
+//@route DELETE /api/v1/sports/:id
+//@acess  Private Admin Only
+module.exports.deleteSport = AsyncHandler(async (req, res) => {
+  await checkExistSport(req.params.id);
+
+  const deletedSport = await sportModel.deleteOne({ _id: req.params.id });
+  console.log(deletedSport);
+  if (!deletedSport.deletedCount) throw createError.InternalServerError("حذف رشته ورزشی با خطا مواجه شد");
+
+  await clubModel.updateMany({ sportID: req.params.id }, { $pull: { sportID: req.params.id } });
+
+  res.status(StatusCodes.OK).json({
+    status: "success",
+    message: "حذف رشته ورزشی با موفقیت انجام شد",
+  });
+});
+
 const checkExistSport = async (id) => {
   if (!isValidObjectId(id)) throw createError.BadRequest("شناسه وارد شده معتبر نمی باشد");
 
   // find Sports
-  const clubFound = await clubModel.findById(id).lean();
-  if (!clubFound) throw createError.NotFound("ورزش مورد نظر یافت نشد");
-  return clubFound;
+  const sportFound = await sportModel.findById(id).lean();
+  if (!sportFound) throw createError.NotFound("رشته ورزشی مورد نظر یافت نشد");
+  return sportFound;
 };
