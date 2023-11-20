@@ -47,8 +47,8 @@ exports.registerStudent = async (req, res, next) => {
     await validate_nationalId_clubId_coachId_beltId(nationalID, clubID, coachID, beltID);
 
     // create
-    // const studentCreated = await studentModel.create(data);
-    // if (!studentCreated) throw createError.InternalServerError("ثبت نام با خطا مواجه شد");
+    const studentCreated = await studentModel.create(data);
+    if (!studentCreated) throw createError.InternalServerError("ثبت نام با خطا مواجه شد");
 
     res.status(StatusCodes.CREATED).json({
       status: "success",

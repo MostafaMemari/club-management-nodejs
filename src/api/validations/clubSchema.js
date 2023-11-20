@@ -7,6 +7,13 @@ const clubSchema = Joi.object({
   phone: Joi.string().min(9).max(12).error(new Error("شماره وارد شده صحیح نمی باشد")),
   sportID: Joi.string().hex().length(24).error(new Error("رشته ورزشی مورد نظر یافت نشد")),
 }).options({ stripUnknown: true });
+const clubSchemaUpdate = Joi.object({
+  name: Joi.string().min(2).max(50).error(new Error("نام وارد شده صحیح نمی باشد")),
+  gender: Joi.string().valid("آقایان", "بانوان").error(new Error("جنسیت وارد شده صحیح نمی باشد")),
+  address: Joi.string().min(3).max(100).error(new Error("آدرس وارد شده صحیح نمی باشد")),
+  phone: Joi.string().min(9).max(12).error(new Error("شماره وارد شده صحیح نمی باشد")),
+  sportID: Joi.string().hex().length(24).error(new Error("رشته ورزشی مورد نظر یافت نشد")),
+}).options({ stripUnknown: true });
 
 const sportSchema = Joi.object({
   name: Joi.string().min(2).max(50).required().error(new Error("رشته ورزش وارد شده معتبر نمی باشد")),
@@ -71,6 +78,7 @@ module.exports = {
   beltSchema,
   beltExamSchema,
   beltExamUpdateSchema,
+  clubSchemaUpdate,
 };
 
 // .regex(/^(098|0098|98|\+98|0)?9(0[0-5]|[1 3]\d|2[0-3]|9[0-9]|41)\d{7}$/)

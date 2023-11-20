@@ -68,7 +68,7 @@ module.exports.updateAgeGourp = AsyncHandler(async (req, res) => {
 });
 
 //@desc Delete Age group
-//@route PUT /api/v1/ages/:id
+//@route DELETE /api/v1/ages/:id
 //@acess  Private Admin Only
 module.exports.deleteAgeGroup = AsyncHandler(async (req, res) => {
   await checkExistAgeGroup(req.params.id);
