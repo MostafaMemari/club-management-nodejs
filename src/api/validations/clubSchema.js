@@ -20,6 +20,11 @@ const sportSchema = Joi.object({
   type: Joi.string().min(2).max(50).error(new Error("نوع رشته ورزشی وارد شده معتبر نمی باشد")),
   description: Joi.string().min(10).max(100).error(new Error("توضیحات وارد شده معتبر نمی باشد")),
 }).options({ stripUnknown: true });
+const sportSchemaUpdate = Joi.object({
+  name: Joi.string().min(2).max(50).error(new Error("رشته ورزش وارد شده معتبر نمی باشد")),
+  type: Joi.string().min(2).max(50).error(new Error("نوع رشته ورزشی وارد شده معتبر نمی باشد")),
+  description: Joi.string().min(10).max(100).error(new Error("توضیحات وارد شده معتبر نمی باشد")),
+}).options({ stripUnknown: true });
 
 const ageGroupSchema = Joi.object({
   name: Joi.string().min(2).max(50).required().error(new Error("رده سنی وارد شده معتبر نمی باشد")),
@@ -79,6 +84,7 @@ module.exports = {
   beltExamSchema,
   beltExamUpdateSchema,
   clubSchemaUpdate,
+  sportSchemaUpdate,
 };
 
 // .regex(/^(098|0098|98|\+98|0)?9(0[0-5]|[1 3]\d|2[0-3]|9[0-9]|41)\d{7}$/)

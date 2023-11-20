@@ -1,5 +1,5 @@
 const { StatusCodes } = require("http-status-codes");
-const { sportSchema } = require("../../../validations/clubSchema");
+const { sportSchema, sportSchemaUpdate } = require("../../../validations/clubSchema");
 const AsyncHandler = require("express-async-handler");
 const { copyObject, deleteInvalidPropertyInObject } = require("../../../helpers/function");
 const { sportModel } = require("../../../models/Admin/baseData/sportModel");
@@ -59,6 +59,36 @@ module.exports.getSport = AsyncHandler(async (req, res) => {
     status: "success",
     message: "دریافت اطلاعات با موفقیت انجام شد",
     data: sportFound,
+  });
+});
+
+//@desc Update Sport
+//@route PUT /api/v1/sports/:id
+//@acess  Private Admin Only
+module.exports.updateSport = AsyncHandler(async (req, res) => {
+  await checkExistSport(req.params.id);
+
+  const data = copyObject(req.body);
+  deleteInvalidPropertyInObject(data);
+
+  // validate
+  await sportSchemaUpdate.validateAsync(data);
+
+  const { name } = data;
+
+  // find sport
+  if (name) {
+    const sportFound = await sportModel.findOne({ name });
+    if (sportFound) throw createError.Conflict("رشته ورزشی تکراری می باشد");
+  }
+
+  // update
+  const sportUpdated = await sportModel.updateMany({ _id: req.params.id }, data);
+  if (!sportUpdated) throw createError.InternalServerError("بروزرسانی رشته ورزشی با خطا مواجه شد");
+
+  res.status(StatusCodes.CREATED).json({
+    status: "success",
+    message: "بروزرسانی رشته ورزشی با موفقیت انجام شد",
   });
 });
 
