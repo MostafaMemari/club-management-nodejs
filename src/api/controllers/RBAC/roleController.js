@@ -28,6 +28,19 @@ module.exports.createRole = AsyncHandler(async (req, res, next) => {
   });
 });
 
+//@desc Get All Roles
+//@route GET /api/v1/Roles
+//@acess  Private Admin Only
+module.exports.getRoles = AsyncHandler(async (req, res) => {
+  const roleFound = await roleModel.find({}).lean();
+  if (!roleFound) throw createError.InternalServerError("دریافت اطلاعات با خطا مواجه شد");
+  res.status(StatusCodes.OK).json({
+    status: "success",
+    message: "دریافت اطلاعات با موفقیت انجام شد",
+    data: roleFound,
+  });
+});
+
 const checkExistRoleID = async (id) => {
   if (!isValidObjectId(id)) throw createError.BadRequest("نفش وارد شده معتبر نمی باشد");
 

@@ -1,8 +1,8 @@
 const roleRouter = require("express").Router();
 
-const { createRole } = require("../../controllers/RBAC/roleController");
+const { createRole, getRoles } = require("../../controllers/RBAC/roleController");
 
-roleRouter.route("/").post(createRole);
+roleRouter.route("/").post(createRole).get(getRoles);
 
 module.exports = {
   roleRouter,
