@@ -12,7 +12,7 @@ const studentAndCoachSchema = Joi.object({
   firstName: Joi.string().min(2).max(50).error(new Error("نام وارد شده معتبر نمی باشد")),
   lastName: Joi.string().min(2).max(50).error(new Error("نام خانوادگی وارد شده معتبر نمی باشد")),
   nationalID: Joi.string().length(10).error(new Error("کد ملی وارد شده معتبر نمی باشد")),
-  role: Joi.string().valid("Student", "Coach").error(new Error("نقش وارد شده معتبر نمی باشد")),
+  role: Joi.string().valid("STUDENT", "COACH").error(new Error("نقش وارد شده معتبر نمی باشد")),
   gender: Joi.string().valid("مرد", "زن").error(new Error("جنسب وارد شده اشتباه می باشد")),
   mobile: Joi.string().regex(PhoneNumberPatern).error(new Error("شماره موبایل وارد شده معتبر نمی باشد")),
   fatherName: Joi.string().min(2).max(50).error(new Error("نام پدر وارد شده معتبر نمی باشد")),

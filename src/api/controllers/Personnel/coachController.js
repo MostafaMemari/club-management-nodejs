@@ -1,7 +1,7 @@
 const AsyncHandler = require("express-async-handler");
 const { copyObject, deleteInvalidPropertyInObject, deleteFileInPublic } = require("../../helpers/function");
 const { studentAndCoachSchema } = require("../../validations/authSchema");
-const { coachModel } = require("../../models/Management/coachModel");
+const { coachModel } = require("../../models/Personnel/coachModel");
 const { StatusCodes } = require("http-status-codes");
 const createError = require("http-errors");
 const path = require("path");

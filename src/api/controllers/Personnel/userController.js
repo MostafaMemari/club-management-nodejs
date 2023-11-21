@@ -2,7 +2,7 @@ const asyncHandler = require("express-async-handler");
 const { StatusCodes } = require("http-status-codes");
 const createError = require("http-errors");
 
-const { userModel } = require("../../models/admin/userModel");
+const { userModel } = require("../../models/Personnel/userModel");
 const { userRegisterSchema } = require("../../validations/authSchema");
 const { copyObject, deleteInvalidPropertyInObject } = require("../../helpers/function");
 const { hashPassword, isPassMatched } = require("../../services/passwordServices");
@@ -29,11 +29,14 @@ module.exports.registerUser = asyncHandler(async (req, res) => {
   const userCreated = await userModel.create({ username, password: hashedPassword, email });
   if (!userCreated) throw createError.InternalServerError("ثبت نام کاربر با خطا مواجه شد");
 
+  const userObject = userCreated.toObject();
+  Reflect.deleteProperty(userObject, "password");
+
   res.status(StatusCodes.CREATED).json({
     status: "success",
     message: "ثبت نام کاربر با موفقیت انجام شد",
     data: {
-      userCreated,
+      userObject,
     },
   });
 });

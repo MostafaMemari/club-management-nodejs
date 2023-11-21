@@ -3,11 +3,11 @@ const createError = require("http-errors");
 const { StatusCodes } = require("http-status-codes");
 const { isValidObjectId } = require("mongoose");
 
-const { copyObject, deleteInvalidPropertyInObject } = require("../../../helpers/function");
+const { copyObject, deleteInvalidPropertyInObject } = require("../../helpers/function");
 
-const { studentModel } = require("../../../models/Management/studentModel");
-const { ageGroupSchema, ageGroupUpdateSchema } = require("../../../validations/clubSchema");
-const { ageGroupModel } = require("../../../models/admin/baseData/ageGroupModel");
+const { studentModel } = require("../../models/Personnel/studentModel");
+const { ageGroupSchema, ageGroupUpdateSchema } = require("../../validations/clubSchema");
+const { ageGroupModel } = require("../../models/BaseData/ageGroupModel");
 
 //@desc Create Age group
 //@route POST /api/v1/ages

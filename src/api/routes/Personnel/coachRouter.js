@@ -1,4 +1,4 @@
-const { updateCoach, getCoach, deleteCoach, getCoachs, registerCoach } = require("../../controllers/management/coachController");
+const { getCoachs, updateCoach, registerCoach, getCoach, deleteCoach } = require("../../controllers/Personnel/coachController");
 const { uploadMulter } = require("../../services/multer");
 
 const coachRouter = require("express").Router();

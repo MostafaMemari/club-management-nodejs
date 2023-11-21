@@ -1,11 +1,11 @@
-const { ageGroupRouter } = require("./Admin/baseData/ageGroupRouter.js");
-const { beltExamFedRouter } = require("./Admin/baseData/beltExamRouter.js");
-const { beltRouter } = require("./Admin/baseData/beltRouter.js");
-const { sportRouter } = require("./Admin/baseData/sportRouter.js");
-const { userRouter } = require("./Admin/userRouter");
-const { clubRouter } = require("./management/clubRouter");
-const { coachRouter } = require("./management/coachRouter");
-const { studentRouter } = require("./management/studentRouter");
+const { ageGroupRouter } = require("./BaseData/ageGroupRouter.js");
+const { beltExamRouter } = require("./BaseData/beltExamRouter.js");
+const { beltRouter } = require("./BaseData/beltRouter.js");
+const { sportRouter } = require("./BaseData/sportRouter.js");
+const { clubRouter } = require("./Management/clubRouter.js");
+const { coachRouter } = require("./Personnel/coachRouter.js");
+const { studentRouter } = require("./Personnel/studentRouter");
+const { userRouter } = require("./Personnel/userRouter");
 
 const router = require("express").Router();
 
@@ -17,7 +17,7 @@ router.use("/api/v1/clubs", clubRouter);
 router.use("/api/v1/sports", sportRouter);
 router.use("/api/v1/ages", ageGroupRouter);
 router.use("/api/v1/belts", beltRouter);
-router.use("/api/v1/belt-exams", beltExamFedRouter);
+router.use("/api/v1/belt-exams", beltExamRouter);
 
 // router.get("/api/v1/test", insertStudetnsJSON);
 

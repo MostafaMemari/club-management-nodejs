@@ -3,10 +3,10 @@ const createError = require("http-errors");
 const { StatusCodes } = require("http-status-codes");
 const { isValidObjectId } = require("mongoose");
 
-const { beltModel } = require("../../../models/Admin/baseData/beltModel");
-const { copyObject, deleteInvalidPropertyInObject } = require("../../../helpers/function");
-const { beltExamSchema, beltExamUpdateSchema } = require("../../../validations/clubSchema");
-const { beltExamModel } = require("../../../models/Admin/baseData/beltExamModel");
+const { beltModel } = require("../../models/BaseData/beltModel");
+const { copyObject, deleteInvalidPropertyInObject } = require("../../helpers/function");
+const { beltExamSchema, beltExamUpdateSchema } = require("../../validations/clubSchema");
+const { beltExamModel } = require("../../models/BaseData/beltExamModel");
 
 //@desc Create Belt Exam
 //@route POST /api/v1/belt-exams

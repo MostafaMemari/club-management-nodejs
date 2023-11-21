@@ -1,4 +1,4 @@
-var moment = require("jalali-moment");
+const moment = require("jalali-moment");
 
 exports.shamsiToMiladi = (dateShamsi) => {
   return moment.from(dateShamsi, "fa", "YYYY/MM/DD").format("YYYY/MM/DD");

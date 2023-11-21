@@ -3,7 +3,7 @@ const { studentAndCoachSchema } = require("../../validations/authSchema");
 const { copyObject, deleteInvalidPropertyInObject, deleteFileInPublic } = require("../../helpers/function");
 const createError = require("http-errors");
 const { StatusCodes } = require("http-status-codes");
-const { studentModel } = require("../../models/Management/studentModel");
+const { studentModel } = require("../../models/Personnel/studentModel");
 
 const { isValidObjectId } = require("mongoose");
 const path = require("path");

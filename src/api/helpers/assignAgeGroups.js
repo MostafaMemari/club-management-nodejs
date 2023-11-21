@@ -1,4 +1,4 @@
-const { ageGroupModel } = require("../models/admin/baseData/ageGroupModel");
+const { ageGroupModel } = require("../models/BaseData/ageGroupModel");
 
 module.exports.assignAgeGroups = async (birthDayEN) => {
   const ageGroups = await ageGroupModel.find({ $and: [{ toDateEN: { $gt: birthDayEN } }, { fromDateEN: { $lt: birthDayEN } }] });

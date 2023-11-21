@@ -3,10 +3,10 @@ const { StatusCodes } = require("http-status-codes");
 const createError = require("http-errors");
 const { isValidObjectId } = require("mongoose");
 
-const { copyObject, deleteInvalidPropertyInObject } = require("../../../helpers/function");
-const { beltSchema } = require("../../../validations/clubSchema");
-const { studentModel } = require("../../../models/Management/studentModel");
-const { beltModel } = require("../../../models/Admin/baseData/beltModel");
+const { copyObject, deleteInvalidPropertyInObject } = require("../../helpers/function");
+const { beltSchema } = require("../../validations/clubSchema");
+const { studentModel } = require("../../models/Personnel/studentModel");
+const { beltModel } = require("../../models/BaseData/beltModel");
 
 //@desc Create Belt
 //@route POST /api/v1/belts

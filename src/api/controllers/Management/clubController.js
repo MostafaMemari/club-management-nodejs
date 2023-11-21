@@ -5,8 +5,8 @@ const createError = require("http-errors");
 const { clubModel } = require("../../models/Management/clubModel");
 const { isValidObjectId } = require("mongoose");
 const { clubSchema, clubSchemaUpdate } = require("../../validations/clubSchema");
-const { sportModel } = require("../../models/Admin/baseData/sportModel");
-const { studentModel } = require("../../models/Management/studentModel");
+const { sportModel } = require("../../models/BaseData/sportModel");
+const { studentModel } = require("../../models/Personnel/studentModel");
 
 //@desc Create Club
 //@route POST /api/v1/clubs

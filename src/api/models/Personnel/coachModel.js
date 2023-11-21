@@ -12,7 +12,7 @@ const coachSchema = new mongoose.Schema(
 
     memberShipValidity: { type: Number },
 
-    role: { type: String, default: "Coach" },
+    role: { type: String, default: "COACH" },
     gender: { type: String, enum: ["مرد", "زن"], default: "مرد" },
     imageUrl: { type: String, default: "uploads/profile-coachs.jpg" },
 

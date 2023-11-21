@@ -1,25 +1,23 @@
 const asyncHandler = require("express-async-handler");
 const createError = require("http-errors");
 const { verifyToken } = require("../services/tokenServices");
+const { userModel } = require("../models/Personnel/userModel");
 
-module.exports.isAuth = (model, role) => {
-  return asyncHandler(async (req, res, next) => {
-    const authorization = req?.headers?.authorization;
-    if (!authorization) throw createError.Unauthorized("لطفا وارد حساب کاربری خود شوید");
+function getToken(headers) {
+  const [bearer, token] = headers?.authorization?.split(" ") || [];
+  if (token && ["Bearer", "bearer"].includes(bearer)) return token;
+  throw createError.Unauthorized("لطفا وارد حساب کاربری خود شوید");
+}
 
-    const [bearer, token] = authorization?.split(" ");
-    if (bearer && bearer.toLowerCase() !== "bearer") throw createError.Unauthorized("لطفا وارد حساب کاربری خود شوید");
+module.exports.isAuth = asyncHandler(async (req, res, next) => {
+  const token = getToken(req?.headers);
+  const verifiedToken = verifyToken(token);
 
-    const verifiedToken = verifyToken(token);
+  const user = await userModel.findById(verifiedToken.id).select("-password -createdAt -updatedAt");
+  if (!user) user = await coachModel.findById(verifiedToken.id).select("-password -createdAt -updatedAt");
+  if (!user) user = await studentModel.findById(verifiedToken.id).select("-password -createdAt -updatedAt");
+  if (!user) throw createError.Unauthorized("حساب کاربری یافت نشد");
 
-    let user = null;
-    if (role) {
-      user = await model.findOne({ _id: verifiedToken.id, role }).select("-password -createdAt -updatedAt");
-    } else {
-      user = await model.findById(verifiedToken.id).select("-password -createdAt -updatedAt");
-    }
-    if (!user) throw createError.Forbidden("شما دسترسی لازم برای انجام این عملیات را ندارید");
-    req.userAuth = user;
-    next();
-  });
-};
+  req.userAuth = user;
+  next();
+});

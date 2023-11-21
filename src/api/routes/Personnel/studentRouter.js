@@ -1,10 +1,4 @@
-const {
-  getStudents,
-  updateStudent,
-  getStudent,
-  deleteStudent,
-  registerStudent,
-} = require("../../controllers/Management/studentController");
+const { getStudents, updateStudent, getStudent, deleteStudent, registerStudent } = require("../../controllers/Personnel/studentController");
 const { advancedResult } = require("../../middlewares/advancedResult");
 const { uploadMulter } = require("../../services/multer");
 

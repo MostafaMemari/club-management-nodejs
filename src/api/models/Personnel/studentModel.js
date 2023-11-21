@@ -13,7 +13,7 @@ const studentSchema = new mongoose.Schema(
 
     memberShipValidity: { type: Number },
 
-    role: { type: String, default: "Student" },
+    role: { type: String, default: "STUDENT" },
     gender: { type: String, enum: ["مرد", "زن"], default: "مرد" },
     imageUrl: { type: String, default: "uploads/profile-students.jpg" },
 

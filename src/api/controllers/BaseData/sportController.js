@@ -1,11 +1,11 @@
 const { StatusCodes } = require("http-status-codes");
-const { sportSchema, sportSchemaUpdate } = require("../../../validations/clubSchema");
+const { sportSchema, sportSchemaUpdate } = require("../../validations/clubSchema");
 const AsyncHandler = require("express-async-handler");
-const { copyObject, deleteInvalidPropertyInObject } = require("../../../helpers/function");
-const { sportModel } = require("../../../models/Admin/baseData/sportModel");
+const { copyObject, deleteInvalidPropertyInObject } = require("../../helpers/function");
+const { sportModel } = require("../../models/BaseData/sportModel");
 const createError = require("http-errors");
 const { isValidObjectId } = require("mongoose");
-const { clubModel } = require("../../../models/Management/clubModel");
+const { clubModel } = require("../../models/Management/clubModel");
 
 //@desc Create Sport
 //@route POST /api/v1/sports
@@ -39,6 +39,7 @@ module.exports.createSport = AsyncHandler(async (req, res) => {
 //@route GET /api/v1/sports
 //@acess  Private Admin Only
 module.exports.getSports = AsyncHandler(async (req, res) => {
+  console.log(req.userAuth);
   const sportFound = await sportModel.find({}).lean();
   if (!sportFound) throw createError.InternalServerError("دریافت اطلاعات با خطا مواجه شد");
   res.status(StatusCodes.OK).json({
