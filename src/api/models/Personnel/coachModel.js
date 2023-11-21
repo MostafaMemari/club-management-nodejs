@@ -8,7 +8,7 @@ const coachSchema = new mongoose.Schema(
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },
 
-    nationalID: { type: String, required: true },
+    nationalID: { type: String, required: true, unique: true },
 
     memberShipValidity: { type: Number },
 

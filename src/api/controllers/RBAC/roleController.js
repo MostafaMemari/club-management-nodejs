@@ -56,6 +56,21 @@ module.exports.getRole = AsyncHandler(async (req, res) => {
   });
 });
 
+//@desc Delete Role
+//@route Delete /api/v1/roles/:id
+//@acess  Private SUPER_Admin Only
+module.exports.deleteRole = AsyncHandler(async (req, res) => {
+  await checkExistRoleID(req.params.id);
+
+  const deletedRole = await roleModel.deleteOne({ _id: req.params.id });
+  if (!deletedRole.deletedCount) throw createError.InternalServerError("حذف نقش با خطا مواجه شد");
+
+  res.status(StatusCodes.OK).json({
+    status: "success",
+    message: "حذف نقش با موفقیت انجام شد",
+  });
+});
+
 const checkExistRoleID = async (id) => {
   if (!isValidObjectId(id)) throw createError.BadRequest("نفش وارد شده معتبر نمی باشد");
 
