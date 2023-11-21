@@ -4,6 +4,7 @@ const { roleModel } = require("../../models/RBAC/roleModel");
 const { copyObject, deleteInvalidPropertyInObject } = require("../../helpers/function");
 const createError = require("http-errors");
 const { StatusCodes } = require("http-status-codes");
+const { isValidObjectId } = require("mongoose");
 
 //@desc Create Role
 //@route POST /api/v1/roles
@@ -30,9 +31,23 @@ module.exports.createRole = AsyncHandler(async (req, res, next) => {
 
 //@desc Get All Roles
 //@route GET /api/v1/Roles
-//@acess  Private Admin Only
+//@acess  Private SUPER_Admin Only
 module.exports.getRoles = AsyncHandler(async (req, res) => {
   const roleFound = await roleModel.find({}).lean();
+  if (!roleFound) throw createError.InternalServerError("دریافت اطلاعات با خطا مواجه شد");
+  res.status(StatusCodes.OK).json({
+    status: "success",
+    message: "دریافت اطلاعات با موفقیت انجام شد",
+    data: roleFound,
+  });
+});
+
+//@desc Get Single Role
+//@route GET /api/v1/roles/:id
+//@acess  Private SUPER_Admin Only
+module.exports.getRole = AsyncHandler(async (req, res) => {
+  const roleFound = await checkExistRoleID(req.params.id);
+
   if (!roleFound) throw createError.InternalServerError("دریافت اطلاعات با خطا مواجه شد");
   res.status(StatusCodes.OK).json({
     status: "success",
