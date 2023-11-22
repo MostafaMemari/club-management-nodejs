@@ -27,6 +27,7 @@ module.exports.deleteFileInPublic = (fileAddress) => {
 };
 
 module.exports.validateItemArrayModel = async (model, array) => {
+  console.log(model);
   for (let i = 0; i < array.length; i++) {
     if (isValidObjectId(array[i])) {
       const beltFound = await model.findById(array[i]);

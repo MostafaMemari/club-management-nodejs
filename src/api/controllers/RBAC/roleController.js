@@ -5,7 +5,7 @@ const { copyObject, deleteInvalidPropertyInObject, validateItemArrayModel } = re
 const createError = require("http-errors");
 const { StatusCodes } = require("http-status-codes");
 const { isValidObjectId } = require("mongoose");
-const { permissionsModel } = require("../../models/RBAC/permissionModel");
+const { permissionModel } = require("../../models/RBAC/permissionModel");
 
 //@desc Create Role
 //@route POST /api/v1/roles
@@ -24,7 +24,7 @@ module.exports.createRole = AsyncHandler(async (req, res, next) => {
   let permissionsID = data.permissions || [];
   permissionsID = typeof permissionsID == "string" ? permissionsID.replace(/\s/g, "").split(" ") : permissionsID;
   // find And Validate Permission
-  const permissions = await validateItemArrayModel(permissionsModel, permissionsID);
+  const permissions = await validateItemArrayModel(permissionModel, permissionsID);
 
   // create
   const roleFound = new roleModel({ ...data, permissions });
@@ -39,7 +39,7 @@ module.exports.createRole = AsyncHandler(async (req, res, next) => {
 
 //@desc Update Role
 //@route PUT /api/v1/roles/:id
-//@acess  Private Admin Only
+//@acess  Private SUPER_Admin Only
 module.exports.updateRole = AsyncHandler(async (req, res) => {
   await checkExistRoleID(req.params.id);
 
@@ -70,8 +70,9 @@ module.exports.updateRole = AsyncHandler(async (req, res) => {
 //@route GET /api/v1/Roles
 //@acess  Private SUPER_Admin Only
 module.exports.getRoles = AsyncHandler(async (req, res) => {
-  const roleFound = await roleModel.find({}).lean();
+  const roleFound = await roleModel.find({}).populate("permissions").lean();
   if (!roleFound) throw createError.InternalServerError("دریافت اطلاعات با خطا مواجه شد");
+
   res.status(StatusCodes.OK).json({
     status: "success",
     message: "دریافت اطلاعات با موفقیت انجام شد",
@@ -123,9 +124,7 @@ module.exports.addPermissionToRole = AsyncHandler(async (req, res, next) => {
   let permissionsID = data.permissions || [];
   permissionsID = typeof permissionsID == "string" ? permissionsID.replace(/\s/g, "").split(" ") : permissionsID;
   // find And Validate Permission
-  const permissions = await validateItemArrayModel(permissionsModel, permissionsID);
-
-  console.log(permissions);
+  const permissions = await validateItemArrayModel(permissionModel, permissionsID);
 
   // add belt to BeltExam
   const roleUpdated = await roleModel.updateOne({ _id: req.params.id }, { $addToSet: { permissions } });
@@ -155,7 +154,7 @@ module.exports.removePermissionToRole = AsyncHandler(async (req, res, next) => {
 
   // find belt
   if (permissionID) {
-    const permissionFound = await permissionsModel.findById(permissionID).lean();
+    const permissionFound = await permissionModel.findById(permissionID).lean();
     if (!permissionFound) throw createError.NotFound("سطح دسترسی وارد شده صحیح نمی باشد");
   }
 
@@ -174,7 +173,7 @@ module.exports.removePermissionToRole = AsyncHandler(async (req, res, next) => {
 });
 
 const checkExistRoleID = async (id) => {
-  if (!isValidObjectId(id)) throw createError.BadRequest("نفش وارد شده معتبر نمی باشد");
+  if (!isValidObjectId(id)) throw createError.BadRequest("شناسه وارد شده معتبر نمی باشد");
 
   // find Role
   const roleFound = await roleModel.findById(id).lean();

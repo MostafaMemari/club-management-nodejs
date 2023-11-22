@@ -1,85 +1,118 @@
-const { PermissionsModel } = require("../../../../models/permission")
-const Controller = require("./../../controller")
-const {StatusCodes: HttpStatus} = require("http-status-codes")
-const createHttpError = require("http-errors");
-const { addPermissionSchema } = require("../../../validators/admin/RBAC.schema");
-const { copyObject, deleteInvalidPropertyInObject } = require("../../../../utils/functions");
-class PermissionControlller extends Controller {
-    async getAllPermissions(req, res, next){
-        try {
-            const permissions = await PermissionsModel.find({})
-            return res.status(HttpStatus.OK).json({
-                statusCode: HttpStatus.OK,
-                data: {
-                    permissions
-                }
-            })
-        } catch (error) {
-            next(error)
-        }
-    }
-    async removePermission(req, res, next){
-        try {
-            const {id} = req.params;
-            await this.findPermissionWithID(id)
-            const removePermissionResult = await PermissionsModel.deleteOne({_id: id})
-            if(!removePermissionResult.deletedCount) throw createHttpError.InternalServerError("دسترسی حذف نشد")
-            return res.status(HttpStatus.OK).json({
-                statusCode: HttpStatus.OK,
-                data: {
-                    message: "دسترسی با موفقیت حذف شد"
-                }
-            })
-        } catch (error) {
-            next(error)
-        }
-    }
-    async createNewPermission(req,res, next){
-        try {
-            const {name, description} = await addPermissionSchema.validateAsync(req.body);
-            await this.findPermissionWithName(name)
-            const permission = await PermissionsModel.create({ name, description })
-            if(!permission) throw createHttpError.InternalServerError("دسترسی ایجاد نشد")
-            return res.status(HttpStatus.CREATED).json({
-                statusCode: HttpStatus.CREATED,
-                data : {
-                    message: "دسترسی باموفقیت ایجاد شد"
-                }
-            })
-        } catch (error) {
-            next(error)
-        }
-    }
-    async updatePermissionByID(req, res, next){
-        try {
-            const {id} = req.params;
-            await this.findPermissionWithID(id)
-            const data = copyObject(req.body)
-            deleteInvalidPropertyInObject(data, [])
-            const updatePermissionResult = await PermissionsModel.updateOne({_id : id}, {
-                $set: data
-            });
-            if(!updatePermissionResult.modifiedCount) throw createHttpError.InternalServerError("ویرایش سطح انجام نشد")
-            return res.status(HttpStatus.OK).json({
-                statusCode: HttpStatus.OK,
-                data : {
-                    message: "ویرایش سطح با موفقیت انجام شد"
-                }
-            })
-        } catch (error) {
-            next(error)
-        }
-    }
-    async findPermissionWithName(name){
-        const permission =  await PermissionsModel.findOne({name});
-        if(permission) throw createHttpError.BadRequest("دسترسی قبلا ثبت شده")
-    }
-    async findPermissionWithID(_id){
-        const permission =  await PermissionsModel.findOne({_id});
-        if(!permission) throw createHttpError.NotFound("دسترسی یافت نشد")
-        return permission
-    }
+const AsyncHandler = require("express-async-handler");
+const { copyObject, deleteInvalidPropertyInObject } = require("../../helpers/function");
+const { permissionSchema } = require("../../validations/RBAC.Schema");
+const createError = require("http-errors");
+const { permissionModel } = require("../../models/RBAC/permissionModel");
+const { StatusCodes } = require("http-status-codes");
+const { isValidObjectId } = require("mongoose");
+const { roleModel } = require("../../models/RBAC/roleModel");
+
+//@desc Create Permission
+//@route POST /api/v1/permissions
+//@acess  Private SUPER_Admin Only
+module.exports.createPermission = AsyncHandler(async (req, res, next) => {
+  const data = copyObject(req.body);
+  deleteInvalidPropertyInObject(data);
+
+  // validate
+  const { name } = await permissionSchema.validateAsync(data);
+  if (!name) throw createError.BadRequest("عنوان نقش نمی تواند خالی باشد");
+
+  await checkExistPermissionName(name);
+
+  // create
+  const permissionFound = new permissionModel(data);
+  await permissionFound.save();
+  if (!permissionFound) throw createError.InternalServerError("ثبت سطح دسترسی با خطا مواجه شد");
+
+  res.status(StatusCodes.CREATED).json({
+    status: "success",
+    message: "ثبت سطح دسترسی با موفقیت انجام شد",
+  });
+});
+
+//@desc Update Permission
+//@route PUT /api/v1/permissions/:id
+//@acess  Private SUPER_Admin Only
+module.exports.updatePermission = AsyncHandler(async (req, res) => {
+  await checkExistPermissionID(req.params.id);
+
+  const data = copyObject(req.body);
+  deleteInvalidPropertyInObject(data);
+
+  // validate
+  const { name } = await permissionSchema.validateAsync(data);
+
+  // find Permission
+  if (name) {
+    const permissionFound = await permissionModel.findOne({ name });
+    if (permissionFound) throw createError.Conflict("نقش وارد شده تکراری می باشد");
+  }
+
+  // update
+  const permissionUpdated = await permissionModel.updateOne({ _id: req.params.id }, data);
+  if (!permissionUpdated) throw createError.InternalServerError("بروزرسانی رشته ورزشی با خطا مواجه شد");
+
+  res.status(StatusCodes.OK).json({
+    status: "success",
+    message: "بروزرسانی رشته ورزشی با موفقیت انجام شد",
+  });
+});
+
+//@desc Delete Permission
+//@route DELETE /api/v1/permissions/:id
+//@acess  Private SUPER_Admin Only
+module.exports.removePermission = AsyncHandler(async (req, res) => {
+  await checkExistPermissionID(req.params.id);
+
+  // Remove Permission By Role
+  await roleModel.updateMany({ permissions: req.params.id }, { $pull: { permissions: req.params.id } });
+
+  // update
+  const permissionDeleted = await permissionModel.deleteOne({ _id: req.params.id });
+  if (!permissionDeleted) throw createError.InternalServerError("حذف سطح دسترسی با خطا مواجه شد");
+
+  res.status(StatusCodes.OK).json({
+    status: "success",
+    message: "حدف سطح دسترسی با موفقیت انجام شد",
+  });
+});
+
+//@desc Get Single Permission
+//@route GET /api/v1/permissions/:id
+//@acess  Private SUPER_Admin Only
+module.exports.getPermission = AsyncHandler(async (req, res) => {
+  const permissionFound = await checkExistPermissionID(req.params.id);
+
+  res.status(StatusCodes.OK).json({
+    status: "success",
+    message: "دریافت اطلاعات با موفقیت انجام شد",
+    data: permissionFound,
+  });
+});
+
+//@desc Get All Permissions
+//@route GET /api/v1/permissions/
+//@acess  Private SUPER_Admin Only
+module.exports.getPermissions = AsyncHandler(async (req, res) => {
+  const permissionFound = await permissionModel.find({}).lean();
+
+  res.status(StatusCodes.OK).json({
+    status: "success",
+    message: "دریافت اطلاعات با موفقیت انجام شد",
+    data: permissionFound,
+  });
+});
+
+async function checkExistPermissionName(name) {
+  const permissionFound = await permissionModel.findOne({ name });
+  if (permissionFound) throw createError.BadRequest("سطح دسترسی وارد شده تکراری می باشد");
+  return permissionFound;
 }
-module.exports = {
-    PermissionControlller : new PermissionControlller()
+async function checkExistPermissionID(id) {
+  if (!isValidObjectId(id)) throw createError.BadRequest("شناسه وارد شده معتبر نمی باشد");
+
+  const permissionFound = await permissionModel.findById(id);
+  if (!permissionFound) throw createError.BadRequest("سطح دسترسی مورد نظر یافت نشد");
+  return permissionFound;
 }

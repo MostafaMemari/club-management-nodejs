@@ -1,10 +1,14 @@
-const { PermissionControlller } = require("../../http/controllers/admin/RBAC/permission.controller")
+const {
+  createPermission,
+  updatePermission,
+  removePermission,
+  getPermission,
+  getPermissions,
+} = require("../../controllers/RBAC/permissionController");
 
-const router = require("express").Router()
-router.get("/list", PermissionControlller.getAllPermissions)
-router.post("/add", PermissionControlller.createNewPermission)
-router.delete("/remove/:id", PermissionControlller.removePermission)
-router.patch("/update/:id", PermissionControlller.updatePermissionByID)
-module.exports = {
-    AdminApiPermissionRouter : router
-}
+const permissionRouter = require("express").Router();
+
+permissionRouter.route("/").post(createPermission).get(getPermissions);
+permissionRouter.route("/:id").put(updatePermission).delete(removePermission).get(getPermission);
+
+module.exports = { permissionRouter };
