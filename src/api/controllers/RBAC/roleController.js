@@ -20,10 +20,10 @@ module.exports.createRole = AsyncHandler(async (req, res, next) => {
 
   await checkExistRoleTitle(title);
 
-  // Normalize Belts
+  // Normalize Permission
   let permissionsID = data.permissions || [];
   permissionsID = typeof permissionsID == "string" ? permissionsID.replace(/\s/g, "").split(" ") : permissionsID;
-  // find And Validate Belt
+  // find And Validate Permission
   const permissions = await validateItemArrayModel(permissionsModel, permissionsID);
 
   // create
@@ -105,6 +105,71 @@ module.exports.deleteRole = AsyncHandler(async (req, res) => {
   res.status(StatusCodes.OK).json({
     status: "success",
     message: "حذف نقش با موفقیت انجام شد",
+  });
+});
+
+//@desc Add Belt to beltExam
+//@route PATCH /api/v1/roles/:id/permission/add
+//@acess  Private SUPER_Admin Only
+module.exports.addPermissionToRole = AsyncHandler(async (req, res, next) => {
+  const data = copyObject(req.body);
+  const blackListFields = ["title", "description"];
+  deleteInvalidPropertyInObject(data, blackListFields);
+
+  // validate
+  await checkExistRoleID(req.params.id);
+
+  // Normalize Permission
+  let permissionsID = data.permissions || [];
+  permissionsID = typeof permissionsID == "string" ? permissionsID.replace(/\s/g, "").split(" ") : permissionsID;
+  // find And Validate Permission
+  const permissions = await validateItemArrayModel(permissionsModel, permissionsID);
+
+  console.log(permissions);
+
+  // add belt to BeltExam
+  const roleUpdated = await roleModel.updateOne({ _id: req.params.id }, { $addToSet: { permissions } });
+  if (!roleUpdated.modifiedCount) throw createError.InternalServerError("ایجاد سطح دسترسی نقش با خطا مواجه شد");
+
+  res.status(StatusCodes.OK).json({
+    status: "success",
+    message: "سطح دسترسی مورد نظر با موفقیت به نقش اختصاص یافت",
+  });
+});
+
+//@desc Remove Permission to beltExam
+//@route PATCH /api/v1/roles/:id/permission/:permissionID/remove
+//@acess  Private SUPER_Admin Only
+module.exports.removePermissionToRole = AsyncHandler(async (req, res, next) => {
+  const data = copyObject(req.body);
+  const blackListFields = ["title", "description"];
+  deleteInvalidPropertyInObject(data, blackListFields);
+
+  const { id: roleID, permissionID } = req.params;
+
+  // validate
+  if (!isValidObjectId(permissionID)) throw createError.BadRequest("شناسه سطح دسترسی معتبر نمی باشد");
+
+  // find belt exam
+  const roleFound = await checkExistRoleID(roleID);
+
+  // find belt
+  if (permissionID) {
+    const permissionFound = await permissionsModel.findById(permissionID).lean();
+    if (!permissionFound) throw createError.NotFound("سطح دسترسی وارد شده صحیح نمی باشد");
+  }
+
+  const permissionArr = roleFound.permissions.map((objectId) => objectId.toString());
+  // check Permission in Role
+  if (!permissionArr.includes(permissionID)) throw createError.NotFound("سطح دسترسی وارد شده یافت نشد");
+
+  // remove Permission
+  const removePermossion = await roleModel.updateOne({ _id: roleID }, { $pull: { permissions: permissionID } });
+  if (!removePermossion.modifiedCount) throw createError.InternalServerError("حذف سطح دسترسی با خطا مواجه شد");
+
+  res.status(StatusCodes.OK).json({
+    status: "success",
+    message: "سطح دسترسی مورد نظر با موفقیت از نقش حذف شد",
   });
 });
 
