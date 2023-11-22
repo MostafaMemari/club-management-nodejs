@@ -12,7 +12,6 @@ function getToken(headers) {
 module.exports.isAuth = asyncHandler(async (req, res, next) => {
   const token = getToken(req?.headers);
   const verifiedToken = verifyToken(token);
-
   const user = await userModel.findById(verifiedToken.id).select("-password -createdAt -updatedAt");
   if (!user) user = await coachModel.findById(verifiedToken.id).select("-password -createdAt -updatedAt");
   if (!user) user = await studentModel.findById(verifiedToken.id).select("-password -createdAt -updatedAt");

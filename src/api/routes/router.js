@@ -1,3 +1,6 @@
+const { PERMISSIONS } = require("../helpers/constans.js");
+const { isAuth } = require("../middlewares/isAuth.js");
+const { checkPermission } = require("../middlewares/permission.guard.js");
 const { ageGroupRouter } = require("./BaseData/ageGroupRouter.js");
 const { beltExamRouter } = require("./BaseData/beltExamRouter.js");
 const { beltRouter } = require("./BaseData/beltRouter.js");
@@ -12,18 +15,18 @@ const { roleRouter } = require("./RBAC/roleRouter.js");
 const router = require("express").Router();
 
 router.use("/api/v1/users", userRouter);
-router.use("/api/v1/coachs", coachRouter);
-router.use("/api/v1/students", studentRouter);
+router.use("/api/v1/coachs", isAuth, coachRouter);
+router.use("/api/v1/students", isAuth, studentRouter);
 
 // RBAC
-router.use("/api/v1/roles", roleRouter);
-router.use("/api/v1/permissions", permissionRouter);
+router.use("/api/v1/roles", isAuth, checkPermission([PERMISSIONS.SUPER_ADMIN]), roleRouter);
+router.use("/api/v1/permissions", isAuth, checkPermission([PERMISSIONS.SUPER_ADMIN]), permissionRouter);
 
-router.use("/api/v1/clubs", clubRouter);
-router.use("/api/v1/sports", sportRouter);
-router.use("/api/v1/ages", ageGroupRouter);
-router.use("/api/v1/belts", beltRouter);
-router.use("/api/v1/belt-exams", beltExamRouter);
+router.use("/api/v1/clubs", isAuth, clubRouter);
+router.use("/api/v1/sports", isAuth, sportRouter);
+router.use("/api/v1/ages", isAuth, ageGroupRouter);
+router.use("/api/v1/belts", isAuth, beltRouter);
+router.use("/api/v1/belt-exams", isAuth, checkPermission([PERMISSIONS.ADMIN_CLUB]), beltExamRouter);
 
 // router.get("/api/v1/test", insertStudetnsJSON);
 
