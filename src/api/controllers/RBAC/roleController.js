@@ -1,10 +1,11 @@
 const AsyncHandler = require("express-async-handler");
-const { createRoleSchema } = require("../../validations/RBAC.Schema");
+const { roleSchema } = require("../../validations/RBAC.Schema");
 const { roleModel } = require("../../models/RBAC/roleModel");
-const { copyObject, deleteInvalidPropertyInObject } = require("../../helpers/function");
+const { copyObject, deleteInvalidPropertyInObject, validateItemArrayModel } = require("../../helpers/function");
 const createError = require("http-errors");
 const { StatusCodes } = require("http-status-codes");
 const { isValidObjectId } = require("mongoose");
+const { permissionsModel } = require("../../models/RBAC/permissionModel");
 
 //@desc Create Role
 //@route POST /api/v1/roles
@@ -14,18 +15,54 @@ module.exports.createRole = AsyncHandler(async (req, res, next) => {
   deleteInvalidPropertyInObject(data);
 
   // validate
-  const { title } = await createRoleSchema.validateAsync(data);
+  const { title } = await roleSchema.validateAsync(data);
+  if (!title) throw createError.BadRequest("عنوان نقش نمی تواند خالی باشد");
 
   await checkExistRoleTitle(title);
 
+  // Normalize Belts
+  let permissionsID = data.permissions || [];
+  permissionsID = typeof permissionsID == "string" ? permissionsID.replace(/\s/g, "").split(" ") : permissionsID;
+  // find And Validate Belt
+  const permissions = await validateItemArrayModel(permissionsModel, permissionsID);
+
   // create
-  const roleFound = new roleModel(data);
+  const roleFound = new roleModel({ ...data, permissions });
   await roleFound.save();
   if (!roleFound) throw createError.InternalServerError("ثبت نقش با خطا مواجه شد");
 
   res.status(StatusCodes.CREATED).json({
     status: "success",
     message: "ثبت نقش با موفقیت انجام شد",
+  });
+});
+
+//@desc Update Role
+//@route PUT /api/v1/roles/:id
+//@acess  Private Admin Only
+module.exports.updateRole = AsyncHandler(async (req, res) => {
+  await checkExistRoleID(req.params.id);
+
+  const data = copyObject(req.body);
+  deleteInvalidPropertyInObject(data, ["permissions"]);
+
+  // validate
+  await roleSchema.validateAsync(data);
+
+  const { name } = data;
+  // find role
+  if (name) {
+    const roleFound = await roleModel.findOne({ name });
+    if (roleFound) throw createError.Conflict("نقش وارد شده تکراری می باشد");
+  }
+
+  // update
+  const roleUpdated = await roleModel.updateOne({ _id: req.params.id }, data);
+  if (!roleUpdated) throw createError.InternalServerError("بروزرسانی رشته ورزشی با خطا مواجه شد");
+
+  res.status(StatusCodes.CREATED).json({
+    status: "success",
+    message: "بروزرسانی رشته ورزشی با موفقیت انجام شد",
   });
 });
 

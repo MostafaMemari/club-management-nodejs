@@ -84,7 +84,7 @@ module.exports.updateSport = AsyncHandler(async (req, res) => {
   }
 
   // update
-  const sportUpdated = await sportModel.updateMany({ _id: req.params.id }, data);
+  const sportUpdated = await sportModel.updateOne({ _id: req.params.id }, data);
   if (!sportUpdated) throw createError.InternalServerError("بروزرسانی رشته ورزشی با خطا مواجه شد");
 
   res.status(StatusCodes.CREATED).json({

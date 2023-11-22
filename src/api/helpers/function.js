@@ -2,6 +2,7 @@ const path = require("path");
 const fs = require("fs");
 
 const createError = require("http-errors");
+const { isValidObjectId } = require("mongoose");
 
 module.exports.deleteInvalidPropertyInObject = (data = {}, blackListFields = []) => {
   let nullishData = ["", " ", "0", 0, null, undefined];
@@ -23,4 +24,22 @@ module.exports.deleteFileInPublic = (fileAddress) => {
     const pathFile = path.join(__dirname, "..", "..", "public", fileAddress);
     if (fs.existsSync(pathFile)) fs.unlinkSync(pathFile);
   }
+};
+
+module.exports.validateItemArrayModel = async (model, array) => {
+  for (let i = 0; i < array.length; i++) {
+    if (isValidObjectId(array[i])) {
+      const beltFound = await model.findById(array[i]);
+      if (!beltFound) {
+        array.splice(i, 1);
+        i--;
+      }
+    } else {
+      array.splice(i, 1);
+      i--;
+    }
+  }
+  const set = new Set(array);
+  const uniqueArray = Array.from(set);
+  return uniqueArray;
 };

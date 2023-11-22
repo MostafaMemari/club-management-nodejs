@@ -4,7 +4,7 @@ const { StatusCodes } = require("http-status-codes");
 const { isValidObjectId } = require("mongoose");
 
 const { beltModel } = require("../../models/BaseData/beltModel");
-const { copyObject, deleteInvalidPropertyInObject } = require("../../helpers/function");
+const { copyObject, deleteInvalidPropertyInObject, validateItemArrayModel } = require("../../helpers/function");
 const { beltExamSchema, beltExamUpdateSchema } = require("../../validations/clubSchema");
 const { beltExamModel } = require("../../models/BaseData/beltExamModel");
 
@@ -18,28 +18,29 @@ module.exports.createBeltExam = AsyncHandler(async (req, res, next) => {
   // validate
   await beltExamSchema.validateAsync(data);
 
-  const { beltID, gender, name } = data;
+  const { gender, name } = data;
 
   // find Belt Exam
   const beltExamFound = await beltExamModel.findOne({ name, gender });
   if (beltExamFound) throw createError.Conflict("آزمون کمربند وارد شده تکراری می باشد");
 
-  // find Belt
-  for (const i in beltID) {
-    if (!isValidObjectId(beltID[i])) throw createError.BadRequest("شناسه کمربند وارد شده معتبر نمی باشد");
-    const beltFound = await beltModel.findById(beltID[i]);
-    if (!beltFound) throw createError.NotFound("کمربند های وارد شده معتبر نمی باشد");
-  }
+  // Normalize Belts
+  let beltID = data.beltID || [];
+  beltID = typeof beltID == "string" ? beltID.replace(/\s/g, "").split(" ") : beltID;
+  // find And Validate Belt
+  const belts = await validateItemArrayModel(beltModel, beltID);
+
+  console.log(belts);
 
   // create
-  const beltExamCreated = new beltExamModel(data);
+  const beltExamCreated = new beltExamModel({ ...data, beltsID: belts });
   await beltExamCreated.save();
   if (!beltExamCreated) throw createError.InternalServerError("ثبت آزمون با خطا مواجه شد");
 
   res.status(StatusCodes.CREATED).json({
     status: "success",
     message: "ثبت آزمون با موفقیت انجام شد",
-    beltExamCreated,
+    // beltExamCreated,
   });
 });
 
@@ -142,28 +143,19 @@ module.exports.addBeltToBeltExam = AsyncHandler(async (req, res, next) => {
   // validate
   await checkExistBeltExam(req.params.id);
 
-  const { beltID } = data;
-  // find Belt
-  for (const i in beltID) {
-    if (typeof beltID == "string") {
-      if (!isValidObjectId(beltID)) throw createError.BadRequest("شناسه کمربند وارد شده معتبر نمی باشد");
-      const beltFound = await beltModel.findById(beltID);
-      if (!beltFound) throw createError.NotFound("کمربند وارد شده معتبر نمی باشد");
-    } else {
-      if (!isValidObjectId(beltID[i])) throw createError.BadRequest("شناسه کمربند وارد شده معتبر نمی باشد");
-      const beltFound = await beltModel.findById(beltID[i]);
-      if (!beltFound) beltID.splice(i, 1);
-    }
-  }
+  // Normalize Belts
+  let { beltID } = data;
+  beltID = typeof beltID == "string" ? beltID.replace(/\s/g, "").split(" ") : beltID;
+  // find And Validate Belt
+  const belts = await validateItemArrayModel(beltModel, beltID);
 
-  // update
-  const beltExamUpdated = await beltExamModel.updateOne({ _id: req.params.id }, { $addToSet: { beltID } });
+  // add belt to BeltExam
+  const beltExamUpdated = await beltExamModel.updateOne({ _id: req.params.id }, { $addToSet: { beltID: belts } });
   if (!beltExamUpdated.modifiedCount) throw createError.InternalServerError("ایجاد کمربند با خطا مواجه شد");
 
   res.status(StatusCodes.OK).json({
     status: "success",
     message: "کمربند مورد نظر با موفقیت به آزمون اضافه شد",
-    // beltExamUpdated,
   });
 });
 
@@ -203,7 +195,7 @@ module.exports.removeBeltToBeltExam = AsyncHandler(async (req, res, next) => {
 });
 
 const checkExistBeltExam = async (id) => {
-  if (!isValidObjectId(req.params.id)) throw createError.BadRequest("شناسه وارد شده رده سنی صحیح نمی باشد");
+  if (!isValidObjectId(id)) throw createError.BadRequest("شناسه وارد شده رده سنی صحیح نمی باشد");
 
   // find Belt Exam
   const beltExamFound = await beltExamModel.findById(id);
