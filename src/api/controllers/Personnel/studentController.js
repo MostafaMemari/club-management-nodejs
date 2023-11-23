@@ -9,9 +9,10 @@ const { isValidObjectId } = require("mongoose");
 const path = require("path");
 const { normalizeDataDates, normalizePhoneNumber } = require("../../helpers/normalizeData");
 const { validate_nationalId_clubId_coachId_beltId } = require("../../helpers/validateFoundDB");
+const { generateToken } = require("../../services/tokenServices");
 
 //@desc Register Student
-//@route POST /api/v1/students
+//@route POST /api/v1/students/register
 //@acess
 exports.registerStudent = async (req, res, next) => {
   try {
@@ -66,6 +67,35 @@ exports.registerStudent = async (req, res, next) => {
     next(error);
   }
 };
+
+//@desc Login Student
+//@route POST /api/v1/students/login
+//@acess
+exports.loginStudent = AsyncHandler(async (req, res) => {
+  const data = copyObject(req.body);
+
+  const { username, password } = data;
+
+  // check student found
+  if (!username) throw createError.Unauthorized("نام کاربری یا رمز عبور اشتباه می باشد");
+
+  const studentFound = await studentModel.findOne({ nationalID: username });
+  if (!studentFound) throw createError.Unauthorized("نام کاربری یا رمز عبور اشتباه می باشد");
+
+  // check valid password
+  const isValidPassword = password === "123456";
+  if (!isValidPassword) throw createError.Unauthorized("نام کاربری یا رمز عبور اشتباه می باشد");
+
+  const token = generateToken({ id: studentFound._id });
+
+  res.status(StatusCodes.OK).json({
+    status: "success",
+    message: "با موفقیت وارد سیستم شدید",
+    data: {
+      token,
+    },
+  });
+});
 
 //@desc Update Student
 //@route PUT /api/v1/students/:id

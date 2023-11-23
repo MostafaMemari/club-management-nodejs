@@ -5,6 +5,7 @@ const {
   deleteStudent,
   registerStudent,
   profileStudent,
+  loginStudent,
 } = require("../../controllers/Personnel/studentController");
 const { PERMISSIONS } = require("../../helpers/constans");
 const { advancedResult } = require("../../middlewares/advancedResult");
@@ -13,10 +14,10 @@ const { uploadMulter } = require("../../services/multer");
 
 const studentRouter = require("express").Router();
 
-studentRouter
-  .route("/")
-  .post(checkPermission(["student"]), uploadMulter.single("image"), registerStudent)
-  .get(checkPermission(["student"]), getStudents);
+studentRouter.post("/register", checkPermission(["student"]), uploadMulter.single("image"), registerStudent);
+studentRouter.post("/login", loginStudent);
+
+studentRouter.route("/").get(checkPermission(["student"]), getStudents);
 
 studentRouter.get("/profile", checkPermission([PERMISSIONS.STUDENT]), profileStudent);
 

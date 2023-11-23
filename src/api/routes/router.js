@@ -18,7 +18,7 @@ const router = require("express").Router();
 // Personel
 router.use("/api/v1/users", userRouter);
 router.use("/api/v1/coachs", coachRouter);
-router.use("/api/v1/students", isAuth, studentRouter);
+router.use("/api/v1/students", studentRouter);
 
 // Management
 router.use("/api/v1/clubs", isAuth, clubRouter);

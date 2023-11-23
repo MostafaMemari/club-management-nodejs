@@ -2,6 +2,8 @@ const asyncHandler = require("express-async-handler");
 const createError = require("http-errors");
 const { verifyToken } = require("../services/tokenServices");
 const { userModel } = require("../models/Personnel/userModel");
+const { coachModel } = require("../models/Personnel/coachModel");
+const { studentModel } = require("../models/Personnel/studentModel");
 
 function getToken(headers) {
   const [bearer, token] = headers?.authorization?.split(" ") || [];
@@ -12,7 +14,7 @@ function getToken(headers) {
 module.exports.isAuth = asyncHandler(async (req, res, next) => {
   const token = getToken(req?.headers);
   const verifiedToken = verifyToken(token);
-  const user = await userModel.findById(verifiedToken.id).select("-password -createdAt -updatedAt");
+  let user = await userModel.findById(verifiedToken.id).select("-password -createdAt -updatedAt");
   if (!user) user = await coachModel.findById(verifiedToken.id).select("-password -createdAt -updatedAt");
   if (!user) user = await studentModel.findById(verifiedToken.id).select("-password -createdAt -updatedAt");
   if (!user) throw createError.Unauthorized("حساب کاربری یافت نشد");

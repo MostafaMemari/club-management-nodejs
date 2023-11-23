@@ -68,7 +68,7 @@ exports.loginCoach = AsyncHandler(async (req, res, next) => {
 
   const { username, password } = data;
 
-  // check user found
+  // check coach found
   if (!username) throw createError.Unauthorized("نام کاربری یا رمز عبور اشتباه می باشد");
 
   const coachFound = await coachModel.findOne({ nationalID: username });
