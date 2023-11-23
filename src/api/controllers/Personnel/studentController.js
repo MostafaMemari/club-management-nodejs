@@ -47,7 +47,11 @@ exports.registerStudent = async (req, res, next) => {
     await validate_nationalId_clubId_coachId_beltId(nationalID, clubID, coachID, beltID);
 
     // create
-    const studentCreated = await studentModel.create(data);
+    const studentCreated = await studentModel.create({
+      ...data,
+      createdBy: req.userAuth._id,
+      modelCreatedBy: req.userAuth.role == "COACH" ? "coach" : "user",
+    });
     if (!studentCreated) throw createError.InternalServerError("ثبت نام با خطا مواجه شد");
 
     res.status(StatusCodes.CREATED).json({
@@ -57,6 +61,7 @@ exports.registerStudent = async (req, res, next) => {
       // data: studentCreated,
     });
   } catch (error) {
+    console.log(error);
     deleteFileInPublic(req.body.imageUrl);
     next(error);
   }
@@ -174,7 +179,10 @@ const checkExistStudent = async (id) => {
     .populate("clubID", "name")
     .populate("beltID", "name")
     .populate("ageGroupID", "name description")
-    .populate("coachID", "firstName lastName");
+    .populate("coachID", "firstName lastName")
+    .populate("createdBy", "-password");
+
+  console.log(studentFound);
   if (!studentFound) throw createError.NotFound("دریافت اطلاعات با خطا مواجه شد");
   return studentFound;
 };

@@ -1,6 +1,6 @@
 const { normalizenationalID } = require("../helpers/normalizeData");
-const { beltModel } = require("../models/baseData/beltModel");
-const { studentModel } = require("../../models/Admin/studentModel");
+const { beltModel } = require("../models/BaseData/beltModel");
+const { studentModel } = require("../models/Personnel/studentModel");
 
 module.exports.insertStudetnsJSON = async (req, res, next) => {
   try {

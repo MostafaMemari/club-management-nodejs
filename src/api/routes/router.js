@@ -1,3 +1,4 @@
+const { insertStudetnsJSON } = require("../controllers/testController.js");
 const { PERMISSIONS } = require("../helpers/constans.js");
 const { isAuth } = require("../middlewares/isAuth.js");
 const { checkPermission } = require("../middlewares/permission.guard.js");
@@ -16,7 +17,7 @@ const router = require("express").Router();
 
 // Personel
 router.use("/api/v1/users", userRouter);
-router.use("/api/v1/coachs", isAuth, checkPermission([PERMISSIONS.ADMIN_CLUB]), coachRouter);
+router.use("/api/v1/coachs", coachRouter);
 router.use("/api/v1/students", isAuth, studentRouter);
 
 // Management
@@ -32,7 +33,7 @@ router.use("/api/v1/belt-exams", isAuth, beltExamRouter);
 router.use("/api/v1/roles", isAuth, checkPermission([PERMISSIONS.SUPER_ADMIN]), roleRouter);
 router.use("/api/v1/permissions", isAuth, checkPermission([PERMISSIONS.SUPER_ADMIN]), permissionRouter);
 
-// router.get("/api/v1/test", insertStudetnsJSON);
+router.get("/api/v1/test", insertStudetnsJSON);
 
 module.exports = {
   AllRouter: router,

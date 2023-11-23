@@ -2,9 +2,9 @@ const mongoose = require("mongoose");
 const { shamsiToMiladi } = require("../../helpers/dateConvarter");
 const { assignAgeGroups } = require("../../helpers/assignAgeGroups");
 
-const { Types } = mongoose;
+const { Types, Schema } = mongoose;
 
-const studentSchema = new mongoose.Schema(
+const studentSchema = new Schema(
   {
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },
@@ -38,8 +38,16 @@ const studentSchema = new mongoose.Schema(
     ageGroupID: [{ type: Types.ObjectId, ref: "ageGroup" }],
 
     coachID: { type: Types.ObjectId, ref: "coach" },
-    createdBy: { type: Types.ObjectId },
+
+    createdBy: { type: Schema.Types.ObjectId, required: true, refPath: "modelCreatedBy" },
+
+    modelCreatedBy: {
+      type: String,
+      required: true,
+      enum: ["user", "coach"],
+    },
   },
+
   {
     versionKey: false,
     timestamps: true,

@@ -9,6 +9,8 @@ const clubSchema = new mongoose.Schema(
     address: { type: String },
     phone: { type: String },
 
+    createdBy: [{ type: Types.ObjectId, ref: "", required: true }],
+
     sportID: [{ type: Types.ObjectId, ref: "sport" }],
   },
   { versionKey: false }

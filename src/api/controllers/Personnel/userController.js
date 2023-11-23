@@ -74,7 +74,7 @@ module.exports.loginUser = asyncHandler(async (req, res) => {
 module.exports.userProfile = asyncHandler(async (req, res) => {
   res.status(StatusCodes.OK).json({
     status: "success",
-    message: "تمام کاربران با موفقیت دریافت شدند",
+    message: "دریافت اطلاعات با موفقیت انجام شد",
     data: req.userAuth,
   });
 });

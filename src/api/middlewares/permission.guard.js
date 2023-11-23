@@ -19,7 +19,6 @@ function checkPermission(requiredPermissions = []) {
 
     const userPermissions = permissions.map((item) => item.name);
 
-    console.log(userPermissions);
     const hasPermission = allPermissions.every((permission) => {
       return userPermissions.includes(permission);
     });

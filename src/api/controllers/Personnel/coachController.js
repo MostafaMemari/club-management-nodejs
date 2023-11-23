@@ -8,9 +8,11 @@ const path = require("path");
 const { isValidObjectId } = require("mongoose");
 const { validate_nationalId_clubId_coachId_beltId } = require("../../helpers/validateFoundDB");
 const { normalizeDataDates, normalizePhoneNumber } = require("../../helpers/normalizeData");
+const { isPassMatched } = require("../../services/passwordServices");
+const { generateToken } = require("../../services/tokenServices");
 
-//@desc Register Coach By Admin
-//@route POST /api/v1/coachs
+//@desc Register Coach
+//@route POST /api/v1/coachs/register
 //@acess Private Admin Only
 exports.registerCoach = async (req, res, next) => {
   try {
@@ -58,6 +60,34 @@ exports.registerCoach = async (req, res, next) => {
   }
 };
 
+//@desc Login Coach
+//@route POST /api/v1/coachs/register
+//@acess Private Admin Only
+exports.loginCoach = AsyncHandler(async (req, res, next) => {
+  const data = copyObject(req.body);
+
+  const { username, password } = data;
+
+  // check user found
+  if (!username) throw createError.Unauthorized("نام کاربری یا رمز عبور اشتباه می باشد");
+
+  const coachFound = await coachModel.findOne({ nationalID: username });
+  if (!coachFound) throw createError.Unauthorized("نام کاربری یا رمز عبور اشتباه می باشد");
+
+  // check valid password
+  const isValidPassword = password === "123456";
+  if (!isValidPassword) throw createError.Unauthorized("نام کاربری یا رمز عبور اشتباه می باشد");
+
+  const token = generateToken({ id: coachFound._id });
+
+  res.status(StatusCodes.OK).json({
+    status: "success",
+    message: "با موفقیت وارد سیستم شدید",
+    data: {
+      token,
+    },
+  });
+});
 //@desc Update Coach By Admin
 //@route PUT /api/v1/coachs/:id/admin
 //@acess Private Admin Only

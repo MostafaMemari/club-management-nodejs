@@ -15,8 +15,8 @@ const studentRouter = require("express").Router();
 
 studentRouter
   .route("/")
-  .post(uploadMulter.single("image"), registerStudent)
-  .get(checkPermission([PERMISSIONS.COACH]), getStudents);
+  .post(checkPermission(["student"]), uploadMulter.single("image"), registerStudent)
+  .get(checkPermission(["student"]), getStudents);
 
 studentRouter.get("/profile", checkPermission([PERMISSIONS.STUDENT]), profileStudent);
 
