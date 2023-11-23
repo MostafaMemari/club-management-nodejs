@@ -137,6 +137,19 @@ exports.getStudent = AsyncHandler(async (req, res) => {
   });
 });
 
+//@desc Profile Student
+//@route GET /api/v1/students/profile
+//@acess
+exports.profileStudent = AsyncHandler(async (req, res) => {
+  const students = req.userAuth;
+
+  res.status(StatusCodes.OK).json({
+    status: "success",
+    message: "دریافت اطلاعات با موفقیت انجام شد",
+    data: students,
+  });
+});
+
 //@desc Delete Student
 //@route DELETE /api/v1/students/:id
 //@acess

@@ -12,7 +12,7 @@ module.exports = {
     ALL: "all",
     SUPER_ADMIN: ["all"],
     ADMIN_CLUB: ["coach", "student", "club"],
-    TEACHER: ["course", "blog"],
+    COACH: ["student"],
     STUDENT: ["profile"],
   }),
 };

@@ -7,6 +7,7 @@ const AsyncHandler = require("express-async-handler");
 function checkPermission(requiredPermissions = []) {
   return AsyncHandler(async function (req, res, next) {
     const allPermissions = requiredPermissions.flat(2);
+
     const user = req.userAuth;
 
     // get Role user
@@ -18,6 +19,7 @@ function checkPermission(requiredPermissions = []) {
 
     const userPermissions = permissions.map((item) => item.name);
 
+    console.log(userPermissions);
     const hasPermission = allPermissions.every((permission) => {
       return userPermissions.includes(permission);
     });

@@ -10,7 +10,7 @@ const { validate_nationalId_clubId_coachId_beltId } = require("../../helpers/val
 const { normalizeDataDates, normalizePhoneNumber } = require("../../helpers/normalizeData");
 
 //@desc Register Coach By Admin
-//@route POST /api/v1/coachs/admin/register
+//@route POST /api/v1/coachs
 //@acess Private Admin Only
 exports.registerCoach = async (req, res, next) => {
   try {
