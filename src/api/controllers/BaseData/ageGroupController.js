@@ -105,7 +105,7 @@ module.exports.getAgeGroup = AsyncHandler(async (req, res) => {
 //@route PUT /api/v1/ages/
 //@acess  Public
 module.exports.getAgeGroups = AsyncHandler(async (req, res) => {
-  const ageGroups = await ageGroupModel.find({}).select("name description").lean();
+  const ageGroups = await ageGroupModel.find({}).select("-fromDateEN -toDateEN").lean();
   if (!ageGroups) throw createError.InternalServerError("دریافت رده های سنی با خطا مواجه شد");
 
   res.status(StatusCodes.OK).json({

@@ -19,7 +19,7 @@ studentRouter.post("/register", checkPermission(["student"]), uploadMulter.singl
 studentRouter.post("/login", loginStudent);
 studentRouter.get("/profile", isAuth, checkPermission([PERMISSIONS.STUDENT]), profileStudent);
 
-studentRouter.route("/").get(checkPermission(["student"]), getStudents);
+studentRouter.route("/").get(isAuth, checkPermission(["student"]), getStudents);
 studentRouter.route("/:id").put(updateStudent).get(getStudent).delete(deleteStudent);
 
 studentRouter;

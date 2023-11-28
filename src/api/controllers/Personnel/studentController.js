@@ -151,6 +151,7 @@ exports.getStudents = AsyncHandler(async (req, res) => {
     .populate("ageGroupID", "name description")
     .populate("coachID", "firstName lastName");
   if (!students) throw createError.InternalServerError("دریافت اطلاعات با خطا مواجه شد");
+
   res.status(StatusCodes.OK).json({
     status: "success",
     message: "دریافت اطلاعات با موفقیت انجام شد",
