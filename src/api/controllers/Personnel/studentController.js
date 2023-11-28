@@ -176,12 +176,21 @@ exports.getStudent = AsyncHandler(async (req, res) => {
 //@route GET /api/v1/students/profile
 //@acess
 exports.profileStudent = AsyncHandler(async (req, res) => {
-  const students = req.userAuth;
+  const studentID = req.userAuth._id;
+
+  const profileStudent = await studentModel
+    .findById(studentID)
+    .populate("clubID", "name")
+    .populate("beltID", "name")
+    .populate("ageGroupID", "name description")
+    .populate("coachID", "firstName lastName");
+
+  if (!profileStudent) throw createError.InternalServerError("دریافت اطلاعات با خطا مواجه شد");
 
   res.status(StatusCodes.OK).json({
     status: "success",
     message: "دریافت اطلاعات با موفقیت انجام شد",
-    data: students,
+    data: profileStudent ? profileStudent : {},
   });
 });
 

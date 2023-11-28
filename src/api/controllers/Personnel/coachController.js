@@ -88,6 +88,24 @@ exports.loginCoach = AsyncHandler(async (req, res, next) => {
     },
   });
 });
+
+//@desc Profile Coach
+//@route POST /api/v1/coachs/profile
+//@acess Private Coach
+exports.profileCoach = AsyncHandler(async (req, res, next) => {
+  const coachID = req.userAuth._id;
+
+  const profileCoach = await coachModel.findById(coachID).populate("clubID", "name").populate("beltID", "name");
+
+  if (!profileCoach) throw createError.InternalServerError("دریافت اطلاعات با خطا مواجه شد");
+
+  res.status(StatusCodes.OK).json({
+    status: "success",
+    message: "دریافت اطلاعات با موفقیت انجام شد",
+    data: profileCoach ? profileCoach : {},
+  });
+});
+
 //@desc Update Coach By Admin
 //@route PUT /api/v1/coachs/:id/admin
 //@acess Private Admin Only
