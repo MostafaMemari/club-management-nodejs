@@ -15,7 +15,7 @@ const { uploadMulter } = require("../../services/multer");
 
 const studentRouter = require("express").Router();
 
-studentRouter.post("/register", checkPermission(["student"]), uploadMulter.single("image"), registerStudent);
+studentRouter.post("/register", isAuth, checkPermission(["student"]), uploadMulter.single("image"), registerStudent);
 studentRouter.post("/login", loginStudent);
 studentRouter.get("/profile", isAuth, checkPermission([PERMISSIONS.STUDENT]), profileStudent);
 

@@ -3,6 +3,7 @@ const { clubModel } = require("../models/Management/clubModel");
 const { coachModel } = require("../models/Personnel/coachModel");
 const { studentModel } = require("../models/Personnel/studentModel");
 const createError = require("http-errors");
+const { normalizenationalID } = require("./normalizeData");
 
 module.exports.validate_nationalId_clubId_coachId_beltId = async (nationalID, clubID, coachID, beltID) => {
   // find student By nationalID
