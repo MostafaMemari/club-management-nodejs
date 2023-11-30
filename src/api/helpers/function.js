@@ -5,6 +5,8 @@ const createError = require("http-errors");
 const { isValidObjectId } = require("mongoose");
 const { normalizeCalendar, normalizeDataDates } = require("./normalizeData");
 const { shamsiToMiladi } = require("./dateConvarter");
+const { beltExamModel } = require("../models/BaseData/beltExamModel");
+const { beltModel } = require("../models/BaseData/beltModel");
 
 module.exports.deleteInvalidPropertyInObject = (data = {}, blackListFields = []) => {
   let nullishData = ["", " ", "0", 0, null, undefined];
@@ -14,11 +16,12 @@ module.exports.deleteInvalidPropertyInObject = (data = {}, blackListFields = [])
     if (Array.isArray(data[key]) && data[key].length > 0) data[key] = data[key].map((item) => item.trim());
     if (Array.isArray(data[key]) && data[key].length == 0) delete data[key];
     if (nullishData.includes(data[key])) delete data[key];
-    if (data[key]) data[key] = this.toEnglish(data[key]);
+    // if (data[key]) data[key] = this.toEnglish(data[key]);
   });
 };
 
 module.exports.toEnglish = (persianNumber) => {
+  console.log(persianNumber);
   const pn = ["۰", "۱", "۲", "۳", "۴", "۵", "۶", "۷", "۸", "۹"];
   const en = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
   let cache = persianNumber;
@@ -78,4 +81,41 @@ module.exports.dateDiffDayNowShamsi = (beltDate) => {
   // اختلاف روز بین دو تاریخ
   const difference = Math.floor((date1 - date2) / 86400000);
   return difference;
+};
+
+module.exports.dateBeltExamNext = async (belt, beltDate) => {
+  const nextBeltDate = new Date(shamsiToMiladi(beltDate));
+
+  if (belt.name === "سفید") {
+    const nextBelt = await beltModel.findOne({ name: "زرد" });
+    return await beltExamModel.find({ beltID: nextBelt._id });
+  }
+  if (belt.name === "زرد") {
+    const nextBelt = await beltModel.findOne({ name: "سبز" });
+    return await beltExamModel.find({ beltID: nextBelt._id });
+  }
+  if (belt.name === "سبز") {
+    const nextBelt = await beltModel.findOne({ name: "آبی" });
+    return await beltExamModel.find({ beltID: nextBelt._id, eventDateEN: { $gte: nextBeltDate } }).lean();
+  }
+  if (belt.name === "قرمز") {
+    const nextBelt = await beltModel.findOne({ $or: [{ name: "پوم 1" }, { name: "مشکی دان 1" }] });
+    return await beltExamModel.find({ beltID: nextBelt._id });
+  }
+  if (belt.name === "پوم 1" || belt.name === "مشکی دان 1") {
+    const nextBelt = await beltModel.find({ $or: [{ name: "پوم 2" }, { name: "مشکی دان 2" }] });
+    return await beltExamModel.find({ $or: [{ beltID: nextBelt[0]._id }, { beltID: nextBelt[1]._id }] });
+  }
+  if (belt.name === "پوم 2" || belt.name === "مشکی دان 2") {
+    const nextBelt = await beltModel.find({ $or: [{ name: "پوم 3" }, { name: "مشکی دان 3" }] });
+    return await beltExamModel.find({ $or: [{ beltID: nextBelt[0]._id }, { beltID: nextBelt[1]._id }] });
+  }
+  if (belt.name === "پوم 3" || belt.name === "مشکی دان 3") {
+    const nextBelt = await beltModel.find({ $or: [{ name: "پوم 4" }, { name: "مشکی دان 4" }] });
+    return await beltExamModel.find({ $or: [{ beltID: nextBelt[0]._id }, { beltID: nextBelt[1]._id }] });
+  }
+  if (belt.name === "مشکی دان 5") {
+    const nextBelt = await beltModel.findOne({ name: "مشکی دان 6" });
+    return await beltExamModel.find({ beltID: nextBelt._id });
+  }
 };

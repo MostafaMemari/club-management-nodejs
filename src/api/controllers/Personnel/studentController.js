@@ -8,12 +8,13 @@ const {
   dateNowIR,
   nextBeltDate,
   dateDiffDayNowShamsi,
+  dateBeltExamNext,
 } = require("../../helpers/function");
 const createError = require("http-errors");
 const { StatusCodes } = require("http-status-codes");
 const { studentModel } = require("../../models/Personnel/studentModel");
 
-const { isValidObjectId } = require("mongoose");
+const { isValidObjectId, default: mongoose } = require("mongoose");
 const path = require("path");
 const { normalizeDataDates, normalizePhoneNumber, normalizeCalendar } = require("../../helpers/normalizeData");
 const { validate_nationalId_clubId_coachId_beltId } = require("../../helpers/validateFoundDB");
@@ -223,67 +224,13 @@ exports.getStudent = AsyncHandler(async (req, res) => {
 exports.profileStudent = AsyncHandler(async (req, res) => {
   const studentID = req.userAuth._id;
 
-  // const profileStudent = await studentModel
-  //   .findById(studentID)
-  //   .populate("clubID", "name")
-  //   .populate("beltID")
-  //   .populate("ageGroupID", "name description")
-  //   .populate("coachID", "firstName lastName");
+  const profileStudent = await checkExistStudent(studentID);
 
-  const profileStudent = await studentModel
-    .aggregate([
-      {
-        $match: { _id: studentID },
-      },
-      {
-        $lookup: {
-          from: "clubs",
-          localField: "clubID",
-          foreignField: "_id",
-          as: "club",
-        },
-      },
-      {
-        $unwind: "$club",
-      },
-      {
-        $lookup: {
-          from: "agegroups",
-          localField: "ageGroupID",
-          foreignField: "_id",
-          as: "ageGroup",
-        },
-      },
-      {
-        $lookup: {
-          from: "belts",
-          localField: "beltID",
-          foreignField: "_id",
-          as: "belt",
-        },
-      },
-      {
-        $unwind: "$belt",
-      },
-      {
-        $project: {
-          clubID: 0,
-          beltID: 0,
-          ageGroupID: 0,
-          createdAt: 0,
-          updatedAt: 0,
-          beltDateEN: 0,
-          birthDayEN: 0,
-          "ageGroup.fromDateEN": 0,
-          "ageGroup.toDateEN": 0,
-        },
-      },
-    ])
-    .then((items) => items[0]);
-
+  const dateNextBelt = nextBeltDate(profileStudent.beltDateIR, profileStudent.belt.duration);
   const nextBeltDateIR = {
-    dateNextBelt: nextBeltDate(profileStudent.beltDateIR, profileStudent.belt.duration),
-    dayNextBelt: dateDiffDayNowShamsi(nextBeltDate(profileStudent.beltDateIR, profileStudent.belt.duration)),
+    dateNextBelt: dateNextBelt,
+    dayNextBelt: dateDiffDayNowShamsi(dateNextBelt),
+    dateBeltExamNext: await dateBeltExamNext(profileStudent.belt, dateNextBelt),
   };
   profileStudent.nextBeltDate = nextBeltDateIR;
 
@@ -352,13 +299,67 @@ const checkExistStudent = async (id) => {
 
   // find student
   const studentFound = await studentModel
-    .findById(id)
-    .populate("clubID", "name")
-    .populate("beltID")
-    .populate("ageGroupID", "name description")
-    .populate("coachID", "firstName lastName")
-    .populate("createdBy", "-password");
+    .aggregate([
+      { $match: { _id: new mongoose.Types.ObjectId(id) } },
+      {
+        $lookup: {
+          from: "clubs",
+          localField: "clubID",
+          foreignField: "_id",
+          as: "club",
+        },
+      },
+      { $unwind: "$club" },
+      {
+        $lookup: {
+          from: "agegroups",
+          localField: "ageGroupID",
+          foreignField: "_id",
+          as: "ageGroup",
+        },
+      },
+      {
+        $lookup: {
+          from: "belts",
+          localField: "beltID",
+          foreignField: "_id",
+          as: "belt",
+        },
+      },
+      { $unwind: "$belt" },
+      {
+        $project: {
+          clubID: 0,
+          beltID: 0,
+          ageGroupID: 0,
+          createdAt: 0,
+          updatedAt: 0,
+          beltDateEN: 0,
+          birthDayEN: 0,
+          "ageGroup.fromDateEN": 0,
+          "ageGroup.toDateEN": 0,
+        },
+      },
+    ])
+    .then((items) => items[0]);
+
+  const [getYear] = toEnglish(new Date().toLocaleDateString("fa-IR")).split("/");
+  if (studentFound.memberShipValidity < +getYear) {
+    studentFound.memberShipValidity = {
+      validity: studentFound.memberShipValidity,
+      yearValidaty: +getYear - studentFound.memberShipValidity + 1,
+    };
+  }
 
   if (!studentFound) throw createError.NotFound("دریافت اطلاعات با خطا مواجه شد");
+
+  const dateNextBelt = nextBeltDate(studentFound.beltDateIR, studentFound.belt.duration);
+  const nextBeltDateIR = {
+    dateNextBelt: dateNextBelt,
+    dayNextBelt: dateDiffDayNowShamsi(dateNextBelt),
+    dateBeltExamNext: await dateBeltExamNext(studentFound.belt, dateNextBelt),
+  };
+  studentFound.nextBeltDate = nextBeltDateIR;
+
   return studentFound;
 };

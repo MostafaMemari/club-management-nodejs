@@ -20,10 +20,11 @@ studentRouter.post("/register", isAuth, checkPermission(["student"]), uploadMult
 studentRouter.post("/login", loginStudent);
 studentRouter.get("/profile", isAuth, checkPermission([PERMISSIONS.STUDENT]), profileStudent);
 
+studentRouter.route("/:id").put(updateStudent).get(getStudent).delete(deleteStudent);
+
 studentRouter.patch("/:id/belt-upgrade", isAuth, checkPermission([PERMISSIONS.STUDENT]), upgradeStudentBelt);
 
 studentRouter.route("/").get(isAuth, checkPermission(["student"]), getStudents);
-studentRouter.route("/:id").put(updateStudent).get(getStudent).delete(deleteStudent);
 
 studentRouter;
 
