@@ -59,13 +59,18 @@ module.exports.loginUser = asyncHandler(async (req, res) => {
 
   const token = generateToken({ id: userFound._id });
 
-  res.status(StatusCodes.OK).json({
-    status: "success",
-    message: "با موفقیت وارد سیستم شدید",
-    data: {
-      token,
-    },
+  res.cookie("access_token", token, {
+    httpOnly: true,
+    secure: true, // production => true
   });
+  res.redirect("/dashboard");
+});
+
+//@desc User Logout
+//@route POST /api/v1/users/login
+//@acess  Public
+module.exports.logout = asyncHandler(async (req, res) => {
+  res.clearCookie("access_token").redirect("/login");
 });
 
 //@desc Get Profile User

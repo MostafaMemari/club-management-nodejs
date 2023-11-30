@@ -2,12 +2,14 @@ const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
 const path = require("path");
+const expressEjsLayouts = require("express-ejs-layouts");
 
 const createError = require("http-errors");
 require("dotenv").config();
 
 const { connectToMongoDB } = require("./config/db");
 const { AllRouter } = require("./api/routes/router");
+const cookieParser = require("cookie-parser");
 
 module.exports = class Application {
   #app = express();
@@ -28,8 +30,14 @@ module.exports = class Application {
     this.#app.use(cors());
     this.#app.use(morgan("dev"));
     this.#app.use(express.urlencoded({ extended: false }));
+    this.#app.use(cookieParser(process.env.COOKIE_SECRET_KEY));
+
     this.#app.use(express.json());
-    this.#app.use(express.static(path.join(__dirname, "public")));
+    this.#app.use(express.static(path.join(__dirname, "..", "public")));
+
+    // this.#app.use(expressEjsLayouts);
+    this.#app.set("view engine", "ejs");
+    this.#app.set("views", path.join(__dirname, "..", "views"));
   }
   createServer() {
     this.#app.listen(this.#PORT, () => {

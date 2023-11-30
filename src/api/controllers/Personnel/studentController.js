@@ -120,13 +120,13 @@ exports.loginStudent = AsyncHandler(async (req, res) => {
 
   const token = generateToken({ id: studentFound._id });
 
-  res.status(StatusCodes.OK).json({
-    status: "success",
-    message: "با موفقیت وارد سیستم شدید",
-    data: {
-      token,
-    },
+  console.log(token);
+
+  res.cookie("access_token", token, {
+    httpOnly: true,
+    secure: true, // production => true
   });
+  res.redirect("/dashboard");
 });
 
 //@desc Update Student
@@ -343,6 +343,8 @@ const checkExistStudent = async (id) => {
     ])
     .then((items) => items[0]);
 
+  if (!studentFound) throw createError.NotFound("دریافت اطلاعات با خطا مواجه شد");
+
   const [getYear] = toEnglish(new Date().toLocaleDateString("fa-IR")).split("/");
   if (studentFound.memberShipValidity < +getYear) {
     studentFound.memberShipValidity = {
@@ -351,7 +353,75 @@ const checkExistStudent = async (id) => {
     };
   }
 
+  const dateNextBelt = nextBeltDate(studentFound.beltDateIR, studentFound.belt.duration);
+  const nextBeltDateIR = {
+    dateNextBelt: dateNextBelt,
+    dayNextBelt: dateDiffDayNowShamsi(dateNextBelt),
+    dateBeltExamNext: await dateBeltExamNext(studentFound.belt, dateNextBelt),
+  };
+  studentFound.nextBeltDate = nextBeltDateIR;
+
+  return studentFound;
+};
+
+module.exports.studentFound = async (id) => {
+  if (!isValidObjectId(id)) throw createError.BadRequest("شناسه وارد شده معتبر نمی باشد");
+
+  // find student
+  const studentFound = await studentModel
+    .aggregate([
+      { $match: { _id: new mongoose.Types.ObjectId(id) } },
+      {
+        $lookup: {
+          from: "clubs",
+          localField: "clubID",
+          foreignField: "_id",
+          as: "club",
+        },
+      },
+      { $unwind: "$club" },
+      {
+        $lookup: {
+          from: "agegroups",
+          localField: "ageGroupID",
+          foreignField: "_id",
+          as: "ageGroup",
+        },
+      },
+      {
+        $lookup: {
+          from: "belts",
+          localField: "beltID",
+          foreignField: "_id",
+          as: "belt",
+        },
+      },
+      { $unwind: "$belt" },
+      {
+        $project: {
+          clubID: 0,
+          beltID: 0,
+          ageGroupID: 0,
+          createdAt: 0,
+          updatedAt: 0,
+          beltDateEN: 0,
+          birthDayEN: 0,
+          "ageGroup.fromDateEN": 0,
+          "ageGroup.toDateEN": 0,
+        },
+      },
+    ])
+    .then((items) => items[0]);
+
   if (!studentFound) throw createError.NotFound("دریافت اطلاعات با خطا مواجه شد");
+
+  const [getYear] = toEnglish(new Date().toLocaleDateString("fa-IR")).split("/");
+  if (studentFound.memberShipValidity < +getYear) {
+    studentFound.memberShipValidity = {
+      validity: studentFound.memberShipValidity,
+      yearValidaty: +getYear - studentFound.memberShipValidity + 1,
+    };
+  }
 
   const dateNextBelt = nextBeltDate(studentFound.beltDateIR, studentFound.belt.duration);
   const nextBeltDateIR = {

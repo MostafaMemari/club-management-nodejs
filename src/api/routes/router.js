@@ -12,8 +12,12 @@ const { studentRouter } = require("./Personnel/studentRouter");
 const { userRouter } = require("./Personnel/userRouter");
 const { permissionRouter } = require("./RBAC/permissionRouter.js");
 const { roleRouter } = require("./RBAC/roleRouter.js");
+const { ejsRouter } = require("./ejsRouter.js");
 
 const router = require("express").Router();
+
+// EJS
+router.use("/", ejsRouter);
 
 // Personel
 router.use("/api/v1/users", userRouter);
