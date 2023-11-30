@@ -3,7 +3,8 @@ const fs = require("fs");
 
 const createError = require("http-errors");
 const { isValidObjectId } = require("mongoose");
-const { normalizeCalendar } = require("./normalizeData");
+const { normalizeCalendar, normalizeDataDates } = require("./normalizeData");
+const { shamsiToMiladi } = require("./dateConvarter");
 
 module.exports.deleteInvalidPropertyInObject = (data = {}, blackListFields = []) => {
   let nullishData = ["", " ", "0", 0, null, undefined];
@@ -58,7 +59,6 @@ module.exports.validateItemArrayModel = async (model, array) => {
 };
 
 module.exports.nextBeltDate = (date, duration) => {
-  console.log(date, duration);
   let [year, month, day] = date.split("/");
   for (let i = 1; i <= duration; i++) {
     if (month >= 12) {
@@ -69,4 +69,13 @@ module.exports.nextBeltDate = (date, duration) => {
     }
   }
   return normalizeCalendar(`${year}/${month}/${day}`);
+};
+
+module.exports.dateDiffDayNowShamsi = (beltDate) => {
+  const date1 = new Date(shamsiToMiladi(beltDate)).getTime();
+  const date2 = new Date().getTime();
+
+  // اختلاف روز بین دو تاریخ
+  const difference = Math.floor((date1 - date2) / 86400000);
+  return difference;
 };

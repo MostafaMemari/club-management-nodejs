@@ -7,6 +7,7 @@ const {
   toEnglish,
   dateNowIR,
   nextBeltDate,
+  dateDiffDayNowShamsi,
 } = require("../../helpers/function");
 const createError = require("http-errors");
 const { StatusCodes } = require("http-status-codes");
@@ -280,7 +281,10 @@ exports.profileStudent = AsyncHandler(async (req, res) => {
     ])
     .then((items) => items[0]);
 
-  const nextBeltDateIR = nextBeltDate(profileStudent.beltDateIR, profileStudent.belt.duration);
+  const nextBeltDateIR = {
+    dateNextBelt: nextBeltDate(profileStudent.beltDateIR, profileStudent.belt.duration),
+    dayNextBelt: dateDiffDayNowShamsi(nextBeltDate(profileStudent.beltDateIR, profileStudent.belt.duration)),
+  };
   profileStudent.nextBeltDate = nextBeltDateIR;
 
   if (!profileStudent) throw createError.InternalServerError("دریافت اطلاعات با خطا مواجه شد");
