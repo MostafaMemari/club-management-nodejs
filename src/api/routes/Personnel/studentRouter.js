@@ -6,6 +6,7 @@ const {
   registerStudent,
   profileStudent,
   loginStudent,
+  upgradeStudentBelt,
 } = require("../../controllers/Personnel/studentController");
 const { PERMISSIONS } = require("../../helpers/constans");
 const { advancedResult } = require("../../middlewares/advancedResult");
@@ -18,6 +19,8 @@ const studentRouter = require("express").Router();
 studentRouter.post("/register", isAuth, checkPermission(["student"]), uploadMulter.single("image"), registerStudent);
 studentRouter.post("/login", loginStudent);
 studentRouter.get("/profile", isAuth, checkPermission([PERMISSIONS.STUDENT]), profileStudent);
+
+studentRouter.patch("/:id/belt-upgrade", isAuth, checkPermission([PERMISSIONS.STUDENT]), upgradeStudentBelt);
 
 studentRouter.route("/").get(isAuth, checkPermission(["student"]), getStudents);
 studentRouter.route("/:id").put(updateStudent).get(getStudent).delete(deleteStudent);

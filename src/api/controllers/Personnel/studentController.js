@@ -72,12 +72,12 @@ exports.registerStudent = async (req, res, next) => {
     }
 
     // create
-    // const studentCreated = await studentModel.create({
-    //   ...data,
-    //   createdBy: req.userAuth._id,
-    //   modelCreatedBy: req.userAuth.role == "COACH" ? "coach" : "user",
-    // });
-    // if (!studentCreated) throw createError.InternalServerError("ثبت نام با خطا مواجه شد");
+    const studentCreated = await studentModel.create({
+      ...data,
+      createdBy: req.userAuth._id,
+      modelCreatedBy: req.userAuth.role == "COACH" ? "coach" : "user",
+    });
+    if (!studentCreated) throw createError.InternalServerError("ثبت نام با خطا مواجه شد");
 
     res.status(StatusCodes.CREATED).json({
       status: "success",
@@ -140,7 +140,7 @@ exports.updateStudent = async (req, res, next) => {
       "createdBy",
       "fileUploadPath",
       "filename",
-      "beltDateIR",
+      // "beltDateIR",
       "birthDayEN",
       "registerDateEN",
       "sportsInsuranceEN",
@@ -211,7 +211,7 @@ exports.getStudent = AsyncHandler(async (req, res) => {
 
 //@desc Profile Student
 //@route GET /api/v1/students/profile
-//@acess
+//@acess Student Only
 exports.profileStudent = AsyncHandler(async (req, res) => {
   const studentID = req.userAuth._id;
 
@@ -228,6 +228,42 @@ exports.profileStudent = AsyncHandler(async (req, res) => {
     status: "success",
     message: "دریافت اطلاعات با موفقیت انجام شد",
     data: profileStudent ? profileStudent : {},
+  });
+});
+
+//@desc Upgrade belt Student
+//@route PATCH /api/v1/students/:id/belt-upgrade
+//@acess Student Only
+exports.upgradeStudentBelt = AsyncHandler(async (req, res) => {
+  const studentFound = await checkExistStudent(req.params.id);
+
+  const [getYear] = toEnglish(new Date().toLocaleDateString("fa-IR")).split("/");
+  const { memberShipValidity, beltID: belt, beltDateEN, beltDateIR } = studentFound;
+
+  // if (memberShipValidity < +getYear) {
+  //   const yearValidity = +getYear - memberShipValidity + 1;
+  //   throw createError.BadRequest(`برای ثبت ارتفاء کمربند هنرجو باید ${yearValidity} سال شارژ شود`);
+  // }
+
+  if (["سفید", "زرد", "سبز"].includes(belt.name)) {
+    let [year, month, day] = beltDateIR.split("/");
+    for (let i = 1; i <= belt.duration; i++) {
+      if (month >= 12) {
+        year++;
+        month = 1;
+      } else {
+        month++;
+      }
+    }
+
+    console.log(year, month, +day);
+    // const dateNextBelt = beltDateEN.getTime() + belt.duration;
+    // console.log(new Date(dateNextBelt).toLocaleDateString("fa-IR"));
+  }
+  res.status(StatusCodes.OK).json({
+    status: "success",
+    message: "دریافت اطلاعات با موفقیت انجام شد",
+    // data: profileStudent ? profileStudent : {},
   });
 });
 
@@ -253,12 +289,11 @@ const checkExistStudent = async (id) => {
   const studentFound = await studentModel
     .findById(id)
     .populate("clubID", "name")
-    .populate("beltID", "name")
+    .populate("beltID")
     .populate("ageGroupID", "name description")
     .populate("coachID", "firstName lastName")
     .populate("createdBy", "-password");
 
-  console.log(studentFound);
   if (!studentFound) throw createError.NotFound("دریافت اطلاعات با خطا مواجه شد");
   return studentFound;
 };

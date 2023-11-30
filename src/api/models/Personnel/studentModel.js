@@ -67,7 +67,7 @@ studentSchema.pre("save", async function () {
 });
 
 studentSchema.pre("updateOne", async function (next) {
-  const { birthDayIR, registerDateIR, sportsInsuranceIR } = this._update;
+  const { birthDayIR, registerDateIR, sportsInsuranceIR, beltDateIR } = this._update;
 
   if (birthDayIR) {
     this.birthDayEN = shamsiToMiladi(birthDayIR);
@@ -81,6 +81,10 @@ studentSchema.pre("updateOne", async function (next) {
   if (sportsInsuranceIR) {
     this.sportsInsuranceEN = shamsiToMiladi(sportsInsuranceIR);
     this.set({ sportsInsuranceEN: this.sportsInsuranceEN });
+  }
+  if (beltDateIR) {
+    this.beltDateEN = shamsiToMiladi(beltDateIR);
+    this.set({ beltDateEN: this.beltDateEN });
   }
   next();
 });

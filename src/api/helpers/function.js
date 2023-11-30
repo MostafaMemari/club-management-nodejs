@@ -13,7 +13,7 @@ module.exports.deleteInvalidPropertyInObject = (data = {}, blackListFields = [])
     if (Array.isArray(data[key]) && data[key].length > 0) data[key] = data[key].map((item) => item.trim());
     if (Array.isArray(data[key]) && data[key].length == 0) delete data[key];
     if (nullishData.includes(data[key])) delete data[key];
-    data[key] = this.toEnglish(data[key]);
+    if (data[key]) data[key] = this.toEnglish(data[key]);
   });
 };
 
