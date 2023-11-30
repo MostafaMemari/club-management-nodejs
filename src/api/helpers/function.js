@@ -56,3 +56,17 @@ module.exports.validateItemArrayModel = async (model, array) => {
   const uniqueArray = Array.from(set);
   return uniqueArray;
 };
+
+module.exports.nextBeltDate = (date, duration) => {
+  console.log(date, duration);
+  let [year, month, day] = date.split("/");
+  for (let i = 1; i <= duration; i++) {
+    if (month >= 12) {
+      year++;
+      month = 1;
+    } else {
+      month++;
+    }
+  }
+  return normalizeCalendar(`${year}/${month}/${day}`);
+};

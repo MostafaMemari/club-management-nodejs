@@ -1,6 +1,13 @@
 const AsyncHandler = require("express-async-handler");
 const { studentAndCoachSchema } = require("../../validations/authSchema");
-const { copyObject, deleteInvalidPropertyInObject, deleteFileInPublic, toEnglish, dateNowIR } = require("../../helpers/function");
+const {
+  copyObject,
+  deleteInvalidPropertyInObject,
+  deleteFileInPublic,
+  toEnglish,
+  dateNowIR,
+  nextBeltDate,
+} = require("../../helpers/function");
 const createError = require("http-errors");
 const { StatusCodes } = require("http-status-codes");
 const { studentModel } = require("../../models/Personnel/studentModel");
@@ -215,12 +222,66 @@ exports.getStudent = AsyncHandler(async (req, res) => {
 exports.profileStudent = AsyncHandler(async (req, res) => {
   const studentID = req.userAuth._id;
 
+  // const profileStudent = await studentModel
+  //   .findById(studentID)
+  //   .populate("clubID", "name")
+  //   .populate("beltID")
+  //   .populate("ageGroupID", "name description")
+  //   .populate("coachID", "firstName lastName");
+
   const profileStudent = await studentModel
-    .findById(studentID)
-    .populate("clubID", "name")
-    .populate("beltID", "name")
-    .populate("ageGroupID", "name description")
-    .populate("coachID", "firstName lastName");
+    .aggregate([
+      {
+        $match: { _id: studentID },
+      },
+      {
+        $lookup: {
+          from: "clubs",
+          localField: "clubID",
+          foreignField: "_id",
+          as: "club",
+        },
+      },
+      {
+        $unwind: "$club",
+      },
+      {
+        $lookup: {
+          from: "agegroups",
+          localField: "ageGroupID",
+          foreignField: "_id",
+          as: "ageGroup",
+        },
+      },
+      {
+        $lookup: {
+          from: "belts",
+          localField: "beltID",
+          foreignField: "_id",
+          as: "belt",
+        },
+      },
+      {
+        $unwind: "$belt",
+      },
+      {
+        $project: {
+          clubID: 0,
+          beltID: 0,
+          ageGroupID: 0,
+          createdAt: 0,
+          updatedAt: 0,
+          beltDateEN: 0,
+          birthDayEN: 0,
+          "ageGroup.fromDateEN": 0,
+          "ageGroup.toDateEN": 0,
+        },
+      },
+    ])
+    .then((items) => items[0]);
+
+  const nextBeltDateIR = nextBeltDate(profileStudent.beltDateIR, profileStudent.belt.duration);
+  profileStudent.nextBeltDate = nextBeltDateIR;
 
   if (!profileStudent) throw createError.InternalServerError("دریافت اطلاعات با خطا مواجه شد");
 
