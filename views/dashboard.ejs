@@ -402,10 +402,10 @@
                             <span class="avatar-initial rounded-circle bg-label-twitter"><i class="bx bx-badge fs-4"></i></span>
                           </div>
                           <span class="d-block text-nowrap pt-1">تاریخ بیمه ورزشی</span>
-                          <%if (sportsInsuranceIR) { %>
-                          <h2 class="mb-n3 fs-4"><%=sportsInsuranceIR%></h2>
-                          <% } else { %>
+                          <%if (typeof sportsInsuranceIR === "undefined") { %>
                           <h2 class="mb-n3 fs-4">بیمه نداری</h2>
+                          <% } else { %>
+                          <h2 class="mb-n3 fs-4"><%=sportsInsuranceIR%></h2>
                           <% } %>
                         </div>
                       </div>

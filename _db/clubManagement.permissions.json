@@ -1,0 +1,35 @@
+[{
+  "_id": {
+    "$oid": "655e3903b1863fc51004fed7"
+  },
+  "name": "all",
+  "description": "دسترسی تمام بخش ها"
+},
+{
+  "_id": {
+    "$oid": "655e3ad52e6be02563a8c9cd"
+  },
+  "name": "club",
+  "description": "دسترسی باشگاه ها"
+},
+{
+  "_id": {
+    "$oid": "655e3ae62e6be02563a8c9ce"
+  },
+  "name": "coach",
+  "description": "دسترسی مربیان"
+},
+{
+  "_id": {
+    "$oid": "655e3aee2e6be02563a8c9cf"
+  },
+  "name": "student",
+  "description": "دسترسی شاگردان"
+},
+{
+  "_id": {
+    "$oid": "655e81012e6be02563a8c9da"
+  },
+  "name": "profile",
+  "description": "پروفایل"
+}]

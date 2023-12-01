@@ -1,0 +1,54 @@
+[{
+  "_id": {
+    "$oid": "655e3914b1863fc51004fedb"
+  },
+  "title": "SUPER_ADMIN",
+  "description": "مدیریت تمام بخش ها",
+  "permissions": [
+    {
+      "$oid": "655e3903b1863fc51004fed7"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "655e39912e6be02563a8c9cb"
+  },
+  "title": "ADMIN_CLUB",
+  "description": "مدیریت باشگاه ها",
+  "permissions": [
+    {
+      "$oid": "655e3ad52e6be02563a8c9cd"
+    },
+    {
+      "$oid": "655e3ae62e6be02563a8c9ce"
+    },
+    {
+      "$oid": "655e3aee2e6be02563a8c9cf"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "655e80ee2e6be02563a8c9d8"
+  },
+  "title": "STUDENT",
+  "description": "هنرجو",
+  "permissions": [
+    {
+      "$oid": "655e81012e6be02563a8c9da"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "655e84c43a0d8ee1048b800b"
+  },
+  "title": "COACH",
+  "description": "مربی",
+  "permissions": [
+    {
+      "$oid": "655e3aee2e6be02563a8c9cf"
+    }
+  ]
+}]

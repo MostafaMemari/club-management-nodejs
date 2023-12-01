@@ -7,8 +7,8 @@ const expressEjsLayouts = require("express-ejs-layouts");
 const createError = require("http-errors");
 require("dotenv").config();
 
-const { connectToMongoDB } = require("./config/db");
-const { AllRouter } = require("./api/routes/router");
+const { connectToMongoDB } = require("../src/config/db");
+const { AllRouter } = require("../src/api/routes/router");
 const cookieParser = require("cookie-parser");
 
 module.exports = class Application {

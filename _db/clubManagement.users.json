@@ -1,0 +1,30 @@
+[{
+  "_id": {
+    "$oid": "655cc7c5c0b1fca9cb921bdd"
+  },
+  "username": "MostafaMemri",
+  "password": "$2b$10$PaUC.MVDckMQ6qgxu8AW.e3n4IBHrdv24skbXRdRfpfyyE7zMxuI2",
+  "email": "m.menari711@yahoo.com",
+  "role": "SUPER_ADMIN",
+  "createdAt": {
+    "$date": "2023-11-21T15:07:49.105Z"
+  },
+  "updatedAt": {
+    "$date": "2023-11-21T15:07:49.105Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "655e8333998925427d3c23b0"
+  },
+  "username": "ADMINCLUB",
+  "password": "$2b$10$xMF7NNLyat2mFihUfsYZLuX715c/4dJVz5LLqxT8t7domrxVP9oaW",
+  "email": "admin_club@gmail.com",
+  "role": "ADMIN_CLUB",
+  "createdAt": {
+    "$date": "2023-11-22T22:39:47.621Z"
+  },
+  "updatedAt": {
+    "$date": "2023-11-22T22:39:47.621Z"
+  }
+}]

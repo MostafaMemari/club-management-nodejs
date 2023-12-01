@@ -95,6 +95,10 @@
                   </div>
                 </div>
 
+                <% if(errorMessage) { %>
+                <h5><%= errorMessage %></h5>
+                <% } %>
+
                 <div class="mb-3">
                   <button class="btn btn-primary d-grid w-100" type="submit">ورود</button>
                 </div>
