@@ -7,198 +7,222 @@ const { beltModel } = require("../../models/BaseData/beltModel");
 const { copyObject, deleteInvalidPropertyInObject, validateItemArrayModel } = require("../../helpers/function");
 const { beltExamSchema, beltExamUpdateSchema } = require("../../validations/clubSchema");
 const { beltExamModel } = require("../../models/BaseData/beltExamModel");
+const autoBind = require("auto-bind");
 
-//@desc Create Belt Exam
-//@route POST /api/v1/belt-exams
-//@acess  Private Admin Only
-module.exports.createBeltExam = AsyncHandler(async (req, res, next) => {
-  const data = copyObject(req.body);
-  deleteInvalidPropertyInObject(data);
+class BeltExamController {
+  constructor() {
+    autoBind(this);
+  }
+  async createBeltExam(req, res, next) {
+    try {
+      const data = copyObject(req.body);
+      deleteInvalidPropertyInObject(data);
 
-  // validate
-  await beltExamSchema.validateAsync(data);
+      // validate
+      await beltExamSchema.validateAsync(data);
 
-  const { gender, name } = data;
+      const { gender, name } = data;
 
-  // find Belt Exam
-  const beltExamFound = await beltExamModel.findOne({ name, gender });
-  if (beltExamFound) throw createError.Conflict("آزمون کمربند وارد شده تکراری می باشد");
+      // find Belt Exam
+      const beltExamFound = await beltExamModel.findOne({ name, gender });
+      if (beltExamFound) throw createError.Conflict("آزمون کمربند وارد شده تکراری می باشد");
 
-  // Normalize Belts
-  let beltID = data.beltID || [];
-  beltID = typeof beltID == "string" ? beltID.replace(/\s/g, "").split(" ") : beltID;
-  // find And Validate Belt
-  const belts = await validateItemArrayModel(beltModel, beltID);
+      // Normalize Belts
+      let beltID = data.beltID || [];
+      beltID = typeof beltID == "string" ? beltID.replace(/\s/g, "").split(" ") : beltID;
+      // find And Validate Belt
+      const belts = await validateItemArrayModel(beltModel, beltID);
 
-  console.log(belts);
+      // create
+      const beltExamCreated = new beltExamModel({ ...data, beltsID: belts });
+      await beltExamCreated.save();
+      if (!beltExamCreated) throw createError.InternalServerError("ثبت آزمون با خطا مواجه شد");
 
-  // create
-  const beltExamCreated = new beltExamModel({ ...data, beltsID: belts });
-  await beltExamCreated.save();
-  if (!beltExamCreated) throw createError.InternalServerError("ثبت آزمون با خطا مواجه شد");
-
-  res.status(StatusCodes.CREATED).json({
-    status: "success",
-    message: "ثبت آزمون با موفقیت انجام شد",
-    // beltExamCreated,
-  });
-});
-
-//@desc Update Belt Exam
-//@route PUT /api/v1/belt-exams/:id
-//@acess  Private Admin Only
-module.exports.updateBeltExam = AsyncHandler(async (req, res, next) => {
-  const data = copyObject(req.body);
-  const blackListFields = ["beltID", "eventDateEN", "registerDateEN"];
-  deleteInvalidPropertyInObject(data, blackListFields);
-
-  // validate
-  await beltExamUpdateSchema.validateAsync({ ...data, id: req.params.id });
-
-  let { gender, name } = data;
-
-  // find Belt Exam
-  const beltExamExist = await checkExistBeltExam(req.params.id);
-  if (gender || name) {
-    gender = gender ? gender : beltExamExist.gender;
-    name = name ? name : beltExamExist.name;
-
-    const beltExamFound = await beltExamModel.findOne({ gender, name });
-    if (beltExamFound) {
-      delete data["name"];
-      delete data["gender"];
+      res.status(StatusCodes.CREATED).json({
+        status: "success",
+        message: "ثبت آزمون با موفقیت انجام شد",
+        // beltExamCreated,
+      });
+    } catch (error) {
+      next(error);
     }
   }
+  async updateBeltExam(req, res, next) {
+    try {
+      const data = copyObject(req.body);
+      const blackListFields = ["beltID", "eventDateEN", "registerDateEN"];
+      deleteInvalidPropertyInObject(data, blackListFields);
 
-  // update
-  const beltExamUpdated = await beltExamModel.updateOne({ _id: req.params.id }, data);
-  if (!beltExamUpdated.modifiedCount) throw createError.InternalServerError("ویرایش آزمون با خطا مواجه شد");
+      // validate
+      await beltExamUpdateSchema.validateAsync({ ...data, id: req.params.id });
 
-  res.status(StatusCodes.OK).json({
-    status: "success",
-    message: "آزمون مورد نظر با موفقیت ویرایش شد",
-  });
-});
+      let { gender, name } = data;
 
-//@desc Remove Belt Exam
-//@route DELETE /api/v1/belt-exams/:id
-//@acess  Private Admin Only
-module.exports.removeBeltExam = AsyncHandler(async (req, res, next) => {
-  // validate
-  await checkExistBeltExam(req.params.id);
+      // find Belt Exam
+      const beltExamExist = await this.checkExistBeltExam(req.params.id);
+      if (gender || name) {
+        gender = gender ? gender : beltExamExist.gender;
+        name = name ? name : beltExamExist.name;
 
-  // update
-  const beltExamRemoved = await beltExamModel.deleteOne({ _id: req.params.id });
-  if (!beltExamRemoved.deletedCount) throw createError.InternalServerError("حذف آزمون با خطا مواجه شد");
+        const beltExamFound = await beltExamModel.findOne({ gender, name });
+        if (beltExamFound) {
+          delete data["name"];
+          delete data["gender"];
+        }
+      }
 
-  res.status(StatusCodes.OK).json({
-    status: "success",
-    message: "آزمون مورد نظر با موفقیت حذف شد",
-  });
-});
+      // update
+      const beltExamUpdated = await beltExamModel.updateOne({ _id: req.params.id }, data);
+      if (!beltExamUpdated.modifiedCount) throw createError.InternalServerError("ویرایش آزمون با خطا مواجه شد");
 
-//@desc Get All Belt Exams
-//@route GET /api/v1/belt-exams/
-//@acess  Public
-module.exports.getBeltExams = AsyncHandler(async (req, res, next) => {
-  const beltExamFound = await beltExamModel.find({}).populate("beltID", "name").select("-eventDateEN -registerDateEN").lean();
-  if (!beltExamFound) throw createError.InternalServerError("دریافت آزمون ها با خطا مواجه شد");
-
-  res.status(StatusCodes.OK).json({
-    status: "success",
-    message: "دریافت آزمون های کمربند با موفقیت انجام شد ",
-    beltExamFound,
-  });
-});
-
-//@desc Get Single Belt Exam
-//@route GET /api/v1/belt-exams/:id
-//@acess  Private Admin Only
-module.exports.getBeltExam = AsyncHandler(async (req, res, next) => {
-  // validate
-  if (!isValidObjectId(req.params.id)) throw createError.BadRequest("شناسه آزمون کمربند معتبر نمی باشد");
-
-  const beltExamFound = await beltExamModel
-    .findById(req.params.id)
-    .populate("beltID", "-duration")
-    .select("-eventDateEN -registerDateEN")
-    .lean();
-  if (!beltExamFound) throw createError.InternalServerError("دریافت آزمون با خطا مواجه شد");
-
-  res.status(StatusCodes.OK).json({
-    status: "success",
-    message: "دریافت آزمون با موفقیت انجام شد ",
-    beltExamFound,
-  });
-});
-
-//@desc Add Belt to beltExam
-//@route PATCH /api/v1/belt-exams/:id/belt/add
-//@acess  Private Admin Only
-module.exports.addBeltToBeltExam = AsyncHandler(async (req, res, next) => {
-  const data = copyObject(req.body);
-  const blackListFields = ["name", "description", "eventPlace", "gender", "eventDateIR", "registerDateIR", "eventDateEN", "registerDateEN"];
-  deleteInvalidPropertyInObject(data, blackListFields);
-
-  // validate
-  await checkExistBeltExam(req.params.id);
-
-  // Normalize Belts
-  let { beltID } = data;
-  beltID = typeof beltID == "string" ? beltID.replace(/\s/g, "").split(" ") : beltID;
-  // find And Validate Belt
-  const belts = await validateItemArrayModel(beltModel, beltID);
-
-  // add belt to BeltExam
-  const beltExamUpdated = await beltExamModel.updateOne({ _id: req.params.id }, { $addToSet: { beltID: belts } });
-  if (!beltExamUpdated.modifiedCount) throw createError.InternalServerError("ایجاد کمربند با خطا مواجه شد");
-
-  res.status(StatusCodes.OK).json({
-    status: "success",
-    message: "کمربند مورد نظر با موفقیت به آزمون اضافه شد",
-  });
-});
-
-//@desc Remove Belt to beltExam
-//@route PATCH /api/v1/belt-exams/:id/belt/:beltID/remove
-//@acess  Private Admin Only
-module.exports.removeBeltToBeltExam = AsyncHandler(async (req, res, next) => {
-  const data = copyObject(req.body);
-  const blackListFields = ["name", "description", "eventPlace", "gender", "eventDateIR", "registerDateIR", "eventDateEN", "registerDateEN"];
-  deleteInvalidPropertyInObject(data, blackListFields);
-
-  const { id: examID, beltID } = req.params;
-
-  // validate
-  if (!isValidObjectId(beltID)) throw createError.BadRequest("شناسه کمربند معتبر نمی باشد");
-
-  // find belt exam
-  const beltExamFound = await checkExistBeltExam(examID);
-
-  // find belt
-  if (beltID) {
-    const beltFound = await beltModel.findById(beltID).lean();
-    if (!beltFound) throw createError.NotFound("شناسه کمربند معتبر نمی باشد");
+      res.status(StatusCodes.OK).json({
+        status: "success",
+        message: "آزمون مورد نظر با موفقیت ویرایش شد",
+      });
+    } catch (error) {
+      next(error);
+    }
   }
+  async removeBeltExam(req, res, next) {
+    try {
+      // validate
+      await this.checkExistBeltExam(req.params.id);
 
-  // check belt in beltExam
-  if (!beltExamFound.beltID.includes(beltID)) throw createError.NotFound("کمربند وارد شده یافت نشد");
+      // update
+      const beltExamRemoved = await beltExamModel.deleteOne({ _id: req.params.id });
+      if (!beltExamRemoved.deletedCount) throw createError.InternalServerError("حذف آزمون با خطا مواجه شد");
 
-  // remove belt
-  beltExamFound.beltID.pull(beltID);
-  beltExamFound.save();
+      res.status(StatusCodes.OK).json({
+        status: "success",
+        message: "آزمون مورد نظر با موفقیت حذف شد",
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+  async getBeltExams(req, res, next) {
+    try {
+      const beltExamFound = await beltExamModel.find({}).populate("beltID", "name").select("-eventDateEN -registerDateEN").lean();
+      if (!beltExamFound) throw createError.InternalServerError("دریافت آزمون ها با خطا مواجه شد");
 
-  res.status(StatusCodes.OK).json({
-    status: "success",
-    message: "کمربند مورد نظر با موفقیت از آزمون حذف شد",
-  });
-});
+      res.status(StatusCodes.OK).json({
+        status: "success",
+        message: "دریافت آزمون های کمربند با موفقیت انجام شد ",
+        beltExamFound,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+  async getBeltExam(req, res, next) {
+    try {
+      // validate
+      if (!isValidObjectId(req.params.id)) throw createError.BadRequest("شناسه آزمون کمربند معتبر نمی باشد");
 
-const checkExistBeltExam = async (id) => {
-  if (!isValidObjectId(id)) throw createError.BadRequest("شناسه وارد شده رده سنی صحیح نمی باشد");
+      const beltExamFound = await beltExamModel
+        .findById(req.params.id)
+        .populate("beltID", "-duration")
+        .select("-eventDateEN -registerDateEN")
+        .lean();
+      if (!beltExamFound) throw createError.InternalServerError("دریافت آزمون با خطا مواجه شد");
 
-  // find Belt Exam
-  const beltExamFound = await beltExamModel.findById(id);
-  if (!beltExamFound) throw createError.NotFound("آزمون مورد نظر یافت نشد");
-  return beltExamFound;
-};
+      res.status(StatusCodes.OK).json({
+        status: "success",
+        message: "دریافت آزمون با موفقیت انجام شد ",
+        beltExamFound,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+  async addBeltToBeltExam(req, res, next) {
+    try {
+      const data = copyObject(req.body);
+      const blackListFields = [
+        "name",
+        "description",
+        "eventPlace",
+        "gender",
+        "eventDateIR",
+        "registerDateIR",
+        "eventDateEN",
+        "registerDateEN",
+      ];
+      deleteInvalidPropertyInObject(data, blackListFields);
+
+      // validate
+      await this.checkExistBeltExam(req.params.id);
+
+      // Normalize Belts
+      let { beltID } = data;
+      beltID = typeof beltID == "string" ? beltID.replace(/\s/g, "").split(" ") : beltID;
+      // find And Validate Belt
+      const belts = await validateItemArrayModel(beltModel, beltID);
+
+      // add belt to BeltExam
+      const beltExamUpdated = await beltExamModel.updateOne({ _id: req.params.id }, { $addToSet: { beltID: belts } });
+      if (!beltExamUpdated.modifiedCount) throw createError.InternalServerError("ایجاد کمربند با خطا مواجه شد");
+
+      res.status(StatusCodes.OK).json({
+        status: "success",
+        message: "کمربند مورد نظر با موفقیت به آزمون اضافه شد",
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+  async removeBeltToBeltExam(req, res, next) {
+    try {
+      const data = copyObject(req.body);
+      const blackListFields = [
+        "name",
+        "description",
+        "eventPlace",
+        "gender",
+        "eventDateIR",
+        "registerDateIR",
+        "eventDateEN",
+        "registerDateEN",
+      ];
+      deleteInvalidPropertyInObject(data, blackListFields);
+
+      const { id: examID, beltID } = req.params;
+
+      // validate
+      if (!isValidObjectId(beltID)) throw createError.BadRequest("شناسه کمربند معتبر نمی باشد");
+
+      // find belt exam
+      const beltExamFound = await this.checkExistBeltExam(examID);
+
+      // find belt
+      if (beltID) {
+        const beltFound = await beltModel.findById(beltID).lean();
+        if (!beltFound) throw createError.NotFound("شناسه کمربند معتبر نمی باشد");
+      }
+
+      // check belt in beltExam
+      if (!beltExamFound.beltID.includes(beltID)) throw createError.NotFound("کمربند وارد شده یافت نشد");
+
+      // remove belt
+      beltExamFound.beltID.pull(beltID);
+      beltExamFound.save();
+
+      res.status(StatusCodes.OK).json({
+        status: "success",
+        message: "کمربند مورد نظر با موفقیت از آزمون حذف شد",
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+  async checkExistBeltExam(id) {
+    if (!isValidObjectId(id)) throw createError.BadRequest("شناسه وارد شده رده سنی صحیح نمی باشد");
+
+    // find Belt Exam
+    const beltExamFound = await beltExamModel.findById(id);
+    if (!beltExamFound) throw createError.NotFound("آزمون مورد نظر یافت نشد");
+    return beltExamFound;
+  }
+}
+
+module.exports = new BeltExamController();
