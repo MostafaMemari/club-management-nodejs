@@ -1,4 +1,3 @@
-const AsyncHandler = require("express-async-handler");
 const createError = require("http-errors");
 const { StatusCodes } = require("http-status-codes");
 const { isValidObjectId } = require("mongoose");
@@ -8,117 +7,129 @@ const { copyObject, deleteInvalidPropertyInObject } = require("../../helpers/fun
 const { studentModel } = require("../../models/Personnel/studentModel");
 const { ageGroupSchema, ageGroupUpdateSchema } = require("../../validations/clubSchema");
 const { ageGroupModel } = require("../../models/BaseData/ageGroupModel");
+const autoBind = require("auto-bind");
 
-//@desc Create Age group
-//@route POST /api/v1/ages
-//@acess  Private Admin Only
-module.exports.createAgeGourp = AsyncHandler(async (req, res) => {
-  const data = copyObject(req.body);
-  deleteInvalidPropertyInObject(data);
-
-  // validate
-  await ageGroupSchema.validateAsync(data);
-
-  const { name } = data;
-
-  // find sport
-  const ageGroupFound = await ageGroupModel.findOne({ name });
-  if (ageGroupFound) throw createError.Conflict("رده سنی وارد شده تکراری می باشد");
-
-  // create
-  const ageGroupCreated = new ageGroupModel(data);
-  await ageGroupCreated.save();
-  if (!ageGroupCreated) throw createError.InternalServerError("ثبت رده سنی جدید با خطا مواجه شد");
-
-  res.status(StatusCodes.CREATED).json({
-    status: "success",
-    message: "رشته ورزشی مورد نظر با موفقیت ثبت شد",
-    ageGroupCreated,
-  });
-});
-
-//@desc Update Age group
-//@route PUT /api/v1/ages/:id
-//@acess  Private Admin Only
-module.exports.updateAgeGourp = AsyncHandler(async (req, res) => {
-  const data = copyObject(req.body);
-  deleteInvalidPropertyInObject(data);
-
-  // validate
-  await ageGroupUpdateSchema.validateAsync({ ...data, id: req.params.id });
-
-  const { name } = data;
-
-  await checkExistAgeGroup(req.params.id);
-
-  // validate name
-  if (name) {
-    const ageGroupFound = await ageGroupModel.findOne({ name });
-    if (ageGroupFound) throw createError.Conflict("رده سنی وارد شده تکراری می باشد");
+class AgeGroupController {
+  constructor() {
+    autoBind(this);
   }
+  async createAgeGourp(req, res, next) {
+    try {
+      const data = copyObject(req.body);
+      deleteInvalidPropertyInObject(data);
 
-  // updated
-  const ageGroupUpdated = await ageGroupModel.updateOne({ _id: req.params.id }, data);
-  if (!ageGroupUpdated.modifiedCount) throw createError.InternalServerError("ویرایش رده سنی با خطا مواجه شد");
+      // validate
+      await ageGroupSchema.validateAsync(data);
 
-  res.status(StatusCodes.OK).json({
-    status: "success",
-    message: "رده سنی با موفقیت ویرایش شد",
-  });
-});
+      const { name } = data;
 
-//@desc Delete Age group
-//@route DELETE /api/v1/ages/:id
-//@acess  Private Admin Only
-module.exports.deleteAgeGroup = AsyncHandler(async (req, res) => {
-  await checkExistAgeGroup(req.params.id);
+      // find sport
+      const ageGroupFound = await ageGroupModel.findOne({ name });
+      if (ageGroupFound) throw createError.Conflict("رده سنی وارد شده تکراری می باشد");
 
-  const deletedAgeGroup = await ageGroupModel.deleteOne({ _id: req.params.id });
-  if (!deletedAgeGroup.deletedCount) throw createError.InternalServerError("حذف زده سنی با خطا مواجه شد");
+      // create
+      const ageGroupCreated = new ageGroupModel(data);
+      await ageGroupCreated.save();
+      if (!ageGroupCreated) throw createError.InternalServerError("ثبت رده سنی جدید با خطا مواجه شد");
 
-  await studentModel.updateMany({ ageGroupID: req.params.id }, { $pull: { ageGroupID: req.params.id } });
+      res.status(StatusCodes.CREATED).json({
+        status: "success",
+        message: "رشته ورزشی مورد نظر با موفقیت ثبت شد",
+        ageGroupCreated,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+  async updateAgeGourp(req, res, next) {
+    try {
+      const data = copyObject(req.body);
+      deleteInvalidPropertyInObject(data);
 
-  res.status(StatusCodes.OK).json({
-    status: "success",
-    message: "حذف رده سنی با موفقیت انجام شد",
-    reuslt,
-  });
-});
+      // validate
+      await ageGroupUpdateSchema.validateAsync({ ...data, id: req.params.id });
 
-//@desc Get Single Age group
-//@route PUT /api/v1/ages/:id
-//@acess  Private Admin Only
-module.exports.getAgeGroup = AsyncHandler(async (req, res) => {
-  if (!isValidObjectId(req.params.id)) throw createError.BadRequest("شناسه وارد شده رده سنی صحیح نمی باشد");
+      const { name } = data;
 
-  const ageGroupFound = await ageGroupModel.findById(req.params.id).select("-fromDateEN -toDateEN").lean();
-  if (!ageGroupFound) throw createError.InternalServerError("دریافت رده سنی با خطا مواجه شد");
+      await this.checkExistAgeGroup(req.params.id);
 
-  res.status(StatusCodes.OK).json({
-    status: "success",
-    message: "دریافت رده های سنی با موفقیت انجام شد",
-    data: ageGroupFound,
-  });
-});
+      // validate name
+      if (name) {
+        const ageGroupFound = await ageGroupModel.findOne({ name });
+        if (ageGroupFound) throw createError.Conflict("رده سنی وارد شده تکراری می باشد");
+      }
 
-//@desc Get All Age group
-//@route PUT /api/v1/ages/
-//@acess  Public
-module.exports.getAgeGroups = AsyncHandler(async (req, res) => {
-  const ageGroups = await ageGroupModel.find({}).select("-fromDateEN -toDateEN").lean();
-  if (!ageGroups) throw createError.InternalServerError("دریافت رده های سنی با خطا مواجه شد");
+      // updated
+      const ageGroupUpdated = await ageGroupModel.updateOne({ _id: req.params.id }, data);
+      if (!ageGroupUpdated.modifiedCount) throw createError.InternalServerError("ویرایش رده سنی با خطا مواجه شد");
 
-  res.status(StatusCodes.OK).json({
-    status: "success",
-    message: "دریافت رده های سنی با موفقیت انجام شد",
-    data: ageGroups,
-  });
-});
+      res.status(StatusCodes.OK).json({
+        status: "success",
+        message: "رده سنی با موفقیت ویرایش شد",
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+  async deleteAgeGroup(req, res, next) {
+    try {
+      await this.checkExistAgeGroup(req.params.id);
 
-const checkExistAgeGroup = async (id) => {
-  if (!isValidObjectId(id)) throw createError.BadRequest("شناسه وارد شده معتبر نمی باشد");
+      const deletedAgeGroup = await ageGroupModel.deleteOne({ _id: req.params.id });
+      if (!deletedAgeGroup.deletedCount) throw createError.InternalServerError("حذف زده سنی با خطا مواجه شد");
 
-  // find age group
-  const ageGroupFound = await ageGroupModel.findById(id);
-  if (!ageGroupFound) throw createError.NotFound("رده سنی وارد شده یافت نشد");
-};
+      await studentModel.updateMany({ ageGroupID: req.params.id }, { $pull: { ageGroupID: req.params.id } });
+
+      res.status(StatusCodes.OK).json({
+        status: "success",
+        message: "حذف رده سنی با موفقیت انجام شد",
+        reuslt,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+  async getAgeGroup(req, res, next) {
+    try {
+      if (!isValidObjectId(req.params.id)) throw createError.BadRequest("شناسه وارد شده رده سنی صحیح نمی باشد");
+
+      const ageGroupFound = await ageGroupModel.findById(req.params.id).select("-fromDateEN -toDateEN").lean();
+      if (!ageGroupFound) throw createError.InternalServerError("دریافت رده سنی با خطا مواجه شد");
+
+      res.status(StatusCodes.OK).json({
+        status: "success",
+        message: "دریافت رده های سنی با موفقیت انجام شد",
+        data: ageGroupFound,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+  async getAgeGroups(req, res, next) {
+    try {
+      const ageGroups = await ageGroupModel.find({}).select("-fromDateEN -toDateEN").lean();
+      if (!ageGroups) throw createError.InternalServerError("دریافت رده های سنی با خطا مواجه شد");
+
+      res.status(StatusCodes.OK).json({
+        status: "success",
+        message: "دریافت رده های سنی با موفقیت انجام شد",
+        data: ageGroups,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+  async checkExistAgeGroup(req, res, next) {
+    try {
+      if (!isValidObjectId(id)) throw createError.BadRequest("شناسه وارد شده معتبر نمی باشد");
+
+      // find age group
+      const ageGroupFound = await ageGroupModel.findById(id);
+      if (!ageGroupFound) throw createError.NotFound("رده سنی وارد شده یافت نشد");
+    } catch (error) {
+      next(error);
+    }
+  }
+}
+
+module.exports = new AgeGroupController();
