@@ -11,218 +11,219 @@ const { normalizeDataDates, normalizePhoneNumber } = require("../../helpers/norm
 const { isPassMatched } = require("../../services/passwordServices");
 const { generateToken } = require("../../services/tokenServices");
 
-//@desc Register Coach
-//@route POST /api/v1/coachs/register
-//@acess Private Admin Only
-exports.registerCoach = async (req, res, next) => {
-  try {
-    const { fileUploadPath, filename } = req.body;
-    if (fileUploadPath && filename) {
-      const urlPath = path.join(fileUploadPath, filename);
-      req.body.imageUrl = urlPath.replace(/\\/g, "/");
+const autoBind = require("auto-bind");
 
-      delete req.body["fileUploadPath"];
-      delete req.body["filename"];
-    }
-    const data = copyObject(req.body);
-
-    // normalize Data
-    let { birthDayIR, registerDateIR, mobile } = data;
-    normalizeDataDates(data, birthDayIR, registerDateIR);
-    mobile ? (data.mobile = normalizePhoneNumber(mobile)) : false;
-
-    const blackListFields = ["phone", "ageGroupID", "coachID", "birthDayEN", "registerDateEN", "createdBy"];
-    deleteInvalidPropertyInObject(data, blackListFields);
-
-    // validate firstName And lastName
-    const { firstName, lastName, nationalID, clubID, beltID } = data;
-
-    if (!firstName) throw createError.BadRequest("نام وارد شده معتبر نمی باشد");
-    if (!lastName) throw createError.BadRequest("نام خانوادگی وارد شده معتبر نمی باشد");
-    if (!nationalID) throw createError.BadRequest("کد ملی وارد شده معتبر نمی باشد");
-
-    // validate
-    await studentAndCoachSchema.validateAsync(data);
-
-    await validate_nationalId_clubId_coachId_beltId(nationalID, clubID, "", beltID);
-    //create
-    const coachCreated = await coachModel.create(data);
-    if (!coachCreated) throw createError.InternalServerError("ثبت نام مربی با خطا مواجه شد");
-
-    res.status(StatusCodes.CREATED).json({
-      status: "success",
-      message: "ثبت مربی با موفقیت انجام شد ",
-      data: coachCreated,
-    });
-  } catch (error) {
-    deleteFileInPublic(req.body.imageUrl);
-    next(error);
+class CoachController {
+  constructor() {
+    autoBind(this);
   }
-};
+  async registerCoach(req, res, next) {
+    try {
+      const { fileUploadPath, filename } = req.body;
+      if (fileUploadPath && filename) {
+        const urlPath = path.join(fileUploadPath, filename);
+        req.body.imageUrl = urlPath.replace(/\\/g, "/");
 
-//@desc Login Coach
-//@route POST /api/v1/coachs/register
-//@acess Private Admin Only
-exports.loginCoach = AsyncHandler(async (req, res, next) => {
-  const data = copyObject(req.body);
+        delete req.body["fileUploadPath"];
+        delete req.body["filename"];
+      }
+      const data = copyObject(req.body);
 
-  const { username, password } = data;
+      // normalize Data
+      let { birthDayIR, registerDateIR, mobile } = data;
+      normalizeDataDates(data, birthDayIR, registerDateIR);
+      mobile ? (data.mobile = normalizePhoneNumber(mobile)) : false;
 
-  // check coach found
-  if (!username) throw createError.Unauthorized("نام کاربری یا رمز عبور اشتباه می باشد");
+      const blackListFields = ["phone", "ageGroupID", "coachID", "birthDayEN", "registerDateEN", "createdBy"];
+      deleteInvalidPropertyInObject(data, blackListFields);
 
-  const coachFound = await coachModel.findOne({ nationalID: username });
-  if (!coachFound) throw createError.Unauthorized("نام کاربری یا رمز عبور اشتباه می باشد");
+      // validate firstName And lastName
+      const { firstName, lastName, nationalID, clubID, beltID } = data;
 
-  // check valid password
-  const isValidPassword = password === "123456";
-  if (!isValidPassword) throw createError.Unauthorized("نام کاربری یا رمز عبور اشتباه می باشد");
+      if (!firstName) throw createError.BadRequest("نام وارد شده معتبر نمی باشد");
+      if (!lastName) throw createError.BadRequest("نام خانوادگی وارد شده معتبر نمی باشد");
+      if (!nationalID) throw createError.BadRequest("کد ملی وارد شده معتبر نمی باشد");
 
-  const token = generateToken({ id: coachFound._id });
+      // validate
+      await studentAndCoachSchema.validateAsync(data);
 
-  res.status(StatusCodes.OK).json({
-    status: "success",
-    message: "با موفقیت وارد سیستم شدید",
-    data: {
-      token,
-    },
-  });
-});
+      await validate_nationalId_clubId_coachId_beltId(nationalID, clubID, "", beltID);
+      //create
+      const coachCreated = await coachModel.create(data);
+      if (!coachCreated) throw createError.InternalServerError("ثبت نام مربی با خطا مواجه شد");
 
-//@desc Profile Coach
-//@route POST /api/v1/coachs/profile
-//@acess Private Coach
-exports.profileCoach = AsyncHandler(async (req, res, next) => {
-  const coachID = req.userAuth._id;
-
-  const profileCoach = await coachModel.findById(coachID).populate("clubID", "name").populate("beltID", "name");
-
-  if (!profileCoach) throw createError.InternalServerError("دریافت اطلاعات با خطا مواجه شد");
-
-  res.status(StatusCodes.OK).json({
-    status: "success",
-    message: "دریافت اطلاعات با موفقیت انجام شد",
-    data: profileCoach ? profileCoach : {},
-  });
-});
-
-//@desc Update Coach By Admin
-//@route PUT /api/v1/coachs/:id/admin
-//@acess Private Admin Only
-exports.updateCoach = async (req, res, next) => {
-  try {
-    const coachFound = await checkExistCoach(req.params.id);
-
-    const { fileUploadPath, filename } = req.body;
-    if (fileUploadPath && filename) {
-      const urlPath = path.join(fileUploadPath, filename);
-      req.body.imageUrl = urlPath.replace(/\\/g, "/");
-
-      delete req.body["fileUploadPath"];
-      delete req.body["filename"];
+      res.status(StatusCodes.CREATED).json({
+        status: "success",
+        message: "ثبت مربی با موفقیت انجام شد ",
+        data: coachCreated,
+      });
+    } catch (error) {
+      deleteFileInPublic(req.body.imageUrl);
+      next(error);
     }
-
-    const data = copyObject(req.body);
-
-    // normalize Data
-    let { birthDayIR, registerDateIR, mobile } = data;
-    normalizeDataDates(data, birthDayIR, registerDateIR);
-    mobile ? (data.mobile = normalizePhoneNumber(mobile)) : false;
-
-    const blackListFields = ["phone", "ageGroupID", "coachID", "birthDayEN", "registerDateEN", "createdBy"];
-    deleteInvalidPropertyInObject(data, blackListFields);
-
-    // validate firstName And lastName
-    const { nationalID, clubID, beltID } = data;
-    await validate_nationalId_clubId_coachId_beltId(nationalID, clubID, "", beltID);
-
-    // validate
-    await studentAndCoachSchema.validateAsync(data);
-
-    // updated
-    const coachUpdated = await coachModel.updateOne({ _id: req.params.id }, data);
-    if (!coachUpdated.modifiedCount) throw createError.InternalServerError("بروزرسانی اطلاعات با خطا مواجه شد");
-
-    if (data.imageUrl) deleteFileInPublic(coachFound.imageUrl);
-
-    res.status(StatusCodes.CREATED).json({
-      status: "success",
-      message: "بروزرسانی اطلاعات با موفقیت انجام شد",
-    });
-  } catch (error) {
-    deleteFileInPublic(req.body.imageUrl);
-    next(error);
   }
-};
+  async loginCoach(req, res, next) {
+    try {
+      const data = copyObject(req.body);
 
-//@desc Get Single Coach
-//@route GET /api/v1/coachs/:id/admin
-//@acess Private Admin Only
-exports.getCoach = AsyncHandler(async (req, res) => {
-  const coach = await checkExistCoach(req.params.id);
+      const { username, password } = data;
 
-  if (!coach) throw createError.InternalServerError("دریافت اطلاعات با خطا مواجه شد");
-  res.status(StatusCodes.OK).json({
-    status: "success",
-    message: "دریافت اطلاعات با موفقیت انجام شد",
-    data: coach,
-  });
-});
+      // check coach found
+      if (!username) throw createError.Unauthorized("نام کاربری یا رمز عبور اشتباه می باشد");
 
-//@desc Get All Coachs
-//@route GET /api/v1/coachs
-//@acess Private Admin Only
-exports.getCoachs = AsyncHandler(async (req, res) => {
-  const coachs = await coachModel
-    .find({})
-    .lean()
-    .populate({
-      path: "clubID",
-      populate: {
-        path: "sportID",
-      },
-    })
-    .populate("beltID")
-    .select("-createdAt -updatedAt -registerDateEN -birthDayEN");
+      const coachFound = await coachModel.findOne({ nationalID: username });
+      if (!coachFound) throw createError.Unauthorized("نام کاربری یا رمز عبور اشتباه می باشد");
 
-  if (!coachs) throw createError.InternalServerError("دریافت اطلاعات با خطا مواجه شد");
-  res.status(StatusCodes.OK).json({
-    status: "success",
-    message: "دریافت اطلاعات با موفقیت انجام شد",
-    data: coachs,
-  });
-});
+      // check valid password
+      const isValidPassword = password === "123456";
+      if (!isValidPassword) throw createError.Unauthorized("نام کاربری یا رمز عبور اشتباه می باشد");
 
-//@desc Delete Coach
-//@route DELETE /api/v1/coachs/:id/admin
-//@acess Private Admin Only
-exports.deleteCoach = AsyncHandler(async (req, res) => {
-  if (!isValidObjectId(req.params.id)) throw createError.BadRequest("شناسه وارد شده معتبر نمی باشد");
+      const token = generateToken({ id: coachFound._id });
 
-  const deletedCoach = await coachModel.deleteOne({ _id: req.params.id });
-  if (!deletedCoach.deletedCount) throw createError.InternalServerError("حذف مربی با خطا مواجه شد");
+      res.status(StatusCodes.OK).json({
+        status: "success",
+        message: "با موفقیت وارد سیستم شدید",
+        data: {
+          token,
+        },
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+  async profileCoach(req, res, next) {
+    try {
+      const coachID = req.userAuth._id;
 
-  res.status(StatusCodes.OK).json({
-    status: "success",
-    message: "حذف مربی با موفقیت انجام شد",
-  });
-});
+      const profileCoach = await coachModel.findById(coachID).populate("clubID", "name").populate("beltID", "name");
 
-const checkExistCoach = async (id) => {
-  if (!isValidObjectId(id)) throw createError.BadRequest("شناسه وارد شده معتبر نمی باشد");
+      if (!profileCoach) throw createError.InternalServerError("دریافت اطلاعات با خطا مواجه شد");
 
-  // find Coachs
-  const coachFound = await coachModel
-    .findById(id)
-    .lean()
-    .populate({
-      path: "clubID",
-      populate: {
-        path: "sportID",
-      },
-    })
-    .populate("beltID")
-    .select("-createdAt -updatedAt -registerDateEN -birthDayEN");
-  if (!coachFound) throw createError.NotFound("مربی مورد نظر یافت نشد");
-  return coachFound;
-};
+      res.status(StatusCodes.OK).json({
+        status: "success",
+        message: "دریافت اطلاعات با موفقیت انجام شد",
+        data: profileCoach ? profileCoach : {},
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+  async updateCoach(req, res, next) {
+    try {
+      const coachFound = await checkExistCoach(req.params.id);
+
+      const { fileUploadPath, filename } = req.body;
+      if (fileUploadPath && filename) {
+        const urlPath = path.join(fileUploadPath, filename);
+        req.body.imageUrl = urlPath.replace(/\\/g, "/");
+
+        delete req.body["fileUploadPath"];
+        delete req.body["filename"];
+      }
+
+      const data = copyObject(req.body);
+
+      // normalize Data
+      let { birthDayIR, registerDateIR, mobile } = data;
+      normalizeDataDates(data, birthDayIR, registerDateIR);
+      mobile ? (data.mobile = normalizePhoneNumber(mobile)) : false;
+
+      const blackListFields = ["phone", "ageGroupID", "coachID", "birthDayEN", "registerDateEN", "createdBy"];
+      deleteInvalidPropertyInObject(data, blackListFields);
+
+      // validate firstName And lastName
+      const { nationalID, clubID, beltID } = data;
+      await validate_nationalId_clubId_coachId_beltId(nationalID, clubID, "", beltID);
+
+      // validate
+      await studentAndCoachSchema.validateAsync(data);
+
+      // updated
+      const coachUpdated = await coachModel.updateOne({ _id: req.params.id }, data);
+      if (!coachUpdated.modifiedCount) throw createError.InternalServerError("بروزرسانی اطلاعات با خطا مواجه شد");
+
+      if (data.imageUrl) deleteFileInPublic(coachFound.imageUrl);
+
+      res.status(StatusCodes.CREATED).json({
+        status: "success",
+        message: "بروزرسانی اطلاعات با موفقیت انجام شد",
+      });
+    } catch (error) {
+      deleteFileInPublic(req.body.imageUrl);
+      next(error);
+    }
+  }
+  async getCoach(req, res, next) {
+    try {
+      const coach = await checkExistCoach(req.params.id);
+
+      if (!coach) throw createError.InternalServerError("دریافت اطلاعات با خطا مواجه شد");
+      res.status(StatusCodes.OK).json({
+        status: "success",
+        message: "دریافت اطلاعات با موفقیت انجام شد",
+        data: coach,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+  async getCoachs(req, res, next) {
+    try {
+      const coachs = await coachModel
+        .find({})
+        .lean()
+        .populate({
+          path: "clubID",
+          populate: {
+            path: "sportID",
+          },
+        })
+        .populate("beltID")
+        .select("-createdAt -updatedAt -registerDateEN -birthDayEN");
+
+      if (!coachs) throw createError.InternalServerError("دریافت اطلاعات با خطا مواجه شد");
+      res.status(StatusCodes.OK).json({
+        status: "success",
+        message: "دریافت اطلاعات با موفقیت انجام شد",
+        data: coachs,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+  async deleteCoach(req, res, next) {
+    try {
+      if (!isValidObjectId(req.params.id)) throw createError.BadRequest("شناسه وارد شده معتبر نمی باشد");
+
+      const deletedCoach = await coachModel.deleteOne({ _id: req.params.id });
+      if (!deletedCoach.deletedCount) throw createError.InternalServerError("حذف مربی با خطا مواجه شد");
+
+      res.status(StatusCodes.OK).json({
+        status: "success",
+        message: "حذف مربی با موفقیت انجام شد",
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+  async checkExistCoach(id) {
+    if (!isValidObjectId(id)) throw createError.BadRequest("شناسه وارد شده معتبر نمی باشد");
+
+    // find Coachs
+    const coachFound = await coachModel
+      .findById(id)
+      .lean()
+      .populate({
+        path: "clubID",
+        populate: {
+          path: "sportID",
+        },
+      })
+      .populate("beltID")
+      .select("-createdAt -updatedAt -registerDateEN -birthDayEN");
+    if (!coachFound) throw createError.NotFound("مربی مورد نظر یافت نشد");
+    return coachFound;
+  }
+}
+
+module.exports = new CoachController();
