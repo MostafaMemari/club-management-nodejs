@@ -1,4 +1,3 @@
-const AsyncHandler = require("express-async-handler");
 const createError = require("http-errors");
 const { StatusCodes } = require("http-status-codes");
 const { isValidObjectId } = require("mongoose");
