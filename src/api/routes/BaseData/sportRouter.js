@@ -1,4 +1,4 @@
-const { createSport, getSports, deleteSport, updateSport, getSport } = require("../../controllers/baseData/sportController");
+const { createSport, getSports, deleteSport, updateSport, getSport } = require("../../controllers/BaseData/sportController");
 const { PERMISSIONS } = require("../../helpers/constans");
 const { checkPermission } = require("../../middlewares/permission.guard");
 
