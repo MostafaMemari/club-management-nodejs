@@ -1,16 +1,16 @@
-const { userProfile, registerUser, loginUser, updateUser, logout } = require("../../controllers/Personnel/userController");
+const userController = require("../../controllers/Personnel/userController");
 const { PERMISSIONS } = require("../../helpers/constans");
 const { isAuth } = require("../../middlewares/isAuth");
 const { checkPermission } = require("../../middlewares/permission.guard");
-
 const userRouter = require("express").Router();
 
-userRouter.get("/profile", isAuth, checkPermission([PERMISSIONS.ADMIN_CLUB]), userProfile);
-userRouter.post("/register", registerUser);
-userRouter.post("/login", loginUser);
-userRouter.get("/logout", logout);
+userRouter.get("/profile", isAuth, checkPermission([PERMISSIONS.ADMIN_CLUB]), userController.userProfile);
+userRouter.post("/register", userController.registerUser);
+userRouter.post("/login", userController.loginUser);
 
-userRouter.put("/", updateUser);
+userRouter.get("/logout", userController.logout);
+
+userRouter.put("/", userController.updateUser);
 
 module.exports = {
   userRouter,
