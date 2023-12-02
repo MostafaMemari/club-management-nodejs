@@ -33,7 +33,8 @@ module.exports = class Application {
     this.#app.use(cookieParser(process.env.COOKIE_SECRET_KEY));
 
     this.#app.use(express.json());
-    this.#app.use("/static", express.static("../public"));
+    // this.#app.use("/static", express.static(path.join(__dirname, "..", "public")));
+    this.#app.use(express.static(path.join(__dirname, "..", "public")));
 
     // this.#app.use(expressEjsLayouts);
     this.#app.set("view engine", "ejs");
