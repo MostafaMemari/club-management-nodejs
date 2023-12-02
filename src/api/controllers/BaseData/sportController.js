@@ -1,11 +1,11 @@
 const { StatusCodes } = require("http-status-codes");
 const { sportSchema, sportSchemaUpdate } = require("../../validations/clubSchema");
-const AsyncHandler = require("express-async-handler");
 const { copyObject, deleteInvalidPropertyInObject } = require("../../helpers/function");
 const { sportModel } = require("../../models/BaseData/sportModel");
 const createError = require("http-errors");
 const { isValidObjectId } = require("mongoose");
 const { clubModel } = require("../../models/Management/clubModel");
+const autoBind = require("auto-bind");
 
 class SportController {
   constructor() {
