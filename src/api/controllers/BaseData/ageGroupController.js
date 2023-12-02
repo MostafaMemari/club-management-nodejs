@@ -1,13 +1,12 @@
 const createError = require("http-errors");
 const { StatusCodes } = require("http-status-codes");
 const { isValidObjectId } = require("mongoose");
+const autoBind = require("auto-bind");
 
 const { copyObject, deleteInvalidPropertyInObject } = require("../../helpers/function");
-
 const { studentModel } = require("../../models/Personnel/studentModel");
 const { ageGroupSchema, ageGroupUpdateSchema } = require("../../validations/clubSchema");
 const { ageGroupModel } = require("../../models/BaseData/ageGroupModel");
-const autoBind = require("auto-bind");
 
 class AgeGroupController {
   constructor() {

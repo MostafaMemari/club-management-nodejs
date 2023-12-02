@@ -1,12 +1,12 @@
 const { StatusCodes } = require("http-status-codes");
 const createError = require("http-errors");
 const { isValidObjectId } = require("mongoose");
+const autoBind = require("auto-bind");
 
 const { copyObject, deleteInvalidPropertyInObject } = require("../../helpers/function");
 const { beltSchema } = require("../../validations/clubSchema");
 const { studentModel } = require("../../models/Personnel/studentModel");
 const { beltModel } = require("../../models/BaseData/beltModel");
-const autoBind = require("auto-bind");
 
 class BeltController {
   constructor() {

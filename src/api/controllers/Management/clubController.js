@@ -1,12 +1,13 @@
-const { copyObject, deleteInvalidPropertyInObject } = require("../../helpers/function");
+const autoBind = require("auto-bind");
+const { isValidObjectId } = require("mongoose");
 const { StatusCodes } = require("http-status-codes");
 const createError = require("http-errors");
+
+const { copyObject, deleteInvalidPropertyInObject } = require("../../helpers/function");
 const { clubModel } = require("../../models/Management/clubModel");
-const { isValidObjectId } = require("mongoose");
 const { clubSchema, clubSchemaUpdate } = require("../../validations/clubSchema");
 const { sportModel } = require("../../models/BaseData/sportModel");
 const { studentModel } = require("../../models/Personnel/studentModel");
-const autoBind = require("auto-bind");
 
 class ClubController {
   constructor() {

@@ -1,4 +1,9 @@
-const AsyncHandler = require("express-async-handler");
+const autoBind = require("auto-bind");
+const createError = require("http-errors");
+const { isValidObjectId, default: mongoose } = require("mongoose");
+const path = require("path");
+const { StatusCodes } = require("http-status-codes");
+
 const { studentAndCoachSchema } = require("../../validations/authSchema");
 const {
   copyObject,
@@ -9,17 +14,11 @@ const {
   dateDiffDayNowShamsi,
   dateBeltExamNext,
 } = require("../../helpers/function");
-const createError = require("http-errors");
-const { StatusCodes } = require("http-status-codes");
 const { studentModel } = require("../../models/Personnel/studentModel");
-
-const { isValidObjectId, default: mongoose } = require("mongoose");
-const path = require("path");
 const { normalizeDataDates, normalizePhoneNumber, normalizeCalendar } = require("../../helpers/normalizeData");
 const { validate_nationalId_clubId_coachId_beltId } = require("../../helpers/validateFoundDB");
 const { generateToken } = require("../../services/tokenServices");
 const { beltModel } = require("../../models/BaseData/beltModel");
-const autoBind = require("auto-bind");
 
 class StudentController {
   constructor() {

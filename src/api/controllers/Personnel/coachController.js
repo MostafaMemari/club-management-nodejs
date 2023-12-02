@@ -1,17 +1,16 @@
-const AsyncHandler = require("express-async-handler");
-const { copyObject, deleteInvalidPropertyInObject, deleteFileInPublic } = require("../../helpers/function");
-const { studentAndCoachSchema } = require("../../validations/authSchema");
-const { coachModel } = require("../../models/Personnel/coachModel");
-const { StatusCodes } = require("http-status-codes");
 const createError = require("http-errors");
 const path = require("path");
 const { isValidObjectId } = require("mongoose");
+const { StatusCodes } = require("http-status-codes");
+const autoBind = require("auto-bind");
+
+const { copyObject, deleteInvalidPropertyInObject, deleteFileInPublic } = require("../../helpers/function");
+const { studentAndCoachSchema } = require("../../validations/authSchema");
+const { coachModel } = require("../../models/Personnel/coachModel");
 const { validate_nationalId_clubId_coachId_beltId } = require("../../helpers/validateFoundDB");
 const { normalizeDataDates, normalizePhoneNumber } = require("../../helpers/normalizeData");
-const { isPassMatched } = require("../../services/passwordServices");
 const { generateToken } = require("../../services/tokenServices");
-
-const autoBind = require("auto-bind");
+const { isPassMatched } = require("../../services/passwordServices");
 
 class CoachController {
   constructor() {

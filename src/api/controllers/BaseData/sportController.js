@@ -1,11 +1,12 @@
+const autoBind = require("auto-bind");
+const { isValidObjectId } = require("mongoose");
 const { StatusCodes } = require("http-status-codes");
+const createError = require("http-errors");
+
 const { sportSchema, sportSchemaUpdate } = require("../../validations/clubSchema");
 const { copyObject, deleteInvalidPropertyInObject } = require("../../helpers/function");
 const { sportModel } = require("../../models/BaseData/sportModel");
-const createError = require("http-errors");
-const { isValidObjectId } = require("mongoose");
 const { clubModel } = require("../../models/Management/clubModel");
-const autoBind = require("auto-bind");
 
 class SportController {
   constructor() {

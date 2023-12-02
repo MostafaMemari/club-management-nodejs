@@ -1,13 +1,12 @@
-const asyncHandler = require("express-async-handler");
 const { StatusCodes } = require("http-status-codes");
 const createError = require("http-errors");
+const autoBind = require("auto-bind");
 
 const { userModel } = require("../../models/Personnel/userModel");
 const { userRegisterSchema } = require("../../validations/authSchema");
 const { copyObject, deleteInvalidPropertyInObject } = require("../../helpers/function");
 const { hashPassword, isPassMatched } = require("../../services/passwordServices");
 const { generateToken } = require("../../services/tokenServices");
-const autoBind = require("auto-bind");
 
 class UserController {
   constructor() {
