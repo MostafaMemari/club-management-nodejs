@@ -23,7 +23,6 @@ module.exports.isAuth = asyncHandler(async (req, res, next) => {
   if (!user) user = await studentModel.findById(verifiedToken.id).select("role _id");
   if (!user) throw createError.Unauthorized("حساب کاربری یافت نشد");
 
-  console.log(user);
   req.userAuth = user;
   next();
 });

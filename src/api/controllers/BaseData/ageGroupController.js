@@ -119,16 +119,12 @@ class AgeGroupController {
       next(error);
     }
   }
-  async checkExistAgeGroup(req, res, next) {
-    try {
-      if (!isValidObjectId(id)) throw createError.BadRequest("شناسه وارد شده معتبر نمی باشد");
+  async checkExistAgeGroup(id) {
+    if (!isValidObjectId(id)) throw createError.BadRequest("شناسه وارد شده معتبر نمی باشد");
 
-      // find age group
-      const ageGroupFound = await ageGroupModel.findById(id);
-      if (!ageGroupFound) throw createError.NotFound("رده سنی وارد شده یافت نشد");
-    } catch (error) {
-      next(error);
-    }
+    // find age group
+    const ageGroupFound = await ageGroupModel.findById(id);
+    if (!ageGroupFound) throw createError.NotFound("رده سنی وارد شده یافت نشد");
   }
 }
 

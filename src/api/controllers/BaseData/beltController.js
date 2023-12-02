@@ -1,4 +1,3 @@
-const AsyncHandler = require("express-async-handler");
 const { StatusCodes } = require("http-status-codes");
 const createError = require("http-errors");
 const { isValidObjectId } = require("mongoose");
@@ -7,117 +6,125 @@ const { copyObject, deleteInvalidPropertyInObject } = require("../../helpers/fun
 const { beltSchema } = require("../../validations/clubSchema");
 const { studentModel } = require("../../models/Personnel/studentModel");
 const { beltModel } = require("../../models/BaseData/beltModel");
+const autoBind = require("auto-bind");
 
-//@desc Create Belt
-//@route POST /api/v1/belts
-//@acess  Private Admin Only
-module.exports.createBelt = AsyncHandler(async (req, res) => {
-  const data = copyObject(req.body);
-  deleteInvalidPropertyInObject(data);
-
-  // validate
-  await beltSchema.validateAsync(data);
-
-  const { name } = data;
-
-  // find belt
-  const beltFound = await beltModel.findOne({ name });
-  if (beltFound) throw createError.Conflict("کمربند وارد شده تکراری می باشد");
-
-  // create
-  const beltCreated = new beltModel(data);
-  await beltCreated.save();
-  if (!beltCreated) throw createError.InternalServerError("ثبت کمربند جدید با خطا مواجه شد");
-
-  res.status(StatusCodes.CREATED).json({
-    status: "success",
-    message: "ثبت کمربند با موفقیت انجام شد",
-    beltCreated,
-  });
-});
-
-//@desc Update Belt
-//@route PUT /api/v1/belts/:id
-//@acess  Private Admin Only
-module.exports.updateBelt = AsyncHandler(async (req, res) => {
-  await checkExistBelts(req.params.id);
-
-  const data = copyObject(req.body);
-  deleteInvalidPropertyInObject(data);
-
-  const { name, duration } = data;
-
-  // validate duration
-  if (isNaN(duration)) throw createError.BadRequest("مدت زمان وارد شده معتبر نمی باشد");
-
-  // validate name
-  if (name) {
-    const beltFound = await beltModel.findOne({ name });
-    if (beltFound) throw createError.Conflict("کمربند وارد شده تکراری می باشد");
+class BeltController {
+  constructor() {
+    autoBind(this);
   }
+  async createBelt(req, res, next) {
+    try {
+      const data = copyObject(req.body);
+      deleteInvalidPropertyInObject(data);
 
-  // updated
-  const beltUpdated = await beltModel.updateOne({ _id: req.params.id }, data);
-  if (!beltUpdated.modifiedCount) throw createError.InternalServerError("ویرایش کمربند با خطا مواجه شد");
+      // validate
+      await beltSchema.validateAsync(data);
 
-  res.status(StatusCodes.OK).json({
-    status: "success",
-    message: "کمربند با موفقیت ویرایش شد",
-  });
-});
+      const { name } = data;
 
-//@desc Delete Belt
-//@route PUT /api/v1/belts/:id
-//@acess  Private Admin Only
-module.exports.deleteBelt = AsyncHandler(async (req, res) => {
-  await checkExistBelts(req.params.id);
+      // find belt
+      const beltFound = await beltModel.findOne({ name });
+      if (beltFound) throw createError.Conflict("کمربند وارد شده تکراری می باشد");
 
-  const deletedBelt = await beltModel.deleteOne({ _id: req.params.id });
-  if (!deletedBelt.deletedCount) throw createError.InternalServerError("حذف رده کمربند با خطا مواجه شد");
+      // create
+      const beltCreated = new beltModel(data);
+      await beltCreated.save();
+      if (!beltCreated) throw createError.InternalServerError("ثبت کمربند جدید با خطا مواجه شد");
 
-  await studentModel.updateMany({ beltID: req.params.id }, { $unset: { beltID: 1 } });
+      res.status(StatusCodes.CREATED).json({
+        status: "success",
+        message: "ثبت کمربند با موفقیت انجام شد",
+        beltCreated,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+  async updateBelt(req, res, next) {
+    try {
+      await this.checkExistBelts(req.params.id);
 
-  res.status(StatusCodes.OK).json({
-    status: "success",
-    message: "حذف کمربند با موفقیت انجام شد",
-  });
-});
+      const data = copyObject(req.body);
+      deleteInvalidPropertyInObject(data);
 
-//@desc Get Single Belt
-//@route PUT /api/v1/belts/:id
-//@acess  Private Admin Only
-module.exports.getBelt = AsyncHandler(async (req, res) => {
-  await checkExistBelts(req.params.id);
+      const { name, duration } = data;
 
-  const beltFound = await beltModel.findById(req.params.id).select("-duration").lean();
-  if (!beltFound) throw createError.InternalServerError("دریافت کمربند با خطا مواجه شد");
+      // validate duration
+      if (isNaN(duration)) throw createError.BadRequest("مدت زمان وارد شده معتبر نمی باشد");
 
-  res.status(StatusCodes.OK).json({
-    status: "success",
-    message: "دریافت کمربند با موفقیت انجام شد",
-    data: beltFound,
-  });
-});
+      // validate name
+      if (name) {
+        const beltFound = await beltModel.findOne({ name });
+        if (beltFound) throw createError.Conflict("کمربند وارد شده تکراری می باشد");
+      }
 
-//@desc Get All Belt
-//@route PUT /api/v1/belts/
-//@acess  Public
-module.exports.getBelts = AsyncHandler(async (req, res) => {
-  const beltsFound = await beltModel.find({}).select("-duration").lean();
-  if (!beltsFound) throw createError.InternalServerError("دریافت کمربند با خطا مواجه شد");
+      // updated
+      const beltUpdated = await beltModel.updateOne({ _id: req.params.id }, data);
+      if (!beltUpdated.modifiedCount) throw createError.InternalServerError("ویرایش کمربند با خطا مواجه شد");
 
-  res.status(StatusCodes.OK).json({
-    status: "success",
-    message: "دریافت کمربند با موفقیت انجام شد",
-    data: beltsFound,
-  });
-});
+      res.status(StatusCodes.OK).json({
+        status: "success",
+        message: "کمربند با موفقیت ویرایش شد",
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+  async deleteBelt(req, res, next) {
+    try {
+      await this.checkExistBelts(req.params.id);
 
-const checkExistBelts = async (id) => {
-  if (!isValidObjectId(id)) throw createError.BadRequest("شناسه وارد شده معتبر نمی باشد");
+      const deletedBelt = await beltModel.deleteOne({ _id: req.params.id });
+      if (!deletedBelt.deletedCount) throw createError.InternalServerError("حذف رده کمربند با خطا مواجه شد");
 
-  // find Belt
-  const beltFound = await beltModel.findById(id);
-  if (!beltFound) throw createError.NotFound("کمربند وارد شده یافت نشد");
-  return beltFound;
-};
+      await studentModel.updateMany({ beltID: req.params.id }, { $unset: { beltID: 1 } });
+
+      res.status(StatusCodes.OK).json({
+        status: "success",
+        message: "حذف کمربند با موفقیت انجام شد",
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+  async getBelt(req, res, next) {
+    try {
+      await this.checkExistBelts(req.params.id);
+
+      const beltFound = await beltModel.findById(req.params.id).select("-duration").lean();
+      if (!beltFound) throw createError.InternalServerError("دریافت کمربند با خطا مواجه شد");
+
+      res.status(StatusCodes.OK).json({
+        status: "success",
+        message: "دریافت کمربند با موفقیت انجام شد",
+        data: beltFound,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+  async getBelts(req, res, next) {
+    try {
+      const beltsFound = await beltModel.find({}).select("-duration").lean();
+      if (!beltsFound) throw createError.InternalServerError("دریافت کمربند با خطا مواجه شد");
+
+      res.status(StatusCodes.OK).json({
+        status: "success",
+        message: "دریافت کمربند با موفقیت انجام شد",
+        data: beltsFound,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+  async checkExistBelts(id) {
+    if (!isValidObjectId(id)) throw createError.BadRequest("شناسه وارد شده معتبر نمی باشد");
+
+    // find Belt
+    const beltFound = await beltModel.findById(id);
+    if (!beltFound) throw createError.NotFound("کمربند وارد شده یافت نشد");
+    return beltFound;
+  }
+}
+
+module.exports = new BeltController();
