@@ -361,8 +361,10 @@
                           <span class="d-block text-nowrap pt-1">رده سنی</span>
                           <%if (ageGroup.length == "2") { %>
                           <h2 class="mb-n3 fs-4"><%=ageGroup[0].name%> - <%=ageGroup[1].name%></h2>
-                          <% } else { %>
+                          <% } else if(ageGroup.length == "1"){ %>
                           <h2 class="mb-n3 fs-4"><%=ageGroup[0].name%></h2>
+                          <% }else { %>
+                          <h2 class="mb-n3 fs-4">زیر شکوفه</h2>
                           <% } %>
                         </div>
                       </div>
@@ -448,7 +450,13 @@
                     <div class="col-lg-12 col-md-12 col-12 mb-4">
                       <div class="card h-100">
                         <div class="card-body text-center">
-                          <%if(nextBeltDate?.dateBeltExamNext.length < 0) {%>
+                          <%if(typeof nextBeltDate?.dateBeltExamNext === "undefined") {%>
+                          <h1>وقت آزمونت رسیده ولی آزمونی ثبت نشده</h1>
+                          <h4>تاریخ آزمون <%=nextBeltDate?.dateNextBelt%></h4>
+                          <%}else if(nextBeltDate?.dateBeltExamNext.length === 0){%>
+                          <h1>وقت آزمونت رسیده</h1>
+                          <h4>تاریخ آزمون <%=nextBeltDate?.dateNextBelt%></h4>
+                          <% }else {%>
                           <div class="avatar mx-auto mb-2">
                             <span class="avatar-initial rounded-circle bg-label-twitter"><i class="bx bx-purchase-tag fs-4"></i></span>
                           </div>
@@ -473,9 +481,6 @@
                               <% } %>
                             </tbody>
                           </table>
-                          <%}else {%>
-                          <h1>وقت آزمون بعدیت نرسیده</h1>
-                          <h4>تاریخ آزمون بعدیت <%=nextBeltDate?.dateNextBelt%></h4>
                           <%}%>
                         </div>
                       </div>

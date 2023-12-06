@@ -83,7 +83,6 @@ module.exports.dateDiffDayNowShamsi = (beltDate) => {
 };
 
 module.exports.dateBeltExamNext = async (belt, beltDate) => {
-  console.log(belt);
   const nextBeltDate = new Date(shamsiToMiladi(beltDate));
 
   if (belt.name === "سفید") {
@@ -96,6 +95,10 @@ module.exports.dateBeltExamNext = async (belt, beltDate) => {
   }
   if (belt.name === "سبز") {
     const nextBelt = await beltModel.findOne({ name: "آبی" });
+    return await beltExamModel.find({ beltID: nextBelt._id, eventDateEN: { $gte: nextBeltDate } }).lean();
+  }
+  if (belt.name === "آبی") {
+    const nextBelt = await beltModel.findOne({ name: "قرمز" });
     return await beltExamModel.find({ beltID: nextBelt._id, eventDateEN: { $gte: nextBeltDate } }).lean();
   }
   if (belt.name === "قرمز") {

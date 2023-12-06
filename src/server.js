@@ -28,7 +28,7 @@ module.exports = class Application {
 
   configApplication() {
     this.#app.use(cors());
-    this.#app.use(morgan("short"));
+    // this.#app.use(morgan("short"));
     this.#app.use(express.urlencoded({ extended: false }));
     this.#app.use(cookieParser(process.env.COOKIE_SECRET_KEY));
 

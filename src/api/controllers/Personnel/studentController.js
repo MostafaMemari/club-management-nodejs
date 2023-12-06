@@ -364,7 +364,7 @@ class StudentController {
       dayNextBelt: dateDiffDayNowShamsi(dateNextBelt),
       dateBeltExamNext: await dateBeltExamNext(studentFound.belt, dateNextBelt),
     };
-    console.log(nextBeltDateIR);
+
     studentFound.nextBeltDate = nextBeltDateIR;
 
     return studentFound;
