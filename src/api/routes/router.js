@@ -6,6 +6,7 @@ const { ageGroupRouter } = require("./BaseData/ageGroupRouter.js");
 const { beltExamRouter } = require("./BaseData/beltExamRouter.js");
 const { beltRouter } = require("./BaseData/beltRouter.js");
 const { sportRouter } = require("./BaseData/sportRouter.js");
+const { weightRouter } = require("./BaseData/weightRouter.js");
 const { clubRouter } = require("./Management/clubRouter.js");
 const { coachRouter } = require("./Personnel/coachRouter.js");
 const { studentRouter } = require("./Personnel/studentRouter.js");
@@ -32,6 +33,7 @@ router.use("/api/v1/sports", isAuth, sportRouter);
 router.use("/api/v1/ages", isAuth, ageGroupRouter);
 router.use("/api/v1/belts", isAuth, beltRouter);
 router.use("/api/v1/belt-exams", isAuth, beltExamRouter);
+router.use("/api/v1/weights", isAuth, weightRouter);
 
 // RBAC
 router.use("/api/v1/roles", isAuth, checkPermission([PERMISSIONS.SUPER_ADMIN]), roleRouter);

@@ -12,12 +12,10 @@ function getToken(headers) {
 }
 
 module.exports.isAuth = asyncHandler(async (req, res, next) => {
-  // console.log(req.cookies.access_token);
-  // console.log(req?.headers);
-  // const token = getToken(req?.headers);
+  // const verifiedToken = verifyToken(req.cookies.access_token);
 
-  const verifiedToken = verifyToken(req.cookies.access_token);
-  // const verifiedToken = verifyToken(token);
+  const token = getToken(req?.headers);
+  const verifiedToken = verifyToken(token);
   let user = await userModel.findById(verifiedToken.id).select("role _id");
   if (!user) user = await coachModel.findById(verifiedToken.id).select("role _id");
   if (!user) user = await studentModel.findById(verifiedToken.id).select("role _id");
