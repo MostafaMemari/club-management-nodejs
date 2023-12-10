@@ -369,6 +369,10 @@ class StudentController {
 
     return studentFound;
   }
+  async checkExistStudentByNationalId(nationalID) {
+    const studentFound = await studentModel.findOne({ nationalID });
+    if (studentFound) throw createError.Conflict("کد ملی وارد شده تکراری است");
+  }
 }
 
 module.exports = new StudentController();
