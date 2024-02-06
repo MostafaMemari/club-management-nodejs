@@ -1,5 +1,5 @@
 const Joi = require("joi");
-const { PhoneNumberPatern, DatePatern } = require("../helpers/constans");
+const { PhoneNumberPatern, DatePatern } = require("../utils/constans");
 
 const userRegisterSchema = Joi.object({
   username: Joi.string().alphanum().min(3).max(30).required().error(new Error("یوزرنیم وارد شده معتبر نمی باشد")),

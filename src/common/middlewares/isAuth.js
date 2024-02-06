@@ -1,9 +1,9 @@
 const asyncHandler = require("express-async-handler");
 const createError = require("http-errors");
 const { verifyToken } = require("../services/tokenServices");
-const { userModel } = require("../models/Personnel/userModel");
+const { userModel } = require("../../modules/personnel/user/userModel");
 const { coachModel } = require("../models/Personnel/coachModel");
-const { studentModel } = require("../models/Personnel/studentModel");
+const { studentModel } = require("../../modules/personnel/student/studentModel");
 
 function getToken(headers) {
   const [bearer, token] = headers?.authorization?.split(" ") || [];

@@ -1,5 +1,5 @@
 const Joi = require("joi");
-const { PhoneNumberPatern, DatePatern } = require("../helpers/constans");
+const { PhoneNumberPatern, DatePatern } = require("../utils/constans");
 
 const clubSchema = Joi.object({
   name: Joi.string().min(3).max(50).required().error(new Error("نام وارد شده صحیح نمی باشد")),

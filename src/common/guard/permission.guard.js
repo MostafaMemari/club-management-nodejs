@@ -1,7 +1,7 @@
 const createError = require("http-errors");
-const { PERMISSIONS } = require("../helpers/constans");
-const { permissionModel } = require("../models/RBAC/permissionModel");
-const { roleModel } = require("../models/RBAC/roleModel");
+const { PERMISSIONS } = require("../utils/constans");
+const { permissionModel } = require("../../modules/RBAC/permission/permissionModel");
+const { roleModel } = require("../../modules/RBAC/role/roleModel");
 const AsyncHandler = require("express-async-handler");
 
 function checkPermission(requiredPermissions = []) {

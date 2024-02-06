@@ -1,10 +1,10 @@
 const { beltModel } = require("../models/BaseData/beltModel");
 const { clubModel } = require("../models/Management/clubModel");
 const { coachModel } = require("../models/Personnel/coachModel");
-const { studentModel } = require("../models/Personnel/studentModel");
+const { studentModel } = require("../../modules/personnel/student/studentModel");
 const createError = require("http-errors");
 const { normalizenationalID } = require("./normalizeData");
-const studentController = require("../controllers/Personnel/studentController");
+const studentController = require("../../modules/personnel/student/studentController");
 const clubController = require("../controllers/Management/clubController");
 const coachController = require("../controllers/Personnel/coachController");
 const beltController = require("../controllers/BaseData/beltController");

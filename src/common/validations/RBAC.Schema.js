@@ -1,5 +1,5 @@
 const Joi = require("joi");
-const { MongoIDPattern } = require("../helpers/constans");
+const { MongoIDPattern } = require("../utils/constans");
 const createError = require("http-errors");
 
 const roleSchema = Joi.object({

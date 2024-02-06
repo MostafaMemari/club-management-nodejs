@@ -5,8 +5,8 @@ const createError = require("http-errors");
 const { isValidObjectId } = require("mongoose");
 const { normalizeCalendar, normalizeDataDates } = require("./normalizeData");
 const { shamsiToMiladi } = require("./dateConvarter");
-const { beltExamModel } = require("../models/BaseData/beltExamModel");
-const { beltModel } = require("../models/BaseData/beltModel");
+const { beltExamModel } = require("../../modules/base-data/belt-exam/beltExamModel");
+const { beltModel } = require("../../modules/base-data/belt/beltModel");
 
 module.exports.deleteInvalidPropertyInObject = (data = {}, blackListFields = []) => {
   let nullishData = ["", " ", "0", 0, null, undefined];
