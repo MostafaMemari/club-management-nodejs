@@ -1,0 +1,27 @@
+[{
+  "_id": {
+    "$oid": "6570e0f690549f78c39802e2"
+  },
+  "name": "اوزان نوجوانان",
+  "ageGroup": {
+    "$oid": "6554d62175e639da635179b1"
+  },
+  "gender": "مرد",
+  "weights": [
+    {
+      "wightLevel": 1,
+      "minWeight": 45.2,
+      "_id": {
+        "$oid": "6570e0f690549f78c39802e3"
+      }
+    },
+    {
+      "wightLevel": 2,
+      "minWeight": 45.21,
+      "maxWeight": 48.2,
+      "_id": {
+        "$oid": "6570e0f690549f78c39802e4"
+      }
+    }
+  ]
+}]
