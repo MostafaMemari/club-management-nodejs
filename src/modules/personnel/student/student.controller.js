@@ -2,6 +2,9 @@ const autoBind = require("auto-bind");
 const { matchedData } = require("express-validator");
 const { StatusCodes } = require("http-status-codes");
 const studentService = require("./student.service");
+const { StudentMessage } = require("./student.message");
+const { validate } = require("../../../common/middlewares/validateExpressValidator");
+const { deleteFileInPublic } = require("../../../common/utils/function");
 
 class StudentController {
   #service;
@@ -11,16 +14,16 @@ class StudentController {
   }
   async register(req, res, next) {
     try {
+      validate(req);
       const bodyData = matchedData(req, { locations: ["body"] });
       await this.#service.register(bodyData);
 
       res.status(StatusCodes.CREATED).json({
         status: "success",
-        message: "ثبت نام هنرجو با موفقیت انجام شد",
-        // data,
-        // data: studentCreated,
+        message: StudentMessage.Register,
       });
     } catch (error) {
+      req.body.imageUrl && deleteFileInPublic(req.body.imageUrl);
       next(error);
     }
   }

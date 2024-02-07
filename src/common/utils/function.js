@@ -36,7 +36,8 @@ module.exports.copyObject = (object) => {
 
 module.exports.deleteFileInPublic = (fileAddress) => {
   if (fileAddress) {
-    const pathFile = path.join(__dirname, "..", "..", "public", fileAddress);
+    console.log(fileAddress);
+    const pathFile = path.join(process.cwd(), "public", fileAddress);
     if (fs.existsSync(pathFile)) fs.unlinkSync(pathFile);
   }
 };

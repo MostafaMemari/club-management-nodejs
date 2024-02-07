@@ -1,7 +1,7 @@
 const { validationResult } = require("express-validator");
 const createHttpError = require("http-errors");
 
-function validate(req, res, next) {
+function validate(req) {
   try {
     const result = validationResult(req);
     if (!result.isEmpty()) {
@@ -12,9 +12,8 @@ function validate(req, res, next) {
       }
       throw createHttpError.BadRequest(errors);
     }
-    next();
   } catch (error) {
-    next(error);
+    throw error;
   }
 }
 

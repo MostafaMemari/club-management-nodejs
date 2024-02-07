@@ -4,7 +4,6 @@ const cors = require("cors");
 const path = require("path");
 const expressEjsLayouts = require("express-ejs-layouts");
 
-const createError = require("http-errors");
 require("dotenv").config();
 
 const cookieParser = require("cookie-parser");
@@ -25,14 +24,13 @@ module.exports = class Application {
     this.configApplication();
     connectToMongoDB(this.#DB_URL);
     this.createRoutes();
-
     SwaggerConfig(this.#app);
     this.errorHandling();
   }
 
   configApplication() {
     this.#app.use(cors());
-    // this.#app.use(morgan("short"));
+    this.#app.use(morgan("dev"));
     this.#app.use(express.urlencoded({ extended: false }));
     this.#app.use(cookieParser(process.env.COOKIE_SECRET_KEY));
 

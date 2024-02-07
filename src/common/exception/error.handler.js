@@ -10,7 +10,6 @@ function NotFoundErrorHandler(req, res, next) {
 function ApiErrorHandler(error, req, res, next) {
   const errorCode = error.status || 500;
   const message = error.message || "internal server error";
-
   res.status(errorCode).json({
     status: errorCode,
     ...error,
