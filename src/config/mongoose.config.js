@@ -8,9 +8,9 @@ function connectToMongoDB(url) {
       console.log(err.message);
     });
 
-  mongoose.connection.on("connected", () => {
-    console.log("mongoose connected To DB");
-  });
+  // mongoose.connection.on("connected", () => {
+  //   console.log("mongoose connected To DB");
+  // });
 
   mongoose.connection.on("disconnected", () => {
     console.log("mongoose connection is disconnected");

@@ -10,6 +10,8 @@ require("dotenv").config();
 const cookieParser = require("cookie-parser");
 const { connectToMongoDB } = require("./config/mongoose.config");
 const { AllRouter } = require("./modules/app.routes");
+const { SwaggerConfig } = require("./config/swagger.config");
+const { NotFoundErrorHandler, ApiErrorHandler } = require("./common/exception/error.handler");
 
 module.exports = class Application {
   #app = express();
@@ -21,8 +23,10 @@ module.exports = class Application {
 
     this.createServer();
     this.configApplication();
+    connectToMongoDB(this.#DB_URL);
     this.createRoutes();
-    this.connectToDatabase();
+
+    SwaggerConfig(this.#app);
     this.errorHandling();
   }
 
@@ -42,11 +46,8 @@ module.exports = class Application {
   }
   createServer() {
     this.#app.listen(this.#PORT, () => {
-      console.log("run > http://localhost:" + this.#PORT);
+      console.log(`Server listen on Port : \n http://localhost:${this.#PORT}/api-docs \n http://localhost:${this.#PORT}/`);
     });
-  }
-  connectToDatabase() {
-    connectToMongoDB(this.#DB_URL);
   }
 
   createRoutes() {
@@ -54,21 +55,7 @@ module.exports = class Application {
   }
 
   errorHandling() {
-    this.#app.use((req, res, next) => {
-      next(createError.NotFound("صفحه مورد نظر یافت نشد"));
-    });
-
-    this.#app.use((error, req, res, next) => {
-      const serverError = createError.InternalServerError();
-      const statusCode = error.status || serverError.status;
-      const message = error.message || serverError.message;
-
-      return res.status(statusCode).json({
-        errors: {
-          status: "failed",
-          message,
-        },
-      });
-    });
+    this.#app.use(NotFoundErrorHandler);
+    this.#app.use(ApiErrorHandler);
   }
 };
