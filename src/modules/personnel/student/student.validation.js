@@ -1,16 +1,24 @@
 const { body } = require("express-validator");
 const { RegExDateShmasi } = require("../../../common/utils/constans");
-const { CoachModel } = require("../coach/coach.model");
 const { isValidObjectId } = require("mongoose");
-const { BeltModel } = require("../../base-data/belt/belt.model");
-const { ClubModel } = require("../../management/club/club.model");
 const { normalizeCalendar, normalizePhoneNumber } = require("../../../common/utils/normalizeData");
+const { CoachModel } = require("../coach/coach.model");
+const { ClubModel } = require("../../management/club/club.model");
+const { BeltModel } = require("../../baseData/belt/belt.model");
 
 function studentRegisterValidate() {
   return [
     body("firstName").isString().trim().notEmpty().isLength({ min: 2, max: 50 }).withMessage("نام وارد شده معتبر نمی باشد"),
     body("lastName").isString().trim().notEmpty().isLength({ min: 2, max: 50 }).withMessage("نام خانوادگی وارد شده معتبر نمی باشد"),
     body("nationalID").isString().trim().notEmpty().isLength({ min: 10, max: 10 }).withMessage("کد ملی وارد شده معتبر نمی باشد"),
+
+    body("imageUrl")
+      .optional()
+      .isString()
+      .trim()
+      .notEmpty()
+      .customSanitizer((image) => (image = image.replace(/\\/g, "/"))),
+
     body("role").optional().isString().trim().notEmpty().isIn(["STUDENT", "COACH"]).withMessage("نقش وارد شده معتبر نمی باشد"),
     body("gender").optional().isString().trim().notEmpty().isIn(["زن", "مرد"]).withMessage("جنسیت وارد شده اشتباه می باشد"),
 
@@ -102,4 +110,5 @@ function studentRegisterValidate() {
     // body("imageUrl").string() .error(new Error("تصویر ثبت شده معتبر نمی باشد")),
   ];
 }
+
 module.exports = { studentRegisterValidate };

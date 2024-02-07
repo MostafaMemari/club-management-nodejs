@@ -1,5 +1,5 @@
 const autoBind = require("auto-bind");
-const { validationResult, matchedData } = require("express-validator");
+const { matchedData } = require("express-validator");
 const { StatusCodes } = require("http-status-codes");
 const studentService = require("./student.service");
 
@@ -11,12 +11,9 @@ class StudentController {
   }
   async register(req, res, next) {
     try {
-      const result = validationResult(req);
       const bodyData = matchedData(req, { locations: ["body"] });
-      // await this.#service.register(bodyData);
+      await this.#service.register(bodyData);
 
-      console.log(result);
-      console.log(bodyData);
       res.status(StatusCodes.CREATED).json({
         status: "success",
         message: "ثبت نام هنرجو با موفقیت انجام شد",

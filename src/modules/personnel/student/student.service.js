@@ -1,50 +1,36 @@
-const autoBind = require("auto-bind");
-const { validationResult, matchedData } = require("express-validator");
-const { normalizeDataDates, normalizePhoneNumber } = require("../../../common/utils/normalizeData");
-const { validate_nationalId_clubId_coachId_beltId } = require("../../../common/utils/validateFoundDB");
+const createHttpError = require("http-errors");
+const { StudentModel } = require("./student.model");
+const { deleteFileInPublic } = require("../../../common/utils/function");
 
-class Student {
-  #service;
-  constructor() {
-    autoBind(this);
-    // this.#service = studentService;
-  }
+class StudentService {
   async register(bodyData) {
-    try {
-      try {
-        // const { fileUploadPath, filename } = req.body;
-        // if (fileUploadPath && filename) {
-        //   const urlPath = path.join(fileUploadPath, filename);
-        //   req.body.imageUrl = urlPath.replace(/\\/g, "/");
-        //   delete req.body["fileUploadPath"];
-        //   delete req.body["filename"];
-        // }
+    // const { fileUploadPath, filename } = req.body;
+    // if (fileUploadPath && filename) {
+    //   const urlPath = path.join(fileUploadPath, filename);
+    //   req.body.imageUrl = urlPath.replace(/\\/g, "/");
+    //   delete req.body["fileUploadPath"];
+    //   delete req.body["filename"];
+    // }
 
-        //find belt
-        if (beltID) {
-          const beltFound = await BeltModel.findById(beltID);
-          if (!beltFound) throw createHttpError.NotFound("کمربند مورد نظر یافت نشد");
-          if (beltFound.name !== "سفید") {
-            delete data.beltID;
-            delete data.beltDateIR;
-          } else {
-            data.beltDateIR = toEnglish(normalizeCalendar(new Date().toLocaleDateString("fa-IR")));
-          }
-        }
-        // create
-        const studentCreated = await StudentModel.create({
-          ...data,
-          createdBy: req.userAuth._id,
-          modelCreatedBy: req.userAuth.role == "COACH" ? "coach" : "user",
-        });
-        if (!studentCreated) throw createHttpError.InternalServerError("ثبت نام با خطا مواجه شد");
-      } catch (error) {
-        deleteFileInPublic(req.body.imageUrl);
-        next(error);
-      }
-    } catch (error) {
-      next(error);
-    }
+    //find belt
+    // if (beltID) {
+    //   const beltFound = await BeltModel.findById(beltID);
+    //   if (!beltFound) throw createHttpError.NotFound("کمربند مورد نظر یافت نشد");
+    //   if (beltFound.name !== "سفید") {
+    //     delete data.beltID;
+    //     delete data.beltDateIR;
+    //   } else {
+    //     data.beltDateIR = toEnglish(normalizeCalendar(new Date().toLocaleDateString("fa-IR")));
+    //   }
+    // }
+    // create
+    const studentCreated = await StudentModel.create({
+      ...bodyData,
+      // createdBy: req.userAuth._id,
+      // modelCreatedBy: req.userAuth.role == "COACH" ? "coach" : "user",
+    });
+    if (!studentCreated) throw createHttpError.InternalServerError("ثبت نام با خطا مواجه شد");
+    return true;
   }
 
   // async loginStudent(req, res, next) {
@@ -316,4 +302,4 @@ class Student {
   // }
 }
 
-module.exports = new Student();
+module.exports = new StudentService();

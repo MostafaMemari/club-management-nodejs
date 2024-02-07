@@ -3,7 +3,7 @@ const { shamsiToMiladi } = require("../../../common/utils/dateConvarter");
 
 const { Types } = mongoose;
 
-const coachSchema = new mongoose.Schema(
+const CoachSchema = new mongoose.Schema(
   {
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },
@@ -35,14 +35,14 @@ const coachSchema = new mongoose.Schema(
   }
 );
 
-coachSchema.pre("save", async function () {
+CoachSchema.pre("save", async function () {
   const { birthDayIR, registerDateIR } = this;
 
   registerDateIR ? (this.registerDateEN = shamsiToMiladi(registerDateIR)) : false;
   birthDayIR ? (this.birthDayEN = shamsiToMiladi(birthDayIR)) : false;
 });
 
-coachSchema.pre("updateOne", async function (next) {
+CoachSchema.pre("updateOne", async function (next) {
   const { birthDayIR, registerDateIR } = this._update;
 
   if (birthDayIR) {
@@ -56,8 +56,8 @@ coachSchema.pre("updateOne", async function (next) {
   next();
 });
 
-const coachModel = mongoose.model("coach", coachSchema);
+const CoachModel = mongoose.model("coach", CoachSchema);
 
 module.exports = {
-  coachModel,
+  CoachModel,
 };
