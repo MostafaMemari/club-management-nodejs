@@ -8,8 +8,8 @@ const createError = require("http-errors");
 require("dotenv").config();
 
 const cookieParser = require("cookie-parser");
-const { connectToMongoDB } = require("./config/db");
-const { AllRouter } = require("./api/routes/router");
+const { connectToMongoDB } = require("./config/mongoose.config");
+const { AllRouter } = require("./modules/app.routes");
 
 module.exports = class Application {
   #app = express();
@@ -50,7 +50,7 @@ module.exports = class Application {
   }
 
   createRoutes() {
-    this.#app.use(AllRouter);
+    this.#app.use("/api/v1", AllRouter);
   }
 
   errorHandling() {

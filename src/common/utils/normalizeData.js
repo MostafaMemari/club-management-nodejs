@@ -1,9 +1,9 @@
 module.exports.normalizePhoneNumber = (phoneNumber) => {
   if (phoneNumber.length === 10) return `0${phoneNumber}`;
   if (phoneNumber.length === 11) return `${phoneNumber}`;
-  if (phoneNumber.length === 12) return `0${phoneNumber.substring(2)}`;
+  // if (phoneNumber.length === 12) return `0${phoneNumber.substring(2)}`;
   if (phoneNumber.length === 13) return `0${phoneNumber.substring(3)}`;
-  if (phoneNumber.length === 14) return `0${phoneNumber.substring(4)}`;
+  // if (phoneNumber.length === 14) return `0${phoneNumber.substring(4)}`;
 };
 module.exports.normalizenationalID = (nationalID) => {
   if (nationalID.length === 4) return `000000${nationalID}`;

@@ -3,10 +3,10 @@ const createError = require("http-errors");
 const autoBind = require("auto-bind");
 
 const { userModel } = require("../../models/Personnel/userModel");
-const { userRegisterSchema } = require("../../../api/validations/authSchema");
-const { copyObject, deleteInvalidPropertyInObject } = require("../../../api/helpers/function");
-const { hashPassword, isPassMatched } = require("../../../api/services/passwordServices");
-const { generateToken } = require("../../../api/services/tokenServices");
+const { userRegisterSchema } = require("../authSchema");
+const { copyObject, deleteInvalidPropertyInObject } = require("../../../common/utils/function");
+const { hashPassword, isPassMatched } = require("../../../common/services/passwordServices");
+const { generateToken } = require("../../../common/services/tokenServices");
 
 class UserController {
   constructor() {
