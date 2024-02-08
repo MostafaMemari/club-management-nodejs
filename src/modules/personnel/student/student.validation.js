@@ -11,7 +11,7 @@ function optionalStudentValidate() {
   return [
     body("firstName")
       .if((value, { req }) => req.method !== "POST")
-      .optional()
+      .optional({ nullable: true, checkFalsy: true })
       .trim()
       .notEmpty()
       .escape()
@@ -21,7 +21,7 @@ function optionalStudentValidate() {
 
     body("lastName")
       .if((value, { req }) => req.method !== "POST")
-      .optional()
+      .optional({ nullable: true, checkFalsy: true })
       .trim()
       .notEmpty()
       .escape()
@@ -31,7 +31,7 @@ function optionalStudentValidate() {
 
     body("nationalID")
       .if((value, { req }) => req.method !== "POST")
-      .optional()
+      .optional({ nullable: true, checkFalsy: true })
       .trim()
       .notEmpty()
       .escape()
@@ -40,64 +40,111 @@ function optionalStudentValidate() {
       .withMessage("کد ملی وارد شده معتبر نمی باشد"),
 
     body("imageUrl")
-      .optional()
+      .optional({ nullable: true, checkFalsy: true })
       .isString()
       .trim()
       .notEmpty()
       .customSanitizer((image) => (image = image.replace(/\\/g, "/"))),
 
-    body("role").optional().isString().trim().notEmpty().isIn(["STUDENT", "COACH"]).withMessage("نقش وارد شده معتبر نمی باشد"),
-    body("gender").optional().isString().trim().notEmpty().isIn(["زن", "مرد"]).withMessage("جنسیت وارد شده اشتباه می باشد"),
-
-    body("mobile")
-      .optional()
+    body("role")
+      .optional({ nullable: true, checkFalsy: true })
       .isString()
       .trim()
       .notEmpty()
+      .escape()
+      .isIn(["STUDENT", "COACH"])
+      .withMessage("نقش وارد شده معتبر نمی باشد"),
+    body("gender")
+      .optional({ nullable: true, checkFalsy: true })
+      .isString()
+      .trim()
+      .notEmpty()
+      .escape()
+      .isIn(["زن", "مرد"])
+      .withMessage("جنسیت وارد شده اشتباه می باشد"),
+
+    body("mobile")
+      .optional({ nullable: true, checkFalsy: true })
+      .isString()
+      .trim()
+      .notEmpty()
+      .escape()
       .customSanitizer((phone) => (phone = normalizePhoneNumber(phone)))
       .isMobilePhone("ir-IR")
       .withMessage("شماره موبایل وارد شده معتبر نمی باشد"),
 
-    body("fatherName").optional().isString().trim().notEmpty().isLength({ min: 2, max: 50 }).withMessage("نام پدر وارد شده معتبر نمی باشد"),
-    body("address").optional().isString().trim().notEmpty().isLength({ min: 10, max: 50 }).withMessage("آدرس وارد شده معتبر نمی باشد"),
-    body("phone").optional().isString().trim().notEmpty().isLength({ min: 9, max: 12 }).withMessage("شماره تلفن وارد شده معتبر نمی باشد"),
-
-    body("memberShipValidity").optional().trim().notEmpty().isInt({ gt: 1370, lt: 1450 }).toInt().withMessage("اعتبار عضویت وارد شده معتبر نمی باشد"),
-    body("registerDateShamsi")
-      .optional()
+    body("fatherName")
+      .optional({ nullable: true, checkFalsy: true })
       .isString()
       .trim()
       .notEmpty()
+      .escape()
+      .isLength({ min: 2, max: 50 })
+      .withMessage("نام پدر وارد شده معتبر نمی باشد"),
+    body("address")
+      .optional({ nullable: true, checkFalsy: true })
+      .isString()
+      .trim()
+      .notEmpty()
+      .escape()
+      .isLength({ min: 10, max: 50 })
+      .withMessage("آدرس وارد شده معتبر نمی باشد"),
+    body("phone")
+      .optional({ nullable: true, checkFalsy: true })
+      .isString()
+      .trim()
+      .notEmpty()
+      .escape()
+      .isLength({ min: 9, max: 12 })
+      .withMessage("شماره تلفن وارد شده معتبر نمی باشد"),
+
+    body("memberShipValidity")
+      .optional({ nullable: true, checkFalsy: true })
+      .trim()
+      .notEmpty()
+      .escape()
+      .isInt({ gt: 1370, lt: 1450 })
+      .toInt()
+      .withMessage("اعتبار عضویت وارد شده معتبر نمی باشد"),
+    body("registerDateShamsi")
+      .optional({ nullable: true, checkFalsy: true })
+      .isString()
+      .trim()
+      .notEmpty()
+      .escape()
       .customSanitizer((date) => (date = normalizeCalendar(date)))
       .matches(RegExDateShmasi)
       .withMessage("تاریخ ثبت نام معتبر نمی باشد"),
     body("birthDayShamsi")
-      .optional()
+      .optional({ nullable: true, checkFalsy: true })
       .isString()
       .trim()
       .notEmpty()
+      .escape()
       .customSanitizer((date) => (date = normalizeCalendar(date)))
       .matches(RegExDateShmasi)
       .withMessage("تاریخ تولد معتبر نمی باشد"),
     body("sportsInsuranceDateShamsi")
-      .optional()
+      .optional({ nullable: true, checkFalsy: true })
       .isString()
       .trim()
       .notEmpty()
+      .escape()
       .customSanitizer((date) => (date = normalizeCalendar(date)))
       .matches(RegExDateShmasi)
       .withMessage("تاریخ بیمه ورزشی معتبر نمی باشد"),
     body("beltDateShamsi")
-      .optional()
+      .optional({ nullable: true, checkFalsy: true })
       .isString()
       .trim()
       .notEmpty()
+      .escape()
       .customSanitizer((date) => (date = normalizeCalendar(date)))
       .matches(RegExDateShmasi)
       .withMessage("تاریخ اخذ کمربند معتبر نمی باشد"),
 
     body("coach")
-      .optional()
+      .optional({ nullable: true, checkFalsy: true })
       .custom(async (value) => {
         if (isValidObjectId(value)) {
           const checkExistCoach = await CoachModel.findById(value);
@@ -109,7 +156,7 @@ function optionalStudentValidate() {
         }
       }),
     body("club")
-      .optional()
+      .optional({ nullable: true, checkFalsy: true })
       .custom(async (value) => {
         if (isValidObjectId(value)) {
           const checkExistClub = await ClubModel.findById(value);
@@ -121,7 +168,7 @@ function optionalStudentValidate() {
         }
       }),
     body("belt")
-      .optional()
+      .optional({ nullable: true, checkFalsy: true })
       .custom(async (value) => {
         if (isValidObjectId(value)) {
           const checkExistBelt = await BeltModel.findById(value);
@@ -143,8 +190,8 @@ function requiredStudentValidate() {
       .exists({ checkFalsy: true })
       .trim()
       .notEmpty()
-      .escape()
       .isString()
+      .escape()
       .isLength({ min: 2, max: 50 })
       .withMessage("نام وارد شده معتبر نمی باشد"),
 

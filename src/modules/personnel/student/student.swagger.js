@@ -55,17 +55,23 @@
  *            type: string
  *          belt:
  *            type: string
+ *          studentProfile:
+ *            description: upload profile student
+ *            type: file
  */
 
 /**
  * @swagger
- * /api/v1/students/register:
+ * /api/v1/students:
  *  post:
  *    summary: register student
  *    tags:
  *      - Student
  *    requestBody:
  *      content:
+ *        multipart/form-data:
+ *          schema:
+ *            $ref: "#/components/schemas/CreateStudent"
  *        application/x-www-form-urlencoded:
  *          schema:
  *            $ref: "#/components/schemas/CreateStudent"

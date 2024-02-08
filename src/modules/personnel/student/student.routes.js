@@ -7,7 +7,7 @@ const router = require("express").Router();
 
 // router.post("/register", isAuth, checkPermission(["student"]), uploadMulter.single("image"), studentController.registerStudent);
 
-router.post("/", profileUploader.single("studentProfile"), optionalStudentValidate(), studentController.register);
+router.post("/", profileUploader.single("studentProfile"), optionalStudentValidate(), requiredStudentValidate(), studentController.register);
 router.put("/:id", profileUploader.single("studentProfile"), optionalStudentValidate(), studentController.register);
 
 // router.post("/login", studentController.loginStudent);
