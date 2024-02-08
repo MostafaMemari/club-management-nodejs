@@ -9,7 +9,7 @@
  * @swagger
  *  components:
  *    schemas:
- *      CreateStudent:
+ *      InitialStudentRegister:
  *        type: object
  *        required:
  *          - firstName
@@ -56,7 +56,7 @@
  * @swagger
  *  components:
  *    schemas:
- *      CreateStudent:
+ *      InitialStudentRegister:
  *        type: object
  *        properties:
  *          firstName:
@@ -97,7 +97,24 @@
 
 /**
  * @swagger
- * /api/v1/students:
+ *  components:
+ *    schemas:
+ *      CompleteStudentRegister:
+ *        type: object
+ *        properties:
+ *          memberShipValidity:
+ *            type: string
+ *          belt:
+ *            type: string
+ *          beltDateShamsi:
+ *            type: string
+ *          sportsInsuranceDateShamsi:
+ *            type: string
+ */
+
+/**
+ * @swagger
+ * /api/v1/students/initial/register:
  *  post:
  *    summary: register student
  *    tags:
@@ -106,13 +123,13 @@
  *      content:
  *        multipart/form-data:
  *          schema:
- *            $ref: "#/components/schemas/CreateStudent"
+ *            $ref: "#/components/schemas/InitialStudentRegister"
  *        application/x-www-form-urlencoded:
  *          schema:
- *            $ref: "#/components/schemas/CreateStudent"
+ *            $ref: "#/components/schemas/InitialStudentRegister"
  *        application/json:
  *          schema:
- *            $ref: "#/components/schemas/CreateStudent"
+ *            $ref: "#/components/schemas/InitialStudentRegister"
  *    responses:
  *      201:
  *        description: created
@@ -120,7 +137,7 @@
 
 /**
  * @swagger
- * /api/v1/students/{id}:
+ * /api/v1/students/{id}/initial/register:
  *  put:
  *    summary: update student
  *    tags:
@@ -132,14 +149,40 @@
  *      content:
  *        multipart/form-data:
  *          schema:
- *            $ref: "#/components/schemas/CreateStudent"
+ *            $ref: "#/components/schemas/InitialStudentRegister"
  *        application/x-www-form-urlencoded:
  *          schema:
- *            $ref: "#/components/schemas/CreateStudent"
+ *            $ref: "#/components/schemas/InitialStudentRegister"
  *        application/json:
  *          schema:
- *            $ref: "#/components/schemas/CreateStudent"
+ *            $ref: "#/components/schemas/InitialStudentRegister"
  *    responses:
- *      201:
- *        description: created
+ *      200:
+ *        description: success
+ */
+
+/**
+ * @swagger
+ * /api/v1/students/{id}/complete/register:
+ *  patch:
+ *    summary: complete register student
+ *    tags:
+ *      - Student
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *    requestBody:
+ *      content:
+ *        multipart/form-data:
+ *          schema:
+ *            $ref: "#/components/schemas/CompleteStudentRegister"
+ *        application/x-www-form-urlencoded:
+ *          schema:
+ *            $ref: "#/components/schemas/CompleteStudentRegister"
+ *        application/json:
+ *          schema:
+ *            $ref: "#/components/schemas/CompleteStudentRegister"
+ *    responses:
+ *      200:
+ *        description: success
  */

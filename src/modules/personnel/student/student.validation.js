@@ -1,4 +1,4 @@
-const { body, check } = require("express-validator");
+const { body, checkExact, param } = require("express-validator");
 const { RegExDateShmasi } = require("../../../common/utils/constans");
 const { isValidObjectId } = require("mongoose");
 const { normalizeCalendar, normalizePhoneNumber } = require("../../../common/utils/normalizeData");
@@ -6,8 +6,9 @@ const { CoachModel } = require("../coach/coach.model");
 const { ClubModel } = require("../../management/club/club.model");
 const { BeltModel } = require("../../baseData/belt/belt.model");
 const createHttpError = require("http-errors");
+const { StudentModel } = require("./student.model");
 
-function optionalInitialStudentRegister() {
+function StudentRegisterInitialRequiredData() {
   return [
     body("firstName")
       .if((value, { req }) => req.method !== "POST")
@@ -106,7 +107,6 @@ function optionalInitialStudentRegister() {
       .isString()
       .trim()
       .notEmpty()
-      .escape()
       .customSanitizer((date) => (date = normalizeCalendar(date)))
       .matches(RegExDateShmasi)
       .withMessage("تاریخ ثبت نام معتبر نمی باشد"),
@@ -116,7 +116,6 @@ function optionalInitialStudentRegister() {
       .isString()
       .trim()
       .notEmpty()
-      .escape()
       .customSanitizer((date) => (date = normalizeCalendar(date)))
       .matches(RegExDateShmasi)
       .withMessage("تاریخ تولد معتبر نمی باشد"),
@@ -151,7 +150,7 @@ function optionalInitialStudentRegister() {
     // body("imageUrl").string() .error(new Error("تصویر ثبت شده معتبر نمی باشد")),
   ];
 }
-function requiredInitialStudentRegister() {
+function StudentRegisterInitialOptionalData() {
   return [
     body("firstName")
       .exists({ checkFalsy: true })
@@ -182,8 +181,21 @@ function requiredInitialStudentRegister() {
   ];
 }
 
-function optionalCompleteStudentRegister() {
+function RegisterStudentComplete() {
   return [
+    param("id")
+      .exists()
+      .custom(async (value) => {
+        if (isValidObjectId(value)) {
+          const checkExistStudent = await StudentModel.findById(value);
+          if (!checkExistStudent) {
+            throw new Error("هنرجو یافت نشد");
+          }
+        } else {
+          throw new Error("شناسه وارد شده معتبر نمی باشد");
+        }
+      }),
+
     body("memberShipValidity")
       .optional({ nullable: true, checkFalsy: true })
       .trim()
@@ -198,64 +210,65 @@ function optionalCompleteStudentRegister() {
       .isString()
       .trim()
       .notEmpty()
-      .escape()
+
       .customSanitizer((date) => (date = normalizeCalendar(date)))
       .matches(RegExDateShmasi)
       .withMessage("تاریخ بیمه ورزشی معتبر نمی باشد"),
 
     body("beltDateShamsi")
       .optional({ nullable: true, checkFalsy: true })
-      .isString()
       .trim()
       .notEmpty()
-      .escape()
+      .isString()
       .customSanitizer((date) => (date = normalizeCalendar(date)))
       .matches(RegExDateShmasi)
-      .withMessage("تاریخ اخذ کمربند معتبر نمی باشد"),
+      .withMessage("تاریخ اخذ کمربند معتبر نمی باشد")
+      .custom((value, { req }) => {
+        if (!req.body?.belt) {
+          throw createHttpError.BadRequest("لطفا کمربند خود را وارد کنید");
+        }
+        return true;
+      }),
 
     body("belt")
       .optional({ nullable: true, checkFalsy: true })
-      .custom(async (value) => {
-        if (isValidObjectId(value)) {
-          const checkExistBelt = await BeltModel.findById(value);
-          if (!checkExistBelt) {
-            throw new Error("کمربند یافت نشد");
+      .custom(async (value, { req }) => {
+        if (req.body?.beltDateShamsi) {
+          if (isValidObjectId(value)) {
+            const checkExistBelt = await BeltModel.findById(value);
+            if (!checkExistBelt) {
+              throw new Error("کمربند یافت نشد");
+            }
+          } else {
+            throw new Error("شناسه وارد شده معتبر نمی باشد");
           }
         } else {
-          throw new Error("شناسه وارد شده معتبر نمی باشد");
+          throw new Error("لطفا تاریخ کمربند را وارد کنید");
         }
       }),
-  ];
-}
-function requiredCompleteStudentRegister() {
-  return [
-    body("firstName")
-      .exists({ checkFalsy: true })
-      .trim()
-      .notEmpty()
-      .isString()
-      .escape()
-      .isLength({ min: 2, max: 50 })
-      .withMessage("نام وارد شده معتبر نمی باشد"),
 
-    body("lastName")
-      .exists({ checkFalsy: true })
-      .trim()
-      .notEmpty()
-      .escape()
-      .isString()
-      .isLength({ min: 2, max: 50 })
-      .withMessage("نام خانوادگی وارد شده معتبر نمی باشد"),
+    // checkExact([
+    //   body("beltDateShamsi")
+    //     .isString()
+    //     .trim()
+    //     .notEmpty()
+    //     .escape()
+    //     .customSanitizer((date) => (date = normalizeCalendar(date)))
+    //     .matches(RegExDateShmasi)
+    //     .withMessage("تاریخ اخذ کمربند معتبر نمی باشد"),
 
-    body("nationalID")
-      .exists({ checkFalsy: true })
-      .trim()
-      .notEmpty()
-      .escape()
-      .isString()
-      .isLength({ min: 10, max: 10 })
-      .withMessage("کد ملی وارد شده معتبر نمی باشد"),
+    //   body("belt").custom(async (value) => {
+    //     if (isValidObjectId(value)) {
+    //       const checkExistBelt = await BeltModel.findById(value);
+    //       if (!checkExistBelt) {
+    //         throw new Error("کمربند یافت نشد");
+    //       }
+    //     } else {
+    //       throw new Error("شناسه وارد شده معتبر نمی باشد");
+    //     }
+    //   }),
+    // ]),
   ];
 }
 
-module.exports = { requiredInitialStudentRegister, optionalInitialStudentRegister };
+module.exports = { StudentRegisterInitialRequiredData, StudentRegisterInitialOptionalData, RegisterStudentComplete };

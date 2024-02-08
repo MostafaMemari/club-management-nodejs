@@ -3,7 +3,65 @@ const { StudentModel } = require("./student.model");
 const { deleteFileInPublic } = require("../../../common/utils/function");
 
 class StudentService {
-  async register(bodyData) {
+  async initialRegister(bodyData) {
+    // const { fileUploadPath, filename } = req.body;
+    // if (fileUploadPath && filename) {
+    //   const urlPath = path.join(fileUploadPath, filename);
+    //   req.body.imageUrl = urlPath.replace(/\\/g, "/");
+    //   delete req.body["fileUploadPath"];
+    //   delete req.body["filename"];
+    // }
+
+    //find belt
+    // if (beltID) {
+    //   const beltFound = await BeltModel.findById(beltID);
+    //   if (!beltFound) throw createHttpError.NotFound("کمربند مورد نظر یافت نشد");
+    //   if (beltFound.name !== "سفید") {
+    //     delete data.beltID;
+    //     delete data.beltDateIR;
+    //   } else {
+    //     data.beltDateIR = toEnglish(normalizeCalendar(new Date().toLocaleDateString("fa-IR")));
+    //   }
+    // }
+    // create
+    const studentCreated = await StudentModel.create({
+      ...bodyData,
+      // createdBy: req.userAuth._id,
+      // modelCreatedBy: req.userAuth.role == "COACH" ? "coach" : "user",
+    });
+    if (!studentCreated) throw createHttpError.InternalServerError("ثبت نام با خطا مواجه شد");
+    return true;
+  }
+  async initialRegisterUpdate(bodyData) {
+    // const { fileUploadPath, filename } = req.body;
+    // if (fileUploadPath && filename) {
+    //   const urlPath = path.join(fileUploadPath, filename);
+    //   req.body.imageUrl = urlPath.replace(/\\/g, "/");
+    //   delete req.body["fileUploadPath"];
+    //   delete req.body["filename"];
+    // }
+
+    //find belt
+    // if (beltID) {
+    //   const beltFound = await BeltModel.findById(beltID);
+    //   if (!beltFound) throw createHttpError.NotFound("کمربند مورد نظر یافت نشد");
+    //   if (beltFound.name !== "سفید") {
+    //     delete data.beltID;
+    //     delete data.beltDateIR;
+    //   } else {
+    //     data.beltDateIR = toEnglish(normalizeCalendar(new Date().toLocaleDateString("fa-IR")));
+    //   }
+    // }
+    // create
+    const studentCreated = await StudentModel.create({
+      ...bodyData,
+      // createdBy: req.userAuth._id,
+      // modelCreatedBy: req.userAuth.role == "COACH" ? "coach" : "user",
+    });
+    if (!studentCreated) throw createHttpError.InternalServerError("ثبت نام با خطا مواجه شد");
+    return true;
+  }
+  async completeRegister(bodyData) {
     // const { fileUploadPath, filename } = req.body;
     // if (fileUploadPath && filename) {
     //   const urlPath = path.join(fileUploadPath, filename);

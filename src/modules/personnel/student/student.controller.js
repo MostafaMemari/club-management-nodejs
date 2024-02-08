@@ -12,12 +12,45 @@ class StudentController {
     autoBind(this);
     this.#service = studentService;
   }
-  async register(req, res, next) {
+  async initialRegister(req, res, next) {
     try {
       validate(req);
       const bodyData = matchedData(req, { locations: ["body"] });
       console.log(bodyData);
-      // await this.#service.register(bodyData);
+      await this.#service.initialRegister(bodyData);
+
+      res.status(StatusCodes.CREATED).json({
+        status: "success",
+        message: StudentMessage.Register,
+      });
+    } catch (error) {
+      req.body.imageUrl && deleteFileInPublic(req.body.imageUrl);
+      next(error);
+    }
+  }
+  async initialRegisterUpdate(req, res, next) {
+    try {
+      validate(req);
+      const bodyData = matchedData(req, { locations: ["body"] });
+      console.log(bodyData);
+      await this.#service.initialRegisterUpdate(bodyData);
+
+      res.status(StatusCodes.CREATED).json({
+        status: "success",
+        message: StudentMessage.Register,
+      });
+    } catch (error) {
+      req.body.imageUrl && deleteFileInPublic(req.body.imageUrl);
+      next(error);
+    }
+  }
+  async completeRegister(req, res, next) {
+    try {
+      validate(req);
+      const bodyData = matchedData(req, { locations: ["body"] });
+      const paramData = matchedData(req, { locations: ["params"] });
+      console.log(paramData);
+      // await this.#service.completeRegister(bodyData);
 
       res.status(StatusCodes.CREATED).json({
         status: "success",
