@@ -1,16 +1,43 @@
-const { body } = require("express-validator");
+const { body, check } = require("express-validator");
 const { RegExDateShmasi } = require("../../../common/utils/constans");
 const { isValidObjectId } = require("mongoose");
 const { normalizeCalendar, normalizePhoneNumber } = require("../../../common/utils/normalizeData");
 const { CoachModel } = require("../coach/coach.model");
 const { ClubModel } = require("../../management/club/club.model");
 const { BeltModel } = require("../../baseData/belt/belt.model");
+const createHttpError = require("http-errors");
 
-function studentRegisterValidate() {
+function optionalStudentValidate() {
   return [
-    body("firstName").isString().trim().notEmpty().isLength({ min: 2, max: 50 }).withMessage("نام وارد شده معتبر نمی باشد"),
-    body("lastName").isString().trim().notEmpty().isLength({ min: 2, max: 50 }).withMessage("نام خانوادگی وارد شده معتبر نمی باشد"),
-    body("nationalID").isString().trim().notEmpty().isLength({ min: 10, max: 10 }).withMessage("کد ملی وارد شده معتبر نمی باشد"),
+    body("firstName")
+      .if((value, { req }) => req.method !== "POST")
+      .optional()
+      .trim()
+      .notEmpty()
+      .escape()
+      .isString()
+      .isLength({ min: 2, max: 50 })
+      .withMessage("نام وارد شده معتبر نمی باشد"),
+
+    body("lastName")
+      .if((value, { req }) => req.method !== "POST")
+      .optional()
+      .trim()
+      .notEmpty()
+      .escape()
+      .isString()
+      .isLength({ min: 2, max: 50 })
+      .withMessage("نام خانوادگی وارد شده معتبر نمی باشد"),
+
+    body("nationalID")
+      .if((value, { req }) => req.method !== "POST")
+      .optional()
+      .trim()
+      .notEmpty()
+      .escape()
+      .isString()
+      .isLength({ min: 10, max: 10 })
+      .withMessage("کد ملی وارد شده معتبر نمی باشد"),
 
     body("imageUrl")
       .optional()
@@ -110,5 +137,35 @@ function studentRegisterValidate() {
     // body("imageUrl").string() .error(new Error("تصویر ثبت شده معتبر نمی باشد")),
   ];
 }
+function requiredStudentValidate() {
+  return [
+    body("firstName")
+      .exists({ checkFalsy: true })
+      .trim()
+      .notEmpty()
+      .escape()
+      .isString()
+      .isLength({ min: 2, max: 50 })
+      .withMessage("نام وارد شده معتبر نمی باشد"),
 
-module.exports = { studentRegisterValidate };
+    body("lastName")
+      .exists({ checkFalsy: true })
+      .trim()
+      .notEmpty()
+      .escape()
+      .isString()
+      .isLength({ min: 2, max: 50 })
+      .withMessage("نام خانوادگی وارد شده معتبر نمی باشد"),
+
+    body("nationalID")
+      .exists({ checkFalsy: true })
+      .trim()
+      .notEmpty()
+      .escape()
+      .isString()
+      .isLength({ min: 10, max: 10 })
+      .withMessage("کد ملی وارد شده معتبر نمی باشد"),
+  ];
+}
+
+module.exports = { optionalStudentValidate, requiredStudentValidate };

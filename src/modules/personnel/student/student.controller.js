@@ -1,5 +1,5 @@
 const autoBind = require("auto-bind");
-const { matchedData } = require("express-validator");
+const { matchedData, body } = require("express-validator");
 const { StatusCodes } = require("http-status-codes");
 const studentService = require("./student.service");
 const { StudentMessage } = require("./student.message");
@@ -16,7 +16,8 @@ class StudentController {
     try {
       validate(req);
       const bodyData = matchedData(req, { locations: ["body"] });
-      await this.#service.register(bodyData);
+      console.log(bodyData);
+      // await this.#service.register(bodyData);
 
       res.status(StatusCodes.CREATED).json({
         status: "success",
@@ -27,38 +28,6 @@ class StudentController {
       next(error);
     }
   }
-
-  // async loginStudent(req, res, next) {
-  //   try {
-  //     try {
-  //       const data = copyObject(req.body);
-
-  //       const { username, password } = data;
-
-  //       // check student found
-  //       if (!username) throw createHttpError.Unauthorized("نام کاربری یا رمز عبور اشتباه می باشد");
-
-  //       const studentFound = await StudentModel.findOne({ nationalID: username });
-  //       if (!studentFound) throw createHttpError.Unauthorized("نام کاربری یا رمز عبور اشتباه می باشد");
-
-  //       // check valid password
-  //       const isValidPassword = password === "123456";
-  //       if (!isValidPassword) throw createHttpError.Unauthorized("نام کاربری یا رمز عبور اشتباه می باشد");
-
-  //       const token = generateToken({ id: studentFound._id });
-
-  //       res.cookie("access_token", token, {
-  //         httpOnly: true,
-  //         secure: true, // production => true
-  //       });
-  //       res.redirect("/dashboard");
-  //     } catch (error) {
-  //       res.redirect("/login");
-  //     }
-  //   } catch (error) {
-  //     next(error);
-  //   }
-  // }
   // async updateStudent(req, res, next) {
   //   try {
   //     try {
@@ -114,6 +83,39 @@ class StudentController {
   //     next(error);
   //   }
   // }
+
+  // async loginStudent(req, res, next) {
+  //   try {
+  //     try {
+  //       const data = copyObject(req.body);
+
+  //       const { username, password } = data;
+
+  //       // check student found
+  //       if (!username) throw createHttpError.Unauthorized("نام کاربری یا رمز عبور اشتباه می باشد");
+
+  //       const studentFound = await StudentModel.findOne({ nationalID: username });
+  //       if (!studentFound) throw createHttpError.Unauthorized("نام کاربری یا رمز عبور اشتباه می باشد");
+
+  //       // check valid password
+  //       const isValidPassword = password === "123456";
+  //       if (!isValidPassword) throw createHttpError.Unauthorized("نام کاربری یا رمز عبور اشتباه می باشد");
+
+  //       const token = generateToken({ id: studentFound._id });
+
+  //       res.cookie("access_token", token, {
+  //         httpOnly: true,
+  //         secure: true, // production => true
+  //       });
+  //       res.redirect("/dashboard");
+  //     } catch (error) {
+  //       res.redirect("/login");
+  //     }
+  //   } catch (error) {
+  //     next(error);
+  //   }
+  // }
+
   // async getStudents(req, res, next) {
   //   try {
   //     // res.status(200).json(res.result);
