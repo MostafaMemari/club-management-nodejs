@@ -8,36 +8,30 @@ const StudentSchema = new Schema(
   {
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },
-
     nationalID: { type: String, unique: true },
-
-    memberShipValidity: { type: Number },
-
-    role: { type: String, default: "STUDENT" },
-    gender: { type: String, enum: ["مرد", "زن"], default: "مرد" },
-    imageUrl: { type: String, default: "uploads/profile-students.jpg" },
-
-    mobile: { type: String },
     fatherName: { type: String },
+    gender: { type: String, enum: ["مرد", "زن"], default: "مرد" },
+    role: { type: String, default: "STUDENT" },
+    mobile: { type: String },
     address: { type: String },
     phone: { type: String },
-
     birthDayShamsi: { type: String },
     registerDateShamsi: { type: String },
-    sportsInsuranceDateShamsi: { type: String },
+    imageUrl: { type: String, default: "/uploads/profile-students.jpg" },
+    club: { type: Types.ObjectId, ref: "club" },
+
+    memberShipValidity: { type: Number },
+    belt: { type: Types.ObjectId, ref: "belt" },
     beltDateShamsi: { type: String },
+    sportsInsuranceDateShamsi: { type: String },
+
+    coach: { type: Types.ObjectId, ref: "coach" },
 
     birthDayMiladi: { type: Date },
     registerDateMiladi: { type: Date },
     sportsInsuranceMiladi: { type: Date },
     beltDateMiladi: { type: Date },
-
-    club: { type: Types.ObjectId, ref: "club" },
-    belt: { type: Types.ObjectId, ref: "belt" },
-
     ageGroup: { type: [Types.ObjectId], ref: "ageGroup" },
-
-    coach: { type: Types.ObjectId, ref: "coach" },
 
     // createdBy: { type: Schema.Types.ObjectId, required: false, refPath: "modelCreatedBy" },
 
