@@ -30,7 +30,6 @@ class StudentService {
       // modelCreatedBy: req.userAuth.role == "COACH" ? "coach" : "user",
     });
     if (!studentCreated) throw createHttpError.InternalServerError("ثبت نام با خطا مواجه شد");
-    return true;
   }
   async update(bodyData, paramData) {
     // update

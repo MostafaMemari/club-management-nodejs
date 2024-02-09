@@ -1,7 +1,7 @@
 const { validate } = require("../../../common/middlewares/validateExpressValidator");
 const { profileUploader } = require("../../../common/services/uploader/profile.multer");
 const studentController = require("./student.controller");
-const { RegisterStudentComplete, StudentRegisterInitialRequiredData, StudentRegisterInitialOptionalData } = require("./student.validation");
+const { StudentRegisterRequiredValidation, StudentRegisterOptionalValidation } = require("./student.validation");
 
 const router = require("express").Router();
 
@@ -10,11 +10,11 @@ const router = require("express").Router();
 router.post(
   "/register",
   profileUploader.single("studentProfile"),
-  StudentRegisterInitialRequiredData(),
-  StudentRegisterInitialOptionalData(),
+  StudentRegisterRequiredValidation(),
+  StudentRegisterOptionalValidation(),
   studentController.register
 );
-router.put("/:id/update-profile", profileUploader.single("studentProfile"), StudentRegisterInitialOptionalData(), studentController.update);
+router.put("/:id/update-profile", profileUploader.single("studentProfile"), StudentRegisterOptionalValidation(), studentController.update);
 
 // router.post("/login", studentController.loginStudent);
 // router.get("/profile", isAuth, checkPermission([PERMISSIONS.STUDENT]), studentController.profileStudent);

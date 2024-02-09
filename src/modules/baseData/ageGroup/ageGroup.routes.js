@@ -1,19 +1,19 @@
-const ageGroupController = require("../../controllers/BaseData/ageGroupController");
-const { PERMISSIONS } = require("../../../common/utils/constans");
-const { checkPermission } = require("../../../common/guard/permission.guard");
+const ageGroupController = require("./ageGroup.controller");
+const { AgeGroupValidation } = require("./ageGroup.validation");
 
-const ageGroupRouter = require("express").Router();
-ageGroupRouter
-  .route("/")
-  .post(checkPermission([PERMISSIONS.SUPER_ADMIN]), ageGroupController.createAgeGourp)
-  .get(ageGroupController.getAgeGroups);
+const router = require("express").Router();
 
-ageGroupRouter
-  .route("/:id")
-  .put(checkPermission([PERMISSIONS.SUPER_ADMIN]), ageGroupController.updateAgeGourp)
-  .delete(checkPermission([PERMISSIONS.SUPER_ADMIN]), ageGroupController.deleteAgeGroup)
-  .get(ageGroupController.getAgeGroup);
+router.post("/", AgeGroupValidation(), ageGroupController.create);
 
-module.exports = {
-  ageGroupRouter,
-};
+// router
+//   .route("/")
+//   .post(checkPermission([PERMISSIONS.SUPER_ADMIN]), ageGroupController.createAgeGourp)
+//   .get(ageGroupController.getAgeGroups);
+
+// router
+//   .route("/:id")
+//   .put(checkPermission([PERMISSIONS.SUPER_ADMIN]), ageGroupController.updateAgeGourp)
+//   .delete(checkPermission([PERMISSIONS.SUPER_ADMIN]), ageGroupController.deleteAgeGroup)
+//   .get(ageGroupController.getAgeGroup);
+
+module.exports = { ageGroupRouter: router };

@@ -5,18 +5,18 @@ const AgeGroupSchema = new mongoose.Schema(
   {
     name: { type: String, required: true },
     description: { type: String },
-    fromDateIR: { type: String, required: true },
-    toDateIR: { type: String, required: true },
-    fromDateEN: {
+    fromDate: { type: String, required: true },
+    toDate: { type: String, required: true },
+    fromDateMiladi: {
       type: Date,
       default: function () {
-        return shamsiToMiladi(this.fromDateIR);
+        return shamsiToMiladi(this.fromDate);
       },
     },
-    toDateEN: {
+    toDateMiladi: {
       type: Date,
       default: function () {
-        return shamsiToMiladi(this.toDateIR);
+        return shamsiToMiladi(this.toDate);
       },
     },
   },
@@ -24,15 +24,15 @@ const AgeGroupSchema = new mongoose.Schema(
 );
 
 AgeGroupSchema.pre("updateOne", function (next) {
-  const { fromDateIR, toDateIR } = this._update;
+  const { fromDate, toDate } = this._update;
 
-  if (fromDateIR) {
-    this.fromDateEN = shamsiToMiladi(fromDateIR);
-    this.set({ fromDateEN: this.fromDateEN });
+  if (fromDate) {
+    this.fromDateMiladi = shamsiToMiladi(fromDate);
+    this.set({ fromDateMiladi: this.fromDateMiladi });
   }
-  if (toDateIR) {
-    this.toDateEN = shamsiToMiladi(toDateIR);
-    this.set({ toDateEN: this.toDateEN });
+  if (toDate) {
+    this.toDateMiladi = shamsiToMiladi(toDate);
+    this.set({ toDateMiladi: this.toDateMiladi });
   }
   next();
 });

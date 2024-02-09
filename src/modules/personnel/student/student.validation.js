@@ -8,7 +8,7 @@ const { BeltModel } = require("../../baseData/belt/belt.model");
 const createHttpError = require("http-errors");
 const { StudentModel } = require("./student.model");
 
-function StudentRegisterInitialOptionalData() {
+function StudentRegisterOptionalValidation() {
   return [
     param("id")
       .if((value, { req }) => req.method !== "POST")
@@ -213,10 +213,10 @@ function StudentRegisterInitialOptionalData() {
     // body("imageUrl").string() .error(new Error("تصویر ثبت شده معتبر نمی باشد")),
   ];
 }
-function StudentRegisterInitialRequiredData() {
+function StudentRegisterRequiredValidation() {
   return [
     body("firstName")
-      .exists({ checkFalsy: true })
+      .exists({ nullable: true, checkFalsy: true })
       .trim()
       .notEmpty()
       .isString()
@@ -225,7 +225,7 @@ function StudentRegisterInitialRequiredData() {
       .withMessage("نام وارد شده معتبر نمی باشد"),
 
     body("lastName")
-      .exists({ checkFalsy: true })
+      .exists({ nullable: true, checkFalsy: true })
       .trim()
       .notEmpty()
       .escape()
@@ -234,7 +234,7 @@ function StudentRegisterInitialRequiredData() {
       .withMessage("نام خانوادگی وارد شده معتبر نمی باشد"),
 
     body("nationalID")
-      .exists({ checkFalsy: true })
+      .exists({ nullable: true, checkFalsy: true })
       .trim()
       .notEmpty()
       .escape()
@@ -244,4 +244,4 @@ function StudentRegisterInitialRequiredData() {
   ];
 }
 
-module.exports = { StudentRegisterInitialRequiredData, StudentRegisterInitialOptionalData };
+module.exports = { StudentRegisterOptionalValidation, StudentRegisterRequiredValidation };

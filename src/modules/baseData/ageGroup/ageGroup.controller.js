@@ -1,13 +1,10 @@
-const createError = require("http-errors");
 const { StatusCodes } = require("http-status-codes");
-const { isValidObjectId } = require("mongoose");
 const autoBind = require("auto-bind");
 
-const { copyObject, deleteInvalidPropertyInObject } = require("../../../common/utils/function");
-const { studentModel } = require("../../personnel/student/studentModel");
-const { ageGroupSchema, ageGroupUpdateSchema } = require("../../management/club/clubSchema");
-const { ageGroupModel } = require("./ageGroupModel");
 const ageGroupService = require("./ageGroup.service");
+const { matchedData } = require("express-validator");
+const { validate } = require("../../../common/middlewares/validateExpressValidator");
+const { AgeGroupMessage } = require("./ageGroup.message");
 
 class AgeGroupController {
   #service;
@@ -15,109 +12,107 @@ class AgeGroupController {
     autoBind(this);
     this.#service = ageGroupService;
   }
+
   async create(req, res, next) {
     try {
-      const data = copyObject(req.body);
-      deleteInvalidPropertyInObject(data);
-      // validate
-      await ageGroupSchema.validateAsync(data);
-
-      this.#service(data);
+      validate(req);
+      const bodyData = matchedData(req, { locations: ["body"] });
+      await this.#service.create(bodyData);
 
       res.status(StatusCodes.CREATED).json({
         status: "success",
-        message: "رشته ورزشی مورد نظر با موفقیت ثبت شد",
-        ageGroupCreated,
+        message: AgeGroupMessage.Create,
       });
     } catch (error) {
       next(error);
     }
   }
-  async updateAgeGourp(req, res, next) {
-    try {
-      const data = copyObject(req.body);
-      deleteInvalidPropertyInObject(data);
 
-      // validate
-      await ageGroupUpdateSchema.validateAsync({ ...data, id: req.params.id });
+  // async updateAgeGourp(req, res, next) {
+  //   try {
+  //     const data = copyObject(req.body);
+  //     deleteInvalidPropertyInObject(data);
 
-      const { name } = data;
+  //     // validate
+  //     await ageGroupUpdateSchema.validateAsync({ ...data, id: req.params.id });
 
-      await this.checkExistAgeGroup(req.params.id);
+  //     const { name } = data;
 
-      // validate name
-      if (name) {
-        const ageGroupFound = await ageGroupModel.findOne({ name });
-        if (ageGroupFound) throw createError.Conflict("رده سنی وارد شده تکراری می باشد");
-      }
+  //     await this.checkExistAgeGroup(req.params.id);
 
-      // updated
-      const ageGroupUpdated = await ageGroupModel.updateOne({ _id: req.params.id }, data);
-      if (!ageGroupUpdated.modifiedCount) throw createError.InternalServerError("ویرایش رده سنی با خطا مواجه شد");
+  //     // validate name
+  //     if (name) {
+  //       const ageGroupFound = await ageGroupModel.findOne({ name });
+  //       if (ageGroupFound) throw createError.Conflict("رده سنی وارد شده تکراری می باشد");
+  //     }
 
-      res.status(StatusCodes.OK).json({
-        status: "success",
-        message: "رده سنی با موفقیت ویرایش شد",
-      });
-    } catch (error) {
-      next(error);
-    }
-  }
-  async deleteAgeGroup(req, res, next) {
-    try {
-      await this.checkExistAgeGroup(req.params.id);
+  //     // updated
+  //     const ageGroupUpdated = await ageGroupModel.updateOne({ _id: req.params.id }, data);
+  //     if (!ageGroupUpdated.modifiedCount) throw createError.InternalServerError("ویرایش رده سنی با خطا مواجه شد");
 
-      const deletedAgeGroup = await ageGroupModel.deleteOne({ _id: req.params.id });
-      if (!deletedAgeGroup.deletedCount) throw createError.InternalServerError("حذف زده سنی با خطا مواجه شد");
+  //     res.status(StatusCodes.OK).json({
+  //       status: "success",
+  //       message: "رده سنی با موفقیت ویرایش شد",
+  //     });
+  //   } catch (error) {
+  //     next(error);
+  //   }
+  // }
+  // async deleteAgeGroup(req, res, next) {
+  //   try {
+  //     await this.checkExistAgeGroup(req.params.id);
 
-      await studentModel.updateMany({ ageGroupID: req.params.id }, { $pull: { ageGroupID: req.params.id } });
+  //     const deletedAgeGroup = await ageGroupModel.deleteOne({ _id: req.params.id });
+  //     if (!deletedAgeGroup.deletedCount) throw createError.InternalServerError("حذف زده سنی با خطا مواجه شد");
 
-      res.status(StatusCodes.OK).json({
-        status: "success",
-        message: "حذف رده سنی با موفقیت انجام شد",
-        reuslt,
-      });
-    } catch (error) {
-      next(error);
-    }
-  }
-  async getAgeGroup(req, res, next) {
-    try {
-      if (!isValidObjectId(req.params.id)) throw createError.BadRequest("شناسه وارد شده رده سنی صحیح نمی باشد");
+  //     await studentModel.updateMany({ ageGroupID: req.params.id }, { $pull: { ageGroupID: req.params.id } });
 
-      const ageGroupFound = await ageGroupModel.findById(req.params.id).select("-fromDateEN -toDateEN").lean();
-      if (!ageGroupFound) throw createError.InternalServerError("دریافت رده سنی با خطا مواجه شد");
+  //     res.status(StatusCodes.OK).json({
+  //       status: "success",
+  //       message: "حذف رده سنی با موفقیت انجام شد",
+  //       reuslt,
+  //     });
+  //   } catch (error) {
+  //     next(error);
+  //   }
+  // }
+  // async getAgeGroup(req, res, next) {
+  //   try {
+  //     if (!isValidObjectId(req.params.id)) throw createError.BadRequest("شناسه وارد شده رده سنی صحیح نمی باشد");
 
-      res.status(StatusCodes.OK).json({
-        status: "success",
-        message: "دریافت رده های سنی با موفقیت انجام شد",
-        data: ageGroupFound,
-      });
-    } catch (error) {
-      next(error);
-    }
-  }
-  async getAgeGroups(req, res, next) {
-    try {
-      const ageGroups = await ageGroupModel.find({}).select("-fromDateEN -toDateEN").lean();
-      if (!ageGroups) throw createError.InternalServerError("دریافت رده های سنی با خطا مواجه شد");
+  //     const ageGroupFound = await ageGroupModel.findById(req.params.id).select("-fromDateEN -toDateEN").lean();
+  //     if (!ageGroupFound) throw createError.InternalServerError("دریافت رده سنی با خطا مواجه شد");
 
-      res.status(StatusCodes.OK).json({
-        status: "success",
-        message: "دریافت رده های سنی با موفقیت انجام شد",
-        data: ageGroups,
-      });
-    } catch (error) {
-      next(error);
-    }
-  }
-  async checkExistAgeGroup(id) {
-    if (!isValidObjectId(id)) throw createError.BadRequest("شناسه وارد شده معتبر نمی باشد");
+  //     res.status(StatusCodes.OK).json({
+  //       status: "success",
+  //       message: "دریافت رده های سنی با موفقیت انجام شد",
+  //       data: ageGroupFound,
+  //     });
+  //   } catch (error) {
+  //     next(error);
+  //   }
+  // }
+  // async getAgeGroups(req, res, next) {
+  //   try {
+  //     const ageGroups = await ageGroupModel.find({}).select("-fromDateEN -toDateEN").lean();
+  //     if (!ageGroups) throw createError.InternalServerError("دریافت رده های سنی با خطا مواجه شد");
 
-    // find age group
-    const ageGroupFound = await ageGroupModel.findById(id);
-    if (!ageGroupFound) throw createError.NotFound("رده سنی وارد شده یافت نشد");
-  }
+  //     res.status(StatusCodes.OK).json({
+  //       status: "success",
+  //       message: "دریافت رده های سنی با موفقیت انجام شد",
+  //       data: ageGroups,
+  //     });
+  //   } catch (error) {
+  //     next(error);
+  //   }
+  // }
+  // async checkExistAgeGroup(id) {
+  //   if (!isValidObjectId(id)) throw createError.BadRequest("شناسه وارد شده معتبر نمی باشد");
+
+  //   // find age group
+  //   const ageGroupFound = await ageGroupModel.findById(id);
+  //   if (!ageGroupFound) throw createError.NotFound("رده سنی وارد شده یافت نشد");
+  // }
 }
 
 module.exports = new AgeGroupController();

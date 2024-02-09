@@ -16,8 +16,7 @@ class StudentController {
     try {
       validate(req);
       const bodyData = matchedData(req, { locations: ["body"] });
-      console.log(bodyData);
-      await this.#service.initialRegister(bodyData);
+      await this.#service.register(bodyData);
 
       res.status(StatusCodes.CREATED).json({
         status: "success",
