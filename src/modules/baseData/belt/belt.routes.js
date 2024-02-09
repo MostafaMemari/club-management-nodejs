@@ -1,18 +1,19 @@
-const beltController = require("../../controllers/BaseData/beltController");
-const { PERMISSIONS } = require("../../../common/utils/constans");
-const { checkPermission } = require("../../../common/guard/permission.guard");
+const ageGroupController = require("./belt.controller");
+const { BeltValidation } = require("./belt.validation");
 
-const beltRouter = require("express").Router();
+const router = require("express").Router();
 
-beltRouter
-  .route("/")
-  .post(checkPermission([PERMISSIONS.SUPER_ADMIN]), beltController.createBelt)
-  .get(beltController.getBelts);
+router.post("/", BeltValidation(), ageGroupController.create);
 
-beltRouter
-  .route("/:id")
-  .delete(checkPermission([PERMISSIONS.SUPER_ADMIN]), beltController.deleteBelt)
-  .put(checkPermission([PERMISSIONS.SUPER_ADMIN]), beltController.updateBelt)
-  .get(beltController.getBelt);
+// router
+//   .route("/")
+//   .post(checkPermission([PERMISSIONS.SUPER_ADMIN]), ageGroupController.createAgeGourp)
+//   .get(ageGroupController.getAgeGroups);
 
-module.exports = { beltRouter };
+// router
+//   .route("/:id")
+//   .put(checkPermission([PERMISSIONS.SUPER_ADMIN]), ageGroupController.updateAgeGourp)
+//   .delete(checkPermission([PERMISSIONS.SUPER_ADMIN]), ageGroupController.deleteAgeGroup)
+//   .get(ageGroupController.getAgeGroup);
+
+module.exports = { beltRouter: router };
