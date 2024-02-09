@@ -14,7 +14,7 @@ router.post(
   StudentRegisterInitialOptionalData(),
   studentController.initialRegister
 );
-router.put("/:id/initial/register", profileUploader.single("studentProfile"), StudentRegisterInitialOptionalData(), studentController.initialRegisterUpdate);
+router.put("/:id/update-profile", profileUploader.single("studentProfile"), StudentRegisterInitialOptionalData(), studentController.updateProfile);
 
 router.patch("/:id/complete/register", RegisterStudentComplete(), studentController.completeRegister);
 

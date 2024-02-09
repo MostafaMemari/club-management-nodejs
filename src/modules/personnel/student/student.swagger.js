@@ -137,7 +137,7 @@
 
 /**
  * @swagger
- * /api/v1/students/{id}/initial/register:
+ * /api/v1/students/{id}/update-profile:
  *  put:
  *    summary: update student
  *    tags:
@@ -145,6 +145,8 @@
  *    parameters:
  *      - in: path
  *        name: id
+ *        required: true
+ *        description: student object id
  *    requestBody:
  *      content:
  *        multipart/form-data:

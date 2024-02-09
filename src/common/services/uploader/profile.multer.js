@@ -49,7 +49,7 @@ function fileFilter(req, file, cb) {
   return cb(createHttpError.BadRequest("فرمت ارسال شده صحیح نمی باشد"));
 }
 
-const pictureMaxSize = 1 * 1000 * 512; // => 512 KB
+const pictureMaxSize = 2 * 1000 * 512; // => 512 KB
 
 const profileUploader = multer({ storage, fileFilter, limits: { fileSize: pictureMaxSize } });
 

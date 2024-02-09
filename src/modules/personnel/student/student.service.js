@@ -32,34 +32,11 @@ class StudentService {
     if (!studentCreated) throw createHttpError.InternalServerError("ثبت نام با خطا مواجه شد");
     return true;
   }
-  async initialRegisterUpdate(bodyData) {
-    // const { fileUploadPath, filename } = req.body;
-    // if (fileUploadPath && filename) {
-    //   const urlPath = path.join(fileUploadPath, filename);
-    //   req.body.imageUrl = urlPath.replace(/\\/g, "/");
-    //   delete req.body["fileUploadPath"];
-    //   delete req.body["filename"];
-    // }
-
-    //find belt
-    // if (beltID) {
-    //   const beltFound = await BeltModel.findById(beltID);
-    //   if (!beltFound) throw createHttpError.NotFound("کمربند مورد نظر یافت نشد");
-    //   if (beltFound.name !== "سفید") {
-    //     delete data.beltID;
-    //     delete data.beltDateIR;
-    //   } else {
-    //     data.beltDateIR = toEnglish(normalizeCalendar(new Date().toLocaleDateString("fa-IR")));
-    //   }
-    // }
-    // create
-    const studentCreated = await StudentModel.create({
-      ...bodyData,
-      // createdBy: req.userAuth._id,
-      // modelCreatedBy: req.userAuth.role == "COACH" ? "coach" : "user",
-    });
-    if (!studentCreated) throw createHttpError.InternalServerError("ثبت نام با خطا مواجه شد");
-    return true;
+  async updateProfile(bodyData, paramData) {
+    // update
+    console.log(bodyData);
+    const studentCreated = await StudentModel.updateOne({ _id: paramData.id }, { ...bodyData });
+    if (!studentCreated.modifiedCount) throw createHttpError.InternalServerError("بروزرسانی اطلاعات با خطا مواجه شد");
   }
   async completeRegister(bodyData) {
     // const { fileUploadPath, filename } = req.body;

@@ -28,16 +28,17 @@ class StudentController {
       next(error);
     }
   }
-  async initialRegisterUpdate(req, res, next) {
+  async updateProfile(req, res, next) {
     try {
       validate(req);
       const bodyData = matchedData(req, { locations: ["body"] });
-      console.log(bodyData);
-      await this.#service.initialRegisterUpdate(bodyData);
+      const paramData = matchedData(req, { locations: ["params"] });
 
-      res.status(StatusCodes.CREATED).json({
+      await this.#service.updateProfile(bodyData, paramData);
+
+      res.status(StatusCodes.OK).json({
         status: "success",
-        message: StudentMessage.Register,
+        message: StudentMessage.Update,
       });
     } catch (error) {
       req.body.imageUrl && deleteFileInPublic(req.body.imageUrl);
@@ -49,15 +50,14 @@ class StudentController {
       validate(req);
       const bodyData = matchedData(req, { locations: ["body"] });
       const paramData = matchedData(req, { locations: ["params"] });
-      console.log(paramData);
+      console.log(bodyData, paramData);
       // await this.#service.completeRegister(bodyData);
 
       res.status(StatusCodes.CREATED).json({
         status: "success",
-        message: StudentMessage.Register,
+        message: StudentMessage.Update,
       });
     } catch (error) {
-      req.body.imageUrl && deleteFileInPublic(req.body.imageUrl);
       next(error);
     }
   }

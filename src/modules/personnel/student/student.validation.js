@@ -8,8 +8,21 @@ const { BeltModel } = require("../../baseData/belt/belt.model");
 const createHttpError = require("http-errors");
 const { StudentModel } = require("./student.model");
 
-function StudentRegisterInitialRequiredData() {
+function StudentRegisterInitialOptionalData() {
   return [
+    param("id")
+      .if((value, { req }) => req.method !== "POST")
+      .exists()
+      .custom(async (value) => {
+        if (isValidObjectId(value)) {
+          const checkExistStudent = await StudentModel.findById(value);
+          if (!checkExistStudent) {
+            throw new Error("هنرجو یافت نشد");
+          }
+        } else {
+          throw new Error("شناسه وارد شده معتبر نمی باشد");
+        }
+      }),
     body("firstName")
       .if((value, { req }) => req.method !== "POST")
       .optional({ nullable: true, checkFalsy: true })
@@ -150,7 +163,7 @@ function StudentRegisterInitialRequiredData() {
     // body("imageUrl").string() .error(new Error("تصویر ثبت شده معتبر نمی باشد")),
   ];
 }
-function StudentRegisterInitialOptionalData() {
+function StudentRegisterInitialRequiredData() {
   return [
     body("firstName")
       .exists({ checkFalsy: true })
