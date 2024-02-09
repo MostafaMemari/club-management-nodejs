@@ -9,7 +9,7 @@
  * @swagger
  *  components:
  *    schemas:
- *      InitialStudentRegister:
+ *      RegisterStudent:
  *        type: object
  *        required:
  *          - firstName
@@ -25,9 +25,14 @@
  *          nationalID:
  *            type: string
  *            description : length 10
- *          role:
+ *          belt:
  *            type: string
- *            default: STUDENT
+ *          beltDateShamsi:
+ *            type: string
+ *          memberShipValidity:
+ *            type: integer
+ *          sportsInsuranceDateShamsi:
+ *            type: string
  *          gender:
  *            type: string
  *            enum: [مرد, زن]
@@ -56,7 +61,7 @@
  * @swagger
  *  components:
  *    schemas:
- *      InitialStudentRegister:
+ *      UpdateStudent:
  *        type: object
  *        properties:
  *          firstName:
@@ -68,9 +73,14 @@
  *          nationalID:
  *            type: string
  *            description : length 10
- *          role:
+ *          belt:
  *            type: string
- *            default: STUDENT
+ *          beltDateShamsi:
+ *            type: string
+ *          memberShipValidity:
+ *            type: integer
+ *          sportsInsuranceDateShamsi:
+ *            type: string
  *          gender:
  *            type: string
  *            enum: [مرد, زن]
@@ -97,24 +107,7 @@
 
 /**
  * @swagger
- *  components:
- *    schemas:
- *      CompleteStudentRegister:
- *        type: object
- *        properties:
- *          memberShipValidity:
- *            type: string
- *          belt:
- *            type: string
- *          beltDateShamsi:
- *            type: string
- *          sportsInsuranceDateShamsi:
- *            type: string
- */
-
-/**
- * @swagger
- * /api/v1/students/initial/register:
+ * /api/v1/students/register:
  *  post:
  *    summary: register student
  *    tags:
@@ -123,13 +116,13 @@
  *      content:
  *        multipart/form-data:
  *          schema:
- *            $ref: "#/components/schemas/InitialStudentRegister"
+ *            $ref: "#/components/schemas/RegisterStudent"
  *        application/x-www-form-urlencoded:
  *          schema:
- *            $ref: "#/components/schemas/InitialStudentRegister"
+ *            $ref: "#/components/schemas/RegisterStudent"
  *        application/json:
  *          schema:
- *            $ref: "#/components/schemas/InitialStudentRegister"
+ *            $ref: "#/components/schemas/RegisterStudent"
  *    responses:
  *      201:
  *        description: created
@@ -137,9 +130,9 @@
 
 /**
  * @swagger
- * /api/v1/students/{id}/update-profile:
+ * /api/v1/students/{id}/update:
  *  put:
- *    summary: update student
+ *    summary: update prifile student
  *    tags:
  *      - Student
  *    parameters:
@@ -151,39 +144,13 @@
  *      content:
  *        multipart/form-data:
  *          schema:
- *            $ref: "#/components/schemas/InitialStudentRegister"
+ *            $ref: "#/components/schemas/UpdateStudent"
  *        application/x-www-form-urlencoded:
  *          schema:
- *            $ref: "#/components/schemas/InitialStudentRegister"
+ *            $ref: "#/components/schemas/UpdateStudent"
  *        application/json:
  *          schema:
- *            $ref: "#/components/schemas/InitialStudentRegister"
- *    responses:
- *      200:
- *        description: success
- */
-
-/**
- * @swagger
- * /api/v1/students/{id}/complete/register:
- *  patch:
- *    summary: complete register student
- *    tags:
- *      - Student
- *    parameters:
- *      - in: path
- *        name: id
- *    requestBody:
- *      content:
- *        multipart/form-data:
- *          schema:
- *            $ref: "#/components/schemas/CompleteStudentRegister"
- *        application/x-www-form-urlencoded:
- *          schema:
- *            $ref: "#/components/schemas/CompleteStudentRegister"
- *        application/json:
- *          schema:
- *            $ref: "#/components/schemas/CompleteStudentRegister"
+ *            $ref: "#/components/schemas/UpdateStudent"
  *    responses:
  *      200:
  *        description: success

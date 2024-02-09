@@ -8,15 +8,13 @@ const router = require("express").Router();
 // router.post("/register", isAuth, checkPermission(["student"]), uploadMulter.single("image"), studentController.registerStudent);
 
 router.post(
-  "/initial/register",
+  "/register",
   profileUploader.single("studentProfile"),
   StudentRegisterInitialRequiredData(),
   StudentRegisterInitialOptionalData(),
-  studentController.initialRegister
+  studentController.register
 );
-router.put("/:id/update-profile", profileUploader.single("studentProfile"), StudentRegisterInitialOptionalData(), studentController.updateProfile);
-
-router.patch("/:id/complete/register", RegisterStudentComplete(), studentController.completeRegister);
+router.put("/:id/update-profile", profileUploader.single("studentProfile"), StudentRegisterInitialOptionalData(), studentController.update);
 
 // router.post("/login", studentController.loginStudent);
 // router.get("/profile", isAuth, checkPermission([PERMISSIONS.STUDENT]), studentController.profileStudent);

@@ -12,7 +12,7 @@ class StudentController {
     autoBind(this);
     this.#service = studentService;
   }
-  async initialRegister(req, res, next) {
+  async register(req, res, next) {
     try {
       validate(req);
       const bodyData = matchedData(req, { locations: ["body"] });
@@ -28,7 +28,7 @@ class StudentController {
       next(error);
     }
   }
-  async updateProfile(req, res, next) {
+  async update(req, res, next) {
     try {
       validate(req);
       const bodyData = matchedData(req, { locations: ["body"] });
@@ -45,22 +45,7 @@ class StudentController {
       next(error);
     }
   }
-  async completeRegister(req, res, next) {
-    try {
-      validate(req);
-      const bodyData = matchedData(req, { locations: ["body"] });
-      const paramData = matchedData(req, { locations: ["params"] });
-      console.log(bodyData, paramData);
-      // await this.#service.completeRegister(bodyData);
 
-      res.status(StatusCodes.CREATED).json({
-        status: "success",
-        message: StudentMessage.Update,
-      });
-    } catch (error) {
-      next(error);
-    }
-  }
   // async updateStudent(req, res, next) {
   //   try {
   //     try {
