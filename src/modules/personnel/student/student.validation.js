@@ -115,7 +115,7 @@ function StudentRegisterInitialOptionalData() {
       .isLength({ min: 9, max: 12 })
       .withMessage("شماره تلفن وارد شده معتبر نمی باشد"),
 
-    body("registerDateShamsi")
+    body("registerDate")
       .optional({ nullable: true, checkFalsy: true })
       .isString()
       .trim()
@@ -124,7 +124,7 @@ function StudentRegisterInitialOptionalData() {
       .matches(RegExDateShmasi)
       .withMessage("تاریخ ثبت نام معتبر نمی باشد"),
 
-    body("birthDayShamsi")
+    body("birthDay")
       .optional({ nullable: true, checkFalsy: true })
       .isString()
       .trim()
@@ -142,7 +142,7 @@ function StudentRegisterInitialOptionalData() {
       .toInt()
       .withMessage("اعتبار عضویت وارد شده معتبر نمی باشد"),
 
-    body("sportsInsuranceDateShamsi")
+    body("sportsInsuranceDate")
       .optional({ nullable: true, checkFalsy: true })
       .isString()
       .trim()
@@ -151,7 +151,7 @@ function StudentRegisterInitialOptionalData() {
       .matches(RegExDateShmasi)
       .withMessage("تاریخ بیمه ورزشی معتبر نمی باشد"),
 
-    body("beltDateShamsi")
+    body("beltDate")
       .optional({ nullable: true, checkFalsy: true })
       .trim()
       .notEmpty()
@@ -169,7 +169,7 @@ function StudentRegisterInitialOptionalData() {
     body("belt")
       .optional({ nullable: true, checkFalsy: true })
       .custom(async (value, { req }) => {
-        if (req.body?.beltDateShamsi) {
+        if (req.body?.beltDate) {
           if (isValidObjectId(value)) {
             const checkExistBelt = await BeltModel.findById(value);
             if (!checkExistBelt) {

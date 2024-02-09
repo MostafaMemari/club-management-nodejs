@@ -15,15 +15,15 @@ const StudentSchema = new Schema(
     mobile: { type: String },
     address: { type: String },
     phone: { type: String },
-    birthDayShamsi: { type: String },
-    registerDateShamsi: { type: String },
+    birthDay: { type: String },
+    registerDate: { type: String },
     imageUrl: { type: String, default: "/uploads/profile-students.jpg" },
     club: { type: Types.ObjectId, ref: "club" },
 
-    memberShipValidity: { type: Number },
     belt: { type: Types.ObjectId, ref: "belt" },
-    beltDateShamsi: { type: String },
-    sportsInsuranceDateShamsi: { type: String },
+    beltDate: { type: String },
+    memberShipValidity: { type: Number },
+    sportsInsuranceDate: { type: String },
 
     coach: { type: Types.ObjectId, ref: "coach" },
 
@@ -49,35 +49,35 @@ const StudentSchema = new Schema(
 );
 
 StudentSchema.pre("save", async function () {
-  const { birthDayShamsi, registerDateShamsi, sportsInsuranceDateShamsi, beltDateShamsi } = this;
-  registerDateShamsi && (this.registerDateMiladi = shamsiToMiladi(registerDateShamsi));
-  sportsInsuranceDateShamsi && (this.sportsInsuranceMiladi = shamsiToMiladi(sportsInsuranceDateShamsi));
-  beltDateShamsi && (this.beltDateMiladi = shamsiToMiladi(beltDateShamsi));
+  const { birthDay, registerDate, sportsInsuranceDate, beltDate } = this;
+  registerDate && (this.registerDateMiladi = shamsiToMiladi(registerDate));
+  sportsInsuranceDate && (this.sportsInsuranceMiladi = shamsiToMiladi(sportsInsuranceDate));
+  beltDate && (this.beltDateMiladi = shamsiToMiladi(beltDate));
 
-  if (birthDayShamsi) {
-    this.birthDayMiladi = shamsiToMiladi(birthDayShamsi);
+  if (birthDay) {
+    this.birthDayMiladi = shamsiToMiladi(birthDay);
     this.ageGroup = await assignAgeGroups(this.birthDayMiladi);
   }
 });
 
 StudentSchema.pre("updateOne", async function (next) {
-  const { birthDayShamsi, registerDateShamsi, sportsInsuranceDateShamsi, beltDateShamsi } = this._update;
+  const { birthDay, registerDate, sportsInsuranceDate, beltDate } = this._update;
 
-  if (birthDayShamsi) {
-    this.birthDayMiladi = shamsiToMiladi(birthDayShamsi);
+  if (birthDay) {
+    this.birthDayMiladi = shamsiToMiladi(birthDay);
     this.set({ birthDayMiladi: this.birthDayMiladi });
     this.set({ ageGroup: await assignAgeGroups(this.birthDayMiladi) });
   }
-  if (registerDateShamsi) {
-    this.registerDateMiladi = shamsiToMiladi(registerDateShamsi);
+  if (registerDate) {
+    this.registerDateMiladi = shamsiToMiladi(registerDate);
     this.set({ registerDateMiladi: this.registerDateMiladi });
   }
-  if (sportsInsuranceDateShamsi) {
-    this.sportsInsuranceMiladi = shamsiToMiladi(sportsInsuranceDateShamsi);
+  if (sportsInsuranceDate) {
+    this.sportsInsuranceMiladi = shamsiToMiladi(sportsInsuranceDate);
     this.set({ sportsInsuranceMiladi: this.sportsInsuranceMiladi });
   }
-  if (beltDateShamsi) {
-    this.beltDateMiladi = shamsiToMiladi(beltDateShamsi);
+  if (beltDate) {
+    this.beltDateMiladi = shamsiToMiladi(beltDate);
     this.set({ beltDateMiladi: this.beltDateMiladi });
   }
   next();
