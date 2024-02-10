@@ -82,6 +82,11 @@ module.exports.dateDiffDayNowShamsi = (beltDate) => {
   return difference;
 };
 
+module.exports.removeDuplicatesArray = (arr) => {
+  const set = new Set(arr);
+  return Array.from(set);
+};
+
 module.exports.dateBeltExamNext = async (belt, beltDate) => {
   const nextBeltDate = new Date(shamsiToMiladi(beltDate));
 

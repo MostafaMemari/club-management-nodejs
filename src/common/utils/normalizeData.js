@@ -1,3 +1,5 @@
+const createHttpError = require("http-errors");
+
 module.exports.normalizePhoneNumber = (phoneNumber) => {
   if (phoneNumber) {
     if (phoneNumber.length === 10) return `0${phoneNumber}`;
@@ -20,13 +22,14 @@ module.exports.normalizenationalID = (nationalID) => {
 };
 
 module.exports.normalizeCalendar = (dateShamsi) => {
-  if (dateShamsi) {
-    let [year, month, day] = dateShamsi.split("/");
+  let [year, month, day] = dateShamsi.split("/");
+  if (year && month && day) {
     month = month.length === 1 ? `0${month}` : month;
     day = day.length === 1 ? `0${day}` : day;
 
     return `${year}/${month}/${day}`;
   }
+  throw createHttpError.BadRequest("تاریخ وارد شده معتبر نمی باشد")
 };
 
 module.exports.normalizeDataDates = async (data, birthDay, registerDate, sportsInsurance, beltDate) => {

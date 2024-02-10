@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const { shamsiToMiladi } = require("../../../common/utils/dateConvarter");
+const { string } = require("joi");
 
 const { Types } = mongoose;
 
@@ -8,20 +9,29 @@ const BeltExamSchema = new mongoose.Schema(
     name: { type: String, required: true },
     description: { type: String },
     eventPlace: { type: String },
-    gender: { type: String, enum: ["آقایان", "بانوان"], default: "آقایان" },
-    beltID: [{ type: Types.ObjectId, ref: "belt" }],
-    eventDateIR: { type: String, required: true },
-    registerDateIR: { type: String, required: true },
-    eventDateEN: {
-      type: Date,
-      default: function () {
-        return shamsiToMiladi(this.eventDateIR);
+    genders: {
+      type: Array,
+      validate: {
+        validator: function (v) {
+          const allowedValues = ["آقایان", "بانوان"];
+          return v.every((value) => allowedValues.includes(value));
+        },
+        message: "مقادیر gender باید فقط شامل 'آقایان' یا 'بانوان' باشد.",
       },
     },
-    registerDateEN: {
+    belts: [{ type: Types.ObjectId, ref: "belt" }],
+    eventDate: { type: String, required: true },
+    registerDate: { type: String, required: true },
+    eventDateMiladi: {
       type: Date,
       default: function () {
-        return shamsiToMiladi(this.registerDateIR);
+        return shamsiToMiladi(this.eventDate);
+      },
+    },
+    registerDateMiladi: {
+      type: Date,
+      default: function () {
+        return shamsiToMiladi(this.registerDate);
       },
     },
   },
@@ -29,15 +39,15 @@ const BeltExamSchema = new mongoose.Schema(
 );
 
 BeltExamSchema.pre("updateOne", function (next) {
-  const { eventDateIR, registerDateIR } = this._update;
+  const { eventDate, registerDate } = this._update;
 
-  if (eventDateIR) {
-    this.eventDateEN = shamsiToMiladi(eventDateIR);
-    this.set({ eventDateEN: this.eventDateEN });
+  if (eventDate) {
+    this.eventDateMiladi = shamsiToMiladi(eventDate);
+    this.set({ eventDateMiladi: this.eventDateMiladi });
   }
-  if (registerDateIR) {
-    this.registerDateEN = shamsiToMiladi(registerDateIR);
-    this.set({ registerDateEN: this.registerDateEN });
+  if (registerDate) {
+    this.registerDateMiladi = shamsiToMiladi(registerDate);
+    this.set({ registerDateMiladi: this.registerDateMiladi });
   }
   next();
 });

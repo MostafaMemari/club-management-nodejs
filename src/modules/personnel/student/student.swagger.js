@@ -83,7 +83,7 @@
  *            type: string
  *          gender:
  *            type: string
- *            enum: [مرد, زن]
+ *            enum: [مرد,زن]
  *          mobile:
  *            type: string
  *          fatherName:
