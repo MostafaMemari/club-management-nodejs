@@ -1,8 +1,8 @@
-const { createPermission, updatePermission, removePermission, getPermission, getPermissions } = require("../../controllers/RBAC/permissionController");
+const permissionController = require("./permission.controller");
+const { PermissionValidation } = require("./permission.validation");
 
-const permissionRouter = require("express").Router();
+const router = require("express").Router();
 
-permissionRouter.route("/").post(createPermission).get(getPermissions);
-permissionRouter.route("/:id").put(updatePermission).delete(removePermission).get(getPermission);
+router.post("/", PermissionValidation(), permissionController.create);
 
-module.exports = { permissionRouter };
+module.exports = { permissionRouter: router };

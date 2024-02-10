@@ -1,4 +1,7 @@
-const StudentMessage = Object.freeze({
-  Register: "student registered successfully",
-  Delete: "student deleteded successfully",
+const PermissionMessage = Object.freeze({
+  Create: "permission created successfully",
+  Update: "permission updated successfully",
+  Delete: "permission deleteded successfully",
 });
+
+module.exports = { PermissionMessage };

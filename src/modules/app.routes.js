@@ -1,3 +1,4 @@
+const { permissionRouter } = require("./RBAC/permission/permission.routes.js");
 const { ageGroupRouter } = require("./baseData/ageGroup/ageGroup.routes.js");
 const { beltRouter } = require("./baseData/belt/belt.routes.js");
 const { beltExamRouter } = require("./baseData/beltExam/beltExam.routes.js");
@@ -27,7 +28,7 @@ router.use("/belt-exams", beltExamRouter);
 
 // RBAC
 // router.use("/api/v1/roles", isAuth, checkPermission([PERMISSIONS.SUPER_ADMIN]), roleRouter);
-// router.use("/api/v1/permissions", isAuth, checkPermission([PERMISSIONS.SUPER_ADMIN]), permissionRouter);
+router.use("/permissions", permissionRouter);
 
 // router.get("/api/v1/test", insertStudetnsJSON);
 
