@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const { shamsiToMiladi } = require("../../../common/utils/dateConvarter");
-const { string } = require("joi");
+const { string, required } = require("joi");
 
 const { Types } = mongoose;
 
@@ -11,6 +11,7 @@ const BeltExamSchema = new mongoose.Schema(
     eventPlace: { type: String },
     genders: {
       type: Array,
+      required: true,
       validate: {
         validator: function (v) {
           const allowedValues = ["آقایان", "بانوان"];

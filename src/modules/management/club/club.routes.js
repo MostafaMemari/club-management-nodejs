@@ -1,21 +1,8 @@
-const clubController = require("../../controllers/Management/clubController");
-const { PERMISSIONS } = require("../../../common/utils/constans");
-const { checkPermission } = require("../../../common/guard/permission.guard");
-const clubRouter = require("express").Router();
+const clubController = require("./club.controller");
+const { ClubValidation } = require("./club.validation");
 
-clubRouter
-  .route("/")
-  .post(checkPermission([PERMISSIONS.SUPER_ADMIN]), clubController.createClub)
-  .get(clubController.getClubs);
-clubRouter
-  .route("/:id")
-  .get(clubController.getClub)
-  .delete(checkPermission([PERMISSIONS.SUPER_ADMIN]), clubController.deleteClub)
-  .put(checkPermission([PERMISSIONS.ADMIN_CLUB]), clubController.updateClub);
-clubController;
-clubRouter.patch("/:id/sport/:sportID/remove", clubController.removeSportToClub);
-clubRouter.patch("/:id/sport/add", clubController.addSportToClub);
+const router = require("express").Router();
 
-module.exports = {
-  clubRouter,
-};
+router.post("/", ClubValidation(), clubController.create);
+
+module.exports = { clubRouter: router };

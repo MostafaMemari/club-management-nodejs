@@ -47,7 +47,7 @@ function BeltExamValidation() {
         const genders = removeDuplicatesArray(gendersBody);
 
         for (const gender of genders) {
-          if (!gendersValid?.includes(gender)) throw createHttpError("جنسیت وارد شده معتبر نمی باشد");
+          if (!gendersValid?.includes(gender)) throw createHttpError.BadRequest("جنسیت وارد شده معتبر نمی باشد");
         }
       })
       .withMessage("جنسیت وارد شده معتبر نمی باشد"),

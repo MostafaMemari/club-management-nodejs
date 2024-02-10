@@ -2,6 +2,7 @@ const { ageGroupRouter } = require("./baseData/ageGroup/ageGroup.routes.js");
 const { beltRouter } = require("./baseData/belt/belt.routes.js");
 const { beltExamRouter } = require("./baseData/beltExam/beltExam.routes.js");
 const { sportRouter } = require("./baseData/sport/sport.routes.js");
+const { clubRouter } = require("./management/club/club.routes.js");
 const { studentRouter } = require("./personnel/student/student.routes.js");
 
 const router = require("express").Router();
@@ -15,7 +16,7 @@ const router = require("express").Router();
 router.use("/students", studentRouter);
 
 // Management
-// router.use("/api/v1/clubs", isAuth, clubRouter);
+router.use("/clubs", clubRouter);
 
 // BASE DATA
 router.use("/sports", sportRouter);
