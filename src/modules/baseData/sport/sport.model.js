@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const sportSchema = new mongoose.Schema(
+const SportSchema = new mongoose.Schema(
   {
     name: { type: String, unique: true, required: true },
     type: { type: String },
@@ -9,8 +9,8 @@ const sportSchema = new mongoose.Schema(
   { versionKey: false }
 );
 
-const sportModel = mongoose.model("sport", sportSchema);
+const SportModel = mongoose.model("sport", SportSchema);
 
 module.exports = {
-  sportModel,
+  SportModel,
 };
