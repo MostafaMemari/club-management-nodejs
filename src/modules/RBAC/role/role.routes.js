@@ -1,13 +1,8 @@
-const roleRouter = require("express").Router();
+const roleController = require("./role.controller");
+const { RoleValidation } = require("./role.validation");
 
-const { createRole, getRoles, getRole, deleteRole, removePermissionToRole, addPermissionToRole } = require("../../controllers/RBAC/roleController");
+const router = require("express").Router();
 
-roleRouter.route("/").post(createRole).get(getRoles);
-roleRouter.route("/:id").get(getRole).delete(deleteRole);
+router.post("/", RoleValidation(), roleController.create);
 
-roleRouter.patch("/:id/permission/:permissionID/remove", removePermissionToRole);
-roleRouter.patch("/:id/permission/add", addPermissionToRole);
-
-module.exports = {
-  roleRouter,
-};
+module.exports = { roleRouter: router };
