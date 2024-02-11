@@ -3,10 +3,16 @@ const createHttpError = require("http-errors");
 
 class AgeGroupService {
   async create(bodyData) {
-    const resultAgeGroupCreated = await AgeGroupModel.create({
+    const resultCreateAgeGroup = await AgeGroupModel.create({
       ...bodyData,
     });
-    if (!resultAgeGroupCreated) throw createHttpError.InternalServerError("ثبت رده سنی با خطا مواجه شد");
+    if (!resultCreateAgeGroup) throw createHttpError.InternalServerError("ثبت رده سنی با خطا مواجه شد");
+  }
+
+  async find() {
+    const ageGroups = await AgeGroupModel.find({}).lean();
+    if (!ageGroups) throw createHttpError.InternalServerError("دریافت رده سنی با خطا مواجه شد");
+    return ageGroups;
   }
 
   // async updateAgeGourp(req, res, next) {

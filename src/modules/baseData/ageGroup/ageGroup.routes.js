@@ -4,6 +4,7 @@ const { AgeGroupValidation } = require("./ageGroup.validation");
 const router = require("express").Router();
 
 router.post("/", AgeGroupValidation(), ageGroupController.create);
+router.get("/", ageGroupController.find);
 
 // router
 //   .route("/")

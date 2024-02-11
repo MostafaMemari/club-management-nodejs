@@ -27,6 +27,19 @@ class AgeGroupController {
       next(error);
     }
   }
+  async find(req, res, next) {
+    try {
+      const ageGroups = await this.#service.find();
+
+      res.status(StatusCodes.CREATED).json({
+        status: "success",
+        message: AgeGroupMessage.GetAll,
+        data: [...ageGroups],
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
 
   // async updateAgeGourp(req, res, next) {
   //   try {

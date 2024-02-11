@@ -46,3 +46,15 @@
  *      201:
  *        description: created
  */
+
+/**
+ * @swagger
+ * /api/v1/ages:
+ *  get:
+ *    summary: create age group
+ *    tags:
+ *      - AgeGroup
+ *    responses:
+ *      201:
+ *        description: created
+ */
