@@ -28,6 +28,17 @@ class RoleController {
       next(error);
     }
   }
+  async find(req, res, next) {
+    try {
+      const roles = await this.#service.find();
+      res.status(StatusCodes.OK).json({
+        status: "success",
+        data: [...roles],
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 module.exports = new RoleController();

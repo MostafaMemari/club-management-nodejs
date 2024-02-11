@@ -41,3 +41,15 @@
  *      201:
  *        description: created
  */
+
+/**
+ * @swagger
+ * /api/v1/permissions:
+ *  get:
+ *    summary: get all permissions
+ *    tags:
+ *      - Permission
+ *    responses:
+ *      200:
+ *        description: success
+ */

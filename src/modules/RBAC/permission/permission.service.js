@@ -8,6 +8,11 @@ class PermissionService {
     });
     if (!resultPermissionCreate) throw createHttpError.InternalServerError("ثبت سطح دسترسی با خطا مواجه شد");
   }
+  async find() {
+    const permissions = await PermissionModel.find({}).lean();
+    if (!permissions) throw createHttpError.InternalServerError("دریافت سطح دسترسی با خطا مواجه شد");
+    return permissions;
+  }
 }
 
 module.exports = new PermissionService();

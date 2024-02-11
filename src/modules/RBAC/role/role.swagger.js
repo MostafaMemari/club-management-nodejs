@@ -44,3 +44,15 @@
  *      201:
  *        description: created
  */
+
+/**
+ * @swagger
+ * /api/v1/roles:
+ *  get:
+ *    summary: get all roles
+ *    tags:
+ *      - Role
+ *    responses:
+ *      200:
+ *        description: success
+ */

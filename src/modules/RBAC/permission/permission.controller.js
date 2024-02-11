@@ -27,6 +27,17 @@ class PermissionController {
       next(error);
     }
   }
+  async find(req, res, next) {
+    try {
+      const permissions = await this.#service.find();
+      res.status(StatusCodes.OK).json({
+        status: "success",
+        data: [...permissions],
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 module.exports = new PermissionController();
