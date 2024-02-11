@@ -61,3 +61,15 @@
  *      201:
  *        description: created
  */
+
+/**
+ * @swagger
+ * /api/v1/belt-exams:
+ *  get:
+ *    summary: get all belt exams
+ *    tags:
+ *      - BeltExam
+ *    responses:
+ *      200:
+ *        description: success
+ */

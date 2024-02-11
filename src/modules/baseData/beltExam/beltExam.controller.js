@@ -30,6 +30,18 @@ class BeltExamController {
       next(error);
     }
   }
+
+  async find(req, res, next) {
+    try {
+      const beltExams = await this.#service.find();
+      res.status(StatusCodes.OK).json({
+        status: "success",
+        data: [...beltExams],
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 module.exports = new BeltExamController();
