@@ -51,10 +51,10 @@
  * @swagger
  * /api/v1/ages:
  *  get:
- *    summary: create age group
+ *    summary: get All age groups
  *    tags:
  *      - AgeGroup
  *    responses:
- *      201:
- *        description: created
+ *      200:
+ *        description: success
  */

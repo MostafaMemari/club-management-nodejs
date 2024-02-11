@@ -31,9 +31,8 @@ class AgeGroupController {
     try {
       const ageGroups = await this.#service.find();
 
-      res.status(StatusCodes.CREATED).json({
+      res.status(StatusCodes.OK).json({
         status: "success",
-        message: AgeGroupMessage.GetAll,
         data: [...ageGroups],
       });
     } catch (error) {

@@ -40,3 +40,15 @@
  *      201:
  *        description: created
  */
+
+/**
+ * @swagger
+ * /api/v1/belts:
+ *  get:
+ *    summary: get all belts
+ *    tags:
+ *      - Belt
+ *    responses:
+ *      200:
+ *        description: success
+ */

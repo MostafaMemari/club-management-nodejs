@@ -9,6 +9,12 @@ class AgeGroupService {
     if (!resultBeltCreate) throw createHttpError.InternalServerError("ثبت کمربند با خطا مواجه شد");
   }
 
+  async find() {
+    const belts = await BeltModel.find({}).lean();
+    if (!belts) throw createHttpError.InternalServerError("دریافت کمربند با خطا مواجه شد");
+    return belts;
+  }
+
   // async updateAgeGourp(req, res, next) {
   //   try {
   //     const data = copyObject(req.body);
