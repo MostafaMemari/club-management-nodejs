@@ -44,3 +44,15 @@
  *      201:
  *        description: created
  */
+
+/**
+ * @swagger
+ * /api/v1/sports:
+ *  get:
+ *    summary: get all belt sports
+ *    tags:
+ *      - Sport
+ *    responses:
+ *      200:
+ *        description: success
+ */

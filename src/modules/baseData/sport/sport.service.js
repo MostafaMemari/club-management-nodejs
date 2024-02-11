@@ -8,6 +8,11 @@ class SportService {
     });
     if (!resultSportCreate) throw createHttpError.InternalServerError("رشته ورزشی با خطا مواجه شد");
   }
+  async find() {
+    const sports = await SportModel.find({}).lean();
+    if (!sports) throw createHttpError.InternalServerError("دریافت رشته ورزشی با خطا مواجه شد");
+    return sports;
+  }
 }
 
 module.exports = new SportService();

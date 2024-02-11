@@ -27,6 +27,17 @@ class SportController {
       next(error);
     }
   }
+  async find(req, res, next) {
+    try {
+      const sports = await this.#service.find();
+      res.status(StatusCodes.OK).json({
+        status: "success",
+        data: [...sports],
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 module.exports = new SportController();
