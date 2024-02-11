@@ -8,6 +8,12 @@ class ClubService {
     });
     if (!resultClubCreate) throw createHttpError.InternalServerError("ثبت باشگاه با خطا مواجه شد");
   }
+
+  async find() {
+    const clubs = await ClubModel.find({}).populate("sports", "name").lean();
+    if (!clubs) throw createHttpError.InternalServerError("دریافت باشگاه با خطا مواجه شد");
+    return clubs;
+  }
 }
 
 module.exports = new ClubService();

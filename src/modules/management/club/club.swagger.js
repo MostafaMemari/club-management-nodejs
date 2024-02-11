@@ -53,3 +53,15 @@
  *      201:
  *        description: created
  */
+
+/**
+ * @swagger
+ * /api/v1/clubs:
+ *  get:
+ *    summary: get all clubs
+ *    tags:
+ *      - Club
+ *    responses:
+ *      200:
+ *        description: success
+ */

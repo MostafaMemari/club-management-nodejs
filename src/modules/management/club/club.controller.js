@@ -25,6 +25,18 @@ class ClubController {
       next(error);
     }
   }
+
+  async find(req, res, next) {
+    try {
+      const clubs = await this.#service.find();
+      res.status(StatusCodes.OK).json({
+        status: "success",
+        data: [...clubs],
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 module.exports = new ClubController();
