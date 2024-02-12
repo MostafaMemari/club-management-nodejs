@@ -1,6 +1,8 @@
 const createHttpError = require("http-errors");
 const { StudentModel } = require("./student.model");
 const { deleteFileInPublic } = require("../../../common/utils/function");
+const { assignAgeGroups } = require("../../../common/utils/assignAgeGroups");
+const { AgeGroupModel } = require("../../baseData/ageGroup/ageGroup.model");
 
 class StudentService {
   async register(bodyData) {
@@ -35,6 +37,32 @@ class StudentService {
     // update
     const studentCreated = await StudentModel.updateOne({ _id: paramData.id }, { ...bodyData });
     if (!studentCreated.modifiedCount) throw createHttpError.InternalServerError("بروزرسانی اطلاعات با خطا مواجه شد");
+  }
+  async find() {
+    const ageGroupDB = await AgeGroupModel.find({}).lean();
+    const students = await StudentModel.aggregate([
+      {
+        $match: {},
+      },
+      {
+        $limit: 50,
+      },
+      {
+        $addFields: {
+          ageGroups: {
+            $function: {
+              body: assignAgeGroups,
+              args: ["$birthDayMiladi", ageGroupDB],
+              lang: "js",
+            },
+          },
+        },
+      },
+    ]);
+    // const students = await StudentModel.find({}).limit(50).populate("ageGroup").lean();
+
+    if (!students) throw createHttpError.InternalServerError("دریافت رده سنی با خطا مواجه شد");
+    return students;
   }
 
   // async loginStudent(req, res, next) {

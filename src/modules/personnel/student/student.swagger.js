@@ -19,19 +19,22 @@
  *          firstName:
  *            type: string
  *            description : min length 2 - max length 50
+ *            default: Mostafa
  *          lastName:
  *            type: string
  *            description : min length 2 - max length 50
+ *            default: Memari
  *          nationalID:
  *            type: string
  *            description : length 10
+ *            default: 4900782343
  *          belt:
  *            type: string
- *          beltDateShamsi:
+ *          beltDate:
  *            type: string
  *          memberShipValidity:
  *            type: integer
- *          sportsInsuranceDateShamsi:
+ *          sportsInsuranceDate:
  *            type: string
  *          gender:
  *            type: string
@@ -44,9 +47,9 @@
  *            type: string
  *          phone:
  *            type: string
- *          registerDateShamsi:
+ *          registerDate:
  *            type: string
- *          birthDayShamsi:
+ *          birthDay:
  *            type: string
  *          coach:
  *            type: string
@@ -75,11 +78,11 @@
  *            description : length 10
  *          belt:
  *            type: string
- *          beltDateShamsi:
+ *          beltDate:
  *            type: string
  *          memberShipValidity:
  *            type: integer
- *          sportsInsuranceDateShamsi:
+ *          sportsInsuranceDate:
  *            type: string
  *          gender:
  *            type: string
@@ -92,9 +95,9 @@
  *            type: string
  *          phone:
  *            type: string
- *          registerDateShamsi:
+ *          registerDate:
  *            type: string
- *          birthDayShamsi:
+ *          birthDay:
  *            type: string
  *          coach:
  *            type: string
@@ -151,6 +154,18 @@
  *        application/json:
  *          schema:
  *            $ref: "#/components/schemas/UpdateStudent"
+ *    responses:
+ *      200:
+ *        description: success
+ */
+
+/**
+ * @swagger
+ * /api/v1/students:
+ *  get:
+ *    summary: get all students
+ *    tags:
+ *      - Student
  *    responses:
  *      200:
  *        description: success

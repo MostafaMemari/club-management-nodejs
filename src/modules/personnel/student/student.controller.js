@@ -45,6 +45,19 @@ class StudentController {
     }
   }
 
+  async find(req, res, next) {
+    try {
+      const students = await this.#service.find();
+
+      res.status(StatusCodes.OK).json({
+        status: "success",
+        data: [...students],
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
   // async updateStudent(req, res, next) {
   //   try {
   //     try {

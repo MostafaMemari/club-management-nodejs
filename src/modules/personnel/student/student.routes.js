@@ -1,4 +1,3 @@
-const { validate } = require("../../../common/middlewares/validateExpressValidator");
 const { profileUploader } = require("../../../common/services/uploader/profile.multer");
 const studentController = require("./student.controller");
 const { StudentRegisterRequiredValidation, StudentRegisterOptionalValidation } = require("./student.validation");
@@ -14,6 +13,7 @@ router.post(
   StudentRegisterOptionalValidation(),
   studentController.register
 );
+router.get("/", studentController.find);
 router.put("/:id/update-profile", profileUploader.single("studentProfile"), StudentRegisterOptionalValidation(), studentController.update);
 
 // router.post("/login", studentController.loginStudent);

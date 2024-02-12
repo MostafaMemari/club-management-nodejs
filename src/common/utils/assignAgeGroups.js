@@ -1,7 +1,5 @@
-const { AgeGroupModel } = require("../../modules/baseData/ageGroup/ageGroup.model");
+function assignAgeGroups(birthDayMiladi, ageGroups) {
+  return ageGroups.filter((ageGroup) => ageGroup.toDateMiladi > birthDayMiladi && ageGroup.fromDateMiladi < birthDayMiladi);
+}
 
-module.exports.assignAgeGroups = async (birthDayEN) => {
-  const ageGroups = await AgeGroupModel.find({ $and: [{ toDateEN: { $gt: birthDayEN } }, { fromDateEN: { $lt: birthDayEN } }] });
-  if (ageGroups.length == 1) return [ageGroups[0]._id];
-  if (ageGroups.length == 2) return [ageGroups[0]._id, ageGroups[1]._id];
-};
+module.exports = { assignAgeGroups };

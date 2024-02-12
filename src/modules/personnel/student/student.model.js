@@ -49,25 +49,15 @@ const StudentSchema = new Schema(
 );
 
 StudentSchema.pre("save", async function () {
-  const { birthDay, registerDate, sportsInsuranceDate, beltDate } = this;
+  const { registerDate, sportsInsuranceDate, beltDate } = this;
   registerDate && (this.registerDateMiladi = shamsiToMiladi(registerDate));
   sportsInsuranceDate && (this.sportsInsuranceMiladi = shamsiToMiladi(sportsInsuranceDate));
   beltDate && (this.beltDateMiladi = shamsiToMiladi(beltDate));
-
-  if (birthDay) {
-    this.birthDayMiladi = shamsiToMiladi(birthDay);
-    this.ageGroup = await assignAgeGroups(this.birthDayMiladi);
-  }
 });
 
 StudentSchema.pre("updateOne", async function (next) {
-  const { birthDay, registerDate, sportsInsuranceDate, beltDate } = this._update;
+  const { registerDate, sportsInsuranceDate, beltDate } = this._update;
 
-  if (birthDay) {
-    this.birthDayMiladi = shamsiToMiladi(birthDay);
-    this.set({ birthDayMiladi: this.birthDayMiladi });
-    this.set({ ageGroup: await assignAgeGroups(this.birthDayMiladi) });
-  }
   if (registerDate) {
     this.registerDateMiladi = shamsiToMiladi(registerDate);
     this.set({ registerDateMiladi: this.registerDateMiladi });
