@@ -64,7 +64,7 @@ class StudentService {
 
   async checkExistStudentByID(id) {
     if (!isValidObjectId(id)) throw createHttpError.BadRequest("student id is not valid");
-    const studnet = await StudentModel.findById(id);
+    const studnet = await StudentModel.findById(id).populate("belt").lean();
     if (!studnet) throw createHttpError.NotFound("student not found");
     return studnet;
   }

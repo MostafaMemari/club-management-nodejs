@@ -106,27 +106,27 @@ module.exports.dateBeltExamNext = async (belt, beltDate) => {
     return await BeltExamModel.find({ beltID: nextBelt._id, eventDateEN: { $gte: nextBeltDate } }).lean();
   }
   if (belt.name === "قرمز") {
-    const nextBelt = await beltModel.findOne({ $or: [{ name: "پوم 1" }, { name: "مشکی دان 1" }] });
+    const nextBelt = await beltModel.findOne({ $or: [{ name: "پوم 1" }, { name: "دان 1" }] });
     return await BeltExamModel.find({ beltID: nextBelt._id });
   }
-  if (belt.name === "پوم 1" || belt.name === "مشکی دان 1") {
-    const nextBelt = await beltModel.find({ $or: [{ name: "پوم 2" }, { name: "مشکی دان 2" }] });
+  if (belt.name === "پوم 1" || belt.name === "دان 1") {
+    const nextBelt = await beltModel.find({ $or: [{ name: "پوم 2" }, { name: "دان 2" }] });
     return await BeltExamModel.find({ $or: [{ beltID: nextBelt[0]._id }, { beltID: nextBelt[1]._id }] });
   }
-  if (belt.name === "پوم 2" || belt.name === "مشکی دان 2") {
-    const nextBelt = await beltModel.find({ $or: [{ name: "پوم 3" }, { name: "مشکی دان 3" }] });
+  if (belt.name === "پوم 2" || belt.name === "دان 2") {
+    const nextBelt = await beltModel.find({ $or: [{ name: "پوم 3" }, { name: "دان 3" }] });
     return await BeltExamModel.find({ $or: [{ beltID: nextBelt[0]._id }, { beltID: nextBelt[1]._id }] });
   }
-  if (belt.name === "پوم 3" || belt.name === "مشکی دان 3") {
-    const nextBelt = await beltModel.find({ $or: [{ name: "پوم 4" }, { name: "مشکی دان 4" }] });
+  if (belt.name === "پوم 3" || belt.name === "دان 3") {
+    const nextBelt = await beltModel.find({ $or: [{ name: "پوم 4" }, { name: "دان 4" }] });
     return await BeltExamModel.find({ $or: [{ beltID: nextBelt[0]._id }, { beltID: nextBelt[1]._id }] });
   }
-  if (belt.name === "پوم 4" || belt.name === "مشکی دان 4") {
-    const nextBelt = await beltModel.findOne({ name: "مشکی دان 5" });
+  if (belt.name === "پوم 4" || belt.name === "دان 4") {
+    const nextBelt = await beltModel.findOne({ name: "دان 5" });
     return await BeltExamModel.find({ beltID: nextBelt._id });
   }
-  if (belt.name === "مشکی دان 5") {
-    const nextBelt = await beltModel.findOne({ name: "مشکی دان 6" });
+  if (belt.name === "دان 5") {
+    const nextBelt = await beltModel.findOne({ name: "دان 6" });
     return await BeltExamModel.find({ beltID: nextBelt._id });
   }
 };

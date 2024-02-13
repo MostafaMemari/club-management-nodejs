@@ -14,8 +14,8 @@ class AgeGroupService {
     if (!ageGroups) throw createHttpError.InternalServerError("دریافت رده سنی با خطا مواجه شد");
     return ageGroups;
   }
-  async assignAgeGroupStudentBybirthday(birthDayMiladi) {
-    const ageGroups = await AgeGroupModel.find({ $and: [{ toDateMiladi: { $gt: birthDayMiladi } }, { fromDateMiladi: { $lt: birthDayMiladi } }] });
+  async assignAgeGroupStudentBybirthday(birthDay) {
+    const ageGroups = await AgeGroupModel.find({ $and: [{ toDate: { $gt: birthDay } }, { fromDate: { $lt: birthDay } }] });
     if (ageGroups.length == 1) return [ageGroups[0]];
     if (ageGroups.length == 2) return [ageGroups[0], ageGroups[1]];
     if (ageGroups.length == 3) return [ageGroups[0], ageGroups[1], ageGroups[2]];

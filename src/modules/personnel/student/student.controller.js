@@ -9,14 +9,17 @@ const { isValidObjectId } = require("mongoose");
 const createHttpError = require("http-errors");
 const { StudentModel } = require("./student.model");
 const ageGroupService = require("../../baseData/ageGroup/ageGroup.service");
+const beltExamService = require("../../baseData/beltExam/beltExam.service");
 
 class StudentController {
   #service;
   #ageGroupService;
+  #beltExamService;
   constructor() {
     autoBind(this);
     this.#service = studentService;
     this.#ageGroupService = ageGroupService;
+    this.#beltExamService = beltExamService;
   }
   async register(req, res, next) {
     try {
@@ -67,7 +70,12 @@ class StudentController {
     try {
       const { id: studentID } = req.params;
       const studnetExist = await this.#service.checkExistStudentByID(studentID);
-      const ageGroup = await this.#ageGroupService.assignAgeGroupStudentBybirthday(studnetExist.birthDayMiladi);
+
+      // const beltExam = await this.#beltExamService.findBeltExamValidStudent({
+      //   gender: studnetExist.gender,
+      //   belt: { ...studnetExist.belt, beltDate: studnetExist.beltDate },
+      // });
+      const ageGroup = await this.#ageGroupService.assignAgeGroupStudentBybirthday(studnetExist.birthDay);
 
       const student = await this.#service.findByID(studentID, ageGroup);
 

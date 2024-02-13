@@ -20,10 +20,8 @@ const CoachSchema = new mongoose.Schema(
     fatherName: { type: String },
     address: { type: String },
 
-    birthDayIR: { type: String },
-    registerDateIR: { type: String },
-    birthDayEN: { type: Date },
-    registerDateEN: { type: Date },
+    birthDay: { type: String },
+    registerDate: { type: String },
 
     clubID: { type: Types.ObjectId, ref: "club" },
     beltID: { type: Types.ObjectId, ref: "belt" },
@@ -34,27 +32,6 @@ const CoachSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
-
-CoachSchema.pre("save", async function () {
-  const { birthDayIR, registerDateIR } = this;
-
-  registerDateIR ? (this.registerDateEN = shamsiToMiladi(registerDateIR)) : false;
-  birthDayIR ? (this.birthDayEN = shamsiToMiladi(birthDayIR)) : false;
-});
-
-CoachSchema.pre("updateOne", async function (next) {
-  const { birthDayIR, registerDateIR } = this._update;
-
-  if (birthDayIR) {
-    this.birthDayEN = shamsiToMiladi(birthDayIR);
-    this.set({ birthDayEN: this.birthDayEN });
-  }
-  if (registerDateIR) {
-    this.registerDateEN = shamsiToMiladi(registerDateIR);
-    this.set({ registerDateEN: this.registerDateEN });
-  }
-  next();
-});
 
 const CoachModel = mongoose.model("coach", CoachSchema);
 

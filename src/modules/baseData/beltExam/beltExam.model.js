@@ -23,35 +23,9 @@ const BeltExamSchema = new mongoose.Schema(
     belts: [{ type: Types.ObjectId, ref: "belt" }],
     eventDate: { type: String, required: true },
     registerDate: { type: String, required: true },
-    eventDateMiladi: {
-      type: Date,
-      default: function () {
-        return shamsiToMiladi(this.eventDate);
-      },
-    },
-    registerDateMiladi: {
-      type: Date,
-      default: function () {
-        return shamsiToMiladi(this.registerDate);
-      },
-    },
   },
   { versionKey: false }
 );
-
-BeltExamSchema.pre("updateOne", function (next) {
-  const { eventDate, registerDate } = this._update;
-
-  if (eventDate) {
-    this.eventDateMiladi = shamsiToMiladi(eventDate);
-    this.set({ eventDateMiladi: this.eventDateMiladi });
-  }
-  if (registerDate) {
-    this.registerDateMiladi = shamsiToMiladi(registerDate);
-    this.set({ registerDateMiladi: this.registerDateMiladi });
-  }
-  next();
-});
 
 const BeltExamModel = mongoose.model("beltExam", BeltExamSchema);
 

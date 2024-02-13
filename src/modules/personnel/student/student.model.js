@@ -27,12 +27,6 @@ const StudentSchema = new Schema(
 
     coach: { type: Types.ObjectId, ref: "coach" },
 
-    birthDayMiladi: { type: Date },
-    registerDateMiladi: { type: Date },
-    sportsInsuranceMiladi: { type: Date },
-    beltDateMiladi: { type: Date },
-    ageGroup: { type: [Types.ObjectId], ref: "ageGroup" },
-
     // createdBy: { type: Schema.Types.ObjectId, required: false, refPath: "modelCreatedBy" },
 
     // modelCreatedBy: {
@@ -47,31 +41,6 @@ const StudentSchema = new Schema(
     timestamps: true,
   }
 );
-
-StudentSchema.pre("save", async function () {
-  const { registerDate, sportsInsuranceDate, beltDate } = this;
-  registerDate && (this.registerDateMiladi = shamsiToMiladi(registerDate));
-  sportsInsuranceDate && (this.sportsInsuranceMiladi = shamsiToMiladi(sportsInsuranceDate));
-  beltDate && (this.beltDateMiladi = shamsiToMiladi(beltDate));
-});
-
-StudentSchema.pre("updateOne", async function (next) {
-  const { registerDate, sportsInsuranceDate, beltDate } = this._update;
-
-  if (registerDate) {
-    this.registerDateMiladi = shamsiToMiladi(registerDate);
-    this.set({ registerDateMiladi: this.registerDateMiladi });
-  }
-  if (sportsInsuranceDate) {
-    this.sportsInsuranceMiladi = shamsiToMiladi(sportsInsuranceDate);
-    this.set({ sportsInsuranceMiladi: this.sportsInsuranceMiladi });
-  }
-  if (beltDate) {
-    this.beltDateMiladi = shamsiToMiladi(beltDate);
-    this.set({ beltDateMiladi: this.beltDateMiladi });
-  }
-  next();
-});
 
 const StudentModel = mongoose.model("student", StudentSchema);
 
