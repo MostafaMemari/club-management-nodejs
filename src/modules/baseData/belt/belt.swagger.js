@@ -19,6 +19,23 @@
  *            type: string
  *          duration:
  *            type: string
+ *          nextBelt:
+ *            type: array
+ */
+
+/**
+ * @swagger
+ *  components:
+ *    schemas:
+ *      UpdateBelt:
+ *        type: object
+ *        properties:
+ *          name:
+ *            type: string
+ *          duration:
+ *            type: string
+ *          nextBelt:
+ *            type: array
  */
 
 /**
@@ -36,6 +53,31 @@
  *        application/json:
  *          schema:
  *            $ref: "#/components/schemas/CreateBelt"
+ *    responses:
+ *      201:
+ *        description: created
+ */
+
+/**
+ * @swagger
+ * /api/v1/belts/{id}:
+ *  put:
+ *    summary: create belt
+ *    tags:
+ *      - Belt
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        required: true
+ *        description: belt object id
+ *    requestBody:
+ *      content:
+ *        application/x-www-form-urlencoded:
+ *          schema:
+ *            $ref: "#/components/schemas/UpdateBelt"
+ *        application/json:
+ *          schema:
+ *            $ref: "#/components/schemas/UpdateBelt"
  *    responses:
  *      201:
  *        description: created

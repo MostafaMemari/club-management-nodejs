@@ -71,10 +71,10 @@ class StudentController {
       const { id: studentID } = req.params;
       const studnetExist = await this.#service.checkExistStudentByID(studentID);
 
-      // const beltExam = await this.#beltExamService.findBeltExamValidStudent({
-      //   gender: studnetExist.gender,
-      //   belt: { ...studnetExist.belt, beltDate: studnetExist.beltDate },
-      // });
+      const listBeltExams = await this.#beltExamService.findBeltExamValidStudent({
+        gender: studnetExist.gender,
+        belt: { ...studnetExist.belt, beltDate: studnetExist.beltDate },
+      });
       const ageGroup = await this.#ageGroupService.assignAgeGroupStudentBybirthday(studnetExist.birthDay);
 
       const student = await this.#service.findByID(studentID, ageGroup);

@@ -1,14 +1,15 @@
-const mongoose = require("mongoose");
+const { Schema, Types, model } = require("mongoose");
 
-const BeltSchema = new mongoose.Schema(
+const BeltSchema = new Schema(
   {
-    name: { type: String, required: true },
+    name: { type: String, required: true, unique: true },
     duration: { type: Number, required: true },
+    nextBelt: { type: [Types.ObjectId], ref: "belt" },
   },
   { versionKey: false }
 );
 
-const BeltModel = mongoose.model("belt", BeltSchema);
+const BeltModel = model("belt", BeltSchema);
 
 module.exports = {
   BeltModel,

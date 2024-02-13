@@ -16,9 +16,10 @@ class AgeGroupService {
   }
   async assignAgeGroupStudentBybirthday(birthDay) {
     const ageGroups = await AgeGroupModel.find({ $and: [{ toDate: { $gt: birthDay } }, { fromDate: { $lt: birthDay } }] });
-    if (ageGroups.length == 1) return [ageGroups[0]];
-    if (ageGroups.length == 2) return [ageGroups[0], ageGroups[1]];
-    if (ageGroups.length == 3) return [ageGroups[0], ageGroups[1], ageGroups[2]];
+
+    if (ageGroups.length == 3) return ageGroups.slice(0, 3);
+    if (ageGroups.length == 2) return ageGroups.slice(0, 2);
+    if (ageGroups.length == 1) return ageGroups.slice(0, 1);
   }
 
   // async updateAgeGourp(req, res, next) {

@@ -18,7 +18,7 @@ function StudentRegisterOptionalValidation() {
       .escape()
       .isString()
       .isLength({ min: 2, max: 50 })
-      .withMessage("نام وارد شده معتبر نمی باشد"),
+      .withMessage("FirstName is not valid"),
 
     body("lastName")
       .if((value, { req }) => req.method !== "POST")
@@ -28,7 +28,7 @@ function StudentRegisterOptionalValidation() {
       .escape()
       .isString()
       .isLength({ min: 2, max: 50 })
-      .withMessage("نام خانوادگی وارد شده معتبر نمی باشد"),
+      .withMessage("LastName is not valid"),
 
     body("nationalID")
       .if((value, { req }) => req.method !== "POST")
@@ -38,7 +38,7 @@ function StudentRegisterOptionalValidation() {
       .escape()
       .isString()
       .isLength({ min: 10, max: 10 })
-      .withMessage("کد ملی وارد شده معتبر نمی باشد"),
+      .withMessage("NationalID is not valid"),
 
     body("imageUrl")
       .optional({ nullable: true, checkFalsy: true })
@@ -54,16 +54,9 @@ function StudentRegisterOptionalValidation() {
       .notEmpty()
       .escape()
       .isIn(["STUDENT", "COACH"])
-      .withMessage("نقش وارد شده معتبر نمی باشد"),
+      .withMessage("Role is Not valid"),
 
-    body("gender")
-      .optional({ nullable: true, checkFalsy: true })
-      .isString()
-      .trim()
-      .notEmpty()
-      .escape()
-      .isIn(["زن", "مرد"])
-      .withMessage("جنسیت وارد شده اشتباه می باشد"),
+    body("gender").optional({ nullable: true, checkFalsy: true }).isString().trim().notEmpty().escape().isIn(["زن", "مرد"]).withMessage("Gender is not valid"),
 
     body("mobile")
       .optional({ nullable: true, checkFalsy: true })
@@ -73,7 +66,7 @@ function StudentRegisterOptionalValidation() {
       .escape()
       .customSanitizer((phone) => (phone = normalizePhoneNumber(phone)))
       .isMobilePhone("ir-IR")
-      .withMessage("شماره موبایل وارد شده معتبر نمی باشد"),
+      .withMessage("Mobile number is not valid"),
 
     body("fatherName")
       .optional({ nullable: true, checkFalsy: true })
@@ -82,7 +75,7 @@ function StudentRegisterOptionalValidation() {
       .notEmpty()
       .escape()
       .isLength({ min: 2, max: 50 })
-      .withMessage("نام پدر وارد شده معتبر نمی باشد"),
+      .withMessage("Father name is not valid"),
 
     body("address")
       .optional({ nullable: true, checkFalsy: true })
@@ -91,7 +84,7 @@ function StudentRegisterOptionalValidation() {
       .notEmpty()
       .escape()
       .isLength({ min: 10, max: 50 })
-      .withMessage("آدرس وارد شده معتبر نمی باشد"),
+      .withMessage("Address is not valid"),
 
     body("phone")
       .optional({ nullable: true, checkFalsy: true })
@@ -100,7 +93,7 @@ function StudentRegisterOptionalValidation() {
       .notEmpty()
       .escape()
       .isLength({ min: 9, max: 12 })
-      .withMessage("شماره تلفن وارد شده معتبر نمی باشد"),
+      .withMessage("Phone number is not valid"),
 
     body("registerDate")
       .optional({ nullable: true, checkFalsy: true })
@@ -109,7 +102,7 @@ function StudentRegisterOptionalValidation() {
       .notEmpty()
       .customSanitizer((date) => (date = normalizeCalendar(date)))
       .matches(RegExDateShmasi)
-      .withMessage("تاریخ ثبت نام معتبر نمی باشد"),
+      .withMessage("Date register is not valid"),
 
     body("birthDay")
       .optional({ nullable: true, checkFalsy: true })
@@ -118,7 +111,7 @@ function StudentRegisterOptionalValidation() {
       .notEmpty()
       .customSanitizer((date) => (date = normalizeCalendar(date)))
       .matches(RegExDateShmasi)
-      .withMessage("تاریخ تولد معتبر نمی باشد"),
+      .withMessage("Date birthDay is not valid"),
 
     body("memberShipValidity")
       .optional({ nullable: true, checkFalsy: true })
@@ -127,7 +120,7 @@ function StudentRegisterOptionalValidation() {
       .escape()
       .isInt({ gt: 1370, lt: 1450 })
       .toInt()
-      .withMessage("اعتبار عضویت وارد شده معتبر نمی باشد"),
+      .withMessage("Membership validity is not valid"),
 
     body("sportsInsuranceDate")
       .optional({ nullable: true, checkFalsy: true })
@@ -136,7 +129,7 @@ function StudentRegisterOptionalValidation() {
       .notEmpty()
       .customSanitizer((date) => (date = normalizeCalendar(date)))
       .matches(RegExDateShmasi)
-      .withMessage("تاریخ بیمه ورزشی معتبر نمی باشد"),
+      .withMessage("Date sports insurance is not valid"),
 
     body("beltDate")
       .optional({ nullable: true, checkFalsy: true })
@@ -145,54 +138,44 @@ function StudentRegisterOptionalValidation() {
       .isString()
       .customSanitizer((date) => (date = normalizeCalendar(date)))
       .matches(RegExDateShmasi)
-      .withMessage("تاریخ اخذ کمربند معتبر نمی باشد")
+      .withMessage("Date belt is not valid")
       .custom((value, { req }) => {
         if (!req.body?.belt) {
-          throw createHttpError.BadRequest("لطفا کمربند خود را وارد کنید");
+          throw createHttpError.BadRequest("Please enter the belt");
         }
         return true;
       }),
 
     body("belt")
       .optional({ nullable: true, checkFalsy: true })
+      .isMongoId()
       .custom(async (value, { req }) => {
         if (req.body?.beltDate) {
-          if (isValidObjectId(value)) {
-            const checkExistBelt = await BeltModel.findById(value);
-            if (!checkExistBelt) {
-              throw new Error("کمربند یافت نشد");
-            }
-          } else {
-            throw new Error("شناسه وارد شده معتبر نمی باشد");
+          const checkExistBelt = await BeltModel.findById(value);
+          if (!checkExistBelt) {
+            throw new Error("Belt not found");
           }
         } else {
-          throw new Error("لطفا تاریخ کمربند را وارد کنید");
+          throw new Error("Please enter the date of the belt");
         }
       }),
-
     body("coach")
       .optional({ nullable: true, checkFalsy: true })
+      .isMongoId()
       .custom(async (value) => {
-        if (isValidObjectId(value)) {
-          const checkExistCoach = await CoachModel.findById(value);
-          if (!checkExistCoach) {
-            throw new Error("مربی یافت نشد");
-          }
-        } else {
-          throw new Error("شناسه وارد شده معتبر نمی باشد");
+        const checkExistCoach = await CoachModel.findById(value);
+        if (!checkExistCoach) {
+          throw new Error("Coach not found");
         }
       }),
 
     body("club")
       .optional({ nullable: true, checkFalsy: true })
+      .isMongoId()
       .custom(async (value) => {
-        if (isValidObjectId(value)) {
-          const checkExistClub = await ClubModel.findById(value);
-          if (!checkExistClub) {
-            throw new Error("باشگاه یافت نشد");
-          }
-        } else {
-          throw new Error("شناسه وارد شده معتبر نمی باشد");
+        const checkExistClub = await ClubModel.findById(value);
+        if (!checkExistClub) {
+          throw new Error("Club not found");
         }
       }),
 
@@ -209,7 +192,7 @@ function StudentRegisterRequiredValidation() {
       .isString()
       .escape()
       .isLength({ min: 2, max: 50 })
-      .withMessage("نام وارد شده معتبر نمی باشد"),
+      .withMessage("FirstName is not valid"),
 
     body("lastName")
       .exists({ nullable: true, checkFalsy: true })
@@ -218,7 +201,7 @@ function StudentRegisterRequiredValidation() {
       .escape()
       .isString()
       .isLength({ min: 2, max: 50 })
-      .withMessage("نام خانوادگی وارد شده معتبر نمی باشد"),
+      .withMessage("LastName is not valid"),
 
     body("nationalID")
       .exists({ nullable: true, checkFalsy: true })
@@ -227,7 +210,7 @@ function StudentRegisterRequiredValidation() {
       .escape()
       .isString()
       .isLength({ min: 10, max: 10 })
-      .withMessage("کد ملی وارد شده معتبر نمی باشد"),
+      .withMessage("NationalID is not valid"),
   ];
 }
 module.exports = { StudentRegisterOptionalValidation, StudentRegisterRequiredValidation };

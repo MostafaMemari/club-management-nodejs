@@ -5,6 +5,7 @@ const { matchedData } = require("express-validator");
 const { validate } = require("../../../common/middlewares/validateExpressValidator");
 const { BeltMessage } = require("./belt.message");
 const beltService = require("./belt.service");
+const { BeltModel } = require("./belt.model");
 
 class BeltController {
   #service;
@@ -17,11 +18,28 @@ class BeltController {
     try {
       validate(req);
       const bodyData = matchedData(req, { locations: ["body"] });
-      await this.#service.create(bodyData);
+
+      await this.#service.create(bodyData, paramData);
 
       res.status(StatusCodes.CREATED).json({
         status: "success",
         message: BeltMessage.Create,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+  async update(req, res, next) {
+    try {
+      validate(req);
+      const bodyData = matchedData(req, { locations: ["body"] });
+      const paramData = req.params;
+
+      await this.#service.update(bodyData, paramData);
+
+      res.status(StatusCodes.OK).json({
+        status: "success",
+        message: BeltMessage.Update,
       });
     } catch (error) {
       next(error);
