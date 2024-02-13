@@ -10,19 +10,6 @@ const { StudentModel } = require("./student.model");
 
 function StudentRegisterOptionalValidation() {
   return [
-    param("id")
-      .if((value, { req }) => req.method !== "POST")
-      .exists()
-      .custom(async (value) => {
-        if (isValidObjectId(value)) {
-          const checkExistStudent = await StudentModel.findById(value);
-          if (!checkExistStudent) {
-            throw new Error("هنرجو یافت نشد");
-          }
-        } else {
-          throw new Error("شناسه وارد شده معتبر نمی باشد");
-        }
-      }),
     body("firstName")
       .if((value, { req }) => req.method !== "POST")
       .optional({ nullable: true, checkFalsy: true })
@@ -243,5 +230,4 @@ function StudentRegisterRequiredValidation() {
       .withMessage("کد ملی وارد شده معتبر نمی باشد"),
   ];
 }
-
 module.exports = { StudentRegisterOptionalValidation, StudentRegisterRequiredValidation };

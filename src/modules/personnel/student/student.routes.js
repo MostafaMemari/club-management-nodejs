@@ -14,6 +14,7 @@ router.post(
   studentController.register
 );
 router.get("/", studentController.find);
+router.get("/:id", studentController.findByID);
 router.put("/:id/update-profile", profileUploader.single("studentProfile"), StudentRegisterOptionalValidation(), studentController.update);
 
 // router.post("/login", studentController.loginStudent);

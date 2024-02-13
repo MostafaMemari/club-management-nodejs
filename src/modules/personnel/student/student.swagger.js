@@ -133,7 +133,7 @@
 
 /**
  * @swagger
- * /api/v1/students/{id}/update:
+ * /api/v1/students/{id}/update-profile:
  *  put:
  *    summary: update prifile student
  *    tags:
@@ -154,6 +154,23 @@
  *        application/json:
  *          schema:
  *            $ref: "#/components/schemas/UpdateStudent"
+ *    responses:
+ *      200:
+ *        description: success
+ */
+
+/**
+ * @swagger
+ * /api/v1/students/{id}:
+ *  get:
+ *    summary: get student by id
+ *    tags:
+ *      - Student
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        required: true
+ *        description: student object id
  *    responses:
  *      200:
  *        description: success
