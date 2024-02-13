@@ -43,26 +43,17 @@ class StudentService {
     if (!students) throw createHttpError.InternalServerError("دریافت رده سنی با خطا مواجه شد");
     return students;
   }
-  async findByID(paramData) {
-    await this.checkExistStudentByID(paramData.id);
-
-    const ageGroupDB = await AgeGroupModel.find({}).lean();
+  async findByID(studentID, ageGroup) {
     const student = await StudentModel.aggregate([
       {
-        $match: { _id: new Types.ObjectId(paramData.id) },
+        $match: { _id: new Types.ObjectId(studentID) },
       },
       {
         $limit: 50,
       },
       {
         $addFields: {
-          ageGroups: {
-            $function: {
-              body: assignAgeGroups,
-              args: ["$birthDayMiladi", ageGroupDB],
-              lang: "js",
-            },
-          },
+          ageGroup,
         },
       },
     ]);
