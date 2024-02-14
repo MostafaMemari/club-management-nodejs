@@ -58,6 +58,8 @@
  *          studentProfile:
  *            description: upload profile student
  *            type: file
+ *
+ *
  */
 
 /**

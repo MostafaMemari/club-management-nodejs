@@ -94,3 +94,37 @@
  *      200:
  *        description: success
  */
+
+/**
+ * @swagger
+ * /api/v1/belts/{id}:
+ *  get:
+ *    summary: get by id belt
+ *    tags:
+ *      - Belt
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        type: string
+ *        required: true
+ *    responses:
+ *      200:
+ *        description: success
+ */
+
+/**
+ * @swagger
+ * /api/v1/belts/{id}:
+ *  delete:
+ *    summary: delete belt
+ *    tags:
+ *      - Belt
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        type: string
+ *        required: true
+ *    responses:
+ *      200:
+ *        description: success
+ */

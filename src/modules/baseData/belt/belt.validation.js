@@ -41,11 +41,8 @@ function BeltValidationOptional() {
       .customSanitizer((belts) => removeDuplicatesArray(belts))
       .custom(async (belts) => {
         for (const beltID of belts) {
-          if (isValidObjectId(beltID)) {
-            await beltService.checkExistBeltByID(beltID);
-          }
+          await beltService.checkExistBeltByID(beltID);
         }
-        return belts;
       }),
   ];
 }

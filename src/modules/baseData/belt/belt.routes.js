@@ -4,7 +4,10 @@ const { BeltValidationOptional, BeltValidationRequired } = require("./belt.valid
 const router = require("express").Router();
 
 router.post("/", BeltValidationRequired(), BeltValidationOptional(), BeltController.create);
-router.put("/:id", BeltValidationOptional(), BeltController.update);
 router.get("/", BeltController.find);
+
+router.put("/:id", BeltValidationOptional(), BeltController.update);
+router.get("/:id", BeltController.findByID);
+router.delete("/:id", BeltController.remove);
 
 module.exports = { beltRouter: router };

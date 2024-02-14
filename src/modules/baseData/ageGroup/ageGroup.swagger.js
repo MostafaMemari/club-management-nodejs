@@ -67,6 +67,18 @@
 
 /**
  * @swagger
+ * /api/v1/ages:
+ *  get:
+ *    summary: get All age groups
+ *    tags:
+ *      - AgeGroup
+ *    responses:
+ *      200:
+ *        description: success
+ */
+
+/**
+ * @swagger
  * /api/v1/ages/{id}:
  *  put:
  *    summary: update age group
@@ -85,18 +97,6 @@
  *        application/json:
  *          schema:
  *            $ref: "#/components/schemas/UpdateAgeGroup"
- *    responses:
- *      200:
- *        description: success
- */
-
-/**
- * @swagger
- * /api/v1/ages:
- *  get:
- *    summary: get All age groups
- *    tags:
- *      - AgeGroup
  *    responses:
  *      200:
  *        description: success

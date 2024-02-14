@@ -23,6 +23,7 @@ class StudentController {
   }
   async register(req, res, next) {
     try {
+      console.log(req.body);
       validate(req);
       const bodyData = matchedData(req, { locations: ["body"] });
       await this.#service.register(bodyData);

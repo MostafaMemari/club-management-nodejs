@@ -1,6 +1,7 @@
 const createHttpError = require("http-errors");
 const { BeltModel } = require("./belt.model");
 const { isValidObjectId } = require("mongoose");
+const { BeltMessage } = require("./belt.message");
 
 class BeltService {
   async create(bodyData) {
@@ -9,29 +10,30 @@ class BeltService {
     });
     if (!resultBeltCreate) throw createHttpError.InternalServerError();
   }
-
-  async update(bodyData, paramData) {
-    const { id: beltID } = paramData;
-    await this.checkExistBeltByID(beltID);
-    const resultBeltUpdate = await BeltModel.updateOne(
-      { _id: beltID },
-      {
-        ...bodyData,
-      }
-    );
-    if (!resultBeltUpdate) throw createHttpError.InternalServerError();
-  }
-
   async find() {
-    const belts = await BeltModel.find({}).populate("nextBelt", "-nextBelt").lean();
+    const belts = await BeltModel.find({}).populate("nextBelt", "-nextBelt -_id").lean();
     if (!belts) throw createHttpError.InternalServerError();
     return belts;
   }
 
-  async checkExistBeltByID(id) {
-    if (!isValidObjectId(id)) throw createHttpError.BadRequest("belt id is not valid");
-    const belt = await BeltModel.findById(id).lean();
-    if (!belt) throw createHttpError.NotFound("student not found");
+  async update(bodyData, beltID) {
+    const updateResult = await BeltModel.updateOne(
+      { _id: beltID },
+      {
+        $set: { ...bodyData },
+      }
+    );
+    if (!updateResult.modifiedCount) throw createHttpError.InternalServerError(BeltMessage.UpdateError);
+  }
+  async remove(beltID) {
+    const removeResult = await BeltModel.deleteOne({ _id: beltID });
+    if (!removeResult.deletedCount) throw createHttpError.InternalServerError(BeltMessage.DeleteError);
+  }
+
+  async checkExistBeltByID(beltID) {
+    if (!isValidObjectId(beltID)) throw createHttpError.BadRequest("belt id is not valid");
+    const belt = await BeltModel.findById(beltID).lean();
+    if (!belt) throw createHttpError.NotFound(BeltMessage.NotFound);
     return belt;
   }
 }

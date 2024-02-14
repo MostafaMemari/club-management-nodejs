@@ -17,6 +17,7 @@ class AgeGroupController {
     try {
       validate(req);
       const bodyData = matchedData(req, { locations: ["body"] });
+
       await this.#service.create(bodyData);
 
       res.status(StatusCodes.CREATED).json({
@@ -39,19 +40,6 @@ class AgeGroupController {
       next(error);
     }
   }
-  async findByID(req, res, next) {
-    try {
-      const { id: ageGroupID } = req.params;
-      const ageGroup = await this.#service.checkExistAgeGroupByID(ageGroupID);
-
-      res.status(StatusCodes.OK).json({
-        status: "success",
-        data: { ...ageGroup },
-      });
-    } catch (error) {
-      next(error);
-    }
-  }
 
   async update(req, res, next) {
     try {
@@ -65,6 +53,19 @@ class AgeGroupController {
       res.status(StatusCodes.OK).json({
         status: "success",
         message: AgeGroupMessage.Update,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+  async findByID(req, res, next) {
+    try {
+      const { id: ageGroupID } = req.params;
+      const ageGroup = await this.#service.checkExistAgeGroupByID(ageGroupID);
+
+      res.status(StatusCodes.OK).json({
+        status: "success",
+        data: { ...ageGroup },
       });
     } catch (error) {
       next(error);

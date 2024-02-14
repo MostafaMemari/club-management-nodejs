@@ -81,11 +81,14 @@ class StudentService {
     return student;
   }
 
-  async checkExistStudentByID(id) {
-    if (!isValidObjectId(id)) throw createHttpError.BadRequest("student id is not valid");
-    const studnet = await StudentModel.findById(id).populate("belt").lean();
+  async checkExistStudentByID(studentID) {
+    if (!isValidObjectId(studentID)) throw createHttpError.BadRequest("student id is not valid");
+    const studnet = await StudentModel.findById(studentID).populate("belt").lean();
     if (!studnet) throw createHttpError.NotFound("student not found");
     return studnet;
+  }
+  async removeBeltStudnet(beltID) {
+    await StudentModel.updateMany({ belt: beltID }, { $unset: { belt: -1, beltDate: -1 } });
   }
 }
 

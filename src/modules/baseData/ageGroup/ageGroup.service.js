@@ -10,25 +10,23 @@ class AgeGroupService {
     });
     if (!resultCreateAgeGroup) throw createHttpError.InternalServerError("ثبت رده سنی با خطا مواجه شد");
   }
-
   async find() {
     const ageGroups = await AgeGroupModel.find({}).lean();
     if (!ageGroups) throw createHttpError.InternalServerError("دریافت رده سنی با خطا مواجه شد");
     return ageGroups;
   }
-  async update(bodyData, id) {
-    console.log(bodyData);
+
+  async update(bodyData, ageGroupID) {
     const updateResult = await AgeGroupModel.updateOne(
-      { _id: id },
+      { _id: ageGroupID },
       {
         $set: { ...bodyData },
       }
     );
     if (!updateResult.modifiedCount) throw createHttpError.InternalServerError(AgeGroupMessage.UpdateError);
   }
-
-  async remove(id) {
-    const removeResult = await AgeGroupModel.deleteOne({ _id: id });
+  async remove(ageGroupID) {
+    const removeResult = await AgeGroupModel.deleteOne({ _id: ageGroupID });
     if (!removeResult.deletedCount) throw createHttpError.InternalServerError(AgeGroupMessage.DeleteError);
   }
 
@@ -44,9 +42,9 @@ class AgeGroupService {
     const result = await AgeGroupModel.findOne({ name }).lean();
     if (result) throw createHttpError.Conflict(AgeGroupMessage.AlreadyExist);
   }
-  async checkExistAgeGroupByID(id) {
-    if (!isValidObjectId(id)) throw createHttpError.InternalServerError("age group object id is not valid");
-    const result = await AgeGroupModel.findById(id).lean();
+  async checkExistAgeGroupByID(ageGroupID) {
+    if (!isValidObjectId(ageGroupID)) throw createHttpError.InternalServerError("age group object id is not valid");
+    const result = await AgeGroupModel.findById(ageGroupID).lean();
     if (!result) throw createHttpError.NotFound(AgeGroupMessage.NotFound);
     return result;
   }
