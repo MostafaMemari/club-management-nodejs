@@ -4,10 +4,13 @@ const { RoleModel } = require("./role.model");
 const { removeDuplicatesArray } = require("../../../common/utils/function");
 const { PermissionModel } = require("../permission/permission.model");
 const { isValidObjectId } = require("mongoose");
+const roleService = require("./role.service");
+const permissionService = require("../permission/permission.service");
 
-function RoleValidation() {
+function RoleValidationRequired() {
   return [
     body("name")
+      .if((value, { req }) => req.method !== "POST")
       .exists({ nullable: true, checkFalsy: true })
       .isString()
       .trim()
@@ -16,8 +19,22 @@ function RoleValidation() {
       .isLength({ min: 2, max: 50 })
       .withMessage("نقش وارد شده معتبر نمی باشد")
       .custom(async (name, { req }) => {
-        const roleNameExist = await RoleModel.findOne({ name });
-        if (roleNameExist) throw createHttpError.Conflict("نقش وارد شده تکراری می باشد");
+        await roleService.checkExistRoleByName(name);
+      }),
+  ];
+}
+function RoleValidationOptional() {
+  return [
+    body("name")
+      .optional({ nullable: true, checkFalsy: true })
+      .isString()
+      .trim()
+      .notEmpty()
+      .escape()
+      .isLength({ min: 2, max: 50 })
+      .withMessage("role is not valid")
+      .custom(async (name, { req }) => {
+        await roleService.checkExistRoleByName(name);
       }),
 
     body("description")
@@ -27,10 +44,10 @@ function RoleValidation() {
       .notEmpty()
       .escape()
       .isLength({ min: 2, max: 100 })
-      .withMessage("توضیحات رشته ورزشی معتبر نمی باشد"),
+      .withMessage("description role is not valid"),
 
     body("permissions")
-      .exists({ nullable: true, checkFalsy: true })
+      .optional({ nullable: true, checkFalsy: true })
       .notEmpty()
       .customSanitizer((permissions) => {
         if (permissions) {
@@ -44,21 +61,14 @@ function RoleValidation() {
         }
       })
       .isArray()
-      .custom(async (permissionBody) => {
-        const permissions = removeDuplicatesArray(permissionBody);
-        for (const permission of permissions) {
-          if (isValidObjectId(permission)) {
-            const permissionExist = await PermissionModel.findById(permission).lean();
-            if (!permissionExist) {
-              throw createHttpError.BadRequest(`سطح دسترسی یافت نشد`);
-            }
-          } else {
-            throw createHttpError.BadRequest(`شناسه سطح دسترسی وارد شده معتبر نمی باشد - ${permissions}`);
-          }
+      .customSanitizer((permissions) => removeDuplicatesArray(permissions))
+      .custom(async (permissions) => {
+        for (const permissionID of permissions) {
+          await permissionService.checkExistPermissionByID(permissionID);
         }
       })
-      .withMessage("سطح دسترسی وارد شده معتبر نمی باشد"),
+      .withMessage("permissions is not valid"),
   ];
 }
 
-module.exports = { RoleValidation };
+module.exports = { RoleValidationRequired, RoleValidationOptional };
