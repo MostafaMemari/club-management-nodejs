@@ -14,6 +14,10 @@ class ClubService {
     if (!clubs) throw createHttpError.InternalServerError("دریافت باشگاه با خطا مواجه شد");
     return clubs;
   }
+
+  async removeSportClub(sportID) {
+    await ClubModel.updateMany({}, { sports: sportID });
+  }
 }
 
 module.exports = new ClubService();

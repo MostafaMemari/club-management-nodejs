@@ -1,8 +1,9 @@
 const { body } = require("express-validator");
 const { SportModel } = require("./sport.model");
 const createHttpError = require("http-errors");
+const sportService = require("./sport.service");
 
-function SportValidation() {
+function SportValidationRequired() {
   return [
     body("name")
       .exists({ nullable: true, checkFalsy: true })
@@ -13,8 +14,23 @@ function SportValidation() {
       .isLength({ min: 2, max: 50 })
       .withMessage("رشته ورزشی وارد شده معتبر نمی باشد")
       .custom(async (name, { req }) => {
-        const sportNameExist = await SportModel.findOne({ name });
-        if (sportNameExist) throw createHttpError.Conflict("رشته ورزشی وارد شده قبلا داخل سیستم ثبت شده است");
+        await sportService.checkExistSportByName(name);
+      }),
+  ];
+}
+function SportValidationOptional() {
+  return [
+    body("name")
+      .if((value, { req }) => req.method !== "POST")
+      .optional({ nullable: true, checkFalsy: true })
+      .isString()
+      .trim()
+      .notEmpty()
+      .escape()
+      .isLength({ min: 2, max: 50 })
+      .withMessage("رشته ورزشی وارد شده معتبر نمی باشد")
+      .custom(async (name, { req }) => {
+        await sportService.checkExistSportByName(name);
       }),
     body("type")
       .optional({ nullable: true, checkFalsy: true })
@@ -36,4 +52,4 @@ function SportValidation() {
   ];
 }
 
-module.exports = { SportValidation };
+module.exports = { SportValidationRequired, SportValidationOptional };

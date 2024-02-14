@@ -5,12 +5,15 @@ const { matchedData } = require("express-validator");
 const { validate } = require("../../../common/middlewares/validateExpressValidator");
 const sportService = require("./sport.service");
 const { SportMessage } = require("./sport.message");
+const clubService = require("../../management/club/club.service");
 
 class SportController {
   #service;
+  #clubService;
   constructor() {
     autoBind(this);
     this.#service = sportService;
+    this.#clubService = clubService;
   }
 
   async create(req, res, next) {
@@ -33,6 +36,52 @@ class SportController {
       res.status(StatusCodes.OK).json({
         status: "success",
         data: [...sports],
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+  async update(req, res, next) {
+    try {
+      validate(req);
+      const bodyData = matchedData(req, { locations: ["body"] });
+      const { id: sportID } = req.params;
+
+      await this.#service.checkExistSportByID(sportID);
+      await this.#service.update(bodyData, sportID);
+
+      res.status(StatusCodes.OK).json({
+        status: "success",
+        message: SportMessage.Update,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+  async findByID(req, res, next) {
+    try {
+      const { id: sportID } = req.params;
+      const sport = await this.#service.checkExistSportByID(sportID);
+
+      res.status(StatusCodes.OK).json({
+        status: "success",
+        data: { ...sport },
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+  async remove(req, res, next) {
+    try {
+      const { id: sportID } = req.params;
+      await this.#service.checkExistSportByID(sportID);
+
+      await this.#service.remove(sportID);
+      await this.#clubService.removeSportClub(sportID);
+
+      res.status(StatusCodes.OK).json({
+        status: "success",
+        message: SportMessage.Delete,
       });
     } catch (error) {
       next(error);
