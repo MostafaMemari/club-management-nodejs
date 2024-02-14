@@ -73,9 +73,9 @@ module.exports.dateDiffDayNowShamsi = (beltDate) => {
   return difference;
 };
 
-module.exports.removeDuplicatesArray = (arr) => {
+function removeDuplicatesArray(arr) {
   const set = new Set(arr);
   return Array.from(set);
-};
+}
 
-module.exports = { getNextBeltDate };
+module.exports = { getNextBeltDate, removeDuplicatesArray };

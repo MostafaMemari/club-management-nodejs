@@ -6,8 +6,10 @@ const { BeltExamModel } = require("./beltExam.model");
 const createHttpError = require("http-errors");
 const { BeltModel } = require("../belt/belt.model");
 const { removeDuplicatesArray } = require("../../../common/utils/function");
+const beltService = require("../belt/belt.service");
+const beltExamService = require("./beltExam.service");
 
-function BeltExamValidation() {
+function BeltExamValidationRequired() {
   return [
     body("name")
       .exists({ nullable: true, checkFalsy: true })
@@ -17,20 +19,8 @@ function BeltExamValidation() {
       .isString()
       .isLength({ min: 2, max: 100 })
       .custom(async (name, { req }) => {
-        const beltExamByNameExist = await BeltExamModel.findOne({ name });
-        if (beltExamByNameExist) throw createHttpError.Conflict("آزمون کمربند قبلا داخل سیستم ثبت شده است");
+        await beltExamService.checkExistBeltExamByName(name);
       }),
-
-    body("description").optional({ nullable: true, checkFalsy: true }).trim().notEmpty().escape().isString().isLength({ min: 2, max: 200 }),
-
-    body("eventPlace")
-      .optional({ nullable: true, checkFalsy: true })
-      .trim()
-      .notEmpty()
-      .escape()
-      .isString()
-      .isLength({ min: 1, max: 100 })
-      .withMessage("محل برگزاری آزمون معتبر نمی باشد"),
 
     body("genders")
       .exists({ nullable: true, checkFalsy: true })
@@ -64,15 +54,8 @@ function BeltExamValidation() {
       .isArray()
       .custom(async (beltsBody) => {
         const belts = removeDuplicatesArray(beltsBody);
-        for (const belt of belts) {
-          if (isValidObjectId(belt)) {
-            const beltExist = await BeltModel.findById(belt).lean();
-            if (!beltExist) {
-              throw createHttpError.BadRequest(`کمربند یافت نشد`);
-            }
-          } else {
-            throw createHttpError.BadRequest(`شناسه کمربند وارد شده معتبر نمی باشد - ${belt}`);
-          }
+        for (const beltID of belts) {
+          await beltService.checkExistBeltByID(beltID);
         }
       }),
     body("eventDate")
@@ -94,5 +77,89 @@ function BeltExamValidation() {
       .withMessage("تاریخ ثبت نام آزمون معتبر نمی باشد"),
   ];
 }
+function BeltExamValidationOptional() {
+  return [
+    body("name")
+      .if((value, { req }) => req.method !== "POST")
+      .optional({ nullable: true, checkFalsy: true })
+      .trim()
+      .notEmpty()
+      .escape()
+      .isString()
+      .isLength({ min: 2, max: 100 })
+      .custom(async (name, { req }) => {
+        await beltExamService.checkExistBeltExamByName(name);
+      }),
 
-module.exports = { BeltExamValidation };
+    body("description").optional({ nullable: true, checkFalsy: true }).trim().notEmpty().escape().isString().isLength({ min: 2, max: 200 }),
+
+    body("eventPlace")
+      .optional({ nullable: true, checkFalsy: true })
+      .trim()
+      .notEmpty()
+      .escape()
+      .isString()
+      .isLength({ min: 1, max: 100 })
+      .withMessage("محل برگزاری آزمون معتبر نمی باشد"),
+
+    body("genders")
+      .if((value, { req }) => req.method !== "POST")
+      .optional({ nullable: true, checkFalsy: true })
+      .customSanitizer((gender) => {
+        if (Array.isArray(gender)) {
+          return gender;
+        } else {
+          return gender?.split(",");
+        }
+      })
+      .isArray()
+      .custom(async (gendersBody) => {
+        const gendersValid = ["آقایان", "بانوان"];
+        const genders = removeDuplicatesArray(gendersBody);
+
+        for (const gender of genders) {
+          if (!gendersValid?.includes(gender)) throw createHttpError.BadRequest("جنسیت وارد شده معتبر نمی باشد");
+        }
+      })
+      .withMessage("جنسیت وارد شده معتبر نمی باشد"),
+
+    body("belts")
+      .if((value, { req }) => req.method !== "POST")
+      .optional({ nullable: true, checkFalsy: true })
+      .customSanitizer((belts) => {
+        if (Array.isArray(belts)) {
+          return belts;
+        } else {
+          return belts?.split(",");
+        }
+      })
+      .isArray()
+      .custom(async (beltsBody) => {
+        const belts = removeDuplicatesArray(beltsBody);
+        for (const beltID of belts) {
+          await beltService.checkExistBeltByID(beltID);
+        }
+      }),
+    body("eventDate")
+      .if((value, { req }) => req.method !== "POST")
+      .optional({ nullable: true, checkFalsy: true })
+      .isString()
+      .trim()
+      .notEmpty()
+      .customSanitizer((date) => (date = normalizeCalendar(date)))
+      .matches(RegExDateShmasi)
+      .withMessage("تاریخ برگزاری آزمون معتبر نمی باشد"),
+
+    body("registerDate")
+      .if((value, { req }) => req.method !== "POST")
+      .optional({ nullable: true, checkFalsy: true })
+      .isString()
+      .trim()
+      .notEmpty()
+      .customSanitizer((date) => (date = normalizeCalendar(date)))
+      .matches(RegExDateShmasi)
+      .withMessage("تاریخ ثبت نام آزمون معتبر نمی باشد"),
+  ];
+}
+
+module.exports = { BeltExamValidationRequired, BeltExamValidationOptional };
