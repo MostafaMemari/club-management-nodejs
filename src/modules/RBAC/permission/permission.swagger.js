@@ -24,6 +24,23 @@
 
 /**
  * @swagger
+ *  components:
+ *    schemas:
+ *      UpdatePermission:
+ *        type: object
+ *        required:
+ *          - name
+ *        properties:
+ *          name:
+ *            type: string
+ *            default: student
+ *          description:
+ *            type: string
+ *            default: دسترسی شاگردان
+ */
+
+/**
+ * @swagger
  * /api/v1/permissions:
  *  post:
  *    summary: create permission
@@ -49,6 +66,65 @@
  *    summary: get all permissions
  *    tags:
  *      - Permission
+ *    responses:
+ *      200:
+ *        description: success
+ */
+
+/**
+ * @swagger
+ * /api/v1/permissions/{id}:
+ *  put:
+ *    summary: update permission
+ *    tags:
+ *      - Permission
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        type: string
+ *        required: true
+ *    requestBody:
+ *      content:
+ *        application/x-www-form-urlencoded:
+ *          schema:
+ *            $ref: "#/components/schemas/UpdatePermission"
+ *        application/json:
+ *          schema:
+ *            $ref: "#/components/schemas/UpdatePermission"
+ *    responses:
+ *      200:
+ *        description: success
+ */
+
+/**
+ * @swagger
+ * /api/v1/permissions/{id}:
+ *  get:
+ *    summary: get by id permission
+ *    tags:
+ *      - Permission
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        type: string
+ *        required: true
+ *    responses:
+ *      200:
+ *        description: success
+ */
+
+/**
+ * @swagger
+ * /api/v1/permissions/{id}:
+ *  delete:
+ *    summary: delete permission
+ *    tags:
+ *      - Permission
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        type: string
+ *        required: true
  *    responses:
  *      200:
  *        description: success

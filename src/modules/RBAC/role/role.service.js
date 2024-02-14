@@ -13,6 +13,9 @@ class RoleService {
     if (!roles) throw createHttpError.InternalServerError("دریافت نقش ها با خطا مواجه شد");
     return roles;
   }
+  async removePermissionRole(permissionID) {
+    await RoleModel.updateMany({}, { permissions: permissionID });
+  }
 }
 
 module.exports = new RoleService();

@@ -1,20 +1,36 @@
 const { body } = require("express-validator");
 const createHttpError = require("http-errors");
 const { PermissionModel } = require("./permission.model");
+const permissionService = require("./permission.service");
 
-function PermissionValidation() {
+function PermissionValidationRequired() {
   return [
     body("name")
+      .if((value, { req }) => req.method !== "POST")
       .exists({ nullable: true, checkFalsy: true })
       .isString()
       .trim()
       .notEmpty()
       .escape()
       .isLength({ min: 2, max: 50 })
-      .withMessage("سطح دسترسی معتبر نمی باشد")
+      .withMessage("permission is not valid")
       .custom(async (name, { req }) => {
-        const permissionNameExist = await PermissionModel.findOne({ name });
-        if (permissionNameExist) throw createHttpError.Conflict("سطح دسترسی وارد شده قبلا داخل سیستم ثبت شده است");
+        await permissionService.checkExistPermissionByName(name);
+      }),
+  ];
+}
+function PermissionValidationOptional() {
+  return [
+    body("name")
+      .optional({ nullable: true, checkFalsy: true })
+      .isString()
+      .trim()
+      .notEmpty()
+      .escape()
+      .isLength({ min: 2, max: 50 })
+      .withMessage("permission is not valid")
+      .custom(async (name, { req }) => {
+        await permissionService.checkExistPermissionByName(name);
       }),
 
     body("description")
@@ -24,8 +40,8 @@ function PermissionValidation() {
       .notEmpty()
       .escape()
       .isLength({ min: 2, max: 100 })
-      .withMessage("توضیحات رشته ورزشی معتبر نمی باشد"),
+      .withMessage("description permission not valid"),
   ];
 }
 
-module.exports = { PermissionValidation };
+module.exports = { PermissionValidationRequired, PermissionValidationOptional };

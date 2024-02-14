@@ -75,7 +75,7 @@ class AgeGroupController {
     try {
       const { id: ageGroupID } = req.params;
       await this.#service.checkExistAgeGroupByID(ageGroupID);
-      this.#service.remove(ageGroupID);
+      await this.#service.remove(ageGroupID);
 
       res.status(StatusCodes.OK).json({
         status: "success",
