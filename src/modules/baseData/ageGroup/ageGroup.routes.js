@@ -1,10 +1,10 @@
 const AgeGroupController = require("./ageGroup.controller");
-const { AgeGroupValidation } = require("./ageGroup.validation");
+const { AgeGroupValidationRequired, AgeGroupValidationOptional } = require("./ageGroup.validation");
 
 const router = require("express").Router();
-
-router.post("/", AgeGroupValidation(), AgeGroupController.create);
+router.post("/", AgeGroupValidationRequired(), AgeGroupValidationOptional(), AgeGroupController.create);
 router.get("/", AgeGroupController.find);
+router.get("/:id", AgeGroupController.findByID);
 
 // router
 //   .route("/")
