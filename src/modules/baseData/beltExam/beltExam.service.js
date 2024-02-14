@@ -1,6 +1,6 @@
 const createHttpError = require("http-errors");
 const { BeltExamModel } = require("./beltExam.model");
-const { nextBeltDate } = require("../../../common/utils/function");
+const { getNextBeltDate } = require("../../../common/utils/function");
 
 class BeltExamService {
   async create(bodyData) {
@@ -16,17 +16,22 @@ class BeltExamService {
     return beltExams;
   }
 
-  async findBeltExamValidStudent(studentBeltData) {
-    console.log(studentBeltData);
-    let { gender, belt } = studentBeltData;
-    gender = gender === "مرد" ? "آقایان" : gender === "زن" ? "بانوان" : false;
-    const nextBelt = nextBeltDate(belt.beltDate, belt.duration);
-    console.log(nextBelt);
+  async findBeltExamValidStudent(student) {
+    let { gender, belt, beltDate } = student;
 
-    const beltExams = await BeltExamModel.find({ genders: gender, eventDate: { $gte: nextBelt }, belts: belt._id }).lean();
-    console.log(beltExams);
-    // if (!beltExams) throw createHttpError.InternalServerError("دریافت آزمون با خطا مواجه شد");
-    // return beltExams;
+    gender = gender === "مرد" ? "آقایان" : gender === "زن" ? "بانوان" : false;
+    const nextBeltDate = getNextBeltDate(beltDate, belt.duration);
+
+    const beltExams = await BeltExamModel.find(
+      {
+        genders: gender,
+        eventDate: { $gte: nextBeltDate },
+        $or: [{ belts: belt.nextBelt[0] }, { belts: belt.nextBelt[1] }],
+      },
+      { belts: 0, genders: 0 }
+    ).lean();
+
+    return beltExams;
   }
 }
 

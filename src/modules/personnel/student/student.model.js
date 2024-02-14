@@ -4,16 +4,6 @@ const { assignAgeGroups } = require("../../../common/utils/assignAgeGroups");
 
 const { Types, Schema } = mongoose;
 
-const BeltSchema = new Schema(
-  {
-    belt: { type: Types.ObjectId, ref: "belt" },
-    nextBelt: { type: Types.ObjectId, ref: "belt" },
-    beltDate: { type: String },
-    nextBeltDate: { type: String },
-  },
-  { versionKey: false }
-);
-
 const StudentSchema = new Schema(
   {
     firstName: { type: String, required: true },
@@ -29,9 +19,10 @@ const StudentSchema = new Schema(
     registerDate: { type: String },
     imageUrl: { type: String, default: "/uploads/profile-students.jpg" },
     club: { type: Types.ObjectId, ref: "club" },
-    belt: { type: BeltSchema },
     memberShipValidity: { type: Number },
     sportsInsuranceDate: { type: String },
+    belt: { type: Types.ObjectId, ref: "belt" },
+    beltDate: { type: String },
 
     coach: { type: Types.ObjectId, ref: "coach" },
 

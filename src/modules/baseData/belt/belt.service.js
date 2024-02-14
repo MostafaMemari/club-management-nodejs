@@ -13,7 +13,6 @@ class BeltService {
   async update(bodyData, paramData) {
     const { id: beltID } = paramData;
     await this.checkExistBeltByID(beltID);
-    console.log(bodyData);
     const resultBeltUpdate = await BeltModel.updateOne(
       { _id: beltID },
       {
@@ -24,7 +23,7 @@ class BeltService {
   }
 
   async find() {
-    const belts = await BeltModel.find({}).lean();
+    const belts = await BeltModel.find({}).populate("nextBelt", "-nextBelt").lean();
     if (!belts) throw createHttpError.InternalServerError();
     return belts;
   }

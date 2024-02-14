@@ -1,10 +1,10 @@
 const createHttpError = require("http-errors");
 const { StudentModel } = require("./student.model");
-const { deleteFileInPublic } = require("../../../common/utils/function");
 const { assignAgeGroups } = require("../../../common/utils/assignAgeGroups");
 const { AgeGroupModel } = require("../../baseData/ageGroup/ageGroup.model");
 const { isValidObjectId } = require("mongoose");
 const { Types } = require("mongoose");
+const { getNextBeltDate } = require("../../../common/utils/function");
 
 class StudentService {
   async register(bodyData) {
@@ -43,17 +43,36 @@ class StudentService {
     if (!students) throw createHttpError.InternalServerError("دریافت رده سنی با خطا مواجه شد");
     return students;
   }
-  async findByID(studentID, ageGroup) {
+  async findByID(studentID) {
     const student = await StudentModel.aggregate([
       {
         $match: { _id: new Types.ObjectId(studentID) },
       },
       {
-        $limit: 50,
+        $lookup: {
+          from: "belts",
+          localField: "belt",
+          foreignField: "_id",
+          as: "belt",
+        },
       },
+      { $unwind: "$belt" },
       {
         $addFields: {
-          ageGroup,
+          "belt.nextBeltDate": {
+            $function: {
+              body: getNextBeltDate,
+              args: ["$beltDate", "$belt.duration"],
+              lang: "js",
+            },
+          },
+          "belt.beltDate": "$beltDate",
+        },
+      },
+      {
+        $project: {
+          "belt.nextBelt": 0,
+          "belt.duration": 0,
         },
       },
     ]);
