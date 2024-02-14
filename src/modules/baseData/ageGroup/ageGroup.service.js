@@ -16,6 +16,22 @@ class AgeGroupService {
     if (!ageGroups) throw createHttpError.InternalServerError("دریافت رده سنی با خطا مواجه شد");
     return ageGroups;
   }
+  async update(bodyData, id) {
+    console.log(bodyData);
+    const updateResult = await AgeGroupModel.updateOne(
+      { _id: id },
+      {
+        $set: { ...bodyData },
+      }
+    );
+    if (!updateResult.modifiedCount) throw createHttpError.InternalServerError(AgeGroupMessage.UpdateError);
+  }
+
+  async remove(id) {
+    const removeResult = await AgeGroupModel.deleteOne({ _id: id });
+    if (!removeResult.deletedCount) throw createHttpError.InternalServerError(AgeGroupMessage.DeleteError);
+  }
+
   async assignAgeGroupStudentBybirthday(birthDay) {
     const ageGroups = await AgeGroupModel.find({ $and: [{ toDate: { $gt: birthDay } }, { fromDate: { $lt: birthDay } }] });
 

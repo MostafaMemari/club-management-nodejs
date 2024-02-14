@@ -1,4 +1,4 @@
-const { body } = require("express-validator");
+const { body, param } = require("express-validator");
 const { isValidObjectId } = require("mongoose");
 const { AgeGroupModel } = require("./ageGroup.model");
 const { RegExDateShmasi } = require("../../../common/utils/constans");
@@ -15,10 +15,10 @@ function AgeGroupValidationOptional() {
       .isString()
       .escape()
       .isLength({ min: 2, max: 50 })
+      .withMessage("age group is not valid")
       .custom(async (name) => {
         await ageGroupService.checkExistAgeGroupByName(name);
-      })
-      .withMessage("age group is not valid"),
+      }),
 
     body("description")
       .if((value, { req }) => req.method !== "POST")
@@ -60,10 +60,10 @@ function AgeGroupValidationRequired() {
       .isString()
       .escape()
       .isLength({ min: 2, max: 50 })
+      .withMessage("age group is not valid")
       .custom(async (name) => {
         await ageGroupService.checkExistAgeGroupByName(name);
-      })
-      .withMessage("age group is not valid"),
+      }),
 
     body("fromDate")
       .exists({ nullable: true, checkFalsy: true })

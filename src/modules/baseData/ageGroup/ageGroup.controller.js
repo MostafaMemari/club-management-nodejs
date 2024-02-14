@@ -52,6 +52,38 @@ class AgeGroupController {
       next(error);
     }
   }
+
+  async update(req, res, next) {
+    try {
+      validate(req);
+      const bodyData = matchedData(req, { locations: ["body"] });
+      const { id: ageGroupID } = req.params;
+
+      await this.#service.checkExistAgeGroupByID(ageGroupID);
+      await this.#service.update(bodyData, ageGroupID);
+
+      res.status(StatusCodes.OK).json({
+        status: "success",
+        message: AgeGroupMessage.Update,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+  async remove(req, res, next) {
+    try {
+      const { id: ageGroupID } = req.params;
+      await this.#service.checkExistAgeGroupByID(ageGroupID);
+      this.#service.remove(ageGroupID);
+
+      res.status(StatusCodes.OK).json({
+        status: "success",
+        message: AgeGroupMessage.Delete,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 module.exports = new AgeGroupController();
