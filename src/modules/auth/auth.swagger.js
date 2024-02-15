@@ -9,50 +9,11 @@
  * @swagger
  *  components:
  *    schemas:
- *      CreateAuthorization:
- *        type: object
- *        required:
- *          - username
- *          - email
- *          - password
- *          - confirmPassword
- *        properties:
- *          username:
- *            type: string
- *          email:
- *            type: string
- *          password:
- *            type: string
- *          confirmPassword:
- *            type: string
- *          role:
- *            type: string
- *            enum: [ADMIN_CLUB]
- */
-
-/**
- * @swagger
- *  components:
- *    schemas:
- *      UpdateAuthorization:
- *        type: object
- *        properties:
- *          username:
- *            type: string
- *          password:
- *            type: string
- *          confirmPassword:
- *            type: string
- *          email:
- *            type: string
- */
-
-/**
- * @swagger
- *  components:
- *    schemas:
  *      LoginUser:
  *        type: object
+ *        required:
+ *          - identifier
+ *          - password
  *        properties:
  *          identifier:
  *            type: string
@@ -63,9 +24,22 @@
 
 /**
  * @swagger
+ *  components:
+ *    schemas:
+ *      LoginStudent:
+ *        type: object
+ *        required:
+ *          - nationalID
+ *        properties:
+ *          nationalID:
+ *            type: string
+ */
+
+/**
+ * @swagger
  * /api/v1/auth/user/login:
  *  post:
- *    summary: register new user
+ *    summary: login user
  *    tags:
  *      - Authorization
  *    requestBody:
@@ -77,24 +51,25 @@
  *          schema:
  *            $ref: "#/components/schemas/LoginUser"
  *    responses:
- *      201:
- *        description: created
+ *      200:
+ *        description: success
  */
+
 /**
  * @swagger
- * /api/v1/users/login:
+ * /api/v1/auth/student/login:
  *  post:
- *    summary: login new user
+ *    summary: login student
  *    tags:
  *      - Authorization
  *    requestBody:
  *      content:
  *        application/x-www-form-urlencoded:
  *          schema:
- *            $ref: "#/components/schemas/LoginAuthorization"
+ *            $ref: "#/components/schemas/LoginStudent"
  *        application/json:
  *          schema:
- *            $ref: "#/components/schemas/LoginAuthorization"
+ *            $ref: "#/components/schemas/LoginStudent"
  *    responses:
  *      200:
  *        description: success

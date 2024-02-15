@@ -29,8 +29,8 @@ class AuthController {
   }
   async studentLogin(req, res, next) {
     try {
-      const { identifier, password } = req.body;
-      const token = await this.#service.userLogin(identifier, password);
+      const { nationalID } = req.body;
+      const token = await this.#service.studentLogin(nationalID);
 
       res.status(StatusCodes.CREATED).json({
         status: "success",
