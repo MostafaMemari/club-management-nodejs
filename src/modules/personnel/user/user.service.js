@@ -2,7 +2,8 @@ const createHttpError = require("http-errors");
 const { isValidObjectId } = require("mongoose");
 const { UserModel } = require("./user.model");
 const { UserMessage } = require("./user.message");
-const { hashPassword } = require("../../../common/services/passwordServices");
+const { hashPassword, comparePassword } = require("../../../common/services/passwordServices");
+const { generateJWTToken } = require("../../../common/services/tokenServices");
 
 class UserService {
   async register(bodyData) {
@@ -13,6 +14,17 @@ class UserService {
     const userCreated = await UserModel.create({ username, password: hashedPassword, email });
     if (!userCreated) throw createHttpError.InternalServerError(UserMessage.RegisterError);
     return userCreated;
+  }
+  async login(identifier, password) {
+    const userExist = await UserModel.findOne({ $or: [{ username: identifier }, { email: identifier }] });
+    if (!userExist) throw createHttpError.Unauthorized(UserMessage.Unauthorized);
+
+    const isPasswordValid = await comparePassword(password, userExist.password);
+    if (!isPasswordValid) throw createHttpError.Unauthorized(UserMessage.Unauthorized);
+
+    const accessToken = await generateJWTToken({ id: userExist._id });
+
+    return accessToken;
   }
 
   // async find() {

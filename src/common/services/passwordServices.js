@@ -7,6 +7,6 @@ module.exports.hashPassword = async (password) => {
   return hash;
 };
 
-module.exports.isPassMatched = async (password, hash) => {
+module.exports.comparePassword = async (password, hash) => {
   return await becrypt.compare(password, hash);
 };

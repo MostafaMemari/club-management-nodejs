@@ -3,9 +3,9 @@ const { UserValidationRequired, UserValidationOptional } = require("./user.valid
 
 const router = require("express").Router();
 
-router.post("/register", UserValidationRequired(), UserValidationOptional(), UserController.registerUser);
+router.post("/register", UserValidationRequired(), UserValidationOptional(), UserController.register);
+router.post("/login", UserController.login);
 
-// router.post("/login", UserController.loginUser);
 // router.get("/profile", UserController.userProfile);
 // router.get("/logout", UserController.logout);
 // router.put("/", UserController.updateUser);

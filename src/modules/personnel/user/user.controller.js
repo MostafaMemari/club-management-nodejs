@@ -13,12 +13,12 @@ class UserController {
     autoBind(this);
     this.#service = userService;
   }
-  async registerUser(req, res, next) {
+  async register(req, res, next) {
     try {
       validate(req);
       const bodyData = matchedData(req, { locations: ["body"] });
-
       const resultCreateUser = await this.#service.register(bodyData);
+
       res.status(StatusCodes.CREATED).json({
         status: "success",
         message: UserMessage.Register,
@@ -31,33 +31,23 @@ class UserController {
       next(error);
     }
   }
-  // async loginUser(req, res, next) {
-  //   try {
-  //     const data = copyObject(req.body);
+  async login(req, res, next) {
+    try {
+      const { identifier, password } = req.body;
+      const token = await this.#service.login(identifier, password);
 
-  //     const { identifier, password } = data;
+      res.status(StatusCodes.CREATED).json({
+        status: "success",
+        message: UserMessage.Register,
+        data: {
+          accessToken: token,
+        },
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
 
-  //     // check user found
-  //     const userFound = await UserModel.findOne({ $or: [{ username: identifier }, { email: identifier }] });
-  //     if (!userFound) throw createError.Unauthorized("نام کاربری یا کلمه عبور وارد شده اشتباه است");
-
-  //     // check valid password
-  //     const isValidPassword = await isPassMatched(password, userFound.password);
-  //     if (!isValidPassword) throw createError.Unauthorized("نام کاربری یا کلمه عبور وارد شده اشتباه است");
-
-  //     const token = generateToken({ id: userFound._id });
-
-  //     res.json(token);
-
-  //     //   res.cookie("access_token", token, {
-  //     //     httpOnly: true,
-  //     //     secure: true, // production => true
-  //     //   });
-  //     //   res.redirect("/dashboard");
-  //   } catch (error) {
-  //     next(error);
-  //   }
-  // }
   // async logout(req, res, next) {
   //   try {
   //     res.clearCookie("access_token");

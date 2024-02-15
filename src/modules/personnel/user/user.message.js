@@ -8,6 +8,7 @@ const UserMessage = Object.freeze({
   RegisterError: "user register failed",
   UpdateError: "user update failed",
   DeleteError: "user delete failed",
+  Unauthorized: "Invalid username or password",
 });
 
 module.exports = { UserMessage };
