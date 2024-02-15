@@ -1,16 +1,13 @@
-const coachController = require("../../controllers/Personnel/coachController");
-const { PERMISSIONS } = require("../../../api/helpers/constans");
-const { isAuth } = require("../../../api/middlewares/isAuth");
-const { checkPermission } = require("../../../api/middlewares/permission.guard");
-const { uploadMulter } = require("../../../api/services/multer");
+const { profileUploader } = require("../../common/services/uploader/profile.multer");
+const CoachController = require("./coach.controller");
+const { CoachValidationRequired, CoachValidationOptional } = require("./coach.validation");
 
-const coachRouter = require("express").Router();
+const router = require("express").Router();
 
-coachRouter.post("/register", uploadMulter.single("image"), coachController.registerCoach);
-coachRouter.post("/login", coachController.loginCoach);
-coachRouter.get("/profile", isAuth, coachController.profileCoach);
+router.post("/register", profileUploader.single("coachProfile"), CoachValidationRequired(), CoachValidationOptional(), CoachController.register);
+router.get("/", CoachController.find);
+router.get("/:id", CoachController.findByID);
+router.put("/:id/update-profile", profileUploader.single("coachProfile"), CoachValidationOptional(), CoachController.update);
+router.delete("/:id", CoachController.remove);
 
-coachRouter.route("/:id").put(uploadMulter.single("image"), coachController.updateCoach).delete(coachController.deleteCoach).get(coachController.getCoach);
-coachRouter.route("/").get(coachController.getCoachs);
-
-module.exports = { coachRouter };
+module.exports = { coachRouter: router };

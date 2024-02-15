@@ -14,7 +14,7 @@ class StudentService {
     const studentCreated = await StudentModel.create({
       ...bodyData,
     });
-    if (!studentCreated) throw createHttpError.InternalServerError("ثبت نام با خطا مواجه شد");
+    if (!studentCreated) throw createHttpError.InternalServerError();
   }
   async find() {
     const ageGroupDB = await AgeGroupModel.find({}).lean();
@@ -38,7 +38,7 @@ class StudentService {
       },
     ]);
 
-    if (!students) throw createHttpError.InternalServerError("دریافت رده سنی با خطا مواجه شد");
+    if (!students) throw createHttpError.InternalServerError();
     return students;
   }
 
@@ -81,7 +81,7 @@ class StudentService {
       },
     ]);
 
-    if (!student) throw createHttpError.InternalServerError("دریافت رده سنی با خطا مواجه شد");
+    if (!student) throw createHttpError.InternalServerError();
     return student;
   }
   async remove(studentID) {
@@ -95,8 +95,15 @@ class StudentService {
     if (!studnet) throw createHttpError.NotFound("student not found");
     return studnet;
   }
+  async checkExistStudentByNationalID(nationalID) {
+    const studnet = await StudentModel.findOne({ nationalID }).lean();
+    if (studnet) throw createHttpError.NotFound(StudentMessage.AlreadyExist);
+  }
   async removeAllBeltInStudnet(beltID) {
     await StudentModel.updateMany({ belt: beltID }, { $unset: { belt: -1, beltDate: -1 } });
+  }
+  async removeAllCoachInStudnet(coachID) {
+    await StudentModel.updateMany({ coach: coachID }, { $unset: { coach: -1 } });
   }
 }
 

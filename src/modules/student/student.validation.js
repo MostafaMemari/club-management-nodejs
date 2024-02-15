@@ -7,6 +7,7 @@ const { normalizeCalendar, normalizePhoneNumber } = require("../../common/utils/
 const { CoachModel } = require("../coach/coach.model");
 const { ClubModel } = require("../club/club.model");
 const { BeltModel } = require("../baseData/belt/belt.model");
+const studentService = require("./student.service");
 
 function StudentValidationRequired() {
   return [
@@ -35,7 +36,10 @@ function StudentValidationRequired() {
       .escape()
       .isString()
       .isLength({ min: 10, max: 10 })
-      .withMessage("NationalID is not valid"),
+      .withMessage("NationalID is not valid")
+      .custom(async (nationalID, { req }) => {
+        await studentService.checkExistStudentByNationalID(nationalID);
+      }),
   ];
 }
 function StudentValidationOptional() {
@@ -68,7 +72,10 @@ function StudentValidationOptional() {
       .escape()
       .isString()
       .isLength({ min: 10, max: 10 })
-      .withMessage("NationalID is not valid"),
+      .withMessage("NationalID is not valid")
+      .custom(async (nationalID, { req }) => {
+        await studentService.checkExistStudentByNationalID(nationalID);
+      }),
 
     body("imageUrl")
       .optional({ nullable: true, checkFalsy: true })

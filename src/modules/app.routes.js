@@ -6,6 +6,7 @@ const { beltRouter } = require("./baseData/belt/belt.routes.js");
 const { beltExamRouter } = require("./baseData/beltExam/beltExam.routes.js");
 const { sportRouter } = require("./baseData/sport/sport.routes.js");
 const { clubRouter } = require("./club/club.routes.js");
+const { coachRouter } = require("./coach/coach.routes.js");
 const { studentRouter } = require("./student/student.routes.js");
 const { userRouter } = require("./user/user.routes.js");
 
@@ -18,7 +19,7 @@ router.use("/auth", authRouter);
 
 // Personel
 router.use("/users", userRouter);
-// router.use("/api/v1/coachs", coachRouter);
+router.use("/coachs", coachRouter);
 router.use("/students", studentRouter);
 
 // Management

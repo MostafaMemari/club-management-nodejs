@@ -1,30 +1,27 @@
 const mongoose = require("mongoose");
 
-const { Types } = mongoose;
+const { Types, Schema } = mongoose;
 
-const CoachSchema = new mongoose.Schema(
+const CoachSchema = new Schema(
   {
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },
-
     nationalID: { type: String, required: true, unique: true },
+    fatherName: { type: String },
+    gender: { type: String, enum: ["مرد", "زن"], default: "مرد" },
+    role: { type: String, default: "COACH" },
+    mobile: { type: String },
+    address: { type: String },
+    birthDay: { type: String },
+    registerDate: { type: String },
+    imageUrl: { type: String, default: "/uploads/profile-coachs.jpg" },
 
     memberShipValidity: { type: Number },
 
-    role: { type: String, default: "COACH" },
-    gender: { type: String, enum: ["مرد", "زن"], default: "مرد" },
-    imageUrl: { type: String, default: "uploads/profile-coachs.jpg" },
+    clubs: { type: [Types.ObjectId], ref: "club" },
+    belt: { type: Types.ObjectId, ref: "belt" },
 
-    mobile: { type: String },
-    fatherName: { type: String },
-    address: { type: String },
-
-    birthDay: { type: String },
-    registerDate: { type: String },
-
-    clubID: { type: Types.ObjectId, ref: "club" },
-    beltID: { type: Types.ObjectId, ref: "belt" },
-    createdBy: { type: Types.ObjectId },
+    // createdBy: { type: Types.ObjectId },
   },
   {
     versionKey: false,

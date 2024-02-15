@@ -39,9 +39,9 @@ class ClubService {
     if (result) throw createHttpError.Conflict(ClubMessage.AlreadyExist);
   }
 
-  async checkExistClubByID(sportID) {
-    if (!isValidObjectId(sportID)) throw createHttpError.InternalServerError("sport object id is not valid");
-    const result = await ClubModel.findById(sportID).lean();
+  async checkExistClubByID(clubID) {
+    if (!isValidObjectId(clubID)) throw createHttpError.InternalServerError("club object id is not valid");
+    const result = await ClubModel.findById(clubID).lean();
     if (!result) throw createHttpError.NotFound(ClubMessage.NotFound);
     return result;
   }

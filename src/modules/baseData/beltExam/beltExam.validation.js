@@ -116,8 +116,7 @@ function BeltExamValidationOptional() {
       .customSanitizer((belts) => convarteStringToArray(belts))
       .isArray()
       .customSanitizer((belts) => removeDuplicatesArray(belts))
-      .custom(async (beltsBody) => {
-        const belts = removeDuplicatesArray(beltsBody);
+      .custom(async (belts) => {
         for (const beltID of belts) {
           await beltService.checkExistBeltByID(beltID);
         }
