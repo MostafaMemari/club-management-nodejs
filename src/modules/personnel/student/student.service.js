@@ -5,6 +5,7 @@ const { AgeGroupModel } = require("../../baseData/ageGroup/ageGroup.model");
 const { isValidObjectId } = require("mongoose");
 const { Types } = require("mongoose");
 const { getNextBeltDate } = require("../../../common/utils/function");
+const { StudentMessage } = require("./student.message");
 
 class StudentService {
   async register(bodyData) {
@@ -12,11 +13,6 @@ class StudentService {
       ...bodyData,
     });
     if (!studentCreated) throw createHttpError.InternalServerError("ثبت نام با خطا مواجه شد");
-  }
-  async update(bodyData, paramData) {
-    await this.checkExistStudentByID(paramData.id);
-    const studentCreated = await StudentModel.updateOne({ _id: paramData.id }, { ...bodyData });
-    if (!studentCreated.modifiedCount) throw createHttpError.InternalServerError("بروزرسانی اطلاعات با خطا مواجه شد");
   }
   async find() {
     const ageGroupDB = await AgeGroupModel.find({}).lean();
@@ -42,6 +38,12 @@ class StudentService {
 
     if (!students) throw createHttpError.InternalServerError("دریافت رده سنی با خطا مواجه شد");
     return students;
+  }
+
+  async update(bodyData, paramData) {
+    await this.checkExistStudentByID(paramData.id);
+    const studentCreated = await StudentModel.updateOne({ _id: paramData.id }, { ...bodyData });
+    if (!studentCreated.modifiedCount) throw createHttpError.InternalServerError("بروزرسانی اطلاعات با خطا مواجه شد");
   }
   async findByID(studentID) {
     const student = await StudentModel.aggregate([
@@ -80,6 +82,10 @@ class StudentService {
     if (!student) throw createHttpError.InternalServerError("دریافت رده سنی با خطا مواجه شد");
     return student;
   }
+  async remove(studentID) {
+    const removeResult = await StudentModel.deleteOne({ _id: studentID });
+    if (!removeResult.deletedCount) throw createHttpError.InternalServerError(StudentMessage.DeleteError);
+  }
 
   async checkExistStudentByID(studentID) {
     if (!isValidObjectId(studentID)) throw createHttpError.BadRequest("student id is not valid");
@@ -87,7 +93,7 @@ class StudentService {
     if (!studnet) throw createHttpError.NotFound("student not found");
     return studnet;
   }
-  async removeBeltStudnet(beltID) {
+  async removeAllBeltInStudnet(beltID) {
     await StudentModel.updateMany({ belt: beltID }, { $unset: { belt: -1, beltDate: -1 } });
   }
 }

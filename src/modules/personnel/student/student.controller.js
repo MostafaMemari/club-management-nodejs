@@ -85,6 +85,21 @@ class StudentController {
       next(error);
     }
   }
+  async remove(req, res, next) {
+    try {
+      const { id: studentID } = req.params;
+
+      await this.#service.checkExistStudentByID(studentID);
+      await this.#service.remove(studentID);
+
+      res.status(StatusCodes.OK).json({
+        status: "success",
+        message: StudentMessage.Delete,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 module.exports = new StudentController();

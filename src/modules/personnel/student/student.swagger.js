@@ -135,6 +135,18 @@
 
 /**
  * @swagger
+ * /api/v1/students:
+ *  get:
+ *    summary: get all students
+ *    tags:
+ *      - Student
+ *    responses:
+ *      200:
+ *        description: success
+ */
+
+/**
+ * @swagger
  * /api/v1/students/{id}/update-profile:
  *  put:
  *    summary: update prifile student
@@ -180,11 +192,16 @@
 
 /**
  * @swagger
- * /api/v1/students:
- *  get:
- *    summary: get all students
+ * /api/v1/students/{id}:
+ *  delete:
+ *    summary: remove student by id
  *    tags:
  *      - Student
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        required: true
+ *        description: student object id
  *    responses:
  *      200:
  *        description: success

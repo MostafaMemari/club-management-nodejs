@@ -81,7 +81,7 @@ class BeltController {
 
       await this.#service.checkExistBeltByID(beltID);
       await this.#service.remove(beltID);
-      await this.#studentService.removeBeltStudnet(beltID);
+      await this.#studentService.removeAllBeltInStudnet(beltID);
 
       res.status(StatusCodes.OK).json({
         status: "success",
