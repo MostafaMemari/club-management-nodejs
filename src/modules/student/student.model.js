@@ -1,6 +1,4 @@
 const mongoose = require("mongoose");
-const { shamsiToMiladi } = require("../../../common/utils/dateConvarter");
-const { assignAgeGroups } = require("../../../common/utils/assignAgeGroups");
 
 const { Types, Schema } = mongoose;
 

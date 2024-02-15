@@ -1,8 +1,8 @@
 const mongoose = require("mongoose");
 
-const { Types } = mongoose;
+const { Types, Schema, model } = mongoose;
 
-const ClubSchema = new mongoose.Schema(
+const ClubSchema = new Schema(
   {
     name: { type: String, required: true },
     genders: {
@@ -26,7 +26,7 @@ const ClubSchema = new mongoose.Schema(
   { versionKey: false }
 );
 
-const ClubModel = mongoose.model("club", ClubSchema);
+const ClubModel = model("club", ClubSchema);
 
 module.exports = {
   ClubModel,

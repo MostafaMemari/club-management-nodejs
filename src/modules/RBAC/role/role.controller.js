@@ -2,7 +2,7 @@ const { StatusCodes } = require("http-status-codes");
 const autoBind = require("auto-bind");
 
 const { matchedData } = require("express-validator");
-const { validate } = require("../../../common/middlewares/validateExpressValidator");
+const { validate } = require("../../../common/services/validateExpressValidator");
 const roleService = require("./role.service");
 const { RoleMessage } = require("./role.message");
 

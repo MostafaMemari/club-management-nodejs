@@ -1,15 +1,14 @@
 const autoBind = require("auto-bind");
-const { matchedData, body } = require("express-validator");
+const { matchedData } = require("express-validator");
 const { StatusCodes } = require("http-status-codes");
+
+const { deleteFileInPublic } = require("../../common/utils/function");
+const ageGroupService = require("../baseData/ageGroup/ageGroup.service");
+const beltExamService = require("../baseData/beltExam/beltExam.service");
+const { validate } = require("../../common/services/validateExpressValidator");
+
 const studentService = require("./student.service");
 const { StudentMessage } = require("./student.message");
-const { validate } = require("../../../common/middlewares/validateExpressValidator");
-const { deleteFileInPublic } = require("../../../common/utils/function");
-const { isValidObjectId } = require("mongoose");
-const createHttpError = require("http-errors");
-const { StudentModel } = require("./student.model");
-const ageGroupService = require("../../baseData/ageGroup/ageGroup.service");
-const beltExamService = require("../../baseData/beltExam/beltExam.service");
 
 class StudentController {
   #service;

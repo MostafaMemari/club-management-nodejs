@@ -1,9 +1,11 @@
 const autoBind = require("auto-bind");
-const { validate } = require("../../../common/middlewares/validateExpressValidator");
 const { matchedData } = require("express-validator");
 const { StatusCodes } = require("http-status-codes");
-const { ClubMessage } = require("./club.message");
+
+const { validate } = require("../../common/services/validateExpressValidator");
+
 const clubService = require("./club.service");
+const { ClubMessage } = require("./club.message");
 
 class ClubController {
   #service;

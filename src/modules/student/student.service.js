@@ -1,11 +1,13 @@
 const createHttpError = require("http-errors");
-const { StudentModel } = require("./student.model");
-const { assignAgeGroups } = require("../../../common/utils/assignAgeGroups");
-const { AgeGroupModel } = require("../../baseData/ageGroup/ageGroup.model");
 const { isValidObjectId } = require("mongoose");
 const { Types } = require("mongoose");
-const { getNextBeltDate } = require("../../../common/utils/function");
+
+const { assignAgeGroups } = require("../../common/utils/assignAgeGroups");
+const { AgeGroupModel } = require("../baseData/ageGroup/ageGroup.model");
+const { getNextBeltDate } = require("../../common/utils/function");
+
 const { StudentMessage } = require("./student.message");
+const { StudentModel } = require("./student.model");
 
 class StudentService {
   async register(bodyData) {

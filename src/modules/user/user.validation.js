@@ -1,6 +1,6 @@
 const { body, param } = require("express-validator");
 const { isValidObjectId } = require("mongoose");
-const { RegExUserName } = require("../../../common/utils/constans");
+const { RegExUserName } = require("../../common/utils/constans");
 const createHttpError = require("http-errors");
 const userService = require("./user.service");
 

@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const { shamsiToMiladi } = require("../../../common/utils/dateConvarter");
 
 const AgeGroupSchema = new mongoose.Schema(
   {

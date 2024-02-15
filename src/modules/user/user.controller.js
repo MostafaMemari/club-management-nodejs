@@ -1,10 +1,10 @@
 const { StatusCodes } = require("http-status-codes");
 const autoBind = require("auto-bind");
-const { validate } = require("../../../common/middlewares/validateExpressValidator");
+const { validate } = require("../../common/services/validateExpressValidator");
 
 const userService = require("./user.service");
 const { UserMessage } = require("./user.message");
-const { generateJWTToken } = require("../../../common/services/tokenServices");
+const { generateJWTToken } = require("../../common/services/tokenServices");
 const { matchedData } = require("express-validator");
 
 class UserController {
@@ -22,9 +22,6 @@ class UserController {
       res.status(StatusCodes.CREATED).json({
         status: "success",
         message: UserMessage.Register,
-        data: {
-          accessToken: generateJWTToken({ id: resultCreateUser._id }),
-        },
       });
     } catch (error) {
       req.body.imageUrl && deleteFileInPublic(req.body.imageUrl);

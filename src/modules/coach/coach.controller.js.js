@@ -4,13 +4,13 @@ const { isValidObjectId } = require("mongoose");
 const { StatusCodes } = require("http-status-codes");
 const autoBind = require("auto-bind");
 
-const { copyObject, deleteInvalidPropertyInObject, deleteFileInPublic } = require("../../../common/utils/function");
+const { copyObject, deleteInvalidPropertyInObject, deleteFileInPublic } = require("../../common/utils/function");
 const { studentAndCoachSchema } = require("../authSchema");
 const { coachModel } = require("../../models/Personnel/coachModel");
-const { validate_nationalId_clubId_coachId_beltId } = require("../../../common/utils/validateFoundDB");
-const { normalizeDataDates, normalizePhoneNumber } = require("../../../common/utils/normalizeData");
-const { generateToken } = require("../../../common/services/tokenServices");
-const { isPassMatched } = require("../../../common/services/passwordServices");
+const { validate_nationalId_clubId_coachId_beltId } = require("../../common/utils/validateFoundDB");
+const { normalizeDataDates, normalizePhoneNumber } = require("../../common/utils/normalizeData");
+const { generateToken } = require("../../common/services/tokenServices");
+const { isPassMatched } = require("../../common/services/passwordServices");
 
 class CoachController {
   constructor() {

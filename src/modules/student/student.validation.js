@@ -1,12 +1,12 @@
-const { body, checkExact, param } = require("express-validator");
-const { RegExDateShmasi } = require("../../../common/utils/constans");
-const { isValidObjectId } = require("mongoose");
-const { normalizeCalendar, normalizePhoneNumber } = require("../../../common/utils/normalizeData");
-const { CoachModel } = require("../coach/coach.model");
-const { ClubModel } = require("../../management/club/club.model");
-const { BeltModel } = require("../../baseData/belt/belt.model");
 const createHttpError = require("http-errors");
-const { StudentModel } = require("./student.model");
+const { body } = require("express-validator");
+
+const { RegExDateShmasi } = require("../../common/utils/constans");
+const { normalizeCalendar, normalizePhoneNumber } = require("../../common/utils/normalizeData");
+
+const { CoachModel } = require("../coach/coach.model");
+const { ClubModel } = require("../club/club.model");
+const { BeltModel } = require("../baseData/belt/belt.model");
 
 function StudentValidationRequired() {
   return [

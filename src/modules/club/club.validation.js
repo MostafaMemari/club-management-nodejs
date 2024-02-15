@@ -1,10 +1,10 @@
 const { body } = require("express-validator");
 const { isValidObjectId } = require("mongoose");
 const createHttpError = require("http-errors");
-const { removeDuplicatesArray, convarteStringToArray } = require("../../../common/utils/function");
+const { removeDuplicatesArray, convarteStringToArray } = require("../../common/utils/function");
 const { ClubModel } = require("./club.model");
-const { SportModel } = require("../../baseData/sport/sport.model");
-const sportService = require("../../baseData/sport/sport.service");
+const { SportModel } = require("../baseData/sport/sport.model");
+const sportService = require("../baseData/sport/sport.service");
 const clubService = require("./club.service");
 
 function ClubValidationRequired() {

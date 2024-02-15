@@ -2,11 +2,10 @@ const { StatusCodes } = require("http-status-codes");
 const autoBind = require("auto-bind");
 
 const { matchedData } = require("express-validator");
-const { validate } = require("../../../common/middlewares/validateExpressValidator");
+const { validate } = require("../../../common/services/validateExpressValidator");
 const { BeltMessage } = require("./belt.message");
 const beltService = require("./belt.service");
-
-const studentService = require("../../personnel/student/student.service");
+const studentService = require("../../student/student.service");
 
 class BeltController {
   #service;

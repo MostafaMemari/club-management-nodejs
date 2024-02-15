@@ -3,7 +3,7 @@ const autoBind = require("auto-bind");
 
 const ageGroupService = require("./ageGroup.service");
 const { matchedData } = require("express-validator");
-const { validate } = require("../../../common/middlewares/validateExpressValidator");
+const { validate } = require("../../../common/services/validateExpressValidator");
 const { AgeGroupMessage } = require("./ageGroup.message");
 
 class AgeGroupController {
@@ -30,6 +30,7 @@ class AgeGroupController {
   }
   async find(req, res, next) {
     try {
+      console.log(req.headers);
       const ageGroups = await this.#service.find();
 
       res.status(StatusCodes.OK).json({

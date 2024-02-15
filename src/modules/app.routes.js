@@ -1,17 +1,20 @@
 const { permissionRouter } = require("./RBAC/permission/permission.routes.js");
 const { roleRouter } = require("./RBAC/role/role.routes.js");
+const { authRouter } = require("./auth/auth.routes.js");
 const { ageGroupRouter } = require("./baseData/ageGroup/ageGroup.routes.js");
 const { beltRouter } = require("./baseData/belt/belt.routes.js");
 const { beltExamRouter } = require("./baseData/beltExam/beltExam.routes.js");
 const { sportRouter } = require("./baseData/sport/sport.routes.js");
-const { clubRouter } = require("./management/club/club.routes.js");
-const { studentRouter } = require("./personnel/student/student.routes.js");
-const { userRouter } = require("./personnel/user/user.routes.js");
+const { clubRouter } = require("./club/club.routes.js");
+const { studentRouter } = require("./student/student.routes.js");
+const { userRouter } = require("./user/user.routes.js");
 
 const router = require("express").Router();
 
 // EJS
 // router.use("/", ejsRouter);
+
+router.use("/auth", authRouter);
 
 // Personel
 router.use("/users", userRouter);
