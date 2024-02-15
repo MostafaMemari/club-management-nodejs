@@ -77,5 +77,12 @@ function removeDuplicatesArray(arr) {
   const set = new Set(arr);
   return Array.from(set);
 }
+function convarteStringToArray(arr) {
+  if (Array.isArray(arr)) {
+    return arr;
+  } else {
+    return arr?.split(",");
+  }
+}
 
-module.exports = { getNextBeltDate, removeDuplicatesArray };
+module.exports = { getNextBeltDate, removeDuplicatesArray, convarteStringToArray };

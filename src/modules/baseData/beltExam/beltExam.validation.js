@@ -24,17 +24,11 @@ function BeltExamValidationRequired() {
 
     body("genders")
       .exists({ nullable: true, checkFalsy: true })
-      .customSanitizer((gender) => {
-        if (Array.isArray(gender)) {
-          return gender;
-        } else {
-          return gender?.split(",");
-        }
-      })
+      .customSanitizer((genders) => convarteStringToArray(genders))
       .isArray()
+      .customSanitizer((genders) => removeDuplicatesArray(genders))
       .custom(async (gendersBody) => {
         const gendersValid = ["آقایان", "بانوان"];
-        const genders = removeDuplicatesArray(gendersBody);
 
         for (const gender of genders) {
           if (!gendersValid?.includes(gender)) throw createHttpError.BadRequest("جنسیت وارد شده معتبر نمی باشد");
@@ -52,8 +46,8 @@ function BeltExamValidationRequired() {
         }
       })
       .isArray()
+      .customSanitizer((belts) => removeDuplicatesArray(belts))
       .custom(async (beltsBody) => {
-        const belts = removeDuplicatesArray(beltsBody);
         for (const beltID of belts) {
           await beltService.checkExistBeltByID(beltID);
         }
@@ -105,18 +99,11 @@ function BeltExamValidationOptional() {
     body("genders")
       .if((value, { req }) => req.method !== "POST")
       .optional({ nullable: true, checkFalsy: true })
-      .customSanitizer((gender) => {
-        if (Array.isArray(gender)) {
-          return gender;
-        } else {
-          return gender?.split(",");
-        }
-      })
+      .customSanitizer((genders) => convarteStringToArray(genders))
       .isArray()
-      .custom(async (gendersBody) => {
+      .customSanitizer((genders) => removeDuplicatesArray(genders))
+      .custom(async (genders) => {
         const gendersValid = ["آقایان", "بانوان"];
-        const genders = removeDuplicatesArray(gendersBody);
-
         for (const gender of genders) {
           if (!gendersValid?.includes(gender)) throw createHttpError.BadRequest("جنسیت وارد شده معتبر نمی باشد");
         }
@@ -126,14 +113,9 @@ function BeltExamValidationOptional() {
     body("belts")
       .if((value, { req }) => req.method !== "POST")
       .optional({ nullable: true, checkFalsy: true })
-      .customSanitizer((belts) => {
-        if (Array.isArray(belts)) {
-          return belts;
-        } else {
-          return belts?.split(",");
-        }
-      })
+      .customSanitizer((belts) => convarteStringToArray(belts))
       .isArray()
+      .customSanitizer((belts) => removeDuplicatesArray(belts))
       .custom(async (beltsBody) => {
         const belts = removeDuplicatesArray(beltsBody);
         for (const beltID of belts) {

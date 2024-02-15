@@ -78,7 +78,7 @@ class PermissionController {
 
       await this.#service.checkExistPermissionByID(permissionID);
       await this.#service.remove(permissionID);
-      await this.#roleService.removePermissionRole(permissionID);
+      await this.#roleService.removeAllPermissionsInRole(permissionID);
 
       res.status(StatusCodes.OK).json({
         status: "success",

@@ -77,7 +77,7 @@ class SportController {
       await this.#service.checkExistSportByID(sportID);
 
       await this.#service.remove(sportID);
-      await this.#clubService.removeSportClub(sportID);
+      await this.#clubService.removeAllSportsInClub(sportID);
 
       res.status(StatusCodes.OK).json({
         status: "success",

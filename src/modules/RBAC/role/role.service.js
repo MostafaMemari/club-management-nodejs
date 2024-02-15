@@ -33,6 +33,10 @@ class RoleService {
     if (!removeResult.deletedCount) throw createHttpError.InternalServerError(RoleMessage.DeleteError);
   }
 
+  async removeAllPermissionsInRole(permissionsID) {
+    await RoleModel.updateMany({}, { $pull: { permissions: permissionsID } });
+  }
+
   async checkExistRoleByName(name) {
     const result = await RoleModel.findOne({ name }).lean();
     if (result) throw createHttpError.Conflict(RoleMessage.AlreadyExist);

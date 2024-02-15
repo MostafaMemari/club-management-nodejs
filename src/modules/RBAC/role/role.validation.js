@@ -49,17 +49,7 @@ function RoleValidationOptional() {
     body("permissions")
       .optional({ nullable: true, checkFalsy: true })
       .notEmpty()
-      .customSanitizer((permissions) => {
-        if (permissions) {
-          if (Array.isArray(permissions)) {
-            return permissions;
-          } else {
-            return permissions?.split(",");
-          }
-        } else {
-          return false;
-        }
-      })
+      .customSanitizer((permissions) => convarteStringToArray(permissions))
       .isArray()
       .customSanitizer((permissions) => removeDuplicatesArray(permissions))
       .custom(async (permissions) => {

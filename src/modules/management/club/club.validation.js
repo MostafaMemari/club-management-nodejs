@@ -1,11 +1,13 @@
 const { body } = require("express-validator");
 const { isValidObjectId } = require("mongoose");
 const createHttpError = require("http-errors");
-const { removeDuplicatesArray } = require("../../../common/utils/function");
+const { removeDuplicatesArray, convarteStringToArray } = require("../../../common/utils/function");
 const { ClubModel } = require("./club.model");
 const { SportModel } = require("../../baseData/sport/sport.model");
+const sportService = require("../../baseData/sport/sport.service");
+const clubService = require("./club.service");
 
-function ClubValidation() {
+function ClubValidationRequired() {
   return [
     body("name")
       .exists({ nullable: true, checkFalsy: true })
@@ -15,24 +17,56 @@ function ClubValidation() {
       .isString()
       .isLength({ min: 2, max: 100 })
       .custom(async (name, { req }) => {
-        const ClubByNameExist = await ClubModel.findOne({ name });
-        if (ClubByNameExist) throw createHttpError.Conflict("باشگاه قبلا داخل سیستم ثبت شده است");
+        await clubService.checkExistClubByName(name);
       }),
 
     body("genders")
       .exists({ nullable: true, checkFalsy: true })
-      .customSanitizer((gender) => {
-        if (Array.isArray(gender)) {
-          return gender;
-        } else {
-          return gender?.split(",");
+      .customSanitizer((genders) => convarteStringToArray(genders))
+      .isArray()
+      .customSanitizer((genders) => removeDuplicatesArray(genders))
+      .custom(async (genders) => {
+        const gendersValid = ["آقایان", "بانوان"];
+        for (const gender of genders) {
+          if (!gendersValid?.includes(gender)) throw createHttpError.BadRequest("جنسیت وارد شده معتبر نمی باشد");
         }
       })
-      .isArray()
-      .custom(async (gendersBody) => {
-        const gendersValid = ["آقایان", "بانوان"];
-        const genders = removeDuplicatesArray(gendersBody);
+      .withMessage("جنسیت وارد شده معتبر نمی باشد"),
 
+    body("sports")
+      .exists({ nullable: true, checkFalsy: true })
+      .customSanitizer((sports) => convarteStringToArray(sports))
+      .isArray()
+      .customSanitizer((sports) => removeDuplicatesArray(sports))
+      .custom(async (sports) => {
+        for (const sportID of sports) {
+          await sportService.checkExistSportByID(sportID);
+        }
+      }),
+  ];
+}
+function ClubValidationOptional() {
+  return [
+    body("name")
+      .if((value, { req }) => req.method !== "POST")
+      .optional({ nullable: true, checkFalsy: true })
+      .trim()
+      .notEmpty()
+      .escape()
+      .isString()
+      .isLength({ min: 2, max: 100 })
+      .custom(async (name, { req }) => {
+        await clubService.checkExistClubByName(name);
+      }),
+
+    body("genders")
+      .if((value, { req }) => req.method !== "POST")
+      .optional({ nullable: true, checkFalsy: true })
+      .customSanitizer((genders) => convarteStringToArray(genders))
+      .isArray()
+      .customSanitizer((genders) => removeDuplicatesArray(genders))
+      .custom(async (genders) => {
+        const gendersValid = ["آقایان", "بانوان"];
         for (const gender of genders) {
           if (!gendersValid?.includes(gender)) throw createHttpError.BadRequest("جنسیت وارد شده معتبر نمی باشد");
         }
@@ -58,29 +92,17 @@ function ClubValidation() {
       .withMessage("شماره تلفن وارد شده معتبر نمی باشد"),
 
     body("sports")
-      .exists({ nullable: true, checkFalsy: true })
-      .customSanitizer((sports) => {
-        if (Array.isArray(sports)) {
-          return sports;
-        } else {
-          return sports?.split(",");
-        }
-      })
+      .if((value, { req }) => req.method !== "POST")
+      .optional({ nullable: true, checkFalsy: true })
+      .customSanitizer((sports) => convarteStringToArray(sports))
       .isArray()
-      .custom(async (sportsBody) => {
-        const sports = removeDuplicatesArray(sportsBody);
-        for (const sport of sports) {
-          if (isValidObjectId(sport)) {
-            const sportExist = await SportModel.findById(sport).lean();
-            if (!sportExist) {
-              throw createHttpError.BadRequest(`رشته ورزشی یافت نشد`);
-            }
-          } else {
-            throw createHttpError.BadRequest(`شناسه رشته ورزشی معتبر نمی باشد - ${sport}`);
-          }
+      .customSanitizer((sports) => removeDuplicatesArray(sports))
+      .custom(async (sports) => {
+        for (const sportID of sports) {
+          await sportService.checkExistSportByID(sportID);
         }
       }),
   ];
 }
 
-module.exports = { ClubValidation };
+module.exports = { ClubValidationRequired, ClubValidationOptional };

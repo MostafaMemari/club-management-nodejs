@@ -16,7 +16,7 @@ const ClubSchema = new mongoose.Schema(
         message: "مقادیر gender باید فقط شامل 'آقایان' یا 'بانوان' باشد.",
       },
     },
-    sports: [{ type: Types.ObjectId, ref: "sport", required: true }],
+    sports: { type: [Types.ObjectId], ref: "sport", required: true },
 
     address: { type: String },
     phone: { type: String },
