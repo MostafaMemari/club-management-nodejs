@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 const createError = require("http-errors");
 
-module.exports.generateToken = (payload) => {
+module.exports.generateJWTToken = (payload) => {
   const secretKey = process.env.SECRET_KEY;
   return jwt.sign(payload, secretKey, { expiresIn: "1w" });
 };

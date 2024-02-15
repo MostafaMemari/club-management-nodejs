@@ -8,7 +8,37 @@ const { BeltModel } = require("../../baseData/belt/belt.model");
 const createHttpError = require("http-errors");
 const { StudentModel } = require("./student.model");
 
-function StudentRegisterOptionalValidation() {
+function StudentValidationRequired() {
+  return [
+    body("firstName")
+      .exists({ nullable: true, checkFalsy: true })
+      .trim()
+      .notEmpty()
+      .isString()
+      .escape()
+      .isLength({ min: 2, max: 50 })
+      .withMessage("FirstName is not valid"),
+
+    body("lastName")
+      .exists({ nullable: true, checkFalsy: true })
+      .trim()
+      .notEmpty()
+      .escape()
+      .isString()
+      .isLength({ min: 2, max: 50 })
+      .withMessage("LastName is not valid"),
+
+    body("nationalID")
+      .exists({ nullable: true, checkFalsy: true })
+      .trim()
+      .notEmpty()
+      .escape()
+      .isString()
+      .isLength({ min: 10, max: 10 })
+      .withMessage("NationalID is not valid"),
+  ];
+}
+function StudentValidationOptional() {
   return [
     body("firstName")
       .if((value, { req }) => req.method !== "POST")
@@ -178,39 +208,7 @@ function StudentRegisterOptionalValidation() {
           throw new Error("Club not found");
         }
       }),
-
-    // body("createdBy").optional().isMongoId().withMessage("شناسه ثبت کننده معتبر نمی باشد"),
-    // body("imageUrl").string() .error(new Error("تصویر ثبت شده معتبر نمی باشد")),
   ];
 }
-function StudentRegisterRequiredValidation() {
-  return [
-    body("firstName")
-      .exists({ nullable: true, checkFalsy: true })
-      .trim()
-      .notEmpty()
-      .isString()
-      .escape()
-      .isLength({ min: 2, max: 50 })
-      .withMessage("FirstName is not valid"),
 
-    body("lastName")
-      .exists({ nullable: true, checkFalsy: true })
-      .trim()
-      .notEmpty()
-      .escape()
-      .isString()
-      .isLength({ min: 2, max: 50 })
-      .withMessage("LastName is not valid"),
-
-    body("nationalID")
-      .exists({ nullable: true, checkFalsy: true })
-      .trim()
-      .notEmpty()
-      .escape()
-      .isString()
-      .isLength({ min: 10, max: 10 })
-      .withMessage("NationalID is not valid"),
-  ];
-}
-module.exports = { StudentRegisterOptionalValidation, StudentRegisterRequiredValidation };
+module.exports = { StudentValidationRequired, StudentValidationOptional };
