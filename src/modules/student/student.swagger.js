@@ -14,7 +14,7 @@
  *        required:
  *          - firstName
  *          - lastName
- *          - nationalID
+ *          - nationalCode
  *        properties:
  *          firstName:
  *            type: string
@@ -24,7 +24,7 @@
  *            type: string
  *            description : min length 2 - max length 50
  *            default: Memari
- *          nationalID:
+ *          nationalCode:
  *            type: string
  *            description : length 10
  *            default: 4900782343
@@ -75,7 +75,7 @@
  *          lastName:
  *            type: string
  *            description : min length 2 - max length 50
- *          nationalID:
+ *          nationalCode:
  *            type: string
  *            description : length 10
  *          belt:

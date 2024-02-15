@@ -27,10 +27,10 @@ class AuthController {
       next(error);
     }
   }
-  async studentLogin(req, res, next) {
+  async login(req, res, next) {
     try {
-      const { nationalID } = req.body;
-      const token = await this.#service.studentLogin(nationalID);
+      const { nationalCode } = req.body;
+      const token = await this.#service.login(nationalCode);
 
       res.status(StatusCodes.CREATED).json({
         status: "success",

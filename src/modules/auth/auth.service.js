@@ -6,14 +6,17 @@ const autoBind = require("auto-bind");
 const { UserModel } = require("../user/user.model");
 const { AuthMessage } = require("./auth.message");
 const { StudentModel } = require("../student/student.model");
+const { CoachModel } = require("../coach/coach.model");
 
 class AuthService {
   #userModel;
   #studentModel;
+  #coachModel;
   constructor() {
     autoBind(this);
     this.#userModel = UserModel;
     this.#studentModel = StudentModel;
+    this.#coachModel = CoachModel;
   }
   async userLogin(identifier, password) {
     const userExist = await this.#userModel.findOne({ $or: [{ username: identifier }, { email: identifier }] });
@@ -26,13 +29,26 @@ class AuthService {
 
     return accessToken;
   }
-  async studentLogin(nationalID) {
-    const studentExist = await this.#studentModel.findOne({ nationalID });
-    if (!studentExist) throw createHttpError.Unauthorized(AuthMessage.UnauthorizedStudent);
+  async login(nationalCode) {
+    const result = await this.findPersonByNationalCode(nationalCode);
 
-    const accessToken = generateJWTToken({ id: studentExist._id });
+    console.log(result);
+    const accessToken = generateJWTToken({ id: result._id });
 
     return accessToken;
+  }
+
+  async findPersonByNationalCode(nationalCode) {
+    const coach = await this.#coachModel.findOne({ nationalCode });
+    if (coach) {
+      return coach;
+    }
+    const student = await this.#studentModel.findOne({ nationalCode });
+    if (student) {
+      return student;
+    }
+
+    return null;
   }
 }
 

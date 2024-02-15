@@ -40,8 +40,8 @@ class CoachService {
     if (!coach) throw createHttpError.NotFound("coach not found");
     return coach;
   }
-  async checkExistCoachByNationalID(nationalID) {
-    const coach = await CoachModel.findOne({ nationalID }).lean();
+  async checkExistCoachByNationalCode(nationalCode) {
+    const coach = await CoachModel.findOne({ nationalCode }).lean();
     if (coach) throw createHttpError.Conflict(CoachMessage.AlreadyExist);
   }
 }

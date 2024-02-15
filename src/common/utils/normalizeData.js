@@ -9,15 +9,15 @@ function normalizePhoneNumber(phoneNumber) {
     // if (phoneNumber.length === 14) return `0${phoneNumber.substring(4)}`;
   }
 }
-function normalizenationalID(nationalID) {
-  if (nationalID) {
-    if (nationalID.length === 4) return `000000${nationalID}`;
-    if (nationalID.length === 5) return `00000${nationalID}`;
-    if (nationalID.length === 6) return `0000${nationalID}`;
-    if (nationalID.length === 7) return `000${nationalID}`;
-    if (nationalID.length === 8) return `00${nationalID}`;
-    if (nationalID.length === 9) return `0${nationalID}`;
-    if (nationalID.length === 10) return `${nationalID}`;
+function normalizenationalCode(nationalCode) {
+  if (nationalCode) {
+    if (nationalCode.length === 4) return `000000${nationalCode}`;
+    if (nationalCode.length === 5) return `00000${nationalCode}`;
+    if (nationalCode.length === 6) return `0000${nationalCode}`;
+    if (nationalCode.length === 7) return `000${nationalCode}`;
+    if (nationalCode.length === 8) return `00${nationalCode}`;
+    if (nationalCode.length === 9) return `0${nationalCode}`;
+    if (nationalCode.length === 10) return `${nationalCode}`;
   }
 }
 
@@ -39,4 +39,4 @@ function normalizeCalendar(dateShamsi) {
   // }
 }
 
-module.exports = { normalizeCalendar, normalizePhoneNumber, normalizenationalID };
+module.exports = { normalizeCalendar, normalizePhoneNumber, normalizenationalCode };

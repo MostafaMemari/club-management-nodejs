@@ -26,12 +26,12 @@
  * @swagger
  *  components:
  *    schemas:
- *      LoginStudent:
+ *      Login:
  *        type: object
  *        required:
- *          - nationalID
+ *          - nationalCode
  *        properties:
- *          nationalID:
+ *          nationalCode:
  *            type: string
  */
 
@@ -57,19 +57,19 @@
 
 /**
  * @swagger
- * /api/v1/auth/student/login:
+ * /api/v1/auth/login:
  *  post:
- *    summary: login student
+ *    summary: login student and coach
  *    tags:
  *      - Authorization
  *    requestBody:
  *      content:
  *        application/x-www-form-urlencoded:
  *          schema:
- *            $ref: "#/components/schemas/LoginStudent"
+ *            $ref: "#/components/schemas/Login"
  *        application/json:
  *          schema:
- *            $ref: "#/components/schemas/LoginStudent"
+ *            $ref: "#/components/schemas/Login"
  *    responses:
  *      200:
  *        description: success

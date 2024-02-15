@@ -32,16 +32,16 @@ function CoachValidationRequired() {
       .isLength({ min: 2, max: 50 })
       .withMessage("LastName is not valid"),
 
-    body("nationalID")
+    body("nationalCode")
       .exists({ nullable: true, checkFalsy: true })
       .trim()
       .notEmpty()
       .escape()
       .isString()
       .isLength({ min: 10, max: 10 })
-      .withMessage("NationalID is not valid")
-      .custom(async (nationalID, { req }) => {
-        await coachService.checkExistCoachByNationalID(nationalID);
+      .withMessage("NationalCode is not valid")
+      .custom(async (nationalCode, { req }) => {
+        await coachService.checkExistCoachByNationalCode(nationalCode);
       }),
   ];
 }
@@ -67,7 +67,7 @@ function CoachValidationOptional() {
       .isLength({ min: 2, max: 50 })
       .withMessage("LastName is not valid"),
 
-    body("nationalID")
+    body("nationalCode")
       .if((value, { req }) => req.method !== "POST")
       .optional({ nullable: true, checkFalsy: true })
       .trim()
@@ -75,9 +75,9 @@ function CoachValidationOptional() {
       .escape()
       .isString()
       .isLength({ min: 10, max: 10 })
-      .withMessage("NationalID is not valid")
-      .custom(async (nationalID, { req }) => {
-        await coachService.checkExistCoachByNationalID(nationalID);
+      .withMessage("NationalCode is not valid")
+      .custom(async (nationalCode, { req }) => {
+        await coachService.checkExistCoachByNationalCode(nationalCode);
       }),
 
     body("imageUrl")

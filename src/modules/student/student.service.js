@@ -95,8 +95,8 @@ class StudentService {
     if (!studnet) throw createHttpError.NotFound("student not found");
     return studnet;
   }
-  async checkExistStudentByNationalID(nationalID) {
-    const studnet = await StudentModel.findOne({ nationalID }).lean();
+  async checkExistStudentByNationalCode(nationalCode) {
+    const studnet = await StudentModel.findOne({ nationalCode }).lean();
     if (studnet) throw createHttpError.NotFound(StudentMessage.AlreadyExist);
   }
   async removeAllBeltInStudnet(beltID) {

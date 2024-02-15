@@ -6,7 +6,7 @@ const StudentSchema = new Schema(
   {
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },
-    nationalID: { type: String, unique: true },
+    nationalCode: { type: String, unique: true },
     fatherName: { type: String },
     gender: { type: String, enum: ["مرد", "زن"], default: "مرد" },
     role: { type: String, default: "STUDENT" },
