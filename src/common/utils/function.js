@@ -1,13 +1,10 @@
 const path = require("path");
 const fs = require("fs");
 
-const createError = require("http-errors");
 const { isValidObjectId } = require("mongoose");
-const { normalizeCalendar, normalizeDataDates } = require("./normalizeData");
 const { shamsiToMiladi } = require("./dateConvarter");
-const { BeltExamModel } = require("../../modules/baseData/beltExam/beltExam.model");
 
-module.exports.toEnglish = (persianNumber) => {
+function toEnglish(persianNumber) {
   const pn = ["۰", "۱", "۲", "۳", "۴", "۵", "۶", "۷", "۸", "۹"];
   const en = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
   let cache = persianNumber;
@@ -16,20 +13,20 @@ module.exports.toEnglish = (persianNumber) => {
     cache = cache.replace(reg_fa, en[i]);
   }
   return cache;
-};
+}
 
-module.exports.copyObject = (object) => {
+function copyObject(object) {
   return JSON.parse(JSON.stringify(object));
-};
+}
 
-module.exports.deleteFileInPublic = (fileAddress) => {
+function deleteFileInPublic(fileAddress) {
   if (fileAddress) {
     const pathFile = path.join(process.cwd(), "public", fileAddress);
     if (fs.existsSync(pathFile)) fs.unlinkSync(pathFile);
   }
-};
+}
 
-module.exports.validateItemArrayModel = async (model, array) => {
+async function validateItemArrayModel(model, array) {
   for (let i = 0; i < array.length; i++) {
     if (isValidObjectId(array[i])) {
       const beltFound = await model.findById(array[i]);
@@ -45,7 +42,7 @@ module.exports.validateItemArrayModel = async (model, array) => {
   const set = new Set(array);
   const uniqueArray = Array.from(set);
   return uniqueArray;
-};
+}
 
 function getNextBeltDate(date, duration) {
   let [year, month, day] = date.split("/");
@@ -64,14 +61,14 @@ function getNextBeltDate(date, duration) {
     .join("/");
 }
 
-module.exports.dateDiffDayNowShamsi = (beltDate) => {
+function dateDiffDayNowShamsi(beltDate) {
   const date1 = new Date(shamsiToMiladi(beltDate)).getTime();
   const date2 = new Date().getTime();
 
   // اختلاف روز بین دو تاریخ
   const difference = Math.floor((date1 - date2) / 86400000);
   return difference;
-};
+}
 
 function removeDuplicatesArray(arr) {
   const set = new Set(arr);
@@ -85,4 +82,13 @@ function convarteStringToArray(arr) {
   }
 }
 
-module.exports = { getNextBeltDate, removeDuplicatesArray, convarteStringToArray };
+module.exports = {
+  getNextBeltDate,
+  removeDuplicatesArray,
+  convarteStringToArray,
+  toEnglish,
+  copyObject,
+  deleteFileInPublic,
+  validateItemArrayModel,
+  dateDiffDayNowShamsi,
+};

@@ -8,6 +8,7 @@ const { CoachModel } = require("../coach/coach.model");
 const { ClubModel } = require("../club/club.model");
 const { BeltModel } = require("../baseData/belt/belt.model");
 const studentService = require("./student.service");
+const beltService = require("../baseData/belt/belt.service");
 
 function StudentValidationRequired() {
   return [
@@ -186,12 +187,9 @@ function StudentValidationOptional() {
     body("belt")
       .optional({ nullable: true, checkFalsy: true })
       .isMongoId()
-      .custom(async (value, { req }) => {
+      .custom(async (beltID, { req }) => {
         if (req.body?.beltDate) {
-          const checkExistBelt = await BeltModel.findById(value);
-          if (!checkExistBelt) {
-            throw new Error("Belt not found");
-          }
+          await beltService.checkExistBeltByID(beltID);
         } else {
           throw new Error("Please enter the date of the belt");
         }

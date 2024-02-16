@@ -14,7 +14,9 @@
  *        required:
  *          - firstName
  *          - lastName
- *          - nationalCode
+ *          - gender
+ *          - club
+ *          - coach
  *        properties:
  *          firstName:
  *            type: string

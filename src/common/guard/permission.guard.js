@@ -1,8 +1,8 @@
-const createError = require("http-errors");
 const { PERMISSIONS } = require("../utils/constans");
-const { permissionModel } = require("../../modules/RBAC/permission/permissionModel");
-const { roleModel } = require("../../modules/RBAC/role/roleModel");
 const AsyncHandler = require("express-async-handler");
+const { RoleModel } = require("../../modules/RBAC/role/role.model");
+const createHttpError = require("http-errors");
+const { PermissionModel } = require("../../modules/RBAC/permission/permission.model");
 
 function checkPermission(requiredPermissions = []) {
   return AsyncHandler(async function (req, res, next) {
@@ -10,12 +10,10 @@ function checkPermission(requiredPermissions = []) {
 
     const user = req.userAuth;
 
-    // get Role user
-    const role = await roleModel.findOne({ title: user.role });
-    if (!role) throw createError.BadRequest("نقش شما توسط سیستم تعریف نشده است");
+    const role = await RoleModel.findOne({ name: user.role });
+    if (!role) throw createHttpError.BadRequest("نقش شما توسط سیستم تعریف نشده است");
 
-    // get Permissions Role
-    const permissions = await permissionModel.find({ _id: { $in: role.permissions } });
+    const permissions = await PermissionModel.find({ _id: { $in: role.permissions } });
 
     const userPermissions = permissions.map((item) => item.name);
 
@@ -25,9 +23,7 @@ function checkPermission(requiredPermissions = []) {
 
     if (userPermissions.includes(PERMISSIONS.ALL)) return next();
     if (allPermissions.length == 0 || hasPermission) return next();
-    throw createError.Forbidden("شما به این قسمت دسترسی ندارید");
+    throw createHttpError.Forbidden("شما به این قسمت دسترسی ندارید");
   });
 }
-module.exports = {
-  checkPermission,
-};
+module.exports = { checkPermission };

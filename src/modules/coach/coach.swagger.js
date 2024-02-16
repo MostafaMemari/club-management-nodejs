@@ -43,8 +43,6 @@
  *            type: string
  *          address:
  *            type: string
- *          registerDate:
- *            type: string
  *          birthDay:
  *            type: string
  *          clubs:

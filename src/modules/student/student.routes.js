@@ -1,10 +1,18 @@
+const { checkPermission } = require("../../common/guard/permission.guard");
 const { profileUploader } = require("../../common/services/uploader/profile.multer");
 const StudentController = require("./student.controller");
 const { StudentValidationRequired, StudentValidationOptional } = require("./student.validation");
 
 const router = require("express").Router();
 
-router.post("/register", profileUploader.single("studentProfile"), StudentValidationRequired(), StudentValidationOptional(), StudentController.register);
+router.post(
+  "/register",
+  checkPermission(["student"]),
+  profileUploader.single("studentProfile"),
+  StudentValidationRequired(),
+  StudentValidationOptional(),
+  StudentController.register
+);
 router.get("/", StudentController.find);
 router.get("/:id", StudentController.findByID);
 router.put("/:id/update-profile", profileUploader.single("studentProfile"), StudentValidationOptional(), StudentController.update);

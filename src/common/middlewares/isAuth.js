@@ -1,25 +1,23 @@
 const asyncHandler = require("express-async-handler");
-const createError = require("http-errors");
 const { verifyToken } = require("../services/tokenServices");
-const { userModel } = require("../../modules/personnel/user/userModel");
-const { coachModel } = require("../models/Personnel/coachModel");
-const { studentModel } = require("../../modules/personnel/student/studentModel");
+const createHttpError = require("http-errors");
+const { StudentModel } = require("../../modules/student/student.model");
+const { CoachModel } = require("../../modules/coach/coach.model");
+const { UserModel } = require("../../modules/user/user.model");
 
 function getToken(headers) {
   const [bearer, token] = headers?.authorization?.split(" ") || [];
   if (token && ["Bearer", "bearer"].includes(bearer)) return token;
-  throw createError.Unauthorized("لطفا وارد حساب کاربری خود شوید");
+  throw createHttpError.Unauthorized("please login your account");
 }
 
 module.exports.isAuth = asyncHandler(async (req, res, next) => {
-  // const verifiedToken = verifyToken(req.cookies.access_token);
-
   const token = getToken(req?.headers);
   const verifiedToken = verifyToken(token);
-  let user = await userModel.findById(verifiedToken.id).select("role _id");
-  if (!user) user = await coachModel.findById(verifiedToken.id).select("role _id");
-  if (!user) user = await studentModel.findById(verifiedToken.id).select("role _id");
-  if (!user) throw createError.Unauthorized("حساب کاربری یافت نشد");
+  let user = await UserModel.findById(verifiedToken.id).select("role _id");
+  if (!user) user = await CoachModel.findById(verifiedToken.id).select("role _id");
+  if (!user) user = await StudentModel.findById(verifiedToken.id).select("role _id");
+  if (!user) throw createHttpError.Unauthorized("user a not found");
 
   req.userAuth = user;
   next();

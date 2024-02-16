@@ -1,3 +1,5 @@
+const { checkPermission } = require("../common/guard/permission.guard.js");
+const { isAuth } = require("../common/middlewares/isAuth.js");
 const { permissionRouter } = require("./RBAC/permission/permission.routes.js");
 const { roleRouter } = require("./RBAC/role/role.routes.js");
 const { authRouter } = require("./auth/auth.routes.js");
@@ -20,16 +22,16 @@ router.use("/auth", authRouter);
 // Personel
 router.use("/users", userRouter);
 router.use("/coachs", coachRouter);
-router.use("/students", studentRouter);
+router.use("/students", isAuth, studentRouter);
 
 // Management
 router.use("/clubs", clubRouter);
 
 // BASE DATA
-router.use("/sports", sportRouter);
-router.use("/ages", ageGroupRouter);
-router.use("/belts", beltRouter);
-router.use("/belt-exams", beltExamRouter);
+router.use("/sports", isAuth, checkPermission(["SUPER_ADMIN", "testtest"]), sportRouter);
+router.use("/ages", isAuth, checkPermission(["SUPER_ADMIN"]), ageGroupRouter);
+router.use("/belts", isAuth, checkPermission(["SUPER_ADMIN"]), beltRouter);
+router.use("/belt-exams", isAuth, checkPermission(["SUPER_ADMIN"]), beltExamRouter);
 // router.use("/api/v1/weights", isAuth, weightRouter);
 
 // RBAC

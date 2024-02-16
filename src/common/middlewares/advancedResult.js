@@ -16,7 +16,7 @@ module.exports.advancedResult = (model, populate) => {
         $or: [
           { firstName: { $regex: req.query.search, $options: "i" } },
           { lastName: { $regex: req.query.search, $options: "i" } },
-          { nationalID: { $regex: req.query.search, $options: "i" } },
+          { nationalCode: { $regex: req.query.search, $options: "i" } },
         ],
       })
         .populate("clubID")

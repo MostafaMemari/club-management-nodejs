@@ -7,25 +7,44 @@ const StudentSchema = new Schema(
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },
     nationalCode: { type: String, unique: true },
+    gender: { type: String, enum: ["مرد", "زن"], required: true },
+
+    birthDay: { type: String },
     fatherName: { type: String },
-    gender: { type: String, enum: ["مرد", "زن"], default: "مرد" },
+
+    registerDate: { type: String },
     role: { type: String, default: "STUDENT" },
     mobile: { type: String },
     address: { type: String },
     phone: { type: String },
-    birthDay: { type: String },
-    registerDate: { type: String },
     imageUrl: { type: String, default: "/uploads/profile-students.jpg" },
-    club: { type: Types.ObjectId, ref: "club" },
+
     memberShipValidity: { type: Number },
     sportsInsuranceDate: { type: String },
-    belt: { type: Types.ObjectId, ref: "belt" },
-    beltDate: { type: String },
 
-    coach: { type: Types.ObjectId, ref: "coach" },
+    beltDate: {
+      type: String,
+      validate: {
+        validator: function (value) {
+          return this.belt !== undefined;
+        },
+      },
+    },
 
-    // createdBy: { type: Schema.Types.ObjectId, required: false, refPath: "modelCreatedBy" },
+    belt: {
+      type: Types.ObjectId,
+      ref: "belt",
+      validate: {
+        validator: function (value) {
+          return this.beltDate !== undefined;
+        },
+      },
+    },
 
+    club: { type: Types.ObjectId, ref: "club", required: true },
+    coach: { type: Types.ObjectId, ref: "coach", required: true },
+
+    // createdBy: { type: Schema.Types.ObjectId, required: true, refPath: "modelCreatedBy" },
     // modelCreatedBy: {
     //   type: String,
     //   required: true,

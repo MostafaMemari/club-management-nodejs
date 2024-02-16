@@ -9,6 +9,7 @@ module.exports = {
     TEACHER: "TEACHER",
     STUDENT: "STUDENT",
   }),
+
   PERMISSIONS: Object.freeze({
     ALL: "all",
     SUPER_ADMIN: ["all"],

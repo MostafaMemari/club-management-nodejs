@@ -47,19 +47,6 @@
  *            type: string
  */
 
-/**
- * @swagger
- *  components:
- *    schemas:
- *      LoginUser:
- *        type: object
- *        properties:
- *          identifier:
- *            type: string
- *            description: enter type email or username
- *          password:
- *            type: string
- */
 
 /**
  * @swagger
@@ -79,23 +66,4 @@
  *    responses:
  *      201:
  *        description: created
- */
-/**
- * @swagger
- * /api/v1/users/login:
- *  post:
- *    summary: login new user
- *    tags:
- *      - User
- *    requestBody:
- *      content:
- *        application/x-www-form-urlencoded:
- *          schema:
- *            $ref: "#/components/schemas/LoginUser"
- *        application/json:
- *          schema:
- *            $ref: "#/components/schemas/LoginUser"
- *    responses:
- *      200:
- *        description: success
  */

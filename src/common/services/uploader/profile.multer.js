@@ -23,8 +23,8 @@ const storage = multer.diskStorage({
     if (file?.originalname) {
       if (file.fieldname === "studentProfile") {
         return cb(null, createUploadPath(req, "students"));
-      } else if (file.fieldname === "teacherProfile") {
-        return cb(null, createUploadPath(req, "teachers"));
+      } else if (file.fieldname === "coachProfile") {
+        return cb(null, createUploadPath(req, "coaches"));
       }
     }
     cb(null, null);

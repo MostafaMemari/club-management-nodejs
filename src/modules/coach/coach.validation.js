@@ -153,11 +153,30 @@ function CoachValidationOptional() {
       .toInt()
       .withMessage("Membership validity is not valid"),
 
+    body("beltDate")
+      .optional({ nullable: true, checkFalsy: true })
+      .trim()
+      .notEmpty()
+      .isString()
+      .customSanitizer((date) => (date = normalizeCalendar(date)))
+      .matches(RegExDateShmasi)
+      .withMessage("Date belt is not valid")
+      .custom((value, { req }) => {
+        if (!req.body?.belt) {
+          throw createHttpError.BadRequest("Please enter the belt");
+        }
+        return true;
+      }),
+
     body("belt")
       .optional({ nullable: true, checkFalsy: true })
       .isMongoId()
       .custom(async (beltID, { req }) => {
-        await beltService.checkExistBeltByID(beltID);
+        if (req.body?.beltDate) {
+          await beltService.checkExistBeltByID(beltID);
+        } else {
+          throw new Error("Please enter the date of the belt");
+        }
       }),
 
     body("clubs")

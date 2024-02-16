@@ -2,14 +2,12 @@ const autoBind = require("auto-bind");
 const { matchedData } = require("express-validator");
 const { StatusCodes } = require("http-status-codes");
 
-const { deleteFileInPublic } = require("../../common/utils/function");
-const ageGroupService = require("../baseData/ageGroup/ageGroup.service");
-const beltExamService = require("../baseData/beltExam/beltExam.service");
 const { validate } = require("../../common/services/validateExpressValidator");
 
 const coachService = require("./coach.service");
 const { CoachMessage } = require("./coach.message");
 const studentService = require("../student/student.service");
+const { deleteFileInPublic } = require("../../common/utils/function");
 
 class CoachController {
   #service;
