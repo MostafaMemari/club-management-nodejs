@@ -18,7 +18,7 @@ router.use("/auth", authRouter);
 
 // Personel
 router.use("/users", isAuth, checkPermission(["SUPER_ADMIN"]), userRouter);
-router.use("/coachs", isAuth, checkPermission(["SUPER_ADMIN", "ADMIN_CLUB"]), coachRouter);
+router.use("/coachs", isAuth, checkPermission(["coach"]), coachRouter);
 router.use("/students", isAuth, studentRouter);
 
 // Management

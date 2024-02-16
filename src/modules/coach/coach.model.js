@@ -8,7 +8,7 @@ const CoachSchema = new Schema(
     lastName: { type: String, required: true },
     gender: { type: String, enum: ["مرد", "زن"], required: true },
 
-    nationalCode: { type: String, unique: true },
+    nationalCode: { type: String },
     fatherName: { type: String },
     role: { type: String, default: "COACH" },
     mobile: { type: String },

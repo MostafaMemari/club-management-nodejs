@@ -8,20 +8,27 @@ const coachService = require("./coach.service");
 const { CoachMessage } = require("./coach.message");
 const studentService = require("../student/student.service");
 const { deleteFileInPublic } = require("../../common/utils/function");
+const userService = require("../user/user.service");
 
 class CoachController {
   #service;
   #studentService;
+  #userService;
   constructor() {
     autoBind(this);
     this.#service = coachService;
     this.#studentService = studentService;
+    this.#userService = userService;
   }
   async register(req, res, next) {
     try {
       validate(req);
       const bodyData = matchedData(req, { locations: ["body"] });
-      await this.#service.register(bodyData, userAuth);
+      console.log(bodyData);
+      const userAuth = req.userAuth;
+
+      const coach = await this.#service.register(bodyData, userAuth);
+      userAuth.role === "ADMIN_CLUB" && this.#userService.addCoachInUserAdminClub(userAuth._id, coach._id);
 
       res.status(StatusCodes.CREATED).json({
         status: "success",

@@ -17,12 +17,13 @@ class CoachService {
       ...bodyData,
       createdBy: userAuth._id,
     });
-    if (!coachCreated) throw createHttpError.InternalServerError("ثبت نام با خطا مواجه شد");
+    if (!coachCreated) throw createHttpError.InternalServerError();
+    return coachCreated;
   }
   async find() {
     const coachs = await this.#Model.find({}).lean();
 
-    if (!coachs) throw createHttpError.InternalServerError("دریافت رده سنی با خطا مواجه شد");
+    if (!coachs) throw createHttpError.InternalServerError();
     return coachs;
   }
 
