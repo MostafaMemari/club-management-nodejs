@@ -14,31 +14,26 @@ const { userRouter } = require("./user/user.routes.js");
 
 const router = require("express").Router();
 
-// EJS
-// router.use("/", ejsRouter);
-
 router.use("/auth", authRouter);
 
 // Personel
-router.use("/users", userRouter);
-router.use("/coachs", coachRouter);
+router.use("/users", isAuth, checkPermission(["SUPER_ADMIN"]), userRouter);
+router.use("/coachs", isAuth, checkPermission(["SUPER_ADMIN", "ADMIN_CLUB"]), coachRouter);
 router.use("/students", isAuth, studentRouter);
 
 // Management
-router.use("/clubs", clubRouter);
+router.use("/clubs", isAuth, checkPermission(["SUPER_ADMIN", "ADMIN_CLUB"]), clubRouter);
 
 // BASE DATA
-router.use("/sports", isAuth, checkPermission(["SUPER_ADMIN", "testtest"]), sportRouter);
+router.use("/sports", isAuth, checkPermission(["SUPER_ADMIN"]), sportRouter);
 router.use("/ages", isAuth, checkPermission(["SUPER_ADMIN"]), ageGroupRouter);
 router.use("/belts", isAuth, checkPermission(["SUPER_ADMIN"]), beltRouter);
 router.use("/belt-exams", isAuth, checkPermission(["SUPER_ADMIN"]), beltExamRouter);
-// router.use("/api/v1/weights", isAuth, weightRouter);
+// router.use("/api/v1/weights",  weightRouter);
 
 // RBAC
-router.use("/roles", roleRouter);
-router.use("/permissions", permissionRouter);
-
-// router.get("/api/v1/test", insertStudetnsJSON);
+router.use("/roles", isAuth, checkPermission(["SUPER_ADMIN"]), roleRouter);
+router.use("/permissions", isAuth, checkPermission(["SUPER_ADMIN"]), permissionRouter);
 
 module.exports = {
   AllRouter: router,

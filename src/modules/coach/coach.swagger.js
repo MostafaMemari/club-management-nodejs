@@ -14,7 +14,7 @@
  *        required:
  *          - firstName
  *          - lastName
- *          - nationalCode
+ *          - gender
  *        properties:
  *          firstName:
  *            type: string

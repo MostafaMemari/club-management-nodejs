@@ -4,10 +4,5 @@ const { UserValidationRequired, UserValidationOptional } = require("./user.valid
 const router = require("express").Router();
 
 router.post("/register", UserValidationRequired(), UserValidationOptional(), UserController.register);
-router.post("/login", UserController.login);
-
-// router.get("/profile", UserController.userProfile);
-// router.get("/logout", UserController.logout);
-// router.put("/", UserController.updateUser);
 
 module.exports = { userRouter: router };

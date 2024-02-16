@@ -6,10 +6,10 @@ const CoachSchema = new Schema(
   {
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },
-    nationalCode: { type: String, required: true, unique: true },
+    gender: { type: String, enum: ["مرد", "زن"], required: true },
 
+    nationalCode: { type: String, unique: true },
     fatherName: { type: String },
-    gender: { type: String, enum: ["مرد", "زن"], default: "مرد" },
     role: { type: String, default: "COACH" },
     mobile: { type: String },
     address: { type: String },
@@ -38,8 +38,7 @@ const CoachSchema = new Schema(
     },
 
     clubs: { type: [Types.ObjectId], ref: "club" },
-
-    // createdBy: { type: Types.ObjectId },
+    createdBy: { type: Schema.Types.ObjectId, required: true, ref: "user" },
   },
   {
     versionKey: false,

@@ -47,7 +47,6 @@
  *            type: string
  */
 
-
 /**
  * @swagger
  * /api/v1/users/register:

@@ -21,7 +21,7 @@ class CoachController {
     try {
       validate(req);
       const bodyData = matchedData(req, { locations: ["body"] });
-      await this.#service.register(bodyData);
+      await this.#service.register(bodyData, userAuth);
 
       res.status(StatusCodes.CREATED).json({
         status: "success",

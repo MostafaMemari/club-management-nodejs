@@ -44,12 +44,12 @@ const StudentSchema = new Schema(
     club: { type: Types.ObjectId, ref: "club", required: true },
     coach: { type: Types.ObjectId, ref: "coach", required: true },
 
-    // createdBy: { type: Schema.Types.ObjectId, required: true, refPath: "modelCreatedBy" },
-    // modelCreatedBy: {
-    //   type: String,
-    //   required: true,
-    //   enum: ["user", "coach"],
-    // },
+    createdBy: { type: Schema.Types.ObjectId, required: true, refPath: "modelCreatedBy" },
+    modelCreatedBy: {
+      type: String,
+      required: true,
+      enum: ["user", "coach"],
+    },
   },
 
   {

@@ -4,9 +4,6 @@ const { body } = require("express-validator");
 const { RegExDateShmasi } = require("../../common/utils/constans");
 const { normalizeCalendar, normalizePhoneNumber } = require("../../common/utils/normalizeData");
 
-const { CoachModel } = require("./coach.model");
-const { ClubModel } = require("../club/club.model");
-const { BeltModel } = require("../baseData/belt/belt.model");
 const beltService = require("../baseData/belt/belt.service");
 const clubService = require("../club/club.service");
 const coachService = require("./coach.service");
@@ -32,17 +29,7 @@ function CoachValidationRequired() {
       .isLength({ min: 2, max: 50 })
       .withMessage("LastName is not valid"),
 
-    body("nationalCode")
-      .exists({ nullable: true, checkFalsy: true })
-      .trim()
-      .notEmpty()
-      .escape()
-      .isString()
-      .isLength({ min: 10, max: 10 })
-      .withMessage("NationalCode is not valid")
-      .custom(async (nationalCode, { req }) => {
-        await coachService.checkExistCoachByNationalCode(nationalCode);
-      }),
+    body("gender").optional({ nullable: true, checkFalsy: true }).isString().trim().notEmpty().escape().isIn(["زن", "مرد"]).withMessage("Gender is not valid"),
   ];
 }
 function CoachValidationOptional() {
@@ -67,8 +54,17 @@ function CoachValidationOptional() {
       .isLength({ min: 2, max: 50 })
       .withMessage("LastName is not valid"),
 
-    body("nationalCode")
+    body("gender")
       .if((value, { req }) => req.method !== "POST")
+      .optional({ nullable: true, checkFalsy: true })
+      .isString()
+      .trim()
+      .notEmpty()
+      .escape()
+      .isIn(["زن", "مرد"])
+      .withMessage("Gender is not valid"),
+
+    body("nationalCode")
       .optional({ nullable: true, checkFalsy: true })
       .trim()
       .notEmpty()
@@ -95,8 +91,6 @@ function CoachValidationOptional() {
       .escape()
       .isIn(["STUDENT", "COACH"])
       .withMessage("Role is Not valid"),
-
-    body("gender").optional({ nullable: true, checkFalsy: true }).isString().trim().notEmpty().escape().isIn(["زن", "مرد"]).withMessage("Gender is not valid"),
 
     body("mobile")
       .optional({ nullable: true, checkFalsy: true })

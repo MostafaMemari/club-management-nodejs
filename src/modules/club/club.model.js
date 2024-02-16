@@ -10,10 +10,8 @@ const ClubSchema = new Schema(
       required: true,
       validate: {
         validator: function (v) {
-          const allowedValues = ["آقایان", "بانوان"];
-          return v.every((value) => allowedValues.includes(value));
+          return v.every((value) => ["آقایان", "بانوان"].includes(value));
         },
-        message: "مقادیر gender باید فقط شامل 'آقایان' یا 'بانوان' باشد.",
       },
     },
     sports: { type: [Types.ObjectId], ref: "sport", required: true },
@@ -21,7 +19,13 @@ const ClubSchema = new Schema(
     address: { type: String },
     phone: { type: String },
 
-    // createdBy: [{ type: Types.ObjectId, ref: "", required: true }],
+    createdBy: { type: Schema.Types.ObjectId, required: true, refPath: "modelCreatedBy" },
+
+    modelCreatedBy: {
+      type: String,
+      required: true,
+      enum: ["user", "coach"],
+    },
   },
   { versionKey: false }
 );
