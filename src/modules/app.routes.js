@@ -1,5 +1,6 @@
 const { checkPermission } = require("../common/guard/permission.guard.js");
 const { isAuth } = require("../common/middlewares/isAuth.js");
+const { PERMISSIONS } = require("../common/utils/constans.js");
 const { permissionRouter } = require("./RBAC/permission/permission.routes.js");
 const { roleRouter } = require("./RBAC/role/role.routes.js");
 const { authRouter } = require("./auth/auth.routes.js");
@@ -22,7 +23,7 @@ router.use("/coachs", isAuth, checkPermission(["coach"]), coachRouter);
 router.use("/students", isAuth, studentRouter);
 
 // Management
-router.use("/clubs", isAuth, checkPermission(["SUPER_ADMIN", "ADMIN_CLUB"]), clubRouter);
+router.use("/clubs", isAuth, checkPermission(PERMISSIONS.ADMIN_CLUB), clubRouter);
 
 // BASE DATA
 router.use("/sports", isAuth, checkPermission(["SUPER_ADMIN"]), sportRouter);

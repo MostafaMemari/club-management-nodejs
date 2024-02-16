@@ -24,7 +24,6 @@ class CoachController {
     try {
       validate(req);
       const bodyData = matchedData(req, { locations: ["body"] });
-      console.log(bodyData);
       const userAuth = req.userAuth;
 
       const coach = await this.#service.register(bodyData, userAuth);
@@ -59,7 +58,8 @@ class CoachController {
 
   async find(req, res, next) {
     try {
-      const coachs = await this.#service.find();
+      const userAuth = req.userAuth;
+      const coachs = await this.#service.find(userAuth);
 
       res.status(StatusCodes.OK).json({
         status: "success",

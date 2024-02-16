@@ -8,9 +8,11 @@ const { UserModel } = require("../user/user.model");
 
 class CoachService {
   #Model;
+  #UserModel;
   constructor() {
     autoBind(this);
     this.#Model = CoachModel;
+    this.#UserModel = UserModel;
   }
   async register(bodyData, userAuth) {
     const coachCreated = await this.#Model.create({
@@ -20,8 +22,14 @@ class CoachService {
     if (!coachCreated) throw createHttpError.InternalServerError();
     return coachCreated;
   }
-  async find() {
-    const coachs = await this.#Model.find({}).lean();
+
+  async find(userAuth) {
+    const coachs =
+      userAuth.role === "ADMIN_CLUB"
+        ? await this.#Model.find({ _id: { $in: userAuth?.coachs } })
+        : userAuth.role === "SUPER_ADMIN"
+        ? await this.#Model.find({}).lean()
+        : "";
 
     if (!coachs) throw createHttpError.InternalServerError();
     return coachs;
