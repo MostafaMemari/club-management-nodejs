@@ -1,18 +1,16 @@
 const createHttpError = require("http-errors");
+const autoBind = require("auto-bind");
 const { isValidObjectId } = require("mongoose");
 
 const { CoachModel } = require("./coach.model");
 const { CoachMessage } = require("./coach.message");
-const autoBind = require("auto-bind");
-const { UserModel } = require("../user/user.model");
 
 class CoachService {
   #Model;
-  #UserModel;
+
   constructor() {
     autoBind(this);
     this.#Model = CoachModel;
-    this.#UserModel = UserModel;
   }
   async register(bodyData, userAuth) {
     const coachCreated = await this.#Model.create({
@@ -49,6 +47,10 @@ class CoachService {
   async remove(coachID) {
     const removeResult = await this.#Model.deleteOne({ _id: coachID });
     if (!removeResult.deletedCount) throw createHttpError.InternalServerError(CoachMessage.DeleteError);
+  }
+
+  async addClubInCoach(clubID, coachID) {
+    await this.#Model.updateOne({ _id: coachID }, { $addToSet: { clubs: clubID } });
   }
 
   async checkExistCoachByID(coachID) {

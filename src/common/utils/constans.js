@@ -14,7 +14,7 @@ module.exports = {
     ALL: "all",
     SUPER_ADMIN: ["all"],
     ADMIN_CLUB: ["coach", "student", "club"],
-    COACH: ["student"],
+    COACH: ["student", "club"],
     STUDENT: ["profile"],
   }),
 };

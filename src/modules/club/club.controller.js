@@ -6,19 +6,26 @@ const { validate } = require("../../common/services/validateExpressValidator");
 
 const clubService = require("./club.service");
 const { ClubMessage } = require("./club.message");
+const coachService = require("../coach/coach.service");
+const createHttpError = require("http-errors");
 
 class ClubController {
   #service;
+  #coachService;
   constructor() {
     autoBind(this);
     this.#service = clubService;
+    this.#coachService = coachService;
   }
   async create(req, res, next) {
     try {
       validate(req);
       const bodyData = matchedData(req, { locations: ["body"] });
+      const userAuth = req.userAuth;
 
-      await this.#service.create(bodyData);
+      const club = await this.#service.create(bodyData, userAuth);
+      userAuth.role === "COACH" && this.#coachService.addClubInCoach(club._id, userAuth._id);
+      userAuth.role === ("SUPER_ADMIN" || "ADMIN_CLUB") && this.#coachService.addClubInCoach(club._id, req.body?.coach);
 
       res.status(StatusCodes.CREATED).json({
         status: "success",

@@ -1,10 +1,9 @@
 const createHttpError = require("http-errors");
 const { isValidObjectId } = require("mongoose");
+
 const { UserModel } = require("./user.model");
 const { UserMessage } = require("./user.message");
-const { hashPassword, comparePassword } = require("../../common/services/passwordServices");
-const { generateJWTToken } = require("../../common/services/tokenServices");
-const { CoachModel } = require("../coach/coach.model");
+const { hashPassword } = require("../../common/services/passwordServices");
 
 class UserService {
   #Model;
@@ -20,20 +19,8 @@ class UserService {
     if (!userCreated) throw createHttpError.InternalServerError(UserMessage.RegisterError);
     return userCreated;
   }
-  async login(identifier, password) {
-    const userExist = await this.#Model.findOne({ $or: [{ username: identifier }, { email: identifier }] });
-    if (!userExist) throw createHttpError.Unauthorized(UserMessage.Unauthorized);
-
-    const isPasswordValid = await comparePassword(password, userExist.password);
-    if (!isPasswordValid) throw createHttpError.Unauthorized(UserMessage.Unauthorized);
-
-    const accessToken = generateJWTToken({ id: userExist._id });
-
-    return accessToken;
-  }
 
   async addCoachInUserAdminClub(userID, coachID) {
-    console.log(userID, coachID);
     await this.#Model.updateOne({ _id: userID }, { $addToSet: { coachs: coachID } });
   }
 

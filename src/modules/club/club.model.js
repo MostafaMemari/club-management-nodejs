@@ -20,7 +20,6 @@ const ClubSchema = new Schema(
     phone: { type: String },
 
     createdBy: { type: Schema.Types.ObjectId, required: true, refPath: "modelCreatedBy" },
-
     modelCreatedBy: {
       type: String,
       required: true,

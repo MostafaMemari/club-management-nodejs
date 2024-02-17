@@ -1,11 +1,10 @@
 const { body } = require("express-validator");
-const { isValidObjectId } = require("mongoose");
 const createHttpError = require("http-errors");
+
 const { removeDuplicatesArray, convarteStringToArray } = require("../../common/utils/function");
-const { ClubModel } = require("./club.model");
-const { SportModel } = require("../baseData/sport/sport.model");
 const sportService = require("../baseData/sport/sport.service");
 const clubService = require("./club.service");
+const coachService = require("../coach/coach.service");
 
 function ClubValidationRequired() {
   return [
@@ -43,6 +42,14 @@ function ClubValidationRequired() {
           await sportService.checkExistSportByID(sportID);
         }
       }),
+
+    body("coach")
+      .if((value, { req }) => req.userAuth.role !== "COACH")
+      .exists({ nullable: true, checkFalsy: true })
+      .isMongoId()
+      .custom(async (coachID) => {
+        await coachService.checkExistCoachByID(coachID);
+      }),
   ];
 }
 function ClubValidationOptional() {
@@ -68,10 +75,10 @@ function ClubValidationOptional() {
       .custom(async (genders) => {
         const gendersValid = ["آقایان", "بانوان"];
         for (const gender of genders) {
-          if (!gendersValid?.includes(gender)) throw createHttpError.BadRequest("جنسیت وارد شده معتبر نمی باشد");
+          if (!gendersValid?.includes(gender)) throw createHttpError.BadRequest();
         }
       })
-      .withMessage("جنسیت وارد شده معتبر نمی باشد"),
+      .withMessage(),
 
     body("address")
       .optional({ nullable: true, checkFalsy: true })

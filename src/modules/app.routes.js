@@ -23,7 +23,7 @@ router.use("/coachs", isAuth, checkPermission(["coach"]), coachRouter);
 router.use("/students", isAuth, studentRouter);
 
 // Management
-router.use("/clubs", isAuth, checkPermission(PERMISSIONS.ADMIN_CLUB), clubRouter);
+router.use("/clubs", isAuth, checkPermission(["club"]), clubRouter);
 
 // BASE DATA
 router.use("/sports", isAuth, checkPermission(["SUPER_ADMIN"]), sportRouter);

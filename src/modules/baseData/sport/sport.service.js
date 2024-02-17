@@ -39,7 +39,7 @@ class SportService {
   async checkExistSportByID(sportID) {
     if (!isValidObjectId(sportID)) throw createHttpError.InternalServerError("sport object id is not valid");
     const result = await SportModel.findById(sportID).lean();
-    if (!result) throw createHttpError.NotFound(SportMessage.NotFound);
+    if (!result) throw createHttpError.NotFound(`${SportMessage.NotFound} ${sportID}`);
     return result;
   }
 }

@@ -31,6 +31,8 @@
  *            type: string
  *          phone:
  *            type: string
+ *          coach:
+ *            type: string
  */
 
 /**

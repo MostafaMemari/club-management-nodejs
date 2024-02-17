@@ -4,9 +4,7 @@ const { body } = require("express-validator");
 const { RegExDateShmasi } = require("../../common/utils/constans");
 const { normalizeCalendar, normalizePhoneNumber } = require("../../common/utils/normalizeData");
 
-const { CoachModel } = require("../coach/coach.model");
 const { ClubModel } = require("../club/club.model");
-const { BeltModel } = require("../baseData/belt/belt.model");
 const studentService = require("./student.service");
 const beltService = require("../baseData/belt/belt.service");
 
@@ -197,11 +195,8 @@ function StudentValidationOptional() {
     body("coach")
       .optional({ nullable: true, checkFalsy: true })
       .isMongoId()
-      .custom(async (value) => {
-        const checkExistCoach = await CoachModel.findById(value);
-        if (!checkExistCoach) {
-          throw new Error("Coach not found");
-        }
+      .custom(async (coachID) => {
+        await coachService.checkExistCoachByID(coachID);
       }),
 
     body("club")
