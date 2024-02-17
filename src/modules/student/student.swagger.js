@@ -16,7 +16,6 @@
  *          - lastName
  *          - gender
  *          - club
- *          - coach
  *        properties:
  *          firstName:
  *            type: string

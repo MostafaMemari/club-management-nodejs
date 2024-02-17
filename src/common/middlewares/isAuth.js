@@ -15,7 +15,7 @@ module.exports.isAuth = asyncHandler(async (req, res, next) => {
   const token = getToken(req?.headers);
   const verifiedToken = verifyToken(token);
   let user = await UserModel.findById(verifiedToken.id).select("role _id coachs");
-  if (!user) user = await CoachModel.findById(verifiedToken.id).select("role _id");
+  if (!user) user = await CoachModel.findById(verifiedToken.id).select("role _id clubs");
   if (!user) user = await StudentModel.findById(verifiedToken.id).select("role _id");
   if (!user) throw createHttpError.Unauthorized("user a not found");
 

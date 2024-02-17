@@ -10,12 +10,25 @@ const { StudentMessage } = require("./student.message");
 const { StudentModel } = require("./student.model");
 
 class StudentService {
-  async register(bodyData) {
+  async register(bodyData, userAuth) {
+    if (userAuth.role === "COACH" && !userAuth.clubs.includes(bodyData?.club)) {
+      throw createHttpError.BadRequest("club is not valid");
+    }
+
+    if (userAuth.role === "COACH") {
+      bodyData.coach = userAuth._id;
+    }
+
     const studentCreated = await StudentModel.create({
       ...bodyData,
+      createdBy: userAuth._id,
+      modelCreatedBy: userAuth.role === "SUPER_ADMIN" || userAuth.role === "ADMIN_CLUB" ? "user" : userAuth.role === "COACH" ? "coach" : "",
     });
     if (!studentCreated) throw createHttpError.InternalServerError();
+
+    return studentCreated;
   }
+
   async find() {
     const ageGroupDB = await AgeGroupModel.find({}).lean();
     const students = await StudentModel.aggregate([

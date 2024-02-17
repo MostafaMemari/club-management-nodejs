@@ -63,6 +63,13 @@ class CoachService {
     const coach = await this.#Model.findOne({ nationalCode }).lean();
     if (coach) throw createHttpError.Conflict(CoachMessage.AlreadyExist);
   }
+
+  async checkClubInCoach(coachID, clubID) {
+    const coach = await this.#Model.findById(coachID);
+    if (!coach?.clubs.includes(clubID)) {
+      throw createHttpError.BadRequest("check club!");
+    }
+  }
 }
 
 module.exports = new CoachService();

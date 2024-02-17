@@ -9,22 +9,31 @@ const { validate } = require("../../common/services/validateExpressValidator");
 
 const studentService = require("./student.service");
 const { StudentMessage } = require("./student.message");
+const clubService = require("../club/club.service");
+const coachService = require("../coach/coach.service");
 
 class StudentController {
   #service;
   #ageGroupService;
   #beltExamService;
+  #coachService;
   constructor() {
     autoBind(this);
     this.#service = studentService;
     this.#ageGroupService = ageGroupService;
     this.#beltExamService = beltExamService;
+    this.#coachService = coachService;
   }
   async register(req, res, next) {
     try {
       validate(req);
       const bodyData = matchedData(req, { locations: ["body"] });
-      await this.#service.register(bodyData);
+      const userAuth = req.userAuth;
+
+      if (userAuth.role === "SUPER_ADMIN" || userAuth.role === "ADMIN_CLUB") {
+        await this.#coachService.checkClubInCoach(bodyData.coach, bodyData.club);
+      }
+      await this.#service.register(bodyData, userAuth);
 
       res.status(StatusCodes.CREATED).json({
         status: "success",

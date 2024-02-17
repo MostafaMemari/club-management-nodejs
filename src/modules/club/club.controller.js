@@ -24,8 +24,14 @@ class ClubController {
       const userAuth = req.userAuth;
 
       const club = await this.#service.create(bodyData, userAuth);
-      userAuth.role === "COACH" && this.#coachService.addClubInCoach(club._id, userAuth._id);
-      userAuth.role === ("SUPER_ADMIN" || "ADMIN_CLUB") && this.#coachService.addClubInCoach(club._id, req.body?.coach);
+
+      if (userAuth.role === "COACH") {
+        this.#coachService.addClubInCoach(club._id, userAuth._id);
+      }
+
+      if (userAuth.role === "SUPER_ADMIN" || userAuth.role === "ADMIN_CLUB") {
+        this.#coachService.addClubInCoach(club._id, req.body?.coach);
+      }
 
       res.status(StatusCodes.CREATED).json({
         status: "success",

@@ -7,6 +7,8 @@ const { normalizeCalendar, normalizePhoneNumber } = require("../../common/utils/
 const { ClubModel } = require("../club/club.model");
 const studentService = require("./student.service");
 const beltService = require("../baseData/belt/belt.service");
+const clubService = require("../club/club.service");
+const coachService = require("../coach/coach.service");
 
 function StudentValidationRequired() {
   return [
@@ -28,16 +30,19 @@ function StudentValidationRequired() {
       .isLength({ min: 2, max: 50 })
       .withMessage("LastName is not valid"),
 
-    body("nationalCode")
+    body("club")
       .exists({ nullable: true, checkFalsy: true })
-      .trim()
-      .notEmpty()
-      .escape()
-      .isString()
-      .isLength({ min: 10, max: 10 })
-      .withMessage("NationalCode is not valid")
-      .custom(async (nationalCode, { req }) => {
-        await studentService.checkExistStudentByNationalCode(nationalCode);
+      .isMongoId()
+      .custom(async (clubID) => {
+        await clubService.checkExistClubByID(clubID);
+      }),
+
+    body("coach")
+      .if((value, { req }) => req?.userAuth.role !== "COACH")
+      .exists({ nullable: true, checkFalsy: true })
+      .isMongoId()
+      .custom(async (coachID) => {
+        await coachService.checkExistCoachByID(coachID);
       }),
   ];
 }
@@ -63,8 +68,15 @@ function StudentValidationOptional() {
       .isLength({ min: 2, max: 50 })
       .withMessage("LastName is not valid"),
 
-    body("nationalCode")
+    body("club")
       .if((value, { req }) => req.method !== "POST")
+      .optional({ nullable: true, checkFalsy: true })
+      .isMongoId()
+      .custom(async (clubID) => {
+        await clubService.checkExistClubByID(clubID);
+      }),
+
+    body("nationalCode")
       .optional({ nullable: true, checkFalsy: true })
       .trim()
       .notEmpty()
@@ -190,22 +202,6 @@ function StudentValidationOptional() {
           await beltService.checkExistBeltByID(beltID);
         } else {
           throw new Error("Please enter the date of the belt");
-        }
-      }),
-    body("coach")
-      .optional({ nullable: true, checkFalsy: true })
-      .isMongoId()
-      .custom(async (coachID) => {
-        await coachService.checkExistCoachByID(coachID);
-      }),
-
-    body("club")
-      .optional({ nullable: true, checkFalsy: true })
-      .isMongoId()
-      .custom(async (value) => {
-        const checkExistClub = await ClubModel.findById(value);
-        if (!checkExistClub) {
-          throw new Error("Club not found");
         }
       }),
   ];

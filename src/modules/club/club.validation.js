@@ -44,7 +44,7 @@ function ClubValidationRequired() {
       }),
 
     body("coach")
-      .if((value, { req }) => req.userAuth.role !== "COACH")
+      .if((value, { req }) => req?.userAuth.role !== "COACH")
       .exists({ nullable: true, checkFalsy: true })
       .isMongoId()
       .custom(async (coachID) => {
