@@ -79,7 +79,7 @@ class StudentController {
       const studnetExist = await this.#service.checkExistStudentByID(studentID);
 
       const listBeltExams = await this.#beltExamService.findBeltExamValidStudent(studnetExist);
-      const ageGroup = await this.#ageGroupService.assignAgeGroupStudentBybirthday(studnetExist.birthDay);
+      const ageGroup = await this.#ageGroupService.assignAgeGroupStudentByBirthday(studnetExist.birthDay);
 
       const student = await this.#service.findByID(studnetExist);
 

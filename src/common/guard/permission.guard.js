@@ -1,7 +1,7 @@
 const AsyncHandler = require("express-async-handler");
 const createHttpError = require("http-errors");
 
-const { PERMISSIONS } = require("../constant/constans");
+const { PERMISSIONS } = require("../constant/RBAC");
 const { RoleModel } = require("../../modules/RBAC/role/role.model");
 const { PermissionModel } = require("../../modules/RBAC/permission/permission.model");
 

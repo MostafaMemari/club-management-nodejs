@@ -35,7 +35,7 @@ class AgeGroupService {
     if (!removeResult.deletedCount) throw createHttpError.InternalServerError(AgeGroupMessage.DeleteError);
   }
 
-  async assignAgeGroupStudentBybirthday(birthDay) {
+  async assignAgeGroupStudentByBirthday(birthDay) {
     const ageGroups = await this.#Model.find({ $and: [{ toDate: { $gt: birthDay } }, { fromDate: { $lt: birthDay } }] });
 
     if (ageGroups.length == 3) return ageGroups.slice(0, 3);

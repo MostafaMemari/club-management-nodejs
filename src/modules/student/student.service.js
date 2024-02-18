@@ -2,7 +2,7 @@ const createHttpError = require("http-errors");
 const { isValidObjectId } = require("mongoose");
 const { Types } = require("mongoose");
 
-const { assignAgeGroups } = require("../../common/utils/assignAgeGroups");
+const { filterAssignAgeGroupsByBirthDay } = require("../../common/utils/function");
 const { AgeGroupModel } = require("../baseData/ageGroup/ageGroup.model");
 const { nextBeltByBirthDay, calculateNextBeltByBeltDate, nextDateDurationMonth } = require("../../common/utils/function");
 
@@ -46,8 +46,8 @@ class StudentService {
         $addFields: {
           ageGroups: {
             $function: {
-              body: assignAgeGroups,
-              args: ["$birthDayMiladi", ageGroupDB],
+              body: filterAssignAgeGroupsByBirthDay,
+              args: ["$birthDay", ageGroupDB],
               lang: "js",
             },
           },

@@ -31,6 +31,10 @@ function convarteStringToArray(arr) {
   }
 }
 
+function filterAssignAgeGroupsByBirthDay(birthDay, ageGroups) {
+  return ageGroups.filter((ageGroup) => ageGroup.toDate > birthDay && ageGroup.fromDate < birthDay);
+}
+
 async function validateItemArrayModel(model, array) {
   for (let i = 0; i < array.length; i++) {
     if (isValidObjectId(array[i])) {
@@ -55,4 +59,5 @@ module.exports = {
   toEnglish,
   deleteFileInPublic,
   validateItemArrayModel,
+  filterAssignAgeGroupsByBirthDay,
 };
