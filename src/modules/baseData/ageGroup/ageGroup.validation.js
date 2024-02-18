@@ -1,8 +1,8 @@
-const { body, param } = require("express-validator");
-const { isValidObjectId } = require("mongoose");
-const { AgeGroupModel } = require("./ageGroup.model");
+const { body } = require("express-validator");
+
 const { RegExDateShmasi } = require("../../../common/utils/constans");
 const { normalizeCalendar } = require("../../../common/utils/normalizeData");
+
 const ageGroupService = require("./ageGroup.service");
 
 function AgeGroupValidationOptional() {

@@ -7,7 +7,6 @@ const { CoachMessage } = require("./coach.message");
 
 class CoachService {
   #Model;
-
   constructor() {
     autoBind(this);
     this.#Model = CoachModel;

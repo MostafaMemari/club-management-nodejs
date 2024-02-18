@@ -1,7 +1,6 @@
-const { body, param } = require("express-validator");
-const { isValidObjectId } = require("mongoose");
-const { RegExUserName } = require("../../common/utils/constans");
 const createHttpError = require("http-errors");
+
+const { body } = require("express-validator");
 const userService = require("./user.service");
 
 function UserValidationRequired() {
@@ -12,7 +11,6 @@ function UserValidationRequired() {
       .notEmpty()
       .isString()
       .escape()
-      // .matches(RegExUserName)
       .withMessage("You must type a username")
       .custom(async (username) => {
         await userService.checkExistUserByUsername(username);
@@ -52,7 +50,6 @@ function UserValidationOptional() {
       .notEmpty()
       .isString()
       .escape()
-      .matches(RegExUserName)
       .withMessage("username not valid")
       .custom(async (username) => {
         await userService.checkExistUserByUsername(username);

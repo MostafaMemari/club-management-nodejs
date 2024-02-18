@@ -1,11 +1,10 @@
 const { StatusCodes } = require("http-status-codes");
 const autoBind = require("auto-bind");
-
 const { matchedData } = require("express-validator");
+
 const { validate } = require("../../../common/services/validateExpressValidator");
 const { BeltExamMessage } = require("./beltExam.message");
 const beltExamService = require("./beltExam.service");
-const { clearCache } = require("ejs");
 
 class BeltExamController {
   #service;

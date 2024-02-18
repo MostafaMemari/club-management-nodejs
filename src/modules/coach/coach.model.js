@@ -1,6 +1,4 @@
-const mongoose = require("mongoose");
-
-const { Types, Schema } = mongoose;
+const { Types, Schema, model } = require("mongoose");
 
 const CoachSchema = new Schema(
   {
@@ -38,7 +36,7 @@ const CoachSchema = new Schema(
     },
 
     clubs: { type: [Types.ObjectId], ref: "club" },
-    createdBy: { type: Schema.Types.ObjectId, required: true, ref: "user" },
+    createdBy: { type: Types.ObjectId, required: true, ref: "user" },
   },
   {
     versionKey: false,
@@ -46,8 +44,6 @@ const CoachSchema = new Schema(
   }
 );
 
-const CoachModel = mongoose.model("coach", CoachSchema);
+const CoachModel = model("coach", CoachSchema);
 
-module.exports = {
-  CoachModel,
-};
+module.exports = { CoachModel };

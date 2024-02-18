@@ -1,11 +1,10 @@
 const { body } = require("express-validator");
-const { isValidObjectId } = require("mongoose");
+const createHttpError = require("http-errors");
+
 const { RegExDateShmasi } = require("../../../common/utils/constans");
 const { normalizeCalendar } = require("../../../common/utils/normalizeData");
-const { BeltExamModel } = require("./beltExam.model");
-const createHttpError = require("http-errors");
-const { BeltModel } = require("../belt/belt.model");
 const { removeDuplicatesArray } = require("../../../common/utils/function");
+
 const beltService = require("../belt/belt.service");
 const beltExamService = require("./beltExam.service");
 
@@ -27,7 +26,7 @@ function BeltExamValidationRequired() {
       .customSanitizer((genders) => convarteStringToArray(genders))
       .isArray()
       .customSanitizer((genders) => removeDuplicatesArray(genders))
-      .custom(async (gendersBody) => {
+      .custom(async (genders) => {
         const gendersValid = ["آقایان", "بانوان"];
 
         for (const gender of genders) {
@@ -47,7 +46,7 @@ function BeltExamValidationRequired() {
       })
       .isArray()
       .customSanitizer((belts) => removeDuplicatesArray(belts))
-      .custom(async (beltsBody) => {
+      .custom(async (belts) => {
         for (const beltID of belts) {
           await beltService.checkExistBeltByID(beltID);
         }

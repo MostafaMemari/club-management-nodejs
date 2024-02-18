@@ -1,6 +1,4 @@
-const mongoose = require("mongoose");
-
-const { Types, Schema, model } = mongoose;
+const { Types, Schema, model } = require("mongoose");
 
 const ClubSchema = new Schema(
   {
@@ -19,7 +17,7 @@ const ClubSchema = new Schema(
     address: { type: String },
     phone: { type: String },
 
-    createdBy: { type: Schema.Types.ObjectId, required: true, refPath: "modelCreatedBy" },
+    createdBy: { type: Types.ObjectId, required: true, refPath: "modelCreatedBy" },
     modelCreatedBy: {
       type: String,
       required: true,

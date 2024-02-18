@@ -1,7 +1,6 @@
 const autoBind = require("auto-bind");
 const { matchedData } = require("express-validator");
 const { StatusCodes } = require("http-status-codes");
-
 const { validate } = require("../../common/services/validateExpressValidator");
 
 const clubService = require("./club.service");

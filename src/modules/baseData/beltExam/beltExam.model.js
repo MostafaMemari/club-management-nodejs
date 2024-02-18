@@ -1,10 +1,8 @@
 const mongoose = require("mongoose");
-const { shamsiToMiladi } = require("../../../common/utils/dateConvarter");
-const { string, required } = require("joi");
 
-const { Types } = mongoose;
+const { Types, Schema, model } = mongoose;
 
-const BeltExamSchema = new mongoose.Schema(
+const BeltExamSchema = new Schema(
   {
     name: { type: String, required: true },
     description: { type: String },
@@ -14,10 +12,9 @@ const BeltExamSchema = new mongoose.Schema(
       required: true,
       validate: {
         validator: function (v) {
-          const allowedValues = ["آقایان", "بانوان"];
-          return v.every((value) => allowedValues.includes(value));
+          const allowedGenders = ["آقایان", "بانوان"];
+          return v.every((value) => allowedGenders.includes(value));
         },
-        message: "مقادیر gender باید فقط شامل 'آقایان' یا 'بانوان' باشد.",
       },
     },
     belts: [{ type: Types.ObjectId, ref: "belt" }],
@@ -27,7 +24,7 @@ const BeltExamSchema = new mongoose.Schema(
   { versionKey: false }
 );
 
-const BeltExamModel = mongoose.model("beltExam", BeltExamSchema);
+const BeltExamModel = model("beltExam", BeltExamSchema);
 
 module.exports = {
   BeltExamModel,

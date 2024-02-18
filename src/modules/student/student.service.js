@@ -4,12 +4,16 @@ const { Types } = require("mongoose");
 
 const { assignAgeGroups } = require("../../common/utils/assignAgeGroups");
 const { AgeGroupModel } = require("../baseData/ageGroup/ageGroup.model");
-const { nextDateDurationMonth, nextBeltByAge, calculateAge } = require("../../common/utils/function");
+const { nextBeltByBirthDay, calculateNextBeltByBeltDate, nextDateDurationMonth } = require("../../common/utils/function");
 
 const { StudentMessage } = require("./student.message");
 const { StudentModel } = require("./student.model");
 
 class StudentService {
+  #Model;
+  constructor() {
+    this.#Model = StudentModel;
+  }
   async register(bodyData, userAuth) {
     if (userAuth.role === "COACH" && !userAuth.clubs.includes(bodyData?.club)) {
       throw createHttpError.BadRequest("club is not valid");
@@ -19,7 +23,7 @@ class StudentService {
       bodyData.coach = userAuth._id;
     }
 
-    const studentCreated = await StudentModel.create({
+    const studentCreated = await this.#Model.create({
       ...bodyData,
       createdBy: userAuth._id,
       modelCreatedBy: userAuth.role === "SUPER_ADMIN" || userAuth.role === "ADMIN_CLUB" ? "user" : userAuth.role === "COACH" ? "coach" : "",
@@ -31,7 +35,7 @@ class StudentService {
 
   async find() {
     const ageGroupDB = await AgeGroupModel.find({}).lean();
-    const students = await StudentModel.aggregate([
+    const students = await this.#Model.aggregate([
       {
         $match: {},
       },
@@ -57,76 +61,83 @@ class StudentService {
 
   async update(bodyData, paramData) {
     await this.checkExistStudentByID(paramData.id);
-    const studentCreated = await StudentModel.updateOne({ _id: paramData.id }, { ...bodyData });
+    const studentCreated = await this.#Model.updateOne({ _id: paramData.id }, { ...bodyData });
     if (!studentCreated.modifiedCount) throw createHttpError.InternalServerError("بروزرسانی اطلاعات با خطا مواجه شد");
   }
-  async findByID(studentID) {
-    const student = await StudentModel.aggregate([
-      {
-        $match: { _id: new Types.ObjectId(studentID) },
-      },
-      {
-        $lookup: {
-          from: "belts",
-          localField: "belt",
-          foreignField: "_id",
-          as: "belt",
+  async findByID(studentExist) {
+    const nextBelt = nextBeltByBirthDay(studentExist.birthDay, studentExist.belt.nextBelt);
+    const nextBeltDate = nextDateDurationMonth(studentExist.beltDate, studentExist.belt.duration);
+    const nextBeltDateInfo = calculateNextBeltByBeltDate(nextBeltDate);
+
+    const student = await this.#Model
+      .aggregate([
+        {
+          $match: { _id: new Types.ObjectId(studentExist._id) },
         },
-      },
-      { $unwind: "$belt" },
-      {
-        $addFields: {
-          "belt.nextBeltDate": {
-            $function: {
-              body: nextDateDurationMonth,
-              args: ["$beltDate", "$belt.duration"],
-              lang: "js",
+
+        {
+          $addFields: {
+            beltInfo: {
+              belt: studentExist.belt.name,
+              nextBelt: nextBelt.name,
+              beltDate: "$beltDate",
+              nextBeltDate,
+              nextBeltDateInfo,
             },
           },
-          "belt.beltDate": "$beltDate",
         },
-      },
-      {
-        $lookup: {
-          from: "belts",
-          localField: "belt.nextBelt",
-          foreignField: "_id",
-          as: "belt.nextBelt",
+        {
+          $lookup: {
+            from: "clubs",
+            localField: "club",
+            foreignField: "_id",
+            as: "club",
+          },
         },
-      },
-
-      {
-        $project: {
-          // "belt.nextBelt": 0,
-          "belt.duration": 0,
-          "belt.nextBelt.nextBelt": 0,
+        { $unwind: "$club" },
+        { $addFields: { club: "$club.name" } },
+        {
+          $project: {
+            beltDate: 0,
+            belt: 0,
+          },
         },
-      },
-    ]).then((items) => items[0]);
+      ])
+      .then((items) => items[0]);
 
     if (!student) throw createHttpError.InternalServerError();
     return student;
   }
   async remove(studentID) {
-    const removeResult = await StudentModel.deleteOne({ _id: studentID });
+    const removeResult = await this.#Model.deleteOne({ _id: studentID });
     if (!removeResult.deletedCount) throw createHttpError.InternalServerError(StudentMessage.DeleteError);
   }
 
   async checkExistStudentByID(studentID) {
     if (!isValidObjectId(studentID)) throw createHttpError.BadRequest("student id is not valid");
-    const studnet = await StudentModel.findById(studentID).populate("belt").lean();
+    const studnet = await this.#Model
+      .findById(studentID)
+      .populate({
+        path: "belt",
+        populate: {
+          path: "nextBelt",
+          model: "belt",
+          select: "name duration underYear upperYear",
+        },
+      })
+      .lean();
     if (!studnet) throw createHttpError.NotFound("student not found");
     return studnet;
   }
   async checkExistStudentByNationalCode(nationalCode) {
-    const studnet = await StudentModel.findOne({ nationalCode }).lean();
+    const studnet = await this.#Model.findOne({ nationalCode }).lean();
     if (studnet) throw createHttpError.NotFound(StudentMessage.AlreadyExist);
   }
   async removeAllBeltInStudnet(beltID) {
-    await StudentModel.updateMany({ belt: beltID }, { $unset: { belt: -1, beltDate: -1 } });
+    await this.#Model.updateMany({ belt: beltID }, { $unset: { belt: -1, beltDate: -1 } });
   }
   async removeAllCoachInStudnet(coachID) {
-    await StudentModel.updateMany({ coach: coachID }, { $unset: { coach: -1 } });
+    await this.#Model.updateMany({ coach: coachID }, { $unset: { coach: -1 } });
   }
 }
 

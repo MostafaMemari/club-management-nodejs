@@ -1,4 +1,5 @@
 const { body } = require("express-validator");
+
 const beltService = require("./belt.service");
 const { removeDuplicatesArray } = require("../../../common/utils/function");
 

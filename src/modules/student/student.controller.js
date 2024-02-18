@@ -2,7 +2,7 @@ const autoBind = require("auto-bind");
 const { matchedData } = require("express-validator");
 const { StatusCodes } = require("http-status-codes");
 
-const { deleteFileInPublic, dateDiffYearNowShamsi, nextBeltByBirthDay } = require("../../common/utils/function");
+const { deleteFileInPublic, dateDiffYearNowShamsi, nextBeltByBirthDay, calculateNextBeltByBeltDate } = require("../../common/utils/function");
 const ageGroupService = require("../baseData/ageGroup/ageGroup.service");
 const beltExamService = require("../baseData/beltExam/beltExam.service");
 const { validate } = require("../../common/services/validateExpressValidator");
@@ -81,10 +81,7 @@ class StudentController {
       const listBeltExams = await this.#beltExamService.findBeltExamValidStudent(studnetExist);
       const ageGroup = await this.#ageGroupService.assignAgeGroupStudentBybirthday(studnetExist.birthDay);
 
-      const student = await this.#service.findByID(studentID);
-
-      const nextBelt = nextBeltByBirthDay(studnetExist.birthDay, student.belt.nextBelt);
-      student.belt.nextBelt = nextBelt.name;
+      const student = await this.#service.findByID(studnetExist);
 
       res.status(StatusCodes.OK).json({
         status: "success",
