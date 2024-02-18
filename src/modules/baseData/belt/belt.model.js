@@ -5,6 +5,8 @@ const BeltSchema = new Schema(
     name: { type: String, required: true, unique: true },
     duration: { type: Number, required: true },
     nextBelt: { type: [Types.ObjectId], ref: "belt" },
+    underYear: { type: Number },
+    upperYear: { type: Number },
   },
   { versionKey: false }
 );

@@ -44,7 +44,7 @@ async function validateItemArrayModel(model, array) {
   return uniqueArray;
 }
 
-function getNextBeltDate(date, duration) {
+function nextDateDurationMonth(date, duration) {
   let [year, month, day] = date.split("/");
   for (let i = 1; i <= duration; i++) {
     if (month >= 12) {
@@ -60,13 +60,39 @@ function getNextBeltDate(date, duration) {
     .map((date) => (date.length == 1 ? `0${date}` : date))
     .join("/");
 }
+function nextDateDurationYear(date, duration) {
+  let [year, month, day] = date.split("/");
 
-function dateDiffDayNowShamsi(beltDate) {
-  const date1 = new Date(shamsiToMiladi(beltDate)).getTime();
-  const date2 = new Date().getTime();
+  year += duration;
+
+  return `${year}/${month}/${day}`;
+}
+function nextBeltByBirthDay(birthDay, nextBelt) {
+  const ageYear = dateDiffYearNowShamsi(birthDay);
+  const beltValidate = ["قرمز", "پوم 1", "پوم 2", "پوم 3", "پوم 4"];
+
+  const result = nextBelt.filter((belt) => {
+    if (beltValidate.includes(belt.name)) {
+      if (belt?.upperYear <= ageYear) {
+        return belt;
+      }
+      if (belt?.underYear > ageYear) {
+        return belt;
+      }
+    } else {
+      return belt;
+    }
+  });
+
+  return result[0];
+}
+
+function dateDiffYearNowShamsi(dateShamsi) {
+  const dateNow = new Date().getTime();
+  const date = new Date(shamsiToMiladi(dateShamsi)).getTime();
 
   // اختلاف روز بین دو تاریخ
-  const difference = Math.floor((date1 - date2) / 86400000);
+  const difference = Math.floor((dateNow - date) / 86400000) / 365;
   return difference;
 }
 
@@ -83,12 +109,14 @@ function convarteStringToArray(arr) {
 }
 
 module.exports = {
-  getNextBeltDate,
+  nextDateDurationMonth,
   removeDuplicatesArray,
   convarteStringToArray,
   toEnglish,
   copyObject,
   deleteFileInPublic,
   validateItemArrayModel,
-  dateDiffDayNowShamsi,
+  dateDiffYearNowShamsi,
+  nextDateDurationYear,
+  nextBeltByBirthDay,
 };

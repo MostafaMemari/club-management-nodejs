@@ -4,7 +4,7 @@ const { Types } = require("mongoose");
 
 const { assignAgeGroups } = require("../../common/utils/assignAgeGroups");
 const { AgeGroupModel } = require("../baseData/ageGroup/ageGroup.model");
-const { getNextBeltDate } = require("../../common/utils/function");
+const { nextDateDurationMonth, nextBeltByAge, calculateAge } = require("../../common/utils/function");
 
 const { StudentMessage } = require("./student.message");
 const { StudentModel } = require("./student.model");
@@ -78,7 +78,7 @@ class StudentService {
         $addFields: {
           "belt.nextBeltDate": {
             $function: {
-              body: getNextBeltDate,
+              body: nextDateDurationMonth,
               args: ["$beltDate", "$belt.duration"],
               lang: "js",
             },
@@ -87,12 +87,22 @@ class StudentService {
         },
       },
       {
-        $project: {
-          "belt.nextBelt": 0,
-          "belt.duration": 0,
+        $lookup: {
+          from: "belts",
+          localField: "belt.nextBelt",
+          foreignField: "_id",
+          as: "belt.nextBelt",
         },
       },
-    ]);
+
+      {
+        $project: {
+          // "belt.nextBelt": 0,
+          "belt.duration": 0,
+          "belt.nextBelt.nextBelt": 0,
+        },
+      },
+    ]).then((items) => items[0]);
 
     if (!student) throw createHttpError.InternalServerError();
     return student;

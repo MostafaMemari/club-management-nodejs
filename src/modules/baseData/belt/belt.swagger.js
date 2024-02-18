@@ -21,6 +21,10 @@
  *            type: string
  *          nextBelt:
  *            type: array
+ *          underYear:
+ *            type: string
+ *          upperYear:
+ *            type: string
  */
 
 /**
@@ -36,6 +40,10 @@
  *            type: string
  *          nextBelt:
  *            type: array
+ *          underYear:
+ *            type: string
+ *          upperYear:
+ *            type: string
  */
 
 /**

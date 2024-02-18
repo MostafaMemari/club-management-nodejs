@@ -1,6 +1,6 @@
 const createHttpError = require("http-errors");
 const { BeltExamModel } = require("./beltExam.model");
-const { getNextBeltDate } = require("../../../common/utils/function");
+const { nextDateDurationMonth } = require("../../../common/utils/function");
 const { BeltExamMessage } = require("./beltExam.message");
 const { isValidObjectId } = require("mongoose");
 
@@ -36,7 +36,7 @@ class BeltExamService {
     let { gender, belt, beltDate } = student;
 
     gender = gender === "مرد" ? "آقایان" : gender === "زن" ? "بانوان" : false;
-    const nextBeltDate = getNextBeltDate(beltDate, belt.duration);
+    const nextBeltDate = nextDateDurationMonth(beltDate, belt.duration);
 
     const beltExams = await BeltExamModel.find(
       {

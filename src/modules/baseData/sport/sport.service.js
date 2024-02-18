@@ -1,7 +1,7 @@
 const createHttpError = require("http-errors");
 const { SportModel } = require("./sport.model");
 const { SportMessage } = require("./sport.message");
-const { getNextBeltDate } = require("../../../common/utils/function");
+const { nextDateDurationMonth } = require("../../../common/utils/function");
 const { isValidObjectId } = require("mongoose");
 
 class SportService {
