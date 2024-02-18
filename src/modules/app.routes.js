@@ -1,6 +1,6 @@
 const { checkPermission } = require("../common/guard/permission.guard.js");
 const { isAuth } = require("../common/middlewares/isAuth.js");
-const { PERMISSIONS } = require("../common/utils/constans.js");
+const { PERMISSIONS } = require("../common/constant/constans.js");
 const { permissionRouter } = require("./RBAC/permission/permission.routes.js");
 const { roleRouter } = require("./RBAC/role/role.routes.js");
 const { authRouter } = require("./auth/auth.routes.js");

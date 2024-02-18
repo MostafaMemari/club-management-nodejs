@@ -1,7 +1,7 @@
 const { body } = require("express-validator");
 const createHttpError = require("http-errors");
 
-const { RegExDateShmasi } = require("../../../common/utils/constans");
+const { RegExDateShmasi } = require("../../../common/constant/constans");
 const { normalizeCalendar } = require("../../../common/utils/normalizeData");
 const { removeDuplicatesArray } = require("../../../common/utils/function");
 

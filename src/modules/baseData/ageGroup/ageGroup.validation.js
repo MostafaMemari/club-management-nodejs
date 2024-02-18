@@ -1,6 +1,6 @@
 const { body } = require("express-validator");
 
-const { RegExDateShmasi } = require("../../../common/utils/constans");
+const { RegExDateShmasi } = require("../../../common/constant/constans");
 const { normalizeCalendar } = require("../../../common/utils/normalizeData");
 
 const ageGroupService = require("./ageGroup.service");

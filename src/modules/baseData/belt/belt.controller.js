@@ -1,7 +1,7 @@
 const { StatusCodes } = require("http-status-codes");
 const autoBind = require("auto-bind");
-
 const { matchedData } = require("express-validator");
+
 const { validate } = require("../../../common/services/validateExpressValidator");
 const { BeltMessage } = require("./belt.message");
 const beltService = require("./belt.service");

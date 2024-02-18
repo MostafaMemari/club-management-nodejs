@@ -1,7 +1,7 @@
 const createHttpError = require("http-errors");
 const { body } = require("express-validator");
 
-const { RegExDateShmasi } = require("../../common/utils/constans");
+const { RegExDateShmasi } = require("../../common/constant/constans");
 const { normalizeCalendar, normalizePhoneNumber } = require("../../common/utils/normalizeData");
 
 const beltService = require("../baseData/belt/belt.service");
