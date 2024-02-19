@@ -4,7 +4,7 @@ const { Types } = require("mongoose");
 
 const { filterAssignAgeGroupsByBirthDay } = require("../../common/utils/function");
 const { AgeGroupModel } = require("../baseData/ageGroup/ageGroup.model");
-const { nextBeltByBirthDay, calculateNextBeltByBeltDate, nextDateDurationMonth } = require("../../common/utils/function");
+const { nextBeltByBirthDay, calculateNextBeltByBeltDate, nextDateDurationMonth } = require("../../common/utils/calculateDate");
 
 const { StudentMessage } = require("./student.message");
 const { StudentModel } = require("./student.model");
@@ -69,8 +69,7 @@ class StudentService {
     const nextBeltDate = nextDateDurationMonth(studentExist.beltDate, studentExist.belt.duration);
     const nextBeltDateInfo = calculateNextBeltByBeltDate(nextBeltDate);
 
-    const student = await this.#Model
-      .aggregate([
+    const student = await this.#Model.aggregate([
         {
           $match: { _id: new Types.ObjectId(studentExist._id) },
         },

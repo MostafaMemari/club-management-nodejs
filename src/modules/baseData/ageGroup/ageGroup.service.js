@@ -7,7 +7,7 @@ const { AgeGroupModel } = require("./ageGroup.model");
 class AgeGroupService {
   #Model;
   constructor() {
-    this.#Model = AgeGroupMessage;
+    this.#Model = AgeGroupModel;
   }
   async create(bodyData) {
     const resultCreateAgeGroup = await this.#Model.create({

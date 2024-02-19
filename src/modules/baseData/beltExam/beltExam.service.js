@@ -2,8 +2,8 @@ const createHttpError = require("http-errors");
 
 const { isValidObjectId } = require("mongoose");
 const { BeltExamModel } = require("./beltExam.model");
-const { nextDateDurationMonth } = require("../../../common/utils/function");
 const { BeltExamMessage } = require("./beltExam.message");
+const { nextDateDurationMonth } = require("../../../common/utils/calculateDate");
 
 class BeltExamService {
   #Model;
