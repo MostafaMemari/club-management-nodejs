@@ -54,11 +54,12 @@ function calculateNextBeltByBeltDate(nextBeltDate) {
   const dateDiff = dayDiffNowDateShamsi(nextBeltDate);
   const day = Math.abs(dayDiffNowDateShamsi(nextBeltDate));
 
+
   const years = Math.floor(day / 365.25);
   const months = Math.floor((day % 365.25) / 30.44);
   const days = Math.floor((day % 365.25) % 30.44);
 
-  return { years, months, days, status: dateDiff < 0 ? "گذشته" : "مانده" };
+  return { years, months, days, status: dateDiff < 0 ? "گذشته" : "مانده" , day};
 }
 
 function yearDiffNowDateShamsi(dateShamsi) {
@@ -75,6 +76,7 @@ function dayDiffNowDateShamsi(dateShamsi) {
   const difference = Math.floor((date - dateNow) / 86400000);
   return difference;
 }
+
 
 module.exports = {
   shamsiToMiladi,
