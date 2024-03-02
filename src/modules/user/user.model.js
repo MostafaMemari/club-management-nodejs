@@ -7,7 +7,7 @@ const UserSchema = new Schema(
     email: { type: String, required: true, unique: true },
     role: { type: String, enum: ["ADMIN_CLUB", "SUPER_ADMIN"], default: "ADMIN_CLUB" },
 
-    coachs: { type: [Types.ObjectId], ref: "coach" },
+    clubs: { type: [Types.ObjectId], ref: "club" },
   },
   { timestamps: true, versionKey: false }
 );

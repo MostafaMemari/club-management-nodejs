@@ -10,16 +10,10 @@ class ClubService {
     this.#Model = ClubModel;
   }
   async create(bodyData, userAuth) {
-    if (userAuth.role === "ADMIN_CLUB" && !userAuth.coachs.includes(bodyData?.coach)) {
-      throw createHttpError.BadRequest("coach is not valid");
-    }
-
-    delete bodyData.coach;
-
     const resultClubCreate = await this.#Model.create({
       ...bodyData,
       createdBy: userAuth._id,
-      modelCreatedBy: userAuth.role === "SUPER_ADMIN" || userAuth.role === "ADMIN_CLUB" ? "user" : userAuth.role === "COACH" ? "coach" : "",
+      modelCreatedBy: userAuth.role === "SUPER_ADMIN" || userAuth.role === "ADMIN_CLUB" ? "user" : "",
     });
     if (!resultClubCreate) throw createHttpError.InternalServerError();
     return resultClubCreate;

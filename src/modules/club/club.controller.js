@@ -7,6 +7,8 @@ const clubService = require("./club.service");
 const { ClubMessage } = require("./club.message");
 const coachService = require("../coach/coach.service");
 const createHttpError = require("http-errors");
+const { addClubInUserAdminClub } = require("../user/user.service");
+const userService = require("../user/user.service");
 
 class ClubController {
   #service;
@@ -24,12 +26,8 @@ class ClubController {
 
       const club = await this.#service.create(bodyData, userAuth);
 
-      if (userAuth.role === "COACH") {
-        this.#coachService.addClubInCoach(club._id, userAuth._id);
-      }
-
-      if (userAuth.role === "SUPER_ADMIN" || userAuth.role === "ADMIN_CLUB") {
-        this.#coachService.addClubInCoach(club._id, req.body?.coach);
+      if (userAuth.role === "ADMIN_CLUB") {
+        await userService.addClubInUserAdminClub(userAuth._id, club._id);
       }
 
       res.status(StatusCodes.CREATED).json({

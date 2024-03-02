@@ -20,6 +20,10 @@ class UserService {
     return userCreated;
   }
 
+  async addClubInUserAdminClub(userID, clubID) {
+    await this.#Model.updateOne({ _id: userID }, { $addToSet: { clubs: clubID } });
+  }
+
   async addCoachInUserAdminClub(userID, coachID) {
     await this.#Model.updateOne({ _id: userID }, { $addToSet: { coachs: coachID } });
   }

@@ -4,7 +4,6 @@ const createHttpError = require("http-errors");
 const { removeDuplicatesArray, convarteStringToArray } = require("../../common/utils/function");
 const sportService = require("../baseData/sport/sport.service");
 const clubService = require("./club.service");
-const coachService = require("../coach/coach.service");
 
 function ClubValidationRequired() {
   return [
@@ -41,14 +40,6 @@ function ClubValidationRequired() {
         for (const sportID of sports) {
           await sportService.checkExistSportByID(sportID);
         }
-      }),
-
-    body("coach")
-      .if((value, { req }) => req?.userAuth.role !== "COACH")
-      .exists({ nullable: true, checkFalsy: true })
-      .isMongoId()
-      .custom(async (coachID) => {
-        await coachService.checkExistCoachByID(coachID);
       }),
   ];
 }
