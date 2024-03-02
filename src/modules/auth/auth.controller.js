@@ -4,11 +4,21 @@ const autoBind = require("auto-bind");
 const AuthService = require("./auth.service");
 const { AuthMessage } = require("./auth.message");
 
+const studentService = require("../student/student.service");
+const coachService = require("../coach/coach.service");
+const userService = require("../user/user.service");
+
 class AuthController {
   #service;
+  #studentService;
+  #coachService;
+  #userService;
   constructor() {
     autoBind(this);
     this.#service = AuthService;
+    this.#studentService = studentService;
+    this.#coachService = coachService;
+    this.#userService = userService;
   }
 
   async userLogin(req, res, next) {
@@ -38,6 +48,26 @@ class AuthController {
         data: {
           accessToken: token,
         },
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+  async getme(req, res, next) {
+    try {
+      const userAuth = req.userAuth;
+      let user = null;
+
+      userAuth.role === "STUDENT"
+        ? (user = await this.#studentService.findByID(userAuth._id))
+        : userAuth.role === "COACH"
+        ? (user = await this.#coachService.findByID(userAuth._id))
+        : (user = await this.#userService.findByID(userAuth._id));
+
+      res.status(StatusCodes.CREATED).json({
+        status: "success",
+        message: AuthMessage.StudentLogin,
+        data: user,
       });
     } catch (error) {
       next(error);

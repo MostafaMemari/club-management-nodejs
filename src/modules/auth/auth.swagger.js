@@ -74,3 +74,15 @@
  *      200:
  *        description: success
  */
+
+/**
+ * @swagger
+ * /api/v1/auth/getme:
+ *  get:
+ *    summary: get user , student , coach by id
+ *    tags:
+ *      - Authorization
+ *    responses:
+ *      200:
+ *        description: success
+ */
