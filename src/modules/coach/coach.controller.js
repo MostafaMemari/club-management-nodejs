@@ -7,6 +7,7 @@ const { validate } = require("../../common/services/validateExpressValidator");
 const coachService = require("./coach.service");
 const { CoachMessage } = require("./coach.message");
 const studentService = require("../student/student.service");
+const clubService = require("../club/club.service");
 const { deleteFileInPublic } = require("../../common/utils/function");
 const userService = require("../user/user.service");
 
@@ -14,11 +15,13 @@ class CoachController {
   #service;
   #studentService;
   #userService;
+  #clubService;
   constructor() {
     autoBind(this);
     this.#service = coachService;
     this.#studentService = studentService;
     this.#userService = userService;
+    this.#clubService = clubService;
   }
   async register(req, res, next) {
     try {
@@ -27,7 +30,8 @@ class CoachController {
       const userAuth = req.userAuth;
 
       const coach = await this.#service.register(bodyData, userAuth);
-      userAuth.role === "ADMIN_CLUB" && this.#userService.addCoachInUserAdminClub(userAuth._id, coach._id);
+
+      await this.#clubService.addCoachInClub(coach._id, bodyData.clubs);
 
       res.status(StatusCodes.CREATED).json({
         status: "success",

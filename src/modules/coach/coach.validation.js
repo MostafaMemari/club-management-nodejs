@@ -30,6 +30,18 @@ function CoachValidationRequired() {
       .withMessage("LastName is not valid"),
 
     body("gender").optional({ nullable: true, checkFalsy: true }).isString().trim().notEmpty().escape().isIn(["زن", "مرد"]).withMessage("Gender is not valid"),
+
+    body("clubs")
+      .optional({ nullable: true, checkFalsy: true })
+      .notEmpty()
+      .customSanitizer((clubs) => convarteStringToArray(clubs))
+      .isArray()
+      .customSanitizer((clubs) => removeDuplicatesArray(clubs))
+      .custom(async (clubs) => {
+        for (const clubID of clubs) {
+          await clubService.checkExistClubByID(clubID);
+        }
+      }),
   ];
 }
 function CoachValidationOptional() {
@@ -63,6 +75,18 @@ function CoachValidationOptional() {
       .escape()
       .isIn(["زن", "مرد"])
       .withMessage("Gender is not valid"),
+
+    body("clubs")
+      .if((value, { req }) => req.method !== "POST")
+      .optional({ nullable: true, checkFalsy: true })
+      .customSanitizer((clubs) => convarteStringToArray(clubs))
+      .isArray()
+      .customSanitizer((clubs) => removeDuplicatesArray(clubs))
+      .custom(async (clubs) => {
+        for (const clubID of clubs) {
+          await clubService.checkExistClubByID(clubID);
+        }
+      }),
 
     body("nationalCode")
       .optional({ nullable: true, checkFalsy: true })
@@ -170,17 +194,6 @@ function CoachValidationOptional() {
           await beltService.checkExistBeltByID(beltID);
         } else {
           throw new Error("Please enter the date of the belt");
-        }
-      }),
-
-    body("clubs")
-      .optional({ nullable: true, checkFalsy: true })
-      .customSanitizer((clubs) => convarteStringToArray(clubs))
-      .isArray()
-      .customSanitizer((clubs) => removeDuplicatesArray(clubs))
-      .custom(async (clubs) => {
-        for (const clubID of clubs) {
-          await clubService.checkExistClubByID(clubID);
         }
       }),
   ];

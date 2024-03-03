@@ -15,6 +15,7 @@
  *          - firstName
  *          - lastName
  *          - gender
+ *          - clubs
  *        properties:
  *          firstName:
  *            type: string

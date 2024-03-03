@@ -43,6 +43,12 @@ class ClubService {
     if (!removeResult.deletedCount) throw createHttpError.InternalServerError(ClubMessage.DeleteError);
   }
 
+  async addCoachInClub(coachID, clubsID) {
+    for (const clubID of clubsID) {
+      await this.#Model.updateOne({ _id: clubID }, { $addToSet: { coachs: coachID } });
+    }
+  }
+
   async checkExistClubByName(name) {
     const result = await this.#Model.findOne({ name }).lean();
     if (result) throw createHttpError.Conflict(ClubMessage.AlreadyExist);

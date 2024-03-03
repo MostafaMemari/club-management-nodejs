@@ -17,6 +17,8 @@ const ClubSchema = new Schema(
     address: { type: String },
     phone: { type: String },
 
+    coachs: { type: [Types.ObjectId], ref: "coach", required: true },
+
     createdBy: { type: Types.ObjectId, required: true, refPath: "modelCreatedBy" },
     modelCreatedBy: {
       type: String,

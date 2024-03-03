@@ -35,7 +35,7 @@ const CoachSchema = new Schema(
       },
     },
 
-    clubs: { type: [Types.ObjectId], ref: "club" },
+    clubs: { type: [Types.ObjectId], ref: "club", required: true },
     createdBy: { type: Types.ObjectId, required: true, ref: "user" },
   },
   {
