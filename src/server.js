@@ -11,6 +11,7 @@ const { connectToMongoDB } = require("./config/mongoose.config");
 const { AllRouter } = require("./modules/app.routes");
 const { SwaggerConfig } = require("./config/swagger.config");
 const { NotFoundErrorHandler, ApiErrorHandler } = require("./common/exception/error.handler");
+const { PanelRouter } = require("./modules/template engine/panel/panel.routes");
 
 module.exports = class Application {
   #app = express();
@@ -31,16 +32,16 @@ module.exports = class Application {
   configApplication() {
     this.#app.use(cors());
     this.#app.use(morgan("dev"));
-    this.#app.use(express.urlencoded({ extended: false }));
+    this.#app.use(express.urlencoded({ extended: true }));
     this.#app.use(cookieParser(process.env.COOKIE_SECRET_KEY));
 
     this.#app.use(express.json());
     // this.#app.use("/static", express.static(path.join(__dirname, "..", "public")));
     this.#app.use(express.static(path.join(__dirname, "..", "public")));
 
-    // this.#app.use(expressEjsLayouts);
+    this.#app.use(expressEjsLayouts);
     this.#app.set("view engine", "ejs");
-    this.#app.set("views", path.join(__dirname, "..", "views"));
+    this.#app.set("layout", "layouts/panel/main.ejs");
   }
   createServer() {
     this.#app.listen(this.#PORT, () => {
@@ -49,6 +50,7 @@ module.exports = class Application {
   }
 
   createRoutes() {
+    this.#app.use("/panel", PanelRouter);
     this.#app.use("/api/v1", AllRouter);
   }
 
