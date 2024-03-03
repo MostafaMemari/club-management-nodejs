@@ -12,6 +12,7 @@ const { AllRouter } = require("./modules/app.routes");
 const { SwaggerConfig } = require("./config/swagger.config");
 const { NotFoundErrorHandler, ApiErrorHandler } = require("./common/exception/error.handler");
 const { PanelRouter } = require("./modules/template engine/panel/panel.routes");
+const { AuthRouter } = require("./modules/template engine/auth/auth.routes");
 
 module.exports = class Application {
   #app = express();
@@ -51,6 +52,7 @@ module.exports = class Application {
 
   createRoutes() {
     this.#app.use("/panel", PanelRouter);
+    this.#app.use("/auth", AuthRouter);
     this.#app.use("/api/v1", AllRouter);
   }
 

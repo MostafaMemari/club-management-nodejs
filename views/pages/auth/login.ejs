@@ -1,0 +1,39 @@
+<div class="card">
+  <div class="card-body">
+    <!-- Logo -->
+    <div class="text-center justify-content-center mb-4 mt-2">
+      <span class="h4 demo text-body fw-bolder">آکادمی تکواندو یاری</span>
+    </div>
+    <!-- /Logo -->
+    <p class="mb-4">لطفا به حساب کاربری خود وارد شوید تا از امکانات سامانه استفاده کنید.</p>
+    <form action="index.html" class="mb-3" id="formAuthentication" method="GET">
+      <div class="mb-3">
+        <label class="form-label" for="email">ایمیل یا نام کاربری</label>
+        <input autofocus class="form-control" id="email" name="email-username" placeholder="ایمیل یا نام کاربری خود را وارد کنید" type="text" />
+      </div>
+      <div class="mb-3 form-password-toggle">
+        <div class="d-flex justify-content-between">
+          <label class="form-label" for="password">رمز عبور</label>
+          <a href="auth-forgot-password-basic.html">
+            <small>فراموش کرده‌اید؟</small>
+          </a>
+        </div>
+        <div class="input-group input-group-merge">
+          <input aria-describedby="password" class="form-control" id="password" name="password" placeholder="············" type="password" />
+          <span class="input-group-text cursor-pointer">
+            <i class="ti ti-eye-off"></i>
+          </span>
+        </div>
+      </div>
+      <div class="mb-3">
+        <div class="form-check">
+          <input class="form-check-input" id="remember-me" type="checkbox" />
+          <label class="form-check-label" for="remember-me"> مرا به خاطر بسپار</label>
+        </div>
+      </div>
+      <div class="mb-3">
+        <button class="btn btn-primary d-grid w-100" type="submit">ورود به سیستم</button>
+      </div>
+    </form>
+  </div>
+</div>
