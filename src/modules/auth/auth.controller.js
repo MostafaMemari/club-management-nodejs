@@ -26,13 +26,18 @@ class AuthController {
       const { identifier, password } = req.body;
       const token = await this.#service.userLogin(identifier, password);
 
-      res.status(StatusCodes.CREATED).json({
-        status: "success",
-        message: AuthMessage.UserLogin,
-        data: {
-          accessToken: token,
-        },
-      });
+      res.cookie("access_token", token, { httpOnly: true });
+
+      return res
+        .cookie("access_token", token, { httpOnly: true, maxAge: 604800000 })
+        .status(200)
+        .json({
+          status: "success",
+          message: AuthMessage.UserLogin,
+          data: {
+            accessToken: token,
+          },
+        });
     } catch (error) {
       next(error);
     }

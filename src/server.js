@@ -46,7 +46,7 @@ module.exports = class Application {
   }
   createServer() {
     this.#app.listen(this.#PORT, () => {
-      console.log(`Server listen on Port : \n http://localhost:${this.#PORT}/api-docs \n http://localhost:${this.#PORT}/`);
+      console.log(`Server listen on Port : \n http://localhost:${this.#PORT}/api-docs \n http://localhost:${this.#PORT}/auth/login`);
     });
   }
 
