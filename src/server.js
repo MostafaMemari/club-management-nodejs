@@ -13,6 +13,8 @@ const { SwaggerConfig } = require("./config/swagger.config");
 const { NotFoundErrorHandler, ApiErrorHandler } = require("./common/exception/error.handler");
 const { PanelRouter } = require("./modules/template engine/panel/panel.routes");
 const { AuthRouter } = require("./modules/template engine/auth/auth.routes");
+const session = require("express-session");
+const { redirectLoginUser } = require("./common/middlewares/redirectLoginUser");
 
 module.exports = class Application {
   #app = express();
@@ -33,6 +35,13 @@ module.exports = class Application {
   configApplication() {
     this.#app.use(cors());
     this.#app.use(morgan("dev"));
+    this.#app.use(
+      session({
+        secret: "keyboard cat",
+        resave: false,
+        saveUninitialized: false,
+      })
+    );
     this.#app.use(express.urlencoded({ extended: true }));
     this.#app.use(cookieParser(process.env.COOKIE_SECRET_KEY));
 
@@ -46,14 +55,14 @@ module.exports = class Application {
   }
   createServer() {
     this.#app.listen(this.#PORT, () => {
-      console.log(`Server listen on Port : \n http://localhost:${this.#PORT}/api-docs \n http://localhost:${this.#PORT}/auth/login`);
+      console.log(`Server listen on Port : \n http://localhost:${this.#PORT}/api-docs \n http://localhost:${this.#PORT}/login`);
     });
   }
 
   createRoutes() {
-    this.#app.use("/panel", PanelRouter);
-    this.#app.use("/auth", AuthRouter);
     this.#app.use("/api/v1", AllRouter);
+    this.#app.use("/", PanelRouter);
+    this.#app.use("/", redirectLoginUser, AuthRouter);
   }
 
   errorHandling() {

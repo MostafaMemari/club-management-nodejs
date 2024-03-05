@@ -7,12 +7,14 @@ const { UserModel } = require("../../modules/user/user.model");
 
 function getToken(headers) {
   const [bearer, token] = headers?.authorization?.split(" ") || [];
+
   if (token && ["Bearer", "bearer"].includes(bearer)) return token;
-  throw createHttpError.Unauthorized("please login your account");
 }
 
 module.exports.isAuth = asyncHandler(async (req, res, next) => {
-  const token = getToken(req?.headers);
+  if (req?.userAuth) next();
+  const token = getToken(req?.headers) || req?.cookies?.access_token;
+  if (!token) throw createHttpError.Unauthorized("please login your account");
   const verifiedToken = verifyToken(token);
   let user = await UserModel.findById(verifiedToken.id).select("role _id");
   if (!user) user = await CoachModel.findById(verifiedToken.id).select("role _id clubs");

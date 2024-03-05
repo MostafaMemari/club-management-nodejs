@@ -24,20 +24,20 @@ class AuthController {
   async userLogin(req, res, next) {
     try {
       const { identifier, password } = req.body;
-      const token = await this.#service.userLogin(identifier, password);
+      const { accessToken, userExist } = await this.#service.userLogin(identifier, password);
 
-      res.cookie("access_token", token, { httpOnly: true });
+      // req.flash("success", category_message_1.CategoryMessage.Updated);
 
-      return res
-        .cookie("access_token", token, { httpOnly: true, maxAge: 604800000 })
-        .status(200)
-        .json({
-          status: "success",
-          message: AuthMessage.UserLogin,
-          data: {
-            accessToken: token,
-          },
-        });
+      return res.cookie("access_token", accessToken, { httpOnly: true, maxAge: 604800000 }).redirect("/panel/products");
+
+      // .status(200)
+      // .json({
+      //   status: "success",
+      //   message: AuthMessage.UserLogin,
+      //   data: {
+      //     accessToken: token,
+      //   },
+      // });
     } catch (error) {
       next(error);
     }
