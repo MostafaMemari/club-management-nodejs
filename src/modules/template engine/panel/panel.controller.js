@@ -11,6 +11,14 @@ class PanelController {
       next(error);
     }
   }
+  async addStudent(req, res, next) {
+    try {
+      res.locals.layout = "./layouts/panel/add-student.ejs";
+      res.render("./pages/panel/add-student.ejs");
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 module.exports = new PanelController();

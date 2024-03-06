@@ -5,4 +5,6 @@ const router = require("express").Router();
 
 router.get("/", isAuth, PanelController.main);
 
+router.get("/add-student", isAuth, PanelController.addStudent);
+
 module.exports = { PanelRouter: router };
