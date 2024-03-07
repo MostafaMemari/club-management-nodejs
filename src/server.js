@@ -62,7 +62,7 @@ module.exports = class Application {
   createRoutes() {
     this.#app.use("/api/v1", AllRouter);
     this.#app.use("/", PanelRouter);
-    this.#app.use("/", redirectLoginUser, AuthRouter);
+    this.#app.use("/", AuthRouter);
   }
 
   errorHandling() {
