@@ -14,8 +14,8 @@ class PanelController {
   async addStudent(req, res, next) {
     try {
       res.locals.layout = "./layouts/panel/add-student.ejs";
-      // res.render("./pages/panel/add-student.ejs");
       res.render("./pages/panel/add-student.ejs");
+      // res.render("./pages/panel/f.ejs");
     } catch (error) {
       next(error);
     }
