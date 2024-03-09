@@ -11,7 +11,7 @@
       <button class="btn btn-primary" name="submitButton" type="submit">ارسال</button>
     </div> -->
   </div>
-  <form class="row" id="formValidationNewStudent">
+  <form class="row" id="formValidationNewStudent" method="POST" action="/api/v1/students/register">
     <div class="col-12 col-lg-8">
       <div class="card">
         <h5 class="card-header">اطلاعات شخصی</h5>
@@ -28,7 +28,7 @@
             </div>
             <div class="col-md-6 mb-3">
               <label class="form-label" for="nationalCode">کدملی</label>
-              <input aria-label="" class="form-control" id="nationalCode" name="nationalCode" placeholder="4900782343" type="text" />
+              <input aria-label="" maxlength="10" class="form-control" id="nationalCode" name="nationalCode" placeholder="4900782343" type="text" />
             </div>
             <div class="col-md-6 mb-3">
               <label class="form-label" for="bs-datepicker-birthday">تاریخ تولد</label>
@@ -104,7 +104,7 @@
           <!-- Vendor -->
           <div class="mb-3 col-12">
             <label class="form-label" for="club">انتخاب باشگاه</label>
-            <select class="form-select select2" data-allow-clear="true" id="club" name="club">
+            <select class="form-select select2" data-allow-clear="true" id="club" data-placeholder="انتخاب باشگاه" name="club">
               <option value="">باشگاه را انتخاب کنید</option>
               <option value="Australia">آکادمی تکواندو یاری</option>
             </select>
@@ -162,7 +162,7 @@
             <input class="form-control" id="bs-datepicker-sportsInsurance-date" placeholder="1400/05/06" type="text" />
           </div>
 
-          <div class="col mb-3">
+          <div class="col-12 mb-3">
             <label class="form-label" for="memberShipValidity">شارژ بانک اطلاعاتی</label>
             <input aria-label="" class="form-control" id="memberShipValidity" name="memberShipValidity" placeholder="1402" type="text" />
           </div>
