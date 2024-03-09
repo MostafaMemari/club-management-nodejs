@@ -31,7 +31,63 @@ $(function () {
     bsDatepickerMultidate = $("#bs-datepicker-multidate"),
     bsDatepickerOptions = $("#bs-datepicker-options"),
     bsDatepickerAutoclose = $("#bs-datepicker-autoclose"),
-    bsDatepickerInlinedate = $("#bs-datepicker-inline");
+    bsDatepickerInlinedate = $("#bs-datepicker-inline"),
+    bsDatepickerBirthDay = $("#bs-datepicker-birthday"),
+    bsDatepickerRegisterDate = $("#bs-datepicker-register-date"),
+    bsDatepickerBeltDate = $("#bs-datepicker-belt-date"),
+    bsDatepickerSportsInsuranceDate = $("#bs-datepicker-sportsInsurance-date");
+
+  // birthDay
+  if (bsDatepickerBirthDay.length) {
+    bsDatepickerBirthDay.datepicker({
+      format: "yyyy/mm/dd",
+      language: "fa",
+      todayHighlight: true,
+      autoclose: true,
+      orientation: isRtl ? "auto right" : "auto left",
+    });
+  }
+  // RegisterDate
+  if (bsDatepickerRegisterDate.length) {
+    bsDatepickerRegisterDate.datepicker({
+      format: "yyyy/mm/dd",
+      language: "fa",
+      todayHighlight: true,
+      autoclose: true,
+      orientation: isRtl ? "auto right" : "auto left",
+    });
+  }
+  // BeltDate
+  if (bsDatepickerBeltDate.length) {
+    bsDatepickerBeltDate.datepicker({
+      format: "yyyy/mm/dd",
+      language: "fa",
+      todayHighlight: true,
+      autoclose: true,
+      orientation: isRtl ? "auto right" : "auto left",
+    });
+  }
+  // BeltDate
+  if (bsDatepickerSportsInsuranceDate.length) {
+    bsDatepickerSportsInsuranceDate.datepicker({
+      format: "yyyy/mm/dd",
+      language: "fa",
+      todayHighlight: true,
+      autoclose: true,
+      orientation: isRtl ? "auto right" : "auto left",
+    });
+  }
+
+  // Auto close
+  if (bsDatepickerAutoclose.length) {
+    bsDatepickerAutoclose.datepicker({
+      format: "yyyy/mm/dd",
+      language: "fa",
+      todayHighlight: true,
+      autoclose: true,
+      orientation: isRtl ? "auto right" : "auto left",
+    });
+  }
 
   // Basic
   if (bsDatepickerBasic.length) {
@@ -94,17 +150,6 @@ $(function () {
       clearBtn: true,
       todayHighlight: true,
       orientation: isRtl ? "auto left" : "auto right",
-    });
-  }
-
-  // Auto close
-  if (bsDatepickerAutoclose.length) {
-    bsDatepickerAutoclose.datepicker({
-      format: "yyyy/mm/dd",
-      language: "fa",
-      todayHighlight: true,
-      autoclose: true,
-      orientation: isRtl ? "auto right" : "auto left",
     });
   }
 

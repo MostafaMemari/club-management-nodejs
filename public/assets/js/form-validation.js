@@ -144,14 +144,30 @@ document.addEventListener("DOMContentLoaded", function (e) {
               maxSize: 2097152,
               message: "تصویر وارد شده باید کمتر از 2 مگابایت باشد.",
             },
-            // filesize: {
-            //   max: 2, // 2 مگابایت
-            //   message: "تصویر وارد شده باید کمتر از 2 مگابایت باشد.",
-            // },
-            // regexp: {
-            //   regexp: /\.(jpe?g)$/i,
-            //   message: "تصویر وارد شده معتبر نمی باشد.",
-            // },
+          },
+        },
+        registerDate: {
+          validators: {
+            date: {
+              format: "YYYY/MM/DD",
+              message: "تاریخ ثبت نام معتبر نمی باشد.",
+            },
+          },
+        },
+        club: {
+          validators: {
+            notEmpty: {
+              message: "لطفا نام باشگاه را انتخاب کنید.",
+            },
+          },
+        },
+        memberShipValidity: {
+          validators: {
+            between: {
+              min: 1370,
+              max: 1410,
+              message: "شارژ بانک اطلاعاتی معتبر نمی باشد.",
+            },
           },
         },
 
@@ -187,18 +203,6 @@ document.addEventListener("DOMContentLoaded", function (e) {
           },
         },
 
-        // formValidationFile: {
-        //   validators: {
-        //     regexp: {
-        //       regexp: /\.(jpe?g)$/i,
-        //       message: "تصویر وارد شده معتبر نمی باشد.",
-        //     },
-        //     size: {
-        //       max: 2097152, // 2 مگابایت
-        //       message: "تصویر وارد شده باید کمتر از 2 مگابایت باشد.",
-        //     },
-        //   },
-        // },
         formValidationDob: {
           validators: {
             notEmpty: {
@@ -286,12 +290,17 @@ document.addEventListener("DOMContentLoaded", function (e) {
               case "lastName":
               case "nationalCode":
 
+              case "club":
+                return ".col-12";
+
+              case "memberShipValidity":
+                return ".col-12";
+
               case "formValidationEmail":
               case "formValidationPass":
               case "formValidationConfirmPass":
               case "formValidationFile":
               case "formValidationDob":
-              case "formValidationSelect2":
               case "formValidationLang":
               case "formValidationTech":
               case "formValidationHobbies":
@@ -302,6 +311,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
               case "formValidationSwitch":
               case "formValidationCheckbox":
                 return ".col-12";
+
               default:
                 return ".row";
             }
