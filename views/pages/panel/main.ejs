@@ -1,347 +1,168 @@
-<div class="container-xxl flex-grow-1 container-p-y">
-  <h4 class="py-3 mb-4">
-    <span class="text-muted fw-light">مشاهده کاربر/</span>
-    حساب کاربری
-  </h4>
-  <div class="row">
-    <!-- User Sidebar -->
-    <div class="col-xl-4 col-lg-5 col-md-5 order-0 order-md-0">
-      <!-- User Card -->
-      <div class="card mb-4">
-        <div class="card-body">
-          <div class="user-avatar-section">
-            <div class="d-flex align-items-center flex-column">
-              <img alt="آواتار کاربر" class="img-fluid rounded mb-3 pt-1 mt-4" height="100" src="/assets/img/avatars/14.png" width="100" />
-              <div class="user-info text-center">
-                <h4 class="mb-2">مصطفی معماری</h4>
-                <span class="badge bg-label-secondary mt-1">هنرجو</span>
-              </div>
-            </div>
-          </div>
-          <div class="d-flex justify-content-around flex-wrappt-3 pb-4 border-bottom"></div>
-          <p class="mt-4 small text-uppercase text-muted">اطلاعات :</p>
-          <div class="info-container">
-            <ul class="list-unstyled">
-              <li class="mb-2">
-                <span class="fw-medium me-1">کد ملی :</span>
-                <span>4900782343</span>
-              </li>
-              <li class="mb-2 pt-1">
-                <span class="fw-medium me-1">تاریخ تولد : </span>
-                <span>1378/06/22</span>
-              </li>
-              <li class="mb-2 pt-1">
-                <span class="fw-medium me-1">نام مربی :</span>
-                <!-- <span class="badge bg-label-success">محمدرضا یاری</span> -->
-                <span>محمدرضا یاری</span>
-              </li>
-              <li class="mb-2 pt-1">
-                <span class="fw-medium me-1">نام باشگاه :</span>
-                <span>آکادمی تکواندو یاری</span>
-              </li>
-              <li class="mb-2 pt-1">
-                <span class="fw-medium me-1">کمربند :</span>
-                <span>دان 4</span>
-              </li>
-              <li class="mb-2 pt-1">
-                <span class="fw-medium me-1">رده سنی :</span>
-                <span>
-                  <bdi>بزرگسالان</bdi>
-                </span>
-              </li>
-              <li class="mb-2 pt-1">
-                <span class="fw-medium me-1">شارژ بانک اطلاعاتی : </span>
-                <span>1402</span>
-              </li>
-            </ul>
-            <div class="d-flex justify-content-center">
-              <a class="btn btn-primary me-3" data-bs-target="#editUser" data-bs-toggle="modal" href="javascript:">ویرایش</a>
-              <!-- <a class="btn btn-label-danger suspend-user" href="javascript:">مسدود سازی</a> -->
-            </div>
+<div class="content-wrapper">
+  <!-- Content -->
+  <div class="container-xxl flex-grow-1 container-p-y">
+    <h4 class="py-3 mb-4">
+      <span class="text-muted fw-light">طراحی سفارشی /</span>
+      کشیدن و رها کردن
+    </h4>
+    <!-- Cards Draggable -->
+    <div class="row mb-4">
+      <div class="col-lg-3 col-md-6 col-sm-12">
+        <div class="card mb-lg-0 mb-4">
+          <div class="card-body text-center">
+            <h2>
+              <i class="ti ti-home text-success display-6"></i>
+            </h2>
+            <h4>باشگاه ها</h4>
+            <h5>3</h5>
           </div>
         </div>
       </div>
-      <!-- /User Card -->
+      <div class="col-lg-3 col-md-6 col-sm-12">
+        <div class="card mb-lg-0 mb-4">
+          <div class="card-body text-center">
+            <h2>
+              <i class="ti ti-user text-info display-6"></i>
+            </h2>
+            <h4>مربیان</h4>
+            <h5>2</h5>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6 col-sm-12">
+        <div class="card mb-lg-0 mb-4">
+          <div class="card-body text-center">
+            <h2>
+              <i class="ti ti-users text-primary display-6"></i>
+            </h2>
+            <h4>هنرجو ها</h4>
+            <h5>1052</h5>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6 col-sm-12">
+        <div class="card mb-lg-0 mb-4">
+          <div class="card-body text-center">
+            <h2>
+              <i class="ti ti-gift text-danger display-6"></i>
+            </h2>
+            <h4>محصولات</h4>
+            <h5>2</h5>
+          </div>
+        </div>
+      </div>
     </div>
-    <!--/ User Sidebar -->
-    <!-- User Content -->
-    <div class="col-xl-8 col-lg-7 col-md-7 order-1 order-md-1">
-      <!---- main  -->
-      <div class="row">
-        <div class="col-xl-6 col-lg-12 col-md-12">
-          <div class="col-12">
-            <div class="card mb-4">
-              <div class="card-body">
-                <div class="d-flex justify-content-between align-items-start">
-                  <h5 class="card-title m-0 me-2">مانده تا کمربند آبی</h5>
-                  <div class="d-flex justify-content-center">
-                    <sub class="pricing-duration mt-auto mb-2 text-muted fw-normal">2 سال و 3 ماه و 3 روز</sub>
-                  </div>
-                </div>
-                <ul class="ps-3 g-2 my-3"></ul>
-                <div class="d-flex justify-content-between align-items-center mb-1 fw-medium text-heading">
-                  <span>روزهای باقی مانده</span>
-                  <span>65٪</span>
-                </div>
-                <div class="progress mb-1" style="height: 8px">
-                  <div aria-valuemax="100" aria-valuemin="0" aria-valuenow="65" class="progress-bar" role="progressbar" style="width: 65%"></div>
-                </div>
-                <span>4 روز مانده</span>
-              </div>
-            </div>
-          </div>
-          <div class="col-12">
-            <div class="card mb-4">
-              <div class="card-body">
-                <div class="d-flex justify-content-between align-items-start">
-                  <h5 class="card-title m-0 me-2">اعتبار بیمه ورزشی</h5>
-                  <div class="d-flex justify-content-center">
-                    <sub class="mt-auto mb-2 text-muted fw-normal">معتبر تا 1402/12/06</sub>
-                  </div>
-                </div>
-                <ul class="ps-3 g-2 my-3"></ul>
-                <div class="d-flex justify-content-between align-items-center mb-1 fw-medium text-heading">
-                  <span>روزهای باقی مانده</span>
-                  <span>65٪</span>
-                </div>
-                <div class="progress mb-1" style="height: 8px">
-                  <div aria-valuemax="100" aria-valuemin="0" aria-valuenow="65" class="progress-bar" role="progressbar" style="width: 65%"></div>
-                </div>
-                <span>4 روز مانده</span>
-              </div>
-            </div>
-          </div>
-          <div class="col-12">
-            <div class="card mb-4">
-              <div class="card-body">
-                <div class="d-flex justify-content-between align-items-start">
-                  <h5 class="card-title m-0 me-2">شارژ بانک اطلاعاتی</h5>
-                  <div class="d-flex justify-content-center"></div>
-                </div>
-                <ul class="ps-3 g-2 my-3"></ul>
 
-                <li class="d-flex justify-content-between align-items-center">
-                  <div class="badge bg-label-success rounded p-2">
-                    <i class="ti ti-calendar ti-sm"></i>
-                  </div>
-                  <div class="d-flex justify-content-between w-100 flex-wrap">
-                    <h6 class="mb-0 ms-3">معتبر تا پایان سال 1402</h6>
-                  </div>
-                </li>
-                <!-- <li class="d-flex justify-content-between align-items-center">
-                  <div class="badge bg-label-danger rounded p-2">
-                    <i class="ti ti-calendar ti-sm"></i>
-                  </div>
-                  <div class="d-flex justify-content-between w-100 flex-wrap">
-                    <h6 class="mb-0 ms-3">نیاز به <span class="h4">5</span> سال تمدید اعتبار</h6>
-                  </div>
-                </li> -->
-              </div>
-            </div>
-          </div>
-        </div>
+    <!-- Navbar pills -->
+    <div class="row">
+      <div class="col-md-12">
+        <ul class="nav nav-pills flex-column flex-sm-row mb-4">
+          <li class="nav-item">
+            <button
+              aria-controls="show-clubs"
+              aria-selected="true"
+              class="nav-link active"
+              data-bs-target="#show-clubs"
+              data-bs-toggle="tab"
+              role="tab"
+              type="button"
+            >
+              <i class="ti ti-user-check ti-xs me-1"></i>
 
-        <div class="col-xl-6 col-lg-12 col-md-12">
-          <div class="col-12">
-            <div class="card mb-4">
-              <h5 class="card-header">آزمون های پیش رو</h5>
-              <div class="card-body pb-0">
-                <ul class="timeline mb-0">
-                  <li class="timeline-item timeline-item-transparent">
-                    <span class="timeline-point timeline-point-primary"></span>
-                    <div class="timeline-event">
-                      <div class="timeline-header mb-1">
-                        <h6 class="mb-0">آزمون دوره 259</h6>
-                      </div>
-                      <p class="mb-2">مهلت ثبت نام : 1402/12/10</p>
-                      <p class="mb-2">زمان برگزاری : 1402/12/10</p>
-                      <p class="mb-2">محل برگزاری : البرز</p>
-                    </div>
-                  </li>
-                  <li class="timeline-item timeline-item-transparent">
-                    <span class="timeline-point timeline-point-primary"></span>
-                    <div class="timeline-event">
-                      <div class="timeline-header mb-1">
-                        <h6 class="mb-0">آزمون دوره 260</h6>
-                      </div>
-                      <p class="mb-2">مهلت ثبت نام : 1403/02/10</p>
-                      <p class="mb-2">زمان برگزاری : 1403/02/10</p>
-                      <p class="mb-2">محل برگزاری : البرز</p>
-                    </div>
-                  </li>
-                  <li class="timeline-item timeline-item-transparent">
-                    <span class="timeline-point timeline-point-primary"></span>
-                    <div class="timeline-event">
-                      <div class="timeline-header mb-1">
-                        <h6 class="mb-0">آزمون دوره 261</h6>
-                      </div>
-                      <p class="mb-2">مهلت ثبت نام : 1403/04/10</p>
-                      <p class="mb-2">زمان برگزاری : 1403/04/10</p>
-                      <p class="mb-2">محل برگزاری : البرز</p>
-                    </div>
-                  </li>
-                </ul>
+              باشگاه ها
+            </button>
+          </li>
+          <li class="nav-item">
+            <button
+              aria-controls="show-coachs"
+              aria-selected="false"
+              class="nav-link"
+              data-bs-target="#show-coachs"
+              data-bs-toggle="tab"
+              role="tab"
+              type="button"
+            >
+              <i class="ti ti-users ti-xs me-1"></i>
+
+              مربیان
+            </button>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <!--/ Navbar pills -->
+    <!-- Connection Cards -->
+    <div class="tab-content px-2 mx-1 pb-0">
+      <div class="tab-pane fade" id="show-coachs" role="tabpanel">
+        <div class="row g-4">
+          <div class="col-xl-4 col-lg-6 col-md-6">
+            <div class="card">
+              <div class="card-body text-center">
+                <div class="dropdown btn-pinned">
+                  <button aria-expanded="false" class="btn dropdown-toggle hide-arrow p-0" data-bs-toggle="dropdown" type="button">
+                    <i class="ti ti-dots-vertical text-muted"></i>
+                  </button>
+                  <ul class="dropdown-menu dropdown-menu-end">
+                    <li>
+                      <a class="dropdown-item" href="javascript:void(0);">دنبال نکردن</a>
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="javascript:void(0);">مسدود کردن</a>
+                    </li>
+                    <li>
+                      <hr class="dropdown-divider" />
+                    </li>
+                    <li>
+                      <a class="dropdown-item text-danger" href="javascript:void(0);">حذف</a>
+                    </li>
+                  </ul>
+                </div>
+                <div class="mx-auto my-3">
+                  <img alt="تصویر آواتار" class="rounded-circle w-px-100" src="../../assets/img/avatars/3.png" />
+                </div>
+                <h4 class="mb-1 card-title">مصطفی معماری</h4>
+
+                <div class="d-flex align-items-center justify-content-around my-3 py-1">
+                  <div>
+                    <h4 class="mb-0">2</h4>
+                    <span>باشگاه</span>
+                  </div>
+                  <div>
+                    <h4 class="mb-0">1200</h4>
+                    <span>شاگرد</span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <!-- /Activity Timeline -->
-    </div>
-    <!--/ User Content -->
-  </div>
-  <!-- Modal -->
-  <!-- Edit User Modal -->
-  <div aria-hidden="true" class="modal fade" id="editUser" tabindex="-1">
-    <div class="modal-dialog modal-lg modal-simple modal-edit-user">
-      <div class="modal-content p-3 p-md-5">
-        <div class="modal-body">
-          <button aria-label="بستن" class="btn-close" data-bs-dismiss="modal" type="button"></button>
-          <div class="text-center mb-4">
-            <h3 class="mb-2">ویرایش اطلاعات کاربر</h3>
-            <p class="text-muted">به روزرسانی اطلاعات کاربر یک ممیزی حریم خصوصی دریافت می کند.</p>
-          </div>
-          <form class="row g-3" id="editUserForm" onsubmit="return false">
-            <div class="col-12 col-md-6">
-              <label class="form-label" for="modalEditUserFirstName">نام کوچک</label>
-              <input class="form-control" id="modalEditUserFirstName" name="modalEditUserFirstName" placeholder="امیر" type="text" />
-            </div>
-            <div class="col-12 col-md-6">
-              <label class="form-label" for="modalEditUserLastName">نام خانوادگی</label>
-              <input class="form-control" id="modalEditUserLastName" name="modalEditUserLastName" placeholder="مقصودلو" type="text" />
-            </div>
-            <div class="col-12">
-              <label class="form-label" for="modalEditUserName">نام کاربری</label>
-              <input class="form-control" id="modalEditUserName" name="modalEditUserName" placeholder="john.doe.007" type="text" />
-            </div>
-            <div class="col-12 col-md-6">
-              <label class="form-label" for="modalEditUserEmail">ایمیل</label>
-              <input class="form-control" id="modalEditUserEmail" name="modalEditUserEmail" placeholder="example@domain.com" type="text" />
-            </div>
-            <div class="col-12 col-md-6">
-              <label class="form-label" for="modalEditUserStatus">وضعیت</label>
-              <select aria-label="نمونه انتخاب پیش فرض" class="select2 form-select" id="modalEditUserStatus" name="modalEditUserStatus">
-                <option selected>وضعیت</option>
-                <option value="1">فعال</option>
-                <option value="2">غیر فعال</option>
-                <option value="3">معلق</option>
-              </select>
-            </div>
-            <div class="col-12 col-md-6">
-              <label class="form-label" for="modalEditTaxID">شناسه مالیاتی</label>
-              <input class="form-control modal-edit-tax-id" id="modalEditTaxID" name="modalEditTaxID" placeholder="123 456 7890" type="text" />
-            </div>
-            <div class="col-12 col-md-6">
-              <label class="form-label" for="modalEditUserPhone">شماره تلفن</label>
-              <div class="input-group">
-                <input class="form-control phone-number-mask ltr" id="modalEditUserPhone" name="modalEditUserPhone" placeholder="913 000 0000" type="text" />
-                <span class="input-group-text">IR (+98)</span>
+      <div class="tab-pane fade show active" id="show-clubs" role="tabpanel">
+        <div class="row g-4">
+          <div class="col-xl-4 col-lg-6 col-md-6">
+            <div class="card">
+              <div class="card-body">
+                <div class="d-flex align-items-center mb-3">
+                  <a href="javascript:;" class="d-flex align-items-center">
+                    <div class="me-2 text-body h5 mb-0">آکادمی تکواندو یاری</div>
+                  </a>
+                </div>
+                <p class="mb-3">آدرس : مارلیک ، بلوار هفت تیر</p>
+                <div class="d-flex justify-content-between pt-1">
+                  <div class="">
+                    <a href="javascript:;" class="me-2"><span class="badge bg-label-primary">آقایان</span></a>
+                    <a href="javascript:;" class="me-2"><span class="badge bg-label-primary">بانوان</span></a>
+                  </div>
+                  <div class="">
+                    <a href="javascript:;"><span class="badge bg-label-warning">تکواندو</span></a>
+                  </div>
+                </div>
               </div>
             </div>
-            <div class="col-12 col-md-6">
-              <label class="form-label" for="modalEditUserLanguage">زبان</label>
-              <select class="select2 form-select" id="modalEditUserLanguage" multiple name="modalEditUserLanguage">
-                <option value="">انتخاب کنید</option>
-                <option selected value="english">انگلیسی</option>
-                <option value="spanish">اسپانیایی</option>
-                <option value="french">فرانسوی</option>
-                <option value="german">آلمانی</option>
-                <option value="dutch">هلندی</option>
-                <option value="hebrew">عبری</option>
-                <option value="sanskrit">سانسکریت</option>
-                <option value="hindi">هندی</option>
-              </select>
-            </div>
-            <div class="col-12 col-md-6">
-              <label class="form-label" for="modalEditUserCountry">کشور</label>
-              <select class="select2 form-select" data-allow-clear="true" id="modalEditUserCountry" name="modalEditUserCountry">
-                <option value="">انتخاب کنید</option>
-                <option value="Australia">استرالیا</option>
-                <option value="Bangladesh">بنگلادش</option>
-                <option value="Belarus">بلاروس</option>
-                <option value="Brazil">برزیل</option>
-                <option value="Canada">کانادا</option>
-                <option value="China">چین</option>
-                <option value="France">فرانسه</option>
-                <option value="Germany">آلمان</option>
-                <option value="India">هندوستان</option>
-                <option value="Indonesia">اندونزی</option>
-                <option value="Israel">اسرائيل</option>
-                <option value="Italy">ایتالیا</option>
-                <option value="Japan">ژاپن</option>
-                <option value="Korea">جمهوری کره</option>
-                <option value="Mexico">مکزیک</option>
-                <option value="Philippines">فیلیپین</option>
-                <option value="Russia">فدراسیون روسیه</option>
-                <option value="South Africa">آفریقای جنوبی</option>
-                <option value="Thailand">تایلند</option>
-                <option value="Turkey">ترکیه</option>
-                <option value="Ukraine">اوکراین</option>
-                <option value="United Arab Emirates">امارات متحده عربی</option>
-                <option value="United Kingdom">انگلستان</option>
-                <option value="United States">ایالات متحده</option>
-              </select>
-            </div>
-            <div class="col-12">
-              <label class="switch">
-                <input class="switch-input" type="checkbox" />
-                <span class="switch-toggle-slider">
-                  <span class="switch-on"></span>
-                  <span class="switch-off"></span>
-                </span>
-                <span class="switch-label">به عنوان آدرس صورتحساب استفاده شود؟</span>
-              </label>
-            </div>
-            <div class="col-12 text-center">
-              <button class="btn btn-primary me-sm-3 me-1" type="submit">ارسال</button>
-              <button aria-label="بستن" class="btn btn-label-secondary" data-bs-dismiss="modal" type="reset">لغو</button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!--/ Edit User Modal -->
-  <!-- Add New Credit Card Modal -->
-  <div aria-hidden="true" class="modal fade" id="upgradePlanModal" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered modal-simple modal-upgrade-plan">
-      <div class="modal-content p-3 p-md-5">
-        <div class="modal-body">
-          <button aria-label="بستن" class="btn-close" data-bs-dismiss="modal" type="button"></button>
-          <div class="text-center mb-4">
-            <h3 class="mb-2">خرید اشتراک</h3>
-            <p>اشتراک مناسب کاربر را انتخاب کنید.</p>
-          </div>
-          <form class="row g-3" id="upgradePlanForm" onsubmit="return false">
-            <div class="col-sm-8">
-              <label class="form-label" for="choosePlan">اشتراک را انتخاب کنید</label>
-              <select aria-label="طرح را انتخاب کنید" class="form-select" id="choosePlan" name="choosePlan">
-                <option selected>انتخاب اشتراک</option>
-                <option value="standard">اقتصادی - 99 ءتء در ماه</option>
-                <option value="exclusive">استاندارد - 249 ءتء در ماه</option>
-                <option value="Enterprise">تجاری - 499 ءتء در ماه</option>
-              </select>
-            </div>
-            <div class="col-sm-4 d-flex align-items-end">
-              <button class="btn btn-primary" type="submit">خرید اشتراک</button>
-            </div>
-          </form>
-        </div>
-        <hr class="mx-md-n5 mx-n3" />
-        <div class="modal-body">
-          <p class="mb-0">اشتراک فعلی استاندارد است</p>
-          <div class="d-flex justify-content-between align-items-center flex-wrap">
-            <div class="d-flex justify-content-center me-2 mt-2">
-              <sup class="h6 pricing-currency pt-1 mt-3 mb-0 me-1 text-primary">ءتء</sup>
-              <h1 class="display-5 mb-0 text-primary" style="line-height: 80%">99</h1>
-              <sub class="h6 pricing-duration mt-auto mb-2 text-muted">درماه</sub>
-            </div>
-            <button class="btn btn-label-danger cancel-subscription mt-3">لغو اشتراک</button>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <!--/ Add New Credit Card Modal -->
-  <!-- /Modal -->
+  <!-- / Content -->
 </div>

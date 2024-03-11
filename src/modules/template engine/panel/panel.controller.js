@@ -6,7 +6,13 @@ class PanelController {
   }
   async main(req, res, next) {
     try {
-      res.render("./pages/panel/main.ejs");
+      const userAuth = req.userAuth;
+
+      if (userAuth.role === "STUDENT") {
+        res.render("./pages/panel/profile-student.ejs");
+      } else if (userAuth.role === "ADMIN_CLUB") {
+        res.render("./pages/panel/main.ejs");
+      }
     } catch (error) {
       next(error);
     }
