@@ -9,19 +9,10 @@ class PanelController {
       const userAuth = req.userAuth;
 
       if (userAuth.role === "STUDENT") {
-        res.render("./pages/panel/profile-student.ejs");
+        res.render("./pages/panel/student/profile.ejs");
       } else if (userAuth.role === "ADMIN_CLUB") {
         res.render("./pages/panel/main.ejs");
       }
-    } catch (error) {
-      next(error);
-    }
-  }
-  async addStudent(req, res, next) {
-    try {
-      res.locals.layout = "./layouts/panel/add-student.ejs";
-      res.render("./pages/panel/add-student.ejs");
-      // res.render("./pages/panel/f.ejs");
     } catch (error) {
       next(error);
     }
