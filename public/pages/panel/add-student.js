@@ -227,13 +227,6 @@ document.addEventListener("DOMContentLoaded", function (e) {
               regexp: /^([0-9]){10}$/,
               message: "کدملی وارد شده معتبر نمی باشد.",
             },
-            // integer: {
-            //   message: "لطفا فقط از اعداد برای ثبت کدملی استفاده کنید.",
-            // },
-            // stringLength: {
-            //   min: 10,
-            //   message: "کد ملی وارد شده صحیح نمی باشد",
-            // },
           },
         },
         birthDay: {

@@ -27,8 +27,7 @@ class AuthController {
       const { accessToken, userExist } = await this.#service.userLogin(identifier, password);
 
       // req.flash("success", category_message_1.CategoryMessage.Updated);
-
-      return res.cookie("access_token", accessToken, { httpOnly: true, maxAge: 604800000 }).redirect("/panel/products");
+      return res.cookie("access_token", accessToken, { httpOnly: true, maxAge: 604800000 }).redirect("/");
 
       // .status(200)
       // .json({
