@@ -1,8 +1,8 @@
-const studentController = require("./student.controller");
+const StudentController = require("./student.controller");
 
 const router = require("express").Router();
 
-router.get("/register", studentController.register);
-// router.get("/list", studentController.list);
+router.get("/register", StudentController.register);
+router.get("/list", StudentController.list);
 
 module.exports = { StudentRouter: router };

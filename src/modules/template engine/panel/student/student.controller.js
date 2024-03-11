@@ -12,10 +12,10 @@ class StudentController {
       next(error);
     }
   }
-  async student(req, res, next) {
+  async list(req, res, next) {
     try {
-      res.locals.layout = "./layouts/panel/add-student.ejs";
-      res.render("./pages/panel/add-student.ejs");
+      res.locals.layout = "./layouts/panel/student/list.ejs";
+      res.render("./pages/panel/student/list.ejs");
     } catch (error) {
       next(error);
     }
