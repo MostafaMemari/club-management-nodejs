@@ -2,7 +2,12 @@
 * demo.css
 * File include item demo only specific css only
 ******************************************************************************/
-
+@media (max-width: 575.98px) {
+  .name-table {
+    display: inline-block;
+    max-width: 9.5rem;
+  }
+}
 .light-style .menu .app-brand.demo {
   height: 64px;
 }
@@ -86,7 +91,7 @@
   direction: ltr !important;
 }
 
-[dir='rtl'] .rtl-only {
+[dir="rtl"] .rtl-only {
   display: block !important;
 }
 

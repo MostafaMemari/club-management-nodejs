@@ -71,122 +71,6 @@ $(function () {
   }
 });
 
-/**
- * Form Layout Vertical
- */
-
-(function () {
-  const phoneMaskList = document.querySelectorAll(".phone-mask"),
-    creditCardMask = document.querySelector(".credit-card-mask"),
-    expiryDateMask = document.querySelector(".expiry-date-mask"),
-    cvvMask = document.querySelector(".cvv-code-mask"),
-    datepickerList = document.querySelectorAll(".dob-picker"),
-    formCheckInputPayment = document.querySelectorAll(".form-check-input-payment");
-
-  // Phone Number
-  if (phoneMaskList) {
-    phoneMaskList.forEach(function (phoneMask) {
-      new Cleave(phoneMask, {
-        phone: true,
-        phoneRegionCode: "US",
-      });
-    });
-  }
-
-  // Credit Card
-  if (creditCardMask) {
-    new Cleave(creditCardMask, {
-      creditCard: true,
-      onCreditCardTypeChanged: function (type) {
-        if (type != "" && type != "unknown") {
-          document.querySelector(".card-type").innerHTML = '<img src="' + assetsPath + "img/icons/payments/" + type + '-cc.png" height="28"/>';
-        } else {
-          document.querySelector(".card-type").innerHTML = "";
-        }
-      },
-    });
-  }
-
-  // Expiry Date Mask
-  if (expiryDateMask) {
-    new Cleave(expiryDateMask, {
-      date: true,
-      delimiter: "/",
-      datePattern: ["m", "y"],
-    });
-  }
-
-  // CVV
-  if (cvvMask) {
-    new Cleave(cvvMask, {
-      numeral: true,
-      numeralPositiveOnly: true,
-    });
-  }
-
-  // Flat Picker Birth Date
-  if (datepickerList) {
-    datepickerList.forEach(function (datepicker) {
-      datepicker.flatpickr({
-        monthSelectorType: "static",
-      });
-    });
-  }
-
-  // Toggle CC Payment Method based on selected option
-  if (formCheckInputPayment) {
-    formCheckInputPayment.forEach(function (paymentInput) {
-      paymentInput.addEventListener("change", function (e) {
-        const paymentInputValue = e.target.value;
-        if (paymentInputValue === "credit-card") {
-          document.querySelector("#form-credit-card").classList.remove("d-none");
-        } else {
-          document.querySelector("#form-credit-card").classList.add("d-none");
-        }
-      });
-    });
-  }
-})();
-
-// select2 (jquery)
-// $(function () {
-//   // Select2 club
-//   var select2 = $('[name="club"]');
-//   if (select2.length) {
-//     select2.each(function () {
-//       var $this = $(this);
-//       $this.wrap('<div class="position-relative"></div>').select2({
-//         placeholder: "باشگاه را انتخاب کنید",
-//         dropdownParent: $this.parent(),
-//       });
-//     });
-//   }
-
-//   // Select2 coach
-//   var select2 = $('[name="coach"]');
-//   if (select2.length) {
-//     select2.each(function () {
-//       var $this = $(this);
-//       $this.wrap('<div class="position-relative"></div>').select2({
-//         placeholder: "مربی را انتخاب کنید",
-//         dropdownParent: $this.parent(),
-//       });
-//     });
-//   }
-
-//   // Select2 belt
-//   var select2 = $('[name="belt"]');
-//   if (select2.length) {
-//     select2.each(function () {
-//       var $this = $(this);
-//       $this.wrap('<div class="position-relative"></div>').select2({
-//         placeholder: "کمربند را انتخاب کنید.",
-//         dropdownParent: $this.parent(),
-//       });
-//     });
-//   }
-// });
-
 document.addEventListener("DOMContentLoaded", function (e) {
   (function () {
     document.getElementById("radio-man").checked = true;
@@ -368,3 +252,48 @@ document.addEventListener("DOMContentLoaded", function (e) {
     }
   })();
 });
+
+(function () {
+  const bsDatepickerBirthday = document.querySelector("#bs-datepicker-birthday"),
+    bsDatepickerRegisterDate = document.querySelector("#bs-datepicker-register-date"),
+    bsDatepickerBeltDate = document.querySelector("#bs-datepicker-belt-date"),
+    bsDatepickerSportsInsuranceDate = document.querySelector("#bs-datepicker-sportsInsurance-date"),
+    mobile = document.querySelector("#mobile");
+  if (bsDatepickerBirthday) {
+    new Cleave(bsDatepickerBirthday, {
+      date: true,
+      delimiter: "/",
+      datePattern: ["Y", "m", "d"],
+    });
+  }
+  if (bsDatepickerRegisterDate) {
+    new Cleave(bsDatepickerRegisterDate, {
+      date: true,
+      delimiter: "/",
+      datePattern: ["Y", "m", "d"],
+    });
+  }
+  if (bsDatepickerBeltDate) {
+    new Cleave(bsDatepickerBeltDate, {
+      date: true,
+      delimiter: "/",
+      datePattern: ["Y", "m", "d"],
+    });
+  }
+  if (bsDatepickerSportsInsuranceDate) {
+    new Cleave(bsDatepickerSportsInsuranceDate, {
+      date: true,
+      delimiter: "/",
+      datePattern: ["Y", "m", "d"],
+    });
+  }
+
+  // Phone Number
+  if (mobile) {
+    new Cleave(mobile, {
+      prefix: "+98",
+      blocks: [3, 3, 3, 4],
+      uppercase: true,
+    });
+  }
+})();
