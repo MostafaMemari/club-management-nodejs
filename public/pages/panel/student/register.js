@@ -292,7 +292,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
   if (mobile) {
     new Cleave(mobile, {
       prefix: "+98",
-      blocks: [3, 3, 3, 4],
+      blocks: [13],
       uppercase: true,
     });
   }

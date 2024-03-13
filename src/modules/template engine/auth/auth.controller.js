@@ -14,8 +14,8 @@ class AuthController {
   }
   async studentLogin(req, res, next) {
     try {
-      res.locals.layout = "./layouts/auth/main.ejs";
-      res.render("./pages/auth/student-login.ejs");
+      res.locals.layout = "./layouts/panel/student/login.ejs";
+      res.render("./pages/panel/student/login.ejs");
     } catch (error) {
       next(error);
     }

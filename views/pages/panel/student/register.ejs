@@ -32,7 +32,7 @@
             </div>
             <div class="col-md-6 mb-3">
               <label class="form-label" for="bs-datepicker-birthday">تاریخ تولد</label>
-              <input class="form-control" id="bs-datepicker-birthday" name="birthDay" placeholder="1378/06/22" type="text" />
+              <input class="form-control" maxlength="10" id="bs-datepicker-birthday" name="birthDay" placeholder="1378/06/22" type="text" />
             </div>
             <div class="col-md-6 mb-3">
               <label class="form-label" for="fatherName">نام پدر</label>
@@ -67,12 +67,11 @@
             </div>
             <div class="col-md-6 mb-3">
               <label class="form-label" for="mobile">تلفن همراه</label>
-
               <input class="form-control prefix-mask ltr" id="mobile" name="mobile" placeholder="91# ### ####" type="text" />
             </div>
             <div class="col-md-6 mb-3">
               <label class="form-label" for="phone">تلفن داخلی</label>
-              <input aria-label="" class="form-control ltr" id="phone" name="phone" placeholder="02165102415" type="text" />
+              <input maxlength="12" class="form-control ltr" id="phone" name="phone" placeholder="02165102415" type="text" />
             </div>
             <div class="col-md-6 mb-3">
               <label class="form-label" for="studentProfile">عکس پروفایل</label>
@@ -80,7 +79,7 @@
             </div>
             <div class="mb-3 col-md-6 ecommerce-select2-dropdown">
               <label class="form-label" for="bs-datepicker-register-date">تاریخ ثبت نام</label>
-              <input class="form-control" id="bs-datepicker-register-date" name="registerDate" placeholder="1402/12/20" type="text" />
+              <input class="form-control" maxlength="10" id="bs-datepicker-register-date" name="registerDate" placeholder="1402/12/20" type="text" />
             </div>
             <div class="col mb-3">
               <div class="form-group">
@@ -91,7 +90,7 @@
           </div>
 
           <div class="col-12">
-            <button class="btn btn-primary" name="submitButton" type="submit">ثبت هنرجو</button>
+            <button id="btn-form" class="btn btn-primary" name="submitButton" type="submit">ثبت هنرجو</button>
           </div>
         </div>
       </div>
@@ -148,7 +147,7 @@
 
           <div class="co mb-3">
             <label class="form-label" for="bs-datepicker-belt-date">تاریخ کمربند</label>
-            <input class="form-control" id="bs-datepicker-belt-date" placeholder="1400/02/06" type="text" />
+            <input class="form-control" maxlength="10" id="bs-datepicker-belt-date" placeholder="1400/02/06" type="text" />
           </div>
         </div>
       </div>
@@ -160,12 +159,12 @@
           <!-- Vendor -->
           <div class="mb-3 col ecommerce-select2-dropdown">
             <label class="form-label" for="bs-datepicker-sportsInsurance-date">تاریخ بیمه ورزشی</label>
-            <input class="form-control" id="bs-datepicker-sportsInsurance-date" placeholder="1400/05/06" type="text" />
+            <input class="form-control" maxlength="10" id="bs-datepicker-sportsInsurance-date" placeholder="1400/05/06" type="text" />
           </div>
 
           <div class="col-12 mb-3">
             <label class="form-label" for="memberShipValidity">شارژ بانک اطلاعاتی</label>
-            <input aria-label="" class="form-control" id="memberShipValidity" name="memberShipValidity" placeholder="1402" type="text" />
+            <input maxlength="4" class="form-control" id="memberShipValidity" name="memberShipValidity" placeholder="1402" type="text" />
           </div>
         </div>
       </div>

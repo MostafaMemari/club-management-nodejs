@@ -2,6 +2,18 @@
 * demo.css
 * File include item demo only specific css only
 ******************************************************************************/
+@media (max-width: 992px) {
+  #btn-form {
+    width: 90%;
+    height: 2.5rem;
+    margin-bottom: 0.5rem;
+    z-index: 5;
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
 @media (max-width: 575.98px) {
   .name-table {
     display: inline-block;
