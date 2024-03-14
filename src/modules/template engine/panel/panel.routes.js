@@ -1,11 +1,11 @@
 const { isAuth } = require("../../../common/middlewares/isAuth");
+const { AdminRouter } = require("./admin/admin.routes");
 const PanelController = require("./panel.controller");
-const { StudentRouter } = require("./student/student.routes");
 
 const router = require("express").Router();
 
 router.get("/", isAuth, PanelController.main);
 
-router.use("/student", isAuth, StudentRouter);
+router.use("/", isAuth, AdminRouter);
 
 module.exports = { PanelRouter: router };

@@ -53,7 +53,7 @@ class StudentService {
         $match: {},
       },
       {
-        $limit: 50,
+        $limit: 100,
       },
       {
         $addFields: {
@@ -64,6 +64,20 @@ class StudentService {
               lang: "js",
             },
           },
+        },
+      },
+      {
+        $lookup: {
+          from: "belts",
+          localField: "belt",
+          foreignField: "_id",
+          as: "belt",
+        },
+      },
+      { $unwind: "$belt" },
+      {
+        $addFields: {
+          belt: "$belt.name",
         },
       },
     ]);
@@ -130,7 +144,6 @@ class StudentService {
       .then((items) => items[0]);
 
     if (!student) throw createHttpError.InternalServerError();
-    console.log({ ...student, listBeltExams, ageGroups });
     return { ...student, listBeltExams, ageGroups };
   }
   async remove(studentID) {

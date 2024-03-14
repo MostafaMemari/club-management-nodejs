@@ -16,20 +16,18 @@
       <div class="col-sm-4 mb-2">
         <div class="select2Dark">
           <select class="select2 form-select" id="select2Dark" name="belts" multiple>
-            <option value="1">گزینه 1</option>
-            <option value="2">گزینه 2</option>
-            <option value="3">گزینه 3</option>
-            <option value="4">گزینه 4</option>
+            <% for (const belt of belts) { %>
+            <option value="<%- belt._id%>"><%- belt.name %></option>
+            <% } %>
           </select>
         </div>
       </div>
       <div class="col-sm-4 mb-2">
         <div class="select2Dark">
           <select class="select2 form-select" id="select2" name="ages" multiple>
-            <option value="1">گزینه 1</option>
-            <option value="2">گزینه 2</option>
-            <option value="3">گزینه 3</option>
-            <option value="4">گزینه 4</option>
+            <% for (const ageGroup of ageGroups) { %>
+            <option value="<%- ageGroup._id%>"><%- ageGroup.name %></option>
+            <% } %>
           </select>
         </div>
       </div>
@@ -44,34 +42,47 @@
             <th class="d-none d-sm-table-cell">کد ملی</th>
             <th class="d-none d-sm-table-cell">کمربند</th>
             <th class="d-none d-lg-table-cell">رده سنی</th>
-            <th class="d-none d-lg-table-cell">تاریخ آزمون</th>
             <th class="d-none d-md-table-cell">شارژ بانک</th>
             <th class="col-1">عملیات</th>
           </tr>
         </thead>
         <tbody class="table-border-bottom-0">
-          <tr style="width: 5px">
+          <% for (const student of students) { %>
+          <tr>
             <td class="col-1">
               <div class="avatar">
-                <img alt="آواتار" class="rounded" src="../../assets/img/avatars/1.png" />
+                <% if(student.imageUrl) { %>
+                <img alt="آواتار" class="rounded" src="student.imageUrl" />
+                <% }else { %>
+                <!---->
+                <% const name = `${student.firstName.charAt(0)}‌${student.lastName.charAt(0)}` %>
+                <!---->
+                <% const colors = ["primary", "secondary", "success", "danger", "warning", "info"] %>
+                <!---->
+                <% const randomColor = colors[Math.floor(Math.random() * colors.length)] %>
+                <!---->
+
+                <span class="avatar-initial rounded-circle bg-label-<%- randomColor %>"><%- name %></span>
+                <% } %>
               </div>
             </td>
             <td>
               <!-- <i class="ti ti-brand-angular ti-lg text-danger me-3"></i> -->
-              <span class="name-table text-truncate fw-medium">سیدمحمد مهدی آقائی دوست رودبنه</span>
+              <span class="name-table text-truncate fw-medium"><%- student.firstName %> <%- student.lastName %></span>
             </td>
             <td class="d-none d-sm-table-cell">
-              <span class="fw-medium">4900782343</span>
+              <span class="fw-medium"><%- student.nationalCode %></span>
             </td>
             <td class="d-none d-sm-table-cell">
-              <span class="fw-medium">سبز</span>
+              <span class="fw-medium"><%- student.belt %></span>
             </td>
             <td class="d-none d-lg-table-cell">
-              <span class="fw-medium">نوجوانان</span>
+              <% for (const ageGroup of student.ageGroups) { %>
+              <span class="fw-medium badge bg-label-dark"><%- ageGroup.name %></span>
+
+              <% } %>
             </td>
-            <td class="d-none d-lg-table-cell">
-              <span class="fw-medium">1402/05/06</span>
-            </td>
+
             <td class="d-none d-md-table-cell">
               <span class="fw-medium">1402</span>
             </td>
@@ -98,6 +109,7 @@
               </div>
             </td>
           </tr>
+          <% } %>
         </tbody>
       </table>
     </div>
