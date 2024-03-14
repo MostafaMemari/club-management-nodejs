@@ -17,6 +17,7 @@ class BeltExamController {
     try {
       validate(req);
       const bodyData = matchedData(req, { locations: ["body"] });
+
       await this.#service.create(bodyData);
 
       res.status(StatusCodes.CREATED).json({

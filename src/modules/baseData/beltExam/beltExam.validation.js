@@ -3,7 +3,7 @@ const createHttpError = require("http-errors");
 
 const { RegExDateShmasi } = require("../../../common/constant/constans");
 const { normalizeCalendar } = require("../../../common/utils/normalizeData");
-const { removeDuplicatesArray } = require("../../../common/utils/function");
+const { removeDuplicatesArray, convarteStringToArray } = require("../../../common/utils/function");
 
 const beltService = require("../belt/belt.service");
 const beltExamService = require("./beltExam.service");
@@ -17,9 +17,7 @@ function BeltExamValidationRequired() {
       .escape()
       .isString()
       .isLength({ min: 2, max: 100 })
-      .custom(async (name, { req }) => {
-        await beltExamService.checkExistBeltExamByName(name);
-      }),
+      .withMessage("نام رویداد وارد شده معتبر نمی باشد"),
 
     body("genders")
       .exists({ nullable: true, checkFalsy: true })
@@ -37,13 +35,7 @@ function BeltExamValidationRequired() {
 
     body("belts")
       .exists({ nullable: true, checkFalsy: true })
-      .customSanitizer((belts) => {
-        if (Array.isArray(belts)) {
-          return belts;
-        } else {
-          return belts?.split(",");
-        }
-      })
+      .customSanitizer((belts) => convarteStringToArray(belts))
       .isArray()
       .customSanitizer((belts) => removeDuplicatesArray(belts))
       .custom(async (belts) => {
@@ -80,19 +72,14 @@ function BeltExamValidationOptional() {
       .escape()
       .isString()
       .isLength({ min: 2, max: 100 })
-      .custom(async (name, { req }) => {
-        await beltExamService.checkExistBeltExamByName(name);
-      }),
+      .withMessage("نام رویداد وارد شده معتبر نمی باشد"),
 
     body("description").optional({ nullable: true, checkFalsy: true }).trim().notEmpty().escape().isString().isLength({ min: 2, max: 200 }),
 
     body("eventPlace")
       .optional({ nullable: true, checkFalsy: true })
-      .trim()
-      .notEmpty()
-      .escape()
-      .isString()
-      .isLength({ min: 1, max: 100 })
+      .customSanitizer((place) => convarteStringToArray(place))
+      .isArray()
       .withMessage("محل برگزاری آزمون معتبر نمی باشد"),
 
     body("genders")

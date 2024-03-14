@@ -20,11 +20,11 @@
  *        properties:
  *          name:
  *            type: string
- *            default: آزمون دوره 556
+ *            default: آزمون دوره 280
  *          description:
  *            type: string
  *          eventPlace:
- *            type: string
+ *            type: array
  *          genders:
  *            type: array
  *            items:
@@ -32,7 +32,7 @@
  *              enum: ["آقایان" , "بانوان"]
  *          belts:
  *            type: array
- *            default: [6554f05818363411a986bbdd,6554f09518363411a986bbe3]
+ *            default: [6554f05818363411a986bbdd,6554f09118363411a986bbe0,6554f09518363411a986bbe3,6554f0a418363411a986bbe6,6554f0a718363411a986bbe9,6554f0ba18363411a986bbec,6554f0c118363411a986bbef]
  *          eventDate:
  *            type: string
  *            default: 1402/05/6
@@ -50,11 +50,11 @@
  *        properties:
  *          name:
  *            type: string
- *            default: آزمون دوره 556
+ *            default: آزمون دوره 280
  *          description:
  *            type: string
  *          eventPlace:
- *            type: string
+ *            type: array
  *          genders:
  *            type: array
  *            items:
@@ -62,7 +62,7 @@
  *              enum: ["آقایان" , "بانوان"]
  *          belts:
  *            type: array
- *            default: [6554f05818363411a986bbdd,6554f09518363411a986bbe3]
+ *            default: [6554f05818363411a986bbdd,6554f09118363411a986bbe0,6554f09518363411a986bbe3,6554f0a418363411a986bbe6,6554f0a718363411a986bbe9,6554f0ba18363411a986bbec,6554f0c118363411a986bbef]
  *          eventDate:
  *            type: string
  *            default: 1402/05/6

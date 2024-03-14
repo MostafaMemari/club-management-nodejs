@@ -7,7 +7,7 @@ const { BeltMessage } = require("./belt.message");
 class BeltService {
   #Model;
   constructor() {
-    this.#Model = BeltMessage;
+    this.#Model = BeltModel;
   }
   async create(bodyData) {
     const resultBeltCreate = await this.#Model.create({

@@ -6,7 +6,7 @@ const BeltExamSchema = new Schema(
   {
     name: { type: String, required: true },
     description: { type: String },
-    eventPlace: { type: String },
+    eventPlace: [{ type: String }],
     genders: {
       type: Array,
       required: true,

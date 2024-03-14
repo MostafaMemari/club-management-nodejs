@@ -29,13 +29,13 @@ class AuthController {
       // req.flash("success", category_message_1.CategoryMessage.Updated);
       return res.cookie("access_token", accessToken, { httpOnly: true, maxAge: 604800000 }).redirect("/");
 
-      res.status(200).json({
-        status: "success",
-        message: AuthMessage.UserLogin,
-        data: {
-          accessToken: token,
-        },
-      });
+      // res.status(200).json({
+      //   status: "success",
+      //   message: AuthMessage.UserLogin,
+      //   data: {
+      //     accessToken,
+      //   },
+      // });
     } catch (error) {
       next(error);
     }
