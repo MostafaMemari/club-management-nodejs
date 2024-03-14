@@ -251,7 +251,7 @@
                     </svg>
                   </div>
                   <h5 class="text-center">وضعیت شارژ بانک اطلاعاتی</h6>
-                  <h6 class="text-center fst-italic">نیاز به <span class="h5"><%- student.memberShipValidity.years %></span> سال تمدید اعتبار</h6>
+                  <h6 class="text-center fst-italic">نیاز به <span class="h5"><%- student.memberShipValidity.years %></span> سال تمدید اعتبار داری</h6>
                 </div>
               </div>
             <% } %>
@@ -261,43 +261,32 @@
         <div class="col-xl-6 col-lg-12 col-md-12">
           <div class="col-12">
             <div class="card mb-4">
+              <div class="card card-border-shadow-primary h-100">
               <h5 class="card-header">رویداد های پیش رو</h5>
-              <div class="card-body pb-0">
-                <ul class="timeline mb-0">
-                  <li class="timeline-item timeline-item-transparent">
-                    <span class="timeline-point timeline-point-primary"></span>
-                    <div class="timeline-event">
-                      <div class="timeline-header mb-1">
-                        <h6 class="mb-0">آزمون دوره 259</h6>
-                      </div>
-                      <p class="mb-2">مهلت ثبت نام : 1402/12/10</p>
-                      <p class="mb-2">زمان برگزاری : 1402/12/10</p>
-                      <p class="mb-2">محل برگزاری : البرز</p>
-                    </div>
-                  </li>
-                  <li class="timeline-item timeline-item-transparent">
-                    <span class="timeline-point timeline-point-primary"></span>
-                    <div class="timeline-event">
-                      <div class="timeline-header mb-1">
-                        <h6 class="mb-0">آزمون دوره 260</h6>
-                      </div>
-                      <p class="mb-2">مهلت ثبت نام : 1403/02/10</p>
-                      <p class="mb-2">زمان برگزاری : 1403/02/10</p>
-                      <p class="mb-2">محل برگزاری : البرز</p>
-                    </div>
-                  </li>
-                  <li class="timeline-item timeline-item-transparent">
-                    <span class="timeline-point timeline-point-primary"></span>
-                    <div class="timeline-event">
-                      <div class="timeline-header mb-1">
-                        <h6 class="mb-0">آزمون دوره 261</h6>
-                      </div>
-                      <p class="mb-2">مهلت ثبت نام : 1403/04/10</p>
-                      <p class="mb-2">زمان برگزاری : 1403/04/10</p>
-                      <p class="mb-2">محل برگزاری : البرز</p>
-                    </div>
-                  </li>
-                </ul>
+                <div class="card-body pb-0 pl-1">
+                  <ul class="timeline mb-0">
+
+                    <% if(student?.listBeltExams.length > 0) { %>
+                      <% for(const event of student.listBeltExams) { %>
+                        <li class="timeline-item timeline-item-transparent" style="padding-right:1.5rem;">
+                          <span class="timeline-point timeline-point-primary"></span>
+                          <div class="timeline-event">
+                            <div class="timeline-header mb-1">
+                              <h6 class="mb-0"><%- event.name %></h6>
+                            </div>
+                            <p class="mb-2">مهلت ثبت نام : <%- event.registerDate %></p>
+                            <p class="mb-2">زمان برگزاری : <%- event.eventDate %></p>
+                            <p class="mb-2">محل برگزاری : 
+                              <% for (const place of event.eventPlace) { %>
+                              <span class="badge bg-label-dark"><%- place %></span>
+                              <% } %>
+                            </p>
+                          </div>
+                        </li>
+                      <% } %>
+                    <% } %>
+                  </ul>
+                </div>
               </div>
             </div>
           </div>

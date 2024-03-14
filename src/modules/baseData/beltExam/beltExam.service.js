@@ -52,7 +52,9 @@ class BeltExamService {
         },
         { belts: 0, genders: 0 }
       )
-      .lean();
+      .lean()
+      .sort({ eventDate: 1 })
+      .limit(3);
 
     return beltExams;
   }

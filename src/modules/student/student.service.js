@@ -81,6 +81,7 @@ class StudentService {
     const studentExist = await this.checkExistStudentByID(studentID);
 
     const listBeltExams = await this.#beltExamService.findBeltExamValidStudent(studentExist);
+
     const ageGroups = await this.#ageGroupService.assignAgeGroupStudentByBirthday(studentExist.birthDay);
     const nextBelt = this.nextBeltDateInfoStudent(studentExist);
 
@@ -129,6 +130,7 @@ class StudentService {
       .then((items) => items[0]);
 
     if (!student) throw createHttpError.InternalServerError();
+    console.log({ ...student, listBeltExams, ageGroups });
     return { ...student, listBeltExams, ageGroups };
   }
   async remove(studentID) {
