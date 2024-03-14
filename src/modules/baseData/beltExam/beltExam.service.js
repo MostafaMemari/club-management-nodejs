@@ -3,7 +3,7 @@ const createHttpError = require("http-errors");
 const { isValidObjectId } = require("mongoose");
 const { BeltExamModel } = require("./beltExam.model");
 const { BeltExamMessage } = require("./beltExam.message");
-const { nextDateDurationMonth } = require("../../../common/utils/calculateDate");
+const { nextDateByDurationMonth } = require("../../../common/utils/calculateDate");
 
 class BeltExamService {
   #Model;
@@ -41,7 +41,7 @@ class BeltExamService {
     let { gender, belt, beltDate } = student;
 
     gender = gender === "مرد" ? "آقایان" : gender === "زن" ? "بانوان" : false;
-    const nextBeltDate = nextDateDurationMonth(beltDate, belt.duration);
+    const nextBeltDate = nextDateByDurationMonth(beltDate, belt.duration);
 
     const beltExams = await this.#Model
       .find(

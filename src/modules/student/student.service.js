@@ -4,15 +4,28 @@ const { Types } = require("mongoose");
 
 const { filterAssignAgeGroupsByBirthDay } = require("../../common/utils/function");
 const { AgeGroupModel } = require("../baseData/ageGroup/ageGroup.model");
-const { nextBeltByBirthDay, calculateNextBeltByBeltDate, nextDateDurationMonth } = require("../../common/utils/calculateDate");
+const {
+  nextBeltByBirthDay,
+  calculateYearMonthDayStatusByDateShamsi,
+  nextDateByDurationMonth,
+  percentDateShamsiByDurationMonth,
+  percentLastYearDateShamsiByDateNow,
+  calculateMemberShipValidity,
+} = require("../../common/utils/calculateDate");
 
 const { StudentMessage } = require("./student.message");
 const { StudentModel } = require("./student.model");
+const beltExamService = require("../baseData/beltExam/beltExam.service");
+const ageGroupService = require("../baseData/ageGroup/ageGroup.service");
 
 class StudentService {
   #Model;
+  #beltExamService;
+  #ageGroupService;
   constructor() {
     this.#Model = StudentModel;
+    this.#beltExamService = beltExamService;
+    this.#ageGroupService = ageGroupService;
   }
   async register(bodyData, userAuth) {
     if (userAuth.role === "COACH" && !userAuth.clubs.includes(bodyData?.club)) {
@@ -64,24 +77,36 @@ class StudentService {
     const studentCreated = await this.#Model.updateOne({ _id: paramData.id }, { ...bodyData });
     if (!studentCreated.modifiedCount) throw createHttpError.InternalServerError("بروزرسانی اطلاعات با خطا مواجه شد");
   }
-  async findByID(studentExist) {
-    const nextBelt = nextBeltByBirthDay(studentExist.birthDay, studentExist.belt.nextBelt);
-    const nextBeltDate = nextDateDurationMonth(studentExist.beltDate, studentExist.belt.duration);
-    const nextBeltDateInfo = calculateNextBeltByBeltDate(nextBeltDate);
+  async findByID(studentID) {
+    const studentExist = await this.checkExistStudentByID(studentID);
 
-    const student = await this.#Model.aggregate([
+    const listBeltExams = await this.#beltExamService.findBeltExamValidStudent(studentExist);
+    const ageGroups = await this.#ageGroupService.assignAgeGroupStudentByBirthday(studentExist.birthDay);
+    const nextBelt = this.nextBeltDateInfoStudent(studentExist);
+
+    const percentSportsInsuranceDate = studentExist?.sportsInsuranceDate
+      ? this.sportsInsuranceDateInfo(studentExist.sportsInsuranceDate)
+      : { status: "ثبت نشده" };
+
+    const memberShipValidity = calculateMemberShipValidity(studentExist.memberShipValidity);
+
+    const student = await this.#Model
+      .aggregate([
         {
           $match: { _id: new Types.ObjectId(studentExist._id) },
         },
-
         {
           $addFields: {
-            beltInfo: {
-              belt: studentExist.belt.name,
-              nextBelt: nextBelt.name,
+            belt: {
+              name: studentExist.belt.name,
               beltDate: "$beltDate",
-              nextBeltDate,
-              nextBeltDateInfo,
+              nextBelt,
+            },
+            sportsInsurance: {
+              ...percentSportsInsuranceDate,
+            },
+            memberShipValidity: {
+              ...memberShipValidity,
             },
           },
         },
@@ -98,14 +123,13 @@ class StudentService {
         {
           $project: {
             beltDate: 0,
-            belt: 0,
           },
         },
       ])
       .then((items) => items[0]);
 
     if (!student) throw createHttpError.InternalServerError();
-    return student;
+    return { ...student, listBeltExams, ageGroups };
   }
   async remove(studentID) {
     const removeResult = await this.#Model.deleteOne({ _id: studentID });
@@ -137,6 +161,29 @@ class StudentService {
   }
   async removeAllCoachInStudnet(coachID) {
     await this.#Model.updateMany({ coach: coachID }, { $unset: { coach: -1 } });
+  }
+  nextBeltDateInfoStudent(studentExist) {
+    const nextBelt = nextBeltByBirthDay(studentExist.birthDay, studentExist.belt.nextBelt);
+    const nextBeltDate = nextDateByDurationMonth(studentExist.beltDate, studentExist.belt.duration);
+    const nextBeltDateInfo = calculateYearMonthDayStatusByDateShamsi(nextBeltDate);
+    const percent = percentDateShamsiByDurationMonth(nextBeltDate, studentExist.belt.duration * 30);
+
+    return {
+      ...nextBeltDateInfo,
+      percent,
+      name: nextBelt.name,
+      date: nextBeltDate,
+    };
+  }
+  sportsInsuranceDateInfo(sportsInsuranceDate) {
+    const percent = percentLastYearDateShamsiByDateNow(sportsInsuranceDate);
+    const sportsInsuranceDateInfo = calculateYearMonthDayStatusByDateShamsi(sportsInsuranceDate);
+
+    return {
+      date: sportsInsuranceDate,
+      percent,
+      ...sportsInsuranceDateInfo,
+    };
   }
 }
 

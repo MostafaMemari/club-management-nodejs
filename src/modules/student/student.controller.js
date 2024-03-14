@@ -76,12 +76,8 @@ class StudentController {
   async findByID(req, res, next) {
     try {
       const { id: studentID } = req.params;
-      const studnetExist = await this.#service.checkExistStudentByID(studentID);
 
-      const listBeltExams = await this.#beltExamService.findBeltExamValidStudent(studnetExist);
-      const ageGroup = await this.#ageGroupService.assignAgeGroupStudentByBirthday(studnetExist.birthDay);
-
-      const student = await this.#service.findByID(studnetExist);
+      const student = await this.#service.findByID(studentID);
 
       res.status(StatusCodes.OK).json({
         status: "success",

@@ -13,7 +13,7 @@
             <div class="d-flex align-items-center flex-column">
               <img alt="آواتار کاربر" class="img-fluid rounded mb-3 pt-1 mt-4" height="100" src="/assets/img/avatars/14.png" width="100" />
               <div class="user-info text-center">
-                <h4 class="mb-2">مصطفی معماری</h4>
+                <h4 class="mb-2"><%- student.firstName %> <%- student.lastName %></h4>
                 <span class="badge bg-label-secondary mt-1">هنرجو</span>
               </div>
             </div>
@@ -24,11 +24,11 @@
             <ul class="list-unstyled">
               <li class="mb-2">
                 <span class="fw-medium me-1">کد ملی :</span>
-                <span>4900782343</span>
+                <span><%- student.nationalCode %></span>
               </li>
               <li class="mb-2 pt-1">
                 <span class="fw-medium me-1">تاریخ تولد : </span>
-                <span>1378/06/22</span>
+                <span><%- student.birthDay %></span>
               </li>
               <li class="mb-2 pt-1">
                 <span class="fw-medium me-1">نام مربی :</span>
@@ -37,21 +37,21 @@
               </li>
               <li class="mb-2 pt-1">
                 <span class="fw-medium me-1">نام باشگاه :</span>
-                <span>آکادمی تکواندو یاری</span>
+                <span><%- student.club %></span>
               </li>
               <li class="mb-2 pt-1">
                 <span class="fw-medium me-1">کمربند :</span>
-                <span>دان 4</span>
+                <span><%- student.belt.name %></span>
               </li>
               <li class="mb-2 pt-1">
                 <span class="fw-medium me-1">رده سنی :</span>
-                <span>
-                  <bdi>بزرگسالان</bdi>
-                </span>
+                <% for (const ageGroup of student.ageGroups) {%>
+                <span class="badge bg-label-dark"><%- ageGroup?.name %></span>
+                <%} %>
               </li>
               <li class="mb-2 pt-1">
                 <span class="fw-medium me-1">شارژ بانک اطلاعاتی : </span>
-                <span>1402</span>
+                <span><%- student.memberShipValidity.date %></span>
               </li>
             </ul>
             <div class="d-flex justify-content-center">
@@ -70,74 +70,191 @@
       <div class="row">
         <div class="col-xl-6 col-lg-12 col-md-12">
           <div class="col-12">
-            <div class="card mb-4">
-              <div class="card-body">
-                <div class="d-flex justify-content-between align-items-start">
-                  <h5 class="card-title m-0 me-2">مانده تا کمربند آبی</h5>
-                  <div class="d-flex justify-content-center">
-                    <sub class="pricing-duration mt-auto mb-2 text-muted fw-normal">2 سال و 3 ماه و 3 روز</sub>
+            <% if(student.belt.nextBelt.status === "مانده") { %>
+              <div class="card mb-4">
+                <div class="card card-border-shadow-gray h-100">
+                  <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start">
+                      <h5 class="card-title m-0 me-2">مانده تا کمربند <%- student.belt.nextBelt.name %></h5>
+                      <div class="d-flex justify-content-center">
+                        <sub class="pricing-duration mt-auto mb-2 text-muted fw-normal">
+                          <%- student.belt.nextBelt.date %> 
+                        </sub>
+                      </div>
+                    </div>
+                    <ul class="ps-3 g-2 my-3"></ul>
+                    <div class="d-flex justify-content-between align-items-center mb-1 fw-medium text-heading">
+                      <span>روزهای باقی مانده</span>
+                      <span><%- student.belt.nextBelt.percent %>٪</span>
+                    </div>
+                    <div class="progress mb-1" style="height: 8px">
+                      <div
+                        aria-valuemax="100"
+                        aria-valuemin="0"
+                        aria-valuenow="<%- student.belt.nextBelt.percent %>"
+                        class="progress-bar progress-bar-striped <%- student.belt.nextBelt.percent < 30 ? "bg-danger" : student.belt.nextBelt.percent < 80 ? "bg-primary" : student.belt.nextBelt.percent <= 100 ? "bg-success" : "" %>"
+                        role="progressbar"
+                        style="width: <%- student.belt.nextBelt.percent %>%"
+                      ></div>
+                    </div>
+                    <sub class="pricing-duration mt-auto mb-2 text-muted fw-normal">
+  
+                      <% if(student.belt.nextBelt.years){ %> <%- student.belt.nextBelt.years %> سال و <% } %> %>
+                      <% if(student.belt.nextBelt.months){ %> <%- student.belt.nextBelt.months %> ماه و <% } %> %>
+                      <% if(student.belt.nextBelt.days){ %> <%- student.belt.nextBelt.days %> روز <% } %> %>
+                      <%- student.belt.nextBelt.status %>
+  
+                    </sub>
                   </div>
                 </div>
-                <ul class="ps-3 g-2 my-3"></ul>
-                <div class="d-flex justify-content-between align-items-center mb-1 fw-medium text-heading">
-                  <span>روزهای باقی مانده</span>
-                  <span>65٪</span>
-                </div>
-                <div class="progress mb-1" style="height: 8px">
-                  <div aria-valuemax="100" aria-valuemin="0" aria-valuenow="65" class="progress-bar" role="progressbar" style="width: 65%"></div>
-                </div>
-                <span>4 روز مانده</span>
               </div>
-            </div>
-          </div>
-          <div class="col-12">
-            <div class="card mb-4">
-              <div class="card-body">
-                <div class="d-flex justify-content-between align-items-start">
-                  <h5 class="card-title m-0 me-2">اعتبار بیمه ورزشی</h5>
-                  <div class="d-flex justify-content-center">
-                    <sub class="mt-auto mb-2 text-muted fw-normal">معتبر تا 1402/12/06</sub>
+            <% } else if(student.belt.nextBelt.status === "گذشته") { %>
+              <div class="card card-border-shadow-success h-100 mb-4">
+                <div class="card-body">
+                  <div class="text-center mb-2">
+                      <svg id="emoji" width="100px" height="100px"  viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg">
+                        <g id="color">
+                          <polygon fill="#F1B31C" stroke="none" points="26.1808,20.1808 38.75,32.75 51.3192,45.3192 29.7894,54.2798 8.2597,63.2403 17.2202,41.7106"/>
+                          <polygon fill="#FCEA2B" stroke="none" points="40,35 25.6924,20.6692 16.3914,42.5394 7.0905,64.4095"/>
+                          <polygon fill="#EA5A47" stroke="none" points="15.2238,45.2849 26.2858,56.3469 20.7548,58.5984 12.9576,50.8012"/>
+                          <polygon fill="#D22F27" stroke="none" points="17.3429,55.2475 20.7548,58.5984 26.2858,56.3469 21.4849,51.546"/>
+                          <polygon fill="#EA5A47" stroke="none" points="20.8045,32.1625 27.5011,38.8591 39.2002,50.5583 32.9273,53.4217 24.7555,45.2498 18.1504,38.6447"/>
+                          <polygon fill="#D22F27" stroke="none" points="26.5369,47.0312 32.9273,53.4216 39.2003,50.5582 31.3616,42.7197"/>
+                          <ellipse cx="30.2951" cy="14.4579" rx="2" ry="1.9708" fill="#8967aa" stroke="none"/>
+                          <ellipse cx="60.2951" cy="18.4579" rx="2" ry="1.9708" fill="#f1b31c" stroke="none"/>
+                          <ellipse cx="57.2951" cy="39.4579" rx="2" ry="1.9708" fill="#d22f27" stroke="none"/>
+                        </g>
+                        <g id="hair"/>
+                        <g id="skin"/>
+                        <g id="skin-shadow"/>
+                        <g id="line">
+                          <polyline fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" points="50.6626,45.6395 50.8308,45.8076 28.9606,55.1086 7.0904,64.4096 16.3914,42.5394 25.6923,20.6692"/>
+                          <polyline fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" points="25.801,20.7779 38.2616,33.2384 50.6626,45.6395"/>
+                          <line x1="25.6923" x2="25.801" y1="20.6692" y2="20.7779" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2"/>
+                          <path fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" d="M46.4905,7.3671c0.2347,0.4487,0.4027,0.943,0.4897,1.473c0.451,2.7473-1.447,5.4141-4.2392,5.9565"/>
+                          <path fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" d="M42.9327,14.7763c-0.5049,0.0384-1.0133,0.1573-1.509,0.364c-2.5697,1.0713-3.828,4.093-2.8105,6.7492"/>
+                          <path fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" d="M61.7928,26.7168c-0.0987,0.4967-0.2778,0.987-0.5425,1.4544c-1.372,2.4225-4.5229,3.309-7.0378,1.98"/>
+                          <path fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" d="M54.3745,30.2558c-0.4173-0.2868-0.8878-0.513-1.4036-0.663c-2.6733-0.7775-5.5486,0.7867-6.4223,3.4936"/>
+                        </g>
+                      </svg>
                   </div>
+                  <h5 class="text-center">وقت آزمون رسیده</h5>
+                  <h6 class="text-center fst-italic">میتونی آزمون <span class="h5"><%- student.belt.nextBelt.name %></span> شرکت کنی</h6>
                 </div>
-                <ul class="ps-3 g-2 my-3"></ul>
-                <div class="d-flex justify-content-between align-items-center mb-1 fw-medium text-heading">
-                  <span>روزهای باقی مانده</span>
-                  <span>65٪</span>
-                </div>
-                <div class="progress mb-1" style="height: 8px">
-                  <div aria-valuemax="100" aria-valuemin="0" aria-valuenow="65" class="progress-bar" role="progressbar" style="width: 65%"></div>
-                </div>
-                <span>4 روز مانده</span>
               </div>
-            </div>
+            <% } %>
           </div>
+          
           <div class="col-12">
-            <div class="card mb-4">
-              <div class="card-body">
-                <div class="d-flex justify-content-between align-items-start">
-                  <h5 class="card-title m-0 me-2">شارژ بانک اطلاعاتی</h5>
-                  <div class="d-flex justify-content-center"></div>
-                </div>
-                <ul class="ps-3 g-2 my-3"></ul>
+            <% if(student.sportsInsurance.status === "مانده") { %>
+              <div class="card mb-4">
+                <div class="card card-border-shadow-gray h-100">
+                  <div class="card-body">
 
-                <li class="d-flex justify-content-between align-items-center">
-                  <div class="badge bg-label-success rounded p-2">
-                    <i class="ti ti-calendar ti-sm"></i>
+                      <div class="d-flex justify-content-between align-items-start">
+                        <h5 class="card-title m-0 me-2">اعتبار بیمه ورزشی</h5>
+                        <div class="d-flex justify-content-center">
+                          <sub class="mt-auto mb-2 text-muted fw-normal">معتبر تا <%- student.sportsInsurance.date %></sub>
+                        </div>
+                      </div>
+                      <ul class="ps-3 g-2 my-3"></ul>
+                      <div class="d-flex justify-content-between align-items-center mb-1 fw-medium text-heading">
+                        <span>روزهای باقی مانده</span>
+                        <span><%- student.sportsInsurance.percent %>٪</span>
+                      </div>
+                      <div class="progress mb-1" style="height: 8px">
+                        <div
+                          aria-valuemax="100"
+                          aria-valuemin="0"
+                          aria-valuenow="<%- student.sportsInsurance.percent %>"
+                          class="progress-bar progress-bar-striped <%- student.sportsInsurance.percent < 30 ? "bg-success" : student.sportsInsurance.percent < 80 ? "bg-primary" : student.sportsInsurance.percent <= 100 ? "bg-danger" : "" %> "
+                          role="progressbar"
+                          style="width: <%- student.sportsInsurance.percent %>%"
+                        ></div>
+                      </div>
+    
+                      <sub class="pricing-duration mt-auto mb-2 text-muted fw-normal">
+    
+                        <% if(student.sportsInsurance.years){ %> <%- student.sportsInsurance.years %> سال و <% } %> %>
+                        <% if(student.sportsInsurance.months){ %> <%- student.sportsInsurance.months %> ماه و <% } %> %>
+                        <% if(student.sportsInsurance.days){ %> <%- student.sportsInsurance.days %> روز <% } %> %>
+                        <%- student.sportsInsurance.status %>
+    
+                      </sub>
                   </div>
-                  <div class="d-flex justify-content-between w-100 flex-wrap">
-                    <h6 class="mb-0 ms-3">معتبر تا پایان سال 1402</h6>
-                  </div>
-                </li>
-                <!-- <li class="d-flex justify-content-between align-items-center">
-                  <div class="badge bg-label-danger rounded p-2">
-                    <i class="ti ti-calendar ti-sm"></i>
-                  </div>
-                  <div class="d-flex justify-content-between w-100 flex-wrap">
-                    <h6 class="mb-0 ms-3">نیاز به <span class="h4">5</span> سال تمدید اعتبار</h6>
-                  </div>
-                </li> -->
+                </div>
               </div>
-            </div>
+            <% } else if(student.sportsInsurance.status === "گذشته") { %>
+              <div class="card card-border-shadow-danger h-100 mb-4">
+                <div class="card-body">
+                  <div class="text-center mb-2">
+                    <svg id="emoji" width="100px" height="100px" viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg">
+                      <g id="color">
+                        <path fill="#ea5a47" stroke="none" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" d="M36,11c-13.8066,0-25,11.1926-25,25c0,13.8066,11.1934,25,25,25c13.8065,0,25-11.1934,25-25C61,22.1926,49.8065,11,36,11z"/>
+                        <path fill="#FFFFFF" stroke="none" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" d="M55.5195,39.4297c0.1986-1.1263,0.3081-2.2831,0.3081-3.4659c0-1.171-0.1078-2.316-0.3014-3.4306H16.4738 c-0.1936,1.1146-0.3014,2.2596-0.3014,3.4306c0,1.1828,0.1095,2.3396,0.3081,3.4659H55.5195z"/>
+                      </g>
+                      <g id="hair"/>
+                      <g id="skin"/>
+                      <g id="skin-shadow"/>
+                      <g id="line">
+                        <path fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" d="M36,11c-13.8066,0-25,11.1926-25,25c0,13.8066,11.1934,25,25,25c13.8065,0,25-11.1934,25-25C61,22.1926,49.8065,11,36,11z"/>
+                        <path fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" d="M55.5195,39.4297c0.1986-1.1263,0.3081-2.2831,0.3081-3.4659c0-1.171-0.1078-2.316-0.3014-3.4306H16.4738 c-0.1936,1.1146-0.3014,2.2596-0.3014,3.4306c0,1.1828,0.1095,2.3396,0.3081,3.4659H55.5195z"/>
+                      </g>
+                    </svg>
+                    
+                  </div>
+                  <h5 class="text-center">اعتبار بیمه ورزشی به اتمام رسیده!</h6>
+                  <h6 class="text-center fst-italic">برای تمدید به باشگاه مراجعه کنید</h6>
+                </div>
+              </div>
+            <% } %>
+
+          </div>
+
+          <div class="col-12">
+            <% if(student.memberShipValidity.status === "مانده") { %>
+              <div class="card card-border-shadow-success h-100 mb-4">
+                <div class="card-body">
+                  <div class="text-center mb-2">
+                    <svg id="emoji" width="100px" height="100px" viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg">
+                      <g id="color">
+                        <path fill="#b1cc33" d="m61.5 23.3-8.013-8.013-25.71 25.71-9.26-9.26-8.013 8.013 17.42 17.44z"/>
+                      </g>
+                      <g id="line">
+                        <path fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" d="m10.5 39.76 17.42 17.44 33.58-33.89-8.013-8.013-25.71 25.71-9.26-9.26z"/>
+                      </g>
+                    </svg>
+  
+                  </div>
+                  <h5 class="text-center">وضعیت شارژ بانک اطلاعاتی</h6>
+                  <h6 class="text-center fst-italic">معتبر تا پایان سال <span class="h5"><%- student.memberShipValidity.date %></span></h6>
+                </div>
+              </div>
+            <% } else if(student.memberShipValidity.status === "گذشته") { %>
+              <div class="card card-border-shadow-danger h-100 mb-4">
+                <div class="card-body">
+                  <div class="text-center mb-2">
+                    <svg id="emoji" width="100px" height="100px" viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg">
+                      <g id="color">
+                        <path fill="#fcea2b" stroke="none" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" d="M32.5222,13.005c0.6977-1.2046,1.9862-2.0244,3.4778-2.0244c1.4916,0,2.7801,0.8198,3.4778,2.0244l20.9678,41.9351 C60.7889,55.5339,61,56.2136,61,56.9483c0,2.2272-1.8051,4.0323-4.0323,4.0323l-41.9354,0.0173 C12.8051,60.9979,11,59.192,11,56.9657c0-0.7356,0.211-1.4145,0.5544-2.0083L32.5222,13.005"/>
+                        <path fill="#FFFFFF" stroke="none" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" d="M37.6129,47.2709c0,0.8907-0.7222,1.6129-1.6129,1.6129c-0.8907,0-1.6129-0.7222-1.6129-1.6129V23.8925 c0-0.8907,0.7222-1.6129,1.6129-1.6129c0.8907,0,1.6129,0.7222,1.6129,1.6129V47.2709z"/>
+                        <circle cx="36" cy="54.529" r="1.6129" fill="#FFFFFF" stroke="none" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2"/>
+                      </g>
+                      <g id="hair"/>
+                      <g id="skin"/>
+                      <g id="skin-shadow"/>
+                      <g id="line">
+                        <path fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" d="M32.5222,13.005c0.6977-1.2046,1.9862-2.0244,3.4778-2.0244c1.4916,0,2.7801,0.8198,3.4778,2.0244l20.9678,41.9351 C60.7889,55.5339,61,56.2136,61,56.9483c0,2.2272-1.8051,4.0323-4.0323,4.0323l-41.9354,0.0173 C12.8051,60.9979,11,59.192,11,56.9657c0-0.7356,0.211-1.4145,0.5544-2.0083L32.5222,13.005"/>
+                        <path fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" d="M37.6129,47.2709c0,0.8907-0.7222,1.6129-1.6129,1.6129c-0.8907,0-1.6129-0.7222-1.6129-1.6129V23.8925 c0-0.8907,0.7222-1.6129,1.6129-1.6129c0.8907,0,1.6129,0.7222,1.6129,1.6129V47.2709z"/>
+                        <circle cx="36" cy="54.529" r="1.6129" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2"/>
+                      </g>
+                    </svg>
+                  </div>
+                  <h5 class="text-center">وضعیت شارژ بانک اطلاعاتی</h6>
+                  <h6 class="text-center fst-italic">نیاز به <span class="h5"><%- student.memberShipValidity.years %></span> سال تمدید اعتبار</h6>
+                </div>
+              </div>
+            <% } %>
           </div>
         </div>
 
@@ -185,6 +302,8 @@
             </div>
           </div>
         </div>
+
+        
       </div>
       <!-- /Activity Timeline -->
     </div>

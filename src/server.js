@@ -34,7 +34,7 @@ module.exports = class Application {
 
   configApplication() {
     this.#app.use(cors());
-    this.#app.use(morgan("dev"));
+    // this.#app.use(morgan("dev"));
     this.#app.use(
       session({
         secret: "keyboard cat",
