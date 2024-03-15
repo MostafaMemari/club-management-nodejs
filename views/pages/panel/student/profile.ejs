@@ -44,10 +44,19 @@
                 <span><%- student.belt.name %></span>
               </li>
               <li class="mb-2 pt-1">
+                <span class="fw-medium me-1">تاریخ کمربند :</span>
+                <span><%- student.belt.beltDate %></span>
+              </li>
+              <li class="mb-2 pt-1">
                 <span class="fw-medium me-1">رده سنی :</span>
-                <% for (const ageGroup of student.ageGroups) {%>
-                <span class="badge bg-label-dark"><%- ageGroup?.name %></span>
-                <%} %>
+                <% if(student.ageGroups) { %>
+                  <% for (const ageGroup of student.ageGroups) {%>
+                    <span class="badge bg-label-dark"><%- ageGroup?.name %></span>
+                  <%} %>
+                <% } else { %>
+                  <span class="badge bg-label-dark">شکوفه</span>
+                <% } %>
+
               </li>
               <li class="mb-2 pt-1">
                 <span class="fw-medium me-1">شارژ بانک اطلاعاتی : </span>

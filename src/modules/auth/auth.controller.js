@@ -26,16 +26,24 @@ class AuthController {
       const { identifier, password } = req.body;
       const { accessToken, userExist } = await this.#service.userLogin(identifier, password);
 
+      res.status(200).json({
+        status: "success",
+        message: AuthMessage.UserLogin,
+        data: {
+          accessToken,
+        },
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+  async userLoginForm(req, res, next) {
+    try {
+      const { identifier, password } = req.body;
+      const { accessToken, userExist } = await this.#service.userLogin(identifier, password);
+
       // req.flash("success", category_message_1.CategoryMessage.Updated);
       return res.cookie("access_token", accessToken, { httpOnly: true, maxAge: 604800000 }).redirect("/");
-
-      // res.status(200).json({
-      //   status: "success",
-      //   message: AuthMessage.UserLogin,
-      //   data: {
-      //     accessToken,
-      //   },
-      // });
     } catch (error) {
       next(error);
     }
@@ -45,8 +53,6 @@ class AuthController {
       const { nationalCode } = req.body;
       const accessToken = await this.#service.login(nationalCode);
 
-      return res.cookie("access_token", accessToken, { httpOnly: true, maxAge: 604800000 }).redirect("/");
-
       res.status(StatusCodes.CREATED).json({
         status: "success",
         message: AuthMessage.StudentLogin,
@@ -54,6 +60,16 @@ class AuthController {
           accessToken,
         },
       });
+    } catch (error) {
+      next(error);
+    }
+  }
+  async loginForm(req, res, next) {
+    try {
+      const { nationalCode } = req.body;
+      const accessToken = await this.#service.login(nationalCode);
+
+      return res.cookie("access_token", accessToken, { httpOnly: true, maxAge: 604800000 }).redirect("/");
     } catch (error) {
       next(error);
     }

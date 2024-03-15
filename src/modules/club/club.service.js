@@ -13,7 +13,6 @@ class ClubService {
     const resultClubCreate = await this.#Model.create({
       ...bodyData,
       createdBy: userAuth._id,
-      modelCreatedBy: userAuth.role === "SUPER_ADMIN" || userAuth.role === "ADMIN_CLUB" ? "user" : "",
     });
     if (!resultClubCreate) throw createHttpError.InternalServerError();
     return resultClubCreate;

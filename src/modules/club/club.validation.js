@@ -4,6 +4,7 @@ const createHttpError = require("http-errors");
 const { removeDuplicatesArray, convarteStringToArray } = require("../../common/utils/function");
 const sportService = require("../baseData/sport/sport.service");
 const clubService = require("./club.service");
+const userService = require("../user/user.service");
 
 function ClubValidationRequired() {
   return [
@@ -40,6 +41,18 @@ function ClubValidationRequired() {
         for (const sportID of sports) {
           await sportService.checkExistSportByID(sportID);
         }
+      }),
+
+    body("adminClub")
+      .if((value, { req }) => req.userAuth.role == "SUPER_ADMIN")
+      .exists({ nullable: true, checkFalsy: true })
+      .trim()
+      .notEmpty()
+      .escape()
+      .isString()
+      .isLength({ min: 2, max: 100 })
+      .custom(async (adminClub, { req }) => {
+        await userService.checkExistUserByID(adminClub);
       }),
   ];
 }

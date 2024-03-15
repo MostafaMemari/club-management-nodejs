@@ -94,7 +94,8 @@ function percentDateShamsiByDurationMonth(nextBeltDate, duration) {
   const dateDiffNowNextBeltDate = Math.floor((date - dateNow) / 86400000);
 
   if (dateDiffNowNextBeltDate < duration) {
-    return 100 - calculatePercentageDifference(duration, dateDiffNowNextBeltDate);
+    let percent = calculatePercentageDifference(duration, dateDiffNowNextBeltDate);
+    return percent == 100 ? 99 : percent;
   } else {
     return 100;
   }

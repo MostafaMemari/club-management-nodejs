@@ -26,10 +26,12 @@
  *              enum: ["آقایان" , "بانوان"]
  *          sports:
  *            type: array
- *            default: [6554827f6acf85e35050ae7c,65c751c4e73c83599bdb8d19]
+ *            default: [6554827f6acf85e35050ae7c]
  *          address:
  *            type: string
  *          phone:
+ *            type: string
+ *          adminClub:
  *            type: string
  */
 
@@ -50,10 +52,12 @@
  *              enum: ["آقایان" , "بانوان"]
  *          sports:
  *            type: array
- *            default: [6554827f6acf85e35050ae7c,65c751c4e73c83599bdb8d19]
+ *            default: [6554827f6acf85e35050ae7c]
  *          address:
  *            type: string
  *          phone:
+ *            type: string
+ *          adminClub:
  *            type: string
  */
 

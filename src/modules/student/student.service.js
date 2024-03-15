@@ -125,14 +125,14 @@ class StudentService {
             },
           },
         },
-        {
-          $lookup: {
-            from: "clubs",
-            localField: "club",
-            foreignField: "_id",
-            as: "club",
-          },
-        },
+        // {
+        //   $lookup: {
+        //     from: "clubs",
+        //     localField: "club",
+        //     foreignField: "_id",
+        //     as: "club",
+        //   },
+        // },
         { $unwind: "$club" },
         { $addFields: { club: "$club.name" } },
         {
@@ -181,6 +181,7 @@ class StudentService {
     const nextBelt = nextBeltByBirthDay(studentExist.birthDay, studentExist.belt.nextBelt);
     const nextBeltDate = nextDateByDurationMonth(studentExist.beltDate, studentExist.belt.duration);
     const nextBeltDateInfo = calculateYearMonthDayStatusByDateShamsi(nextBeltDate);
+
     const percent = percentDateShamsiByDurationMonth(nextBeltDate, studentExist.belt.duration * 30);
 
     return {

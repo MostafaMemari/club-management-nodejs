@@ -24,7 +24,6 @@ const CoachSchema = new Schema(
         },
       },
     },
-
     belt: {
       type: Types.ObjectId,
       ref: "belt",

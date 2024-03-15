@@ -17,14 +17,8 @@ const ClubSchema = new Schema(
     address: { type: String },
     phone: { type: String },
 
-    coachs: { type: [Types.ObjectId], ref: "coach", required: true },
-
-    createdBy: { type: Types.ObjectId, required: true, refPath: "modelCreatedBy" },
-    modelCreatedBy: {
-      type: String,
-      required: true,
-      enum: ["user", "coach"],
-    },
+    amdinClub: { type: Types.ObjectId, ref: "user" },
+    createdBy: { type: Types.ObjectId, required: true, ref: "user" },
   },
   { versionKey: false }
 );
