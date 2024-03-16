@@ -31,8 +31,6 @@ class CoachController {
 
       const coach = await this.#service.register(bodyData, userAuth);
 
-      await this.#clubService.addCoachInClub(coach._id, bodyData.clubs);
-
       res.status(StatusCodes.CREATED).json({
         status: "success",
         message: CoachMessage.Register,

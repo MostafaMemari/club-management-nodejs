@@ -5,14 +5,17 @@ const { isValidObjectId } = require("mongoose");
 const { CoachModel } = require("./coach.model");
 const { CoachMessage } = require("./coach.message");
 const { UserModel } = require("../user/user.model");
+const { ClubModel } = require("../club/club.model");
 
 class CoachService {
   #Model;
   #UserModel;
+  #ClubModel;
   constructor() {
     autoBind(this);
     this.#Model = CoachModel;
     this.#UserModel = UserModel;
+    this.#ClubModel = ClubModel;
   }
   async register(bodyData, userAuth) {
     if (userAuth.role === "ADMIN_CLUB") await this.validateClubAndGenderCoachByClubAdmin(userAuth._id, bodyData);
@@ -76,14 +79,15 @@ class CoachService {
   }
 
   async validateClubAndGenderCoachByClubAdmin(adminClubID, bodyData) {
-    const adminClub = await this.#UserModel.findById(adminClubID).select("clubs").populate("clubs", "genders _id");
-    const clubsAdminClub = adminClub.clubs.map((club) => club._id.toString());
+    const clubsAndGender = await this.#ClubModel.find({ adminClub: adminClubID }).select("genders , _id");
+
+    const clubs = clubsAndGender.map((club) => club._id.toString());
 
     for (const club of bodyData.clubs) {
-      if (!clubsAdminClub.includes(club.toString())) throw createHttpError.BadRequest("your entered club is not found admin club");
+      if (!clubs.includes(club.toString())) throw createHttpError.BadRequest("your entered club is not found admin club");
     }
 
-    const genders = adminClub.clubs.map((club) => club.genders);
+    const genders = clubsAndGender.map((club) => club.genders);
     await this.checkGenderCoachIsClub(bodyData.gender, genders);
   }
   async checkGenderCoachIsClub(genderCoach, gendersClub) {

@@ -15,9 +15,10 @@ function ClubValidationRequired() {
       .escape()
       .isString()
       .isLength({ min: 2, max: 100 })
-      .custom(async (name, { req }) => {
-        await clubService.checkExistClubByName(name);
-      }),
+      .withMessage("club name is not valid"),
+    // .custom(async (name, { req }) => {
+    //   await clubService.checkExistClubByName(name);
+    // }),
 
     body("genders")
       .exists({ nullable: true, checkFalsy: true })
@@ -66,9 +67,10 @@ function ClubValidationOptional() {
       .escape()
       .isString()
       .isLength({ min: 2, max: 100 })
-      .custom(async (name, { req }) => {
-        await clubService.checkExistClubByName(name);
-      }),
+      .withMessage("club name is not valid"),
+    // .custom(async (name, { req }) => {
+    //   await clubService.checkExistClubByName(name);
+    // }),
 
     body("genders")
       .if((value, { req }) => req.method !== "POST")
