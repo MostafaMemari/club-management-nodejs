@@ -256,6 +256,9 @@
             </div>
           </div>
         </div>
+        <div class="d-flex justify-content-center">
+          <a class="btn btn-primary mt-3" data-bs-target="#editUser" data-bs-toggle="modal" href="javascript:">ثبت مربی جدید</a>
+        </div>
       </div>
       <div class="tab-pane fade show active" id="show-clubs" role="tabpanel">
         <div class="row g-4">
@@ -446,8 +449,68 @@
             </div>
           </div>
         </div>
+        <div class="d-flex justify-content-center">
+          <a class="btn btn-primary mt-3" data-bs-target="#createClub" data-bs-toggle="modal" href="javascript:">ثبت باشگاه جدید</a>
+        </div>
       </div>
     </div>
   </div>
   <!-- / Content -->
+
+  <!-- Modal -->
+  <!-- Edit User Modal -->
+  <div aria-hidden="true" class="modal fade" id="createClub" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-simple modal-edit-user">
+      <div class="modal-content p-3 p-md-5">
+        <div class="modal-body">
+          <button aria-label="بستن" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+          <div class="text-center mb-4">
+            <h3 class="mb-2">ثبت باشگاه جدید</h3>
+          </div>
+          <form class="row g-3" id="createClubForm" onsubmit="return false">
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label class="form-label" for="nameClub">نام باشگاه</label>
+                <input class="form-control" id="nameClub" name="name" placeholder="آکادمی تکواندو یاری" type="text" />
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label" for="select2Dark">جنسیت</label>
+                <div class="select2Dark">
+                  <select class="select2 form-select" id="select2Dark" name="genders" multiple>
+                    <option value="مرد">مرد</option>
+                    <option value="زن">زن</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label" for="select2">رشته ورزشی</label>
+                <div class="select2">
+                  <select class="select2 form-select" id="select2" name="sports" multiple>
+                    <option value="taekwondo">تکواندو</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <label class="form-label" for="phone">تلفن داخلی</label>
+                <input maxlength="12" class="form-control ltr" id="phone" name="phone" placeholder="02165102415" type="text" />
+              </div>
+
+              <div class="col mb-3">
+                <div class="form-group">
+                  <label class="form-label" for="ecommerce-product-name">آدرس</label>
+                  <textarea class="form-control" id="exampleFormControlTextarea1" name="address" rows="3"></textarea>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 text-center">
+              <button class="btn btn-primary me-sm-3 me-1" type="submit">ارسال</button>
+              <button aria-label="بستن" class="btn btn-label-secondary" data-bs-dismiss="modal" type="reset">لغو</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--/ Edit User Modal -->
 </div>
