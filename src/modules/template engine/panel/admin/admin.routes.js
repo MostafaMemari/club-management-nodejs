@@ -2,6 +2,8 @@ const AdminController = require("./admin.controller");
 
 const router = require("express").Router();
 
+router.get("/coach/register", AdminController.registerCoach);
+
 router.get("/student/register", AdminController.registerStudent);
 router.get("/student/list", AdminController.listStudent);
 

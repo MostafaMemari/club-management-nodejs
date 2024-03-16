@@ -75,8 +75,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
   (function () {
     document.getElementById("radio-man").checked = true;
     const formValidationNewStudent = document.getElementById("formValidationNewStudent"),
-      clubEle = jQuery(formValidationNewStudent.querySelector('[name="club"]')),
-      coachEle = jQuery(formValidationNewStudent.querySelector('[name="coach"]')),
+      clubEle = jQuery(formValidationNewStudent.querySelector('[name="clubs"]')),
       beltEle = jQuery(formValidationNewStudent.querySelector('[name="belt"]'));
 
     const fv = FormValidation.formValidation(formValidationNewStudent, {
@@ -138,15 +137,6 @@ document.addEventListener("DOMContentLoaded", function (e) {
             },
           },
         },
-        phone: {
-          validators: {
-            stringLength: {
-              min: 9,
-              max: 12,
-              message: "تلفن داخلی وارد شده صحیح نمی باشد.",
-            },
-          },
-        },
         formValidationFile: {
           validators: {
             regexp: {
@@ -159,18 +149,10 @@ document.addEventListener("DOMContentLoaded", function (e) {
             },
           },
         },
-        registerDate: {
-          validators: {
-            date: {
-              format: "YYYY/MM/DD",
-              message: "تاریخ ثبت نام معتبر نمی باشد.",
-            },
-          },
-        },
-        club: {
+        clubs: {
           validators: {
             notEmpty: {
-              message: "لطفا نام باشگاه را انتخاب کنید.",
+              message: "لطفا باشگاه را انتخاب کنید.",
             },
           },
         },
@@ -211,7 +193,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
       },
     });
 
-    // Select2 (club)
+    // Select2 (clubs)
     if (clubEle.length) {
       clubEle.wrap('<div class="position-relative"></div>');
       clubEle
@@ -224,19 +206,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
           fv.revalidateField("club");
         });
     }
-    // Select2 (coach)
-    if (coachEle.length) {
-      coachEle.wrap('<div class="position-relative"></div>');
-      coachEle
-        .select2({
-          placeholder: "",
-          dropdownParent: coachEle.parent(),
-        })
-        .on("change.select2", function () {
-          // Revalidate the color field when an option is chosen
-          fv.revalidateField("coach");
-        });
-    }
+
     // Select2 (belt)
     if (beltEle.length) {
       beltEle.wrap('<div class="position-relative"></div>');

@@ -1,0 +1,150 @@
+<div class="container-xxl flex-grow-1 container-p-y">
+  <h4 class="py-3 mb-0">
+    <span class="text-muted fw-light">آکادمی تکواندو یاری /</span>
+    ثبت مربی جدید
+  </h4>
+  <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-3">
+    <div class="d-flex flex-column justify-content-center">
+      <h4 class="mb-1 mt-3">یک مربی جدید اضافه کنید</h4>
+    </div>
+    <!-- <div class="d-flex align-content-center flex-wrap gap-3">
+      <button class="btn btn-primary" name="submitButton" type="submit">ارسال</button>
+    </div> -->
+  </div>
+  <form class="row" id="formValidationNewStudent" method="POST" action="/api/v1/students/register">
+    <div class="col-12 col-lg-8">
+      <div class="card">
+        <h5 class="card-header">اطلاعات شخصی</h5>
+        <div class="card-body">
+          <!-- Account Details -->
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label" for="firstName">نام</label>
+              <input class="form-control" id="firstName" name="firstName" placeholder="مصطفی" type="text" />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label" for="lastName">نام خانوادگی</label>
+              <input class="form-control" id="lastName" name="lastName" placeholder="معماری" type="text" />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label" for="nationalCode">کدملی</label>
+              <input aria-label="" maxlength="10" class="form-control ltr" id="nationalCode" name="nationalCode" placeholder="4900782343" type="text" />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label" for="bs-datepicker-birthday">تاریخ تولد</label>
+              <input class="form-control" maxlength="10" id="bs-datepicker-birthday" name="birthDay" placeholder="1378/06/22" type="text" />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label" for="fatherName">نام پدر</label>
+              <input class="form-control" id="fatherName" name="fatherName" placeholder="علیرضا" type="text" />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="d-block form-label">جنسیت</label>
+              <div class="d-flex col">
+                <div class="row mt-0 col">
+                  <div class="col-6">
+                    <div class="form-check custom-option">
+                      <label class="p-2 d-flex justify-content-center align-items-center form-check-label custom-option-content" for="radio-man">
+                        <input checked class="form-check-input" id="radio-man" name="gender" type="radio" value="مرد" />
+                        <span class="custom-option-body">
+                          <span class="custom-option-title ms-2">مرد</span>
+                        </span>
+                      </label>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="form-check custom-option">
+                      <label class="p-2 d-flex justify-content-center align-items-center form-check-label custom-option-content" for="radio-female">
+                        <input checked class="form-check-input" id="radio-female" name="gender" type="radio" value="زن" />
+                        <span class="custom-option-body">
+                          <span class="custom-option-title ms-2">زن</span>
+                        </span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label" for="mobile">تلفن همراه</label>
+              <input class="form-control prefix-mask ltr" id="mobile" name="mobile" placeholder="91# ### ####" type="text" />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label" for="studentProfile">عکس پروفایل</label>
+              <input class="form-control" id="studentProfile" name="formValidationFile" type="file" />
+            </div>
+
+            <div class="col mb-3">
+              <div class="form-group">
+                <label class="form-label" for="ecommerce-product-name">آدرس</label>
+                <textarea class="form-control" id="exampleFormControlTextarea1" name="address" rows="3"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12">
+            <button id="btn-form" class="btn btn-primary" name="submitButton" type="submit">ثبت هنرجو</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-lg-4">
+      <div class="card mb-4">
+        <div class="card-header">
+          <h5 class="card-title mb-0">اطلاعات باشگاه</h5>
+        </div>
+        <div class="card-body">
+          <!-- Vendor -->
+          <div class="col-12 mb-3">
+            <label class="form-label mb-1" for="clubs">انتخاب باشگاه</label>
+            <select class="select2 form-select" id="clubs" data-placeholder="انتخاب باشگاه" name="clubs" multiple>
+              <option value="taekwondo">تکواندو</option>
+              <option value="taekwondo">تکواندو</option>
+              <option value="taekwondo">تکواندو</option>
+              <option value="taekwondo">تکواندو</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="card mb-4">
+        <div class="card-header">
+          <h5 class="card-title mb-0">اطلاعات کمربند</h5>
+        </div>
+        <div class="card-body">
+          <!-- Vendor -->
+          <div class="mb-3 col ecommerce-select2-dropdown">
+            <label class="form-label mb-1" for="belt">کمربند فعلی</label>
+            <select class="select2 form-select" name="belt" data-allow-clear="true" data-placeholder="انتخاب کمربند" id="belt">
+              <option value="">.کمربند را انتخاب کنید</option>
+              <option value="men-clothing">سفید</option>
+              <option value="women-clothing">زرد</option>
+              <option value="kid-clothing">سبز</option>
+              <option value="kid-clothing">آبی</option>
+              <option value="kid-clothing">قرمز</option>
+              <option value="kid-clothing">پوم 1</option>
+              <option value="kid-clothing">دان 1</option>
+              <option value="kid-clothing">پوم 2</option>
+              <option value="kid-clothing">دان 2</option>
+              <option value="kid-clothing">پوم 3</option>
+              <option value="kid-clothing">دان 3</option>
+              <option value="kid-clothing">پوم 4</option>
+              <option value="kid-clothing">دان 4</option>
+            </select>
+          </div>
+
+          <div class="co mb-3">
+            <label class="form-label" for="bs-datepicker-belt-date">تاریخ کمربند</label>
+            <input class="form-control" maxlength="10" id="bs-datepicker-belt-date" placeholder="1400/02/06" type="text" />
+          </div>
+
+          <div class="col-12 mb-3">
+            <label class="form-label" for="memberShipValidity">شارژ بانک اطلاعاتی</label>
+            <input maxlength="4" class="form-control" id="memberShipValidity" name="memberShipValidity" placeholder="1402" type="text" />
+          </div>
+        </div>
+      </div>
+
+      <!-- /Organize Card -->
+    </div>
+  </form>
+</div>

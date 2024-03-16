@@ -33,6 +33,15 @@ class AdminController {
       next(error);
     }
   }
+
+  async registerCoach(req, res, next) {
+    try {
+      res.locals.layout = "./layouts/panel/admin/coach/register.ejs";
+      res.render("./pages/panel/admin/coach/register.ejs");
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 module.exports = new AdminController();
