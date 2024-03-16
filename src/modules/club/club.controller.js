@@ -24,11 +24,7 @@ class ClubController {
       const bodyData = matchedData(req, { locations: ["body"] });
       const userAuth = req.userAuth;
 
-      const club = await this.#service.create(bodyData, userAuth);
-
-      if (userAuth.role === "ADMIN_CLUB") {
-        await userService.addClubInUserAdminClub(userAuth._id, club._id);
-      }
+      await this.#service.create(bodyData, userAuth);
 
       res.status(StatusCodes.CREATED).json({
         status: "success",

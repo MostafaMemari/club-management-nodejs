@@ -10,8 +10,11 @@ class ClubService {
     this.#Model = ClubModel;
   }
   async create(bodyData, userAuth) {
+    const adminClub = userAuth.role === "SUPER_ADMIN" ? bodyData.amdinClub : userAuth.role === "ADMIN_CLUB" ? userAuth._id : "";
+
     const resultClubCreate = await this.#Model.create({
       ...bodyData,
+      adminClub,
       createdBy: userAuth._id,
     });
     if (!resultClubCreate) throw createHttpError.InternalServerError();

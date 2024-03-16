@@ -17,7 +17,7 @@ const ClubSchema = new Schema(
     address: { type: String },
     phone: { type: String },
 
-    amdinClub: { type: Types.ObjectId, ref: "user" },
+    adminClub: { type: Types.ObjectId, ref: "user" },
     createdBy: { type: Types.ObjectId, required: true, ref: "user" },
   },
   { versionKey: false }
