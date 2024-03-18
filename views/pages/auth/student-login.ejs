@@ -1,60 +1,67 @@
-<div class="card">
-  <div class="card-body">
-    <!-- Logo -->
-    <div class="app-brand justify-content-center mb-4 mt-2">
-      <a class="app-brand-link gap-2" href="index.html">
-        <span class="app-brand-logo demo">
-          <svg fill="none" height="22" viewBox="0 0 32 22" width="32" xmlns="http://www.w3.org/2000/svg">
-            <path
-              clip-rule="evenodd"
-              d="M0.00172773 0V6.85398C0.00172773 6.85398 -0.133178 9.01207 1.98092 10.8388L13.6912 21.9964L19.7809 21.9181L18.8042 9.88248L16.4951 7.17289L9.23799 0H0.00172773Z"
-              fill="#7367F0"
-              fill-rule="evenodd"
-            />
-            <path clip-rule="evenodd" d="M7.69824 16.4364L12.5199 3.23696L16.5541 7.25596L7.69824 16.4364Z" fill="#161616" fill-rule="evenodd" opacity="0.06" />
-            <path clip-rule="evenodd" d="M8.07751 15.9175L13.9419 4.63989L16.5849 7.28475L8.07751 15.9175Z" fill="#161616" fill-rule="evenodd" opacity="0.06" />
-            <path
-              clip-rule="evenodd"
-              d="M7.77295 16.3566L23.6563 0H32V6.88383C32 6.88383 31.8262 9.17836 30.6591 10.4057L19.7824 22H13.6938L7.77295 16.3566Z"
-              fill="#7367F0"
-              fill-rule="evenodd"
-            />
-          </svg>
-        </span>
-        <span class="app-brand-text demo text-body fw-bolder">نام سایت</span>
-      </a>
-    </div>
-    <!-- /Logo -->
-    <h4 class="mb-1 pt-2">به Vuexy خوش آمدید! 👋</h4>
-    <p class="mb-4">لطفا به حساب کاربری خود وارد شوید تا از امکانات سامانه استفاده کنید.</p>
-    <form action="index.html" class="mb-3" id="formAuthentication" method="GET">
-      <div class="mb-3">
-        <label class="form-label" for="email">ایمیل یا نام کاربری</label>
-        <input autofocus class="form-control" id="email" name="email-username" placeholder="ایمیل یا نام کاربری خود را وارد کنید" type="text" />
-      </div>
-      <div class="mb-3 form-password-toggle">
-        <div class="d-flex justify-content-between">
-          <label class="form-label" for="password">رمز عبور</label>
-          <a href="auth-forgot-password-basic.html">
-            <small>فراموش کرده‌اید؟</small>
+<div class="authentication-wrapper authentication-basic px-4">
+  <div class="authentication-inner py-4">
+    <!--  Two Steps Verification -->
+    <div class="card">
+      <div class="card-body">
+        <!-- Logo -->
+        <div class="app-brand justify-content-center mb-4 mt-2">
+          <a class="app-brand-link gap-2" href="index.html">
+            <span class="app-brand-logo demo">
+              <svg fill="none" height="22" viewBox="0 0 32 22" width="32" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  clip-rule="evenodd"
+                  d="M0.00172773 0V6.85398C0.00172773 6.85398 -0.133178 9.01207 1.98092 10.8388L13.6912 21.9964L19.7809 21.9181L18.8042 9.88248L16.4951 7.17289L9.23799 0H0.00172773Z"
+                  fill="#7367F0"
+                  fill-rule="evenodd"
+                />
+                <path
+                  clip-rule="evenodd"
+                  d="M7.69824 16.4364L12.5199 3.23696L16.5541 7.25596L7.69824 16.4364Z"
+                  fill="#161616"
+                  fill-rule="evenodd"
+                  opacity="0.06"
+                />
+                <path
+                  clip-rule="evenodd"
+                  d="M8.07751 15.9175L13.9419 4.63989L16.5849 7.28475L8.07751 15.9175Z"
+                  fill="#161616"
+                  fill-rule="evenodd"
+                  opacity="0.06"
+                />
+                <path
+                  clip-rule="evenodd"
+                  d="M7.77295 16.3566L23.6563 0H32V6.88383C32 6.88383 31.8262 9.17836 30.6591 10.4057L19.7824 22H13.6938L7.77295 16.3566Z"
+                  fill="#7367F0"
+                  fill-rule="evenodd"
+                />
+              </svg>
+            </span>
+            <span class="app-brand-text demo text-body fw-bold ms-1">آکادمی تکواندو یاری</span>
           </a>
         </div>
-        <div class="input-group input-group-merge">
-          <input aria-describedby="password" class="form-control" id="password" name="password" placeholder="············" type="password" />
-          <span class="input-group-text cursor-pointer">
-            <i class="ti ti-eye-off"></i>
-          </span>
-        </div>
+        <!-- /Logo -->
+        <h4 class="mb-1 pt-2">ورود با کد ملی</h4>
+
+        <p class="mb-0 fw-medium">لطفا کدملی خود را وارد نمایید.</p>
+        <form action="/api/v1/auth/login/form" id="twoStepsForm" method="POST">
+          <div class="mb-3">
+            <input
+              maxlength="10"
+              class="form-control text-center h-px-50 mx-1 my-2 display-1"
+              id="nationalCode"
+              name="nationalCode"
+              placeholder=""
+              type="text"
+            />
+          </div>
+          <button class="btn btn-primary d-grid w-100 mb-3">ورود</button>
+          <!-- <div class="text-center">
+            کد را دریافت نکردید؟
+            <a href="javascript:void(0);"> ارسال مجدد</a>
+          </div> -->
+        </form>
       </div>
-      <div class="mb-3">
-        <div class="form-check">
-          <input class="form-check-input" id="remember-me" type="checkbox" />
-          <label class="form-check-label" for="remember-me"> مرا به خاطر بسپار</label>
-        </div>
-      </div>
-      <div class="mb-3">
-        <button class="btn btn-primary d-grid w-100" type="submit">ورود به سیستم</button>
-      </div>
-    </form>
+    </div>
+    <!-- / Two Steps Verification -->
   </div>
 </div>

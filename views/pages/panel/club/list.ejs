@@ -1,0 +1,125 @@
+<div class="container-xxl flex-grow-1 container-p-y">
+  <h4 class="py-3 mb-4">
+    <span class="text-muted fw-light">باشگاه ها/</span>
+    لیست
+  </h4>
+  <div class="card">
+    <div class="row">
+      <div class="d-flex justify-content-between align-items-center p-4">
+        <div>
+          <a id="btn-create-club" class="btn btn-primary" data-bs-target="#createClub" data-bs-toggle="modal" href="javascript:">ثبت باشگاه جدید</a>
+        </div>
+        <div class="col-12 col-xl-3 col-sm-4">
+          <div class="input-group input-group-merge">
+            <span class="input-group-text" id="basic-addon-search31">
+              <i class="ti ti-search h-mirror"></i>
+            </span>
+            <input aria-describedby="basic-addon-search31" aria-label="جستجو ..." class="form-control" placeholder="جستجو ..." type="text" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="table-responsive text-nowrap">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th class="col-3">نام باشگاه</th>
+            <th class="d-none d-lg-table-cell">تعداد مربی</th>
+            <th class="d-none d-sm-table-cell">تعداد شاگرد</th>
+            <th class="d-none d-sm-table-cell">جنسیت</th>
+            <th class="col-1">عملیات</th>
+          </tr>
+        </thead>
+        <tbody class="table-border-bottom-0">
+          <tr>
+            <td>
+              <span class="name-table text-truncate fw-medium">آکادمی تکواندو یاری</span>
+            </td>
+            <td class="d-none d-sm-table-cell">
+              <span class="fw-medium">2</span>
+            </td>
+            <td class="d-none d-sm-table-cell">
+              <span class="fw-medium">125</span>
+            </td>
+            <td class="d-none d-lg-table-cell">
+              <span class="fw-medium badge bg-label-dark">آقایان</span>
+              <span class="fw-medium badge bg-label-dark">بانوان</span>
+            </td>
+
+            <td>
+              <div class="dropdown">
+                <button class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown" type="button">
+                  <i class="ti ti-dots-vertical"></i>
+                </button>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="javascript:void(0);">
+                    <i class="ti ti-info-circle me-1"></i>
+                    اطلاعات بیشتر
+                  </a>
+                  <a class="dropdown-item" href="javascript:void(0);">
+                    <i class="ti ti-pencil me-1"></i>
+                    ویرایش
+                  </a>
+                  <a class="dropdown-item" href="javascript:void(0);">
+                    <i class="ti ti-trash me-1"></i>
+                    حذف
+                  </a>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal modal-top fade" id="createClub" tabindex="-1">
+  <div class="modal-dialog">
+    <form class="modal-content" id="formValidationNewClub" method="POST" action="/api/v1/clubs">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalTopTitle">عنوان مدال</h5>
+        <button aria-label="بستن" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="form-label" for="name">نام باشگاه</label>
+            <input class="form-control" id="name" name="name" placeholder="آکادمی تکواندو یاری" type="text" />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label" for="genders">جنسیت باشگاه</label>
+            <select class="form-select select2" id="genders" data-placeholder="انتخاب جنسیت" name="genders" multiple>
+              <option value="">انتخاب جنسیت</option>
+              <option value="آقایان">آقایان</option>
+              <option value="بانوان">بانوان</option>
+            </select>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label" for="sports">رشته ورزشی</label>
+            <select class="form-select select2" id="sports" data-placeholder="انتخاب رشته ورزشی" name="sports" multiple>
+              <option value="">انتخاب رشته ورزشی</option>
+              <option value="6554827f6acf85e35050ae7c">تکواندو</option>
+            </select>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label" for="phone">تلفن داخلی</label>
+            <input maxlength="12" class="form-control ltr" id="phone" name="phone" placeholder="" type="text" />
+          </div>
+          <div class="col mb-3">
+            <div class="form-group">
+              <label class="form-label" for="ecommerce-product-name">آدرس</label>
+              <textarea class="form-control" id="exampleFormControlTextarea1" name="address" rows="3"></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-label-secondary" data-bs-dismiss="modal" type="button">بستن</button>
+        <button class="btn btn-primary" type="submit">ذخیره</button>
+      </div>
+    </form>
+  </div>
+</div>

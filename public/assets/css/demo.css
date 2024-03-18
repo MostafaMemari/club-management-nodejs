@@ -3,7 +3,7 @@
 * File include item demo only specific css only
 ******************************************************************************/
 @media (max-width: 992px) {
-  #btn-form {
+  #btn-create-student {
     width: 90%;
     height: 2.5rem;
     margin-bottom: 0.5rem;
@@ -15,6 +15,19 @@
   }
 }
 @media (max-width: 575.98px) {
+  #parent-btn-club {
+    margin: 0;
+  }
+  #btn-create-club {
+    width: 90%;
+    height: 2.5rem;
+    margin-bottom: 0.5rem;
+    z-index: 99;
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+  }
   .name-table {
     display: inline-block;
     max-width: 9.5rem;

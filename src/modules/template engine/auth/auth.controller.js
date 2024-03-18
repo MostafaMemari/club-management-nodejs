@@ -6,16 +6,18 @@ class AuthController {
   }
   async login(req, res, next) {
     try {
+      const userAuth = req.userAuth;
       res.locals.layout = "./layouts/auth/main.ejs";
-      res.render("./pages/auth/login.ejs");
+      res.render("./pages/auth/admin-login.ejs", { userAuth });
     } catch (error) {
       next(error);
     }
   }
   async studentLogin(req, res, next) {
     try {
-      res.locals.layout = "./layouts/panel/student/login.ejs";
-      res.render("./pages/panel/student/login.ejs");
+      const userAuth = req.userAuth;
+      res.locals.layout = "./layouts/auth/main.ejs";
+      res.render("./pages/auth/student-login.ejs", { userAuth });
     } catch (error) {
       next(error);
     }

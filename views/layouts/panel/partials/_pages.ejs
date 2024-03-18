@@ -1,0 +1,19 @@
+<% if(userAuth?.role === "STUDENT") { %>
+<script src="/pages/panel/student/register.js"></script>
+<% } %>
+<!---->
+<% if(urlPath === "/clubs") { %>
+<script src="/pages/panel/club/create.js"></script>
+<% } %>
+<!---->
+<% if(urlPath === "/student/register") { %>
+<script src="/pages/panel/student/register.js"></script>
+<% } %>
+<!---->
+<% if(urlPath === "/student/list") { %>
+<script src="/pages/panel/student/list.js"></script>
+<% } %>
+
+<!-- <script src="/assets/js/forms-pickers-jalali.js"></script> -->
+<!-- <script src="/assets/js/form-layouts.js"></script> -->
+<!-- <script src="/assets/js/form-validation.js"></script> -->

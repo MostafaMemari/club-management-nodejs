@@ -450,65 +450,10 @@
           </div>
         </div>
         <div class="d-flex justify-content-center">
-          <a class="btn btn-primary mt-3" data-bs-target="#createClub" data-bs-toggle="modal" href="javascript:">ثبت باشگاه جدید</a>
+          <a class="btn btn-primary mt-3" data-bs-target="#createClub" data-bs-toggle="modal" href="javascript:">مدیریت باشگاه ها</a>
         </div>
       </div>
     </div>
   </div>
   <!-- / Content -->
-
-  <!-- Modal -->
-  <!-- Create Club Modal -->
-  <div aria-hidden="true" class="modal fade" id="createClub" tabindex="-1">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel1">ثبت باشگاه جدید</h5>
-          <button aria-label="بستن" class="btn-close" data-bs-dismiss="modal" type="button"></button>
-        </div>
-        <div class="modal-body">
-          <form class="row g-3" id="createClubForm" onsubmit="return false">
-            <div class="row">
-              <div class="col-md-6 mb-3">
-                <label class="form-label" for="nameClub">نام باشگاه</label>
-                <input class="form-control" id="nameClub" name="name" placeholder="آکادمی تکواندو یاری" type="text" />
-              </div>
-              <div class="col-md-6 mb-3">
-                <label class="form-label mb-1" for="genders">جنسیت</label>
-                <select class="select2 form-select" id="genders" data-placeholder="جنسیت را انتخاب کنید." name="genders" multiple>
-                  <option value="مرد">مرد</option>
-                  <option value="زن">زن</option>
-                </select>
-              </div>
-              <div class="col-md-6 mb-3">
-                <label class="form-label" for="select2">رشته ورزشی</label>
-                <div class="select2">
-                  <select data-placeholder="کمربند را انتخاب کنید." class="select2 form-select" id="select2" name="sports" multiple>
-                    <option value="taekwondo">تکواندو</option>
-                  </select>
-                </div>
-              </div>
-
-              <div class="col-md-6 mb-3">
-                <label class="form-label" for="phone">تلفن داخلی</label>
-                <input maxlength="12" class="form-control ltr" id="phone" name="phone" placeholder="02165102415" type="text" />
-              </div>
-
-              <div class="col mb-3">
-                <div class="form-group">
-                  <label class="form-label" for="ecommerce-product-name">آدرس</label>
-                  <textarea class="form-control" id="exampleFormControlTextarea1" name="address" rows="3"></textarea>
-                </div>
-              </div>
-            </div>
-            <div class="col-12 text-center">
-              <button class="btn btn-primary me-sm-3 me-1" type="submit">ارسال</button>
-              <button aria-label="بستن" class="btn btn-label-secondary" data-bs-dismiss="modal" type="reset">لغو</button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!--/ Create Club Modal -->
 </div>
