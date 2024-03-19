@@ -5,11 +5,11 @@ const router = require("express").Router();
 
 router.get("/", isAuth, PanelController.main);
 
-router.get("/coach/register", PanelController.registerCoach);
+router.get("/coach/register", isAuth, PanelController.registerCoach);
 
-router.get("/clubs", PanelController.listClubs);
+router.get("/clubs", isAuth, PanelController.listClubs);
 
-router.get("/student/register", PanelController.registerStudent);
-router.get("/student/list", PanelController.listStudent);
+router.get("/student/register", isAuth, PanelController.registerStudent);
+router.get("/student/list", isAuth, PanelController.listStudent);
 
 module.exports = { PanelRouter: router };

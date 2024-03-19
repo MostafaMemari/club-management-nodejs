@@ -167,6 +167,7 @@ class StudentService {
     if (!studnet) throw createHttpError.NotFound("student not found");
     return studnet;
   }
+
   async checkExistStudentByNationalCode(nationalCode) {
     const studnet = await this.#Model.findOne({ nationalCode }).lean();
     if (studnet) throw createHttpError.NotFound(StudentMessage.AlreadyExist);

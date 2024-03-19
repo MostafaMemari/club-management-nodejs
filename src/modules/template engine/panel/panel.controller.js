@@ -4,6 +4,7 @@ const userService = require("../../user/user.service");
 const { UserModel } = require("../../user/user.model");
 const ageGroupService = require("../../baseData/ageGroup/ageGroup.service");
 const beltService = require("../../baseData/belt/belt.service");
+const clubService = require("../../club/club.service");
 
 class PanelController {
   #studentService;
@@ -19,7 +20,7 @@ class PanelController {
   }
   async registerStudent(req, res, next) {
     try {
-      const urlPath = "/student/register";
+      const urlPath = req.path;
       const userAuth = req.userAuth;
 
       res.render("./pages/panel/student/register.ejs", { urlPath, userAuth });
@@ -29,7 +30,7 @@ class PanelController {
   }
   async listStudent(req, res, next) {
     try {
-      const urlPath = "/student/list";
+      const urlPath = req.path;
       const userAuth = req.userAuth;
 
       const students = await this.#studentService.find();
@@ -44,10 +45,12 @@ class PanelController {
 
   async listClubs(req, res, next) {
     try {
-      const urlPath = "/clubs";
+      const urlPath = req.path;
       const userAuth = req.userAuth;
 
-      res.render("./pages/panel/club/list.ejs", { userAuth, urlPath });
+      const clubs = userAuth.role === "ADMIN_CLUB" && (await clubService.getClubsByAdminClubID(userAuth._id));
+
+      res.render("./pages/panel/club/list.ejs", { userAuth, urlPath, clubs });
     } catch (error) {
       next(error);
     }
@@ -65,13 +68,13 @@ class PanelController {
 
   async main(req, res, next) {
     try {
-      const urlPath = "/";
+      const urlPath = req.path;
       const userAuth = req.userAuth;
       if (userAuth.role === "STUDENT") {
         const student = await this.#studentService.findByID(userAuth._id);
         res.render("./pages/panel/student/profile.ejs", { student, userAuth, urlPath });
       } else if (userAuth.role === "ADMIN_CLUB") {
-        const urlPath = "/";
+        const urlPath = req.path;
 
         // const tes = await this.#UserModel.findById(userAuth._id).populate({ path: "coachs", strictPopulate: false }).populate("clubs").lean();
         const userAuth = req.userAuth;

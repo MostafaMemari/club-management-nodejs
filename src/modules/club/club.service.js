@@ -45,6 +45,12 @@ class ClubService {
     if (!removeResult.deletedCount) throw createHttpError.InternalServerError(ClubMessage.DeleteError);
   }
 
+  async getClubsByAdminClubID(adminClubID) {
+    const clubs = await this.#Model.find({ adminClub: adminClubID }).sort({ updatedAt: -1 }).lean();
+
+    return clubs;
+  }
+
   async checkExistClubByName(name) {
     const result = await this.#Model.findOne({ name }).lean();
     if (result) throw createHttpError.Conflict(ClubMessage.AlreadyExist);

@@ -20,7 +20,7 @@ const ClubSchema = new Schema(
     adminClub: { type: Types.ObjectId, ref: "user" },
     createdBy: { type: Types.ObjectId, required: true, ref: "user" },
   },
-  { versionKey: false }
+  { versionKey: false, timestamps: true }
 );
 
 const ClubModel = model("club", ClubSchema);

@@ -35,9 +35,10 @@
           </tr>
         </thead>
         <tbody class="table-border-bottom-0">
+          <% for (const club of clubs) { %>
           <tr>
             <td>
-              <span class="name-table text-truncate fw-medium">آکادمی تکواندو یاری</span>
+              <span class="name-table text-truncate fw-medium"><%- club.name %></span>
             </td>
             <td class="d-none d-sm-table-cell">
               <span class="fw-medium">2</span>
@@ -46,10 +47,10 @@
               <span class="fw-medium">125</span>
             </td>
             <td class="d-none d-lg-table-cell">
-              <span class="fw-medium badge bg-label-dark">آقایان</span>
-              <span class="fw-medium badge bg-label-dark">بانوان</span>
+              <% for (const gender of club.genders) { %>
+              <span class="fw-medium badge bg-label-dark"><%- gender %></span>
+              <% } %>
             </td>
-
             <td>
               <div class="dropdown">
                 <button class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown" type="button">
@@ -72,6 +73,7 @@
               </div>
             </td>
           </tr>
+          <% } %>
         </tbody>
       </table>
     </div>
