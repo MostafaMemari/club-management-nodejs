@@ -95,5 +95,38 @@ class AuthController {
     }
   }
 }
+class AuthControllerForm {
+  #service;
 
-module.exports = new AuthController();
+  constructor() {
+    autoBind(this);
+    this.#service = AuthService;
+  }
+
+  async userLogin(req, res, next) {
+    try {
+      const { identifier, password } = req.body;
+      const { accessToken, userExist } = await this.#service.userLogin(identifier, password);
+
+      // req.flash("success", category_message_1.CategoryMessage.Updated);
+      return res.cookie("access_token", accessToken, { httpOnly: true, maxAge: 604800000 }).redirect("/");
+    } catch (error) {
+      next(error);
+    }
+  }
+  async login(req, res, next) {
+    try {
+      const { nationalCode } = req.body;
+      const accessToken = await this.#service.login(nationalCode);
+
+      return res.cookie("access_token", accessToken, { httpOnly: true, maxAge: 604800000 }).redirect("/");
+    } catch (error) {
+      next(error);
+    }
+  }
+}
+
+module.exports = {
+  AuthController: new AuthController(),
+  AuthControllerForm: new AuthControllerForm(),
+};

@@ -203,7 +203,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
         })
         .on("change.select2", function () {
           // Revalidate the color field when an option is chosen
-          fv.revalidateField("club");
+          fv.revalidateField("clubs");
         });
     }
 

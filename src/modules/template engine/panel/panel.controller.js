@@ -55,8 +55,9 @@ class PanelController {
 
   async registerCoach(req, res, next) {
     try {
+      const userAuth = req.userAuth;
       const urlPath = "/coach/register";
-      res.render("./pages/panel/coach/register.ejs", { urlPath });
+      res.render("./pages/panel/coach/register.ejs", { urlPath, userAuth });
     } catch (error) {
       next(error);
     }
