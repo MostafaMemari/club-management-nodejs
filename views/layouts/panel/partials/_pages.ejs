@@ -1,7 +1,3 @@
-<% if(userAuth?.role === "STUDENT") { %>
-<script src="/pages/panel/student/register.js"></script>
-<% } %>
-<!---->
 <% if(urlPath === "/clubs") { %>
 <script src="/pages/panel/club/create.js"></script>
 <% } %>
@@ -10,14 +6,14 @@
 <script src="/pages/panel/student/register.js"></script>
 <% } %>
 <!---->
-<% if(urlPath === "/student/list") { %>
+<% if(urlPath === "/students") { %>
 <script src="/pages/panel/student/list.js"></script>
 <% } %>
 <!---->
 <% if(urlPath === "/coach/register") { %>
 <script src="/pages/panel/coach/register.js"></script>
 <% } %>
-
-<!-- <script src="/assets/js/forms-pickers-jalali.js"></script> -->
-<!-- <script src="/assets/js/form-layouts.js"></script> -->
-<!-- <script src="/assets/js/form-validation.js"></script> -->
+<!---->
+<% if(urlPath === "/coachs") { %>
+<script src="/pages/panel/coach/list.js"></script>
+<% } %>
