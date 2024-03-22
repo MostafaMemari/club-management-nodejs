@@ -11,6 +11,7 @@ router.get("/coachs", isAuth, PanelController.listCoachs);
 router.get("/clubs", isAuth, PanelController.listClubs);
 
 router.get("/student/register", isAuth, PanelController.registerStudent);
+router.get("/student/update/:id", isAuth, PanelController.updateStudent);
 router.get("/students", isAuth, PanelController.listStudent);
 
 module.exports = { PanelRouter: router };

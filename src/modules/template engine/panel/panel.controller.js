@@ -6,6 +6,7 @@ const ageGroupService = require("../../baseData/ageGroup/ageGroup.service");
 const beltService = require("../../baseData/belt/belt.service");
 const clubService = require("../../club/club.service");
 const { CoachModel } = require("../../coach/coach.model");
+const { isValidObjectId } = require("mongoose");
 
 class PanelController {
   #studentService;
@@ -29,6 +30,21 @@ class PanelController {
       const userAuth = req.userAuth;
 
       res.render("./pages/panel/student/register.ejs", { urlPath, userAuth });
+    } catch (error) {
+      next(error);
+    }
+  }
+  async updateStudent(req, res, next) {
+    try {
+      const studentID = req.params.id;
+
+      const urlPath = "/student/update";
+      const userAuth = req.userAuth;
+      const student = await this.#studentService.findByID(studentID);
+
+      console.log(student);
+
+      res.render("./pages/panel/student/update.ejs", { student, urlPath, userAuth });
     } catch (error) {
       next(error);
     }
