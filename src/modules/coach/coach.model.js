@@ -12,7 +12,7 @@ const CoachSchema = new Schema(
     mobile: { type: String },
     address: { type: String },
     birthDay: { type: String },
-    imageUrl: { type: String, default: "/uploads/profile-coachs.jpg" },
+    imageUrl: { type: String },
 
     memberShipValidity: { type: Number },
 

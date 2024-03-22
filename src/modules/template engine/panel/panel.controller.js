@@ -29,7 +29,19 @@ class PanelController {
       const urlPath = req.path;
       const userAuth = req.userAuth;
 
-      res.render("./pages/panel/student/register.ejs", { urlPath, userAuth });
+      const clubs = await this.#clubService.getClubsByAdminClubID(userAuth._id);
+      const clubsArr = clubs.map((club) => club._id);
+
+      const coachs = await this.#coachModel
+        .find({ clubs: { $in: clubsArr } })
+        .populate({ path: "clubs", strictPopulate: false, select: "name" })
+        .populate({ path: "belt", strictPopulate: false, select: "name" })
+        .lean();
+
+      const belts = await this.#beltService.find();
+      const ageGroups = await this.#ageGroupSerivce.find();
+
+      res.render("./pages/panel/student/register.ejs", { urlPath, coachs, belts, clubs, ageGroups });
     } catch (error) {
       next(error);
     }
@@ -41,8 +53,6 @@ class PanelController {
       const urlPath = "/student/update";
       const userAuth = req.userAuth;
       const student = await this.#studentService.findByID(studentID);
-
-      console.log(student);
 
       res.render("./pages/panel/student/update.ejs", { student, urlPath, userAuth });
     } catch (error) {
@@ -81,7 +91,10 @@ class PanelController {
     try {
       const userAuth = req.userAuth;
       const urlPath = "/coach/register";
-      res.render("./pages/panel/coach/register.ejs", { urlPath, userAuth });
+      const clubs = await this.#clubService.getClubsByAdminClubID(userAuth._id);
+      const belts = await this.#beltService.find();
+
+      res.render("./pages/panel/coach/register.ejs", { urlPath, userAuth, clubs, belts });
     } catch (error) {
       next(error);
     }

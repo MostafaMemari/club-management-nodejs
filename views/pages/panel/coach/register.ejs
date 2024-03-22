@@ -11,7 +11,7 @@
       <button class="btn btn-primary" name="submitButton" type="submit">ارسال</button>
     </div> -->
   </div>
-  <form class="row" id="formValidationNewStudent" method="POST" action="/api/v1/students/register">
+  <form class="row" id="formValidationNewStudent" method="POST" action="/api/v1/coachs/register" enctype="multipart/form-data">
     <div class="col-12 col-lg-8">
       <div class="card">
         <h5 class="card-header">اطلاعات شخصی</h5>
@@ -70,8 +70,8 @@
               <input class="form-control prefix-mask ltr" maxlength="11" id="mobile" name="mobile" placeholder="09#########" type="text" />
             </div>
             <div class="col-md-6 mb-3">
-              <label class="form-label" for="studentProfile">عکس پروفایل</label>
-              <input class="form-control" id="studentProfile" name="formValidationFile" type="file" />
+              <label class="form-label" for="coachProfile">عکس پروفایل</label>
+              <input class="form-control" id="coachProfile" name="coachProfile" type="file" />
             </div>
 
             <div class="col mb-3">
@@ -96,13 +96,19 @@
         <div class="card-body">
           <!-- Vendor -->
           <div class="col-12 mb-3">
+            <% if(clubs.length > 0) { %>
             <label class="form-label mb-1" for="clubs">انتخاب باشگاه</label>
             <select class="select2 form-select" id="clubs" data-placeholder="انتخاب باشگاه" name="clubs" multiple>
-              <option value="taekwondo">تکواندو</option>
-              <option value="taekwondo">تکواندو</option>
-              <option value="taekwondo">تکواندو</option>
-              <option value="taekwondo">تکواندو</option>
+              <% for (const club of clubs) { %>
+              <option value="<%- club._id %>"><%- club.name %></option>
+              <% } %>
             </select>
+            <% }else { %>
+            <div class="d-flex flex-column align-items-center justify-content-center">
+              <span class="text-danger">باشگاهی وجود ندارد!</span>
+              <a href="/clubs"><button class="btn btn-primary waves-effect waves-light mt-3" type="button">مدیریت باشگاه ها</button></a>
+            </div>
+            <% } %>
           </div>
         </div>
       </div>
@@ -116,25 +122,15 @@
             <label class="form-label mb-1" for="belt">کمربند فعلی</label>
             <select class="select2 form-select" name="belt" data-allow-clear="true" data-placeholder="انتخاب کمربند" id="belt">
               <option value="">.کمربند را انتخاب کنید</option>
-              <option value="men-clothing">سفید</option>
-              <option value="women-clothing">زرد</option>
-              <option value="kid-clothing">سبز</option>
-              <option value="kid-clothing">آبی</option>
-              <option value="kid-clothing">قرمز</option>
-              <option value="kid-clothing">پوم 1</option>
-              <option value="kid-clothing">دان 1</option>
-              <option value="kid-clothing">پوم 2</option>
-              <option value="kid-clothing">دان 2</option>
-              <option value="kid-clothing">پوم 3</option>
-              <option value="kid-clothing">دان 3</option>
-              <option value="kid-clothing">پوم 4</option>
-              <option value="kid-clothing">دان 4</option>
+              <% for (const belt of belts) { %>
+              <option value="<%- belt._id %>"><%- belt.name %></option>
+              <% } %>
             </select>
           </div>
 
           <div class="co mb-3">
             <label class="form-label" for="bs-datepicker-belt-date">تاریخ کمربند</label>
-            <input class="form-control" maxlength="10" id="bs-datepicker-belt-date" placeholder="1400/02/06" type="text" />
+            <input class="form-control" maxlength="10" id="bs-datepicker-belt-date" placeholder="1400/02/06" name="beltDate" type="text" />
           </div>
 
           <div class="col-12 mb-3">

@@ -137,7 +137,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
             },
           },
         },
-        formValidationFile: {
+        coachProfile: {
           validators: {
             regexp: {
               regexp: /\.(jpe?g)$/i,

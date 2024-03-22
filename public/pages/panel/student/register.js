@@ -170,7 +170,14 @@ document.addEventListener("DOMContentLoaded", function (e) {
         club: {
           validators: {
             notEmpty: {
-              message: "لطفا نام باشگاه را انتخاب کنید.",
+              message: "لطفا باشگاه را انتخاب کنید.",
+            },
+          },
+        },
+        coach: {
+          validators: {
+            notEmpty: {
+              message: "لطفا مربی را انتخاب کنید.",
             },
           },
         },
@@ -194,6 +201,8 @@ document.addEventListener("DOMContentLoaded", function (e) {
             // field is the field name & ele is the field element
             switch (field) {
               case "club":
+                return ".col-12";
+              case "coach":
                 return ".col-12";
 
               case "memberShipValidity":
@@ -297,3 +306,43 @@ document.addEventListener("DOMContentLoaded", function (e) {
   //   });
   // }
 })();
+
+function selectBoxClub(event, coachsEncode) {
+  const selectBoxCoach = document.querySelector("#coach");
+
+  const coachs = JSON.parse(decodeURIComponent(coachsEncode));
+  const clubID = event.target.value;
+
+  let coachSelect = [];
+  for (const coach of coachs) {
+    coach.clubs.forEach((club) => {
+      if (club._id === clubID) {
+        coachSelect.push(coach);
+      }
+    });
+  }
+
+  const optionCoachs = Object.entries(coachSelect).map((key) => `<option value='${key[1]?._id}'>${key[1]?.firstName} ${key[1]?.lastName}</option>`);
+  addOptionToSelectBox(selectBoxCoach, optionCoachs);
+}
+
+function addOptionToSelectBox(selectBox, option) {
+  const selectBoxCoachs = document.querySelector("#select-box-coachs");
+  const errorCoach = document.querySelector("#error-empty-coach");
+  selectBox.innerHTML = "";
+
+  if (option.length > 0) {
+    selectBoxCoachs.classList.remove("d-none");
+    errorCoach.classList.add("d-none");
+    selectBox.insertAdjacentHTML(
+      "beforeend",
+      `
+      <option value="">انتخاب باشگاه</option>
+      ${option.join("")}
+      `
+    );
+  } else {
+    selectBoxCoachs.classList.add("d-none");
+    errorCoach.classList.remove("d-none");
+  }
+}

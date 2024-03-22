@@ -141,7 +141,7 @@ function CoachValidationOptional() {
       .trim()
       .notEmpty()
       .escape()
-      .isLength({ min: 10, max: 50 })
+      .isLength({ min: 10, max: 250 })
       .withMessage("Address is not valid"),
 
     body("registerDate")

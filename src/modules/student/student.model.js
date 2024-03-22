@@ -17,7 +17,7 @@ const StudentSchema = new Schema(
     mobile: { type: String },
     address: { type: String },
     phone: { type: String },
-    imageUrl: { type: String, default: "/uploads/profile-students.jpg" },
+    imageUrl: { type: String },
 
     memberShipValidity: { type: Number },
     sportsInsuranceDate: { type: String },
