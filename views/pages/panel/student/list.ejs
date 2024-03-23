@@ -55,7 +55,7 @@
             <td class="col-1">
               <div class="avatar">
                 <% if(student.imageUrl) { %>
-                <img alt="آواتار" class="rounded" src="student.imageUrl" />
+                <img alt="آواتار" class="rounded" src="<%- student.imageUrl %>" />
                 <% }else { %>
                 <!---->
                 <% const name = `${student.firstName.charAt(0)}‌${student.lastName.charAt(0)}` %>

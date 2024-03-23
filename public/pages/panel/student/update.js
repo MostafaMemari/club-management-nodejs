@@ -297,3 +297,70 @@ document.addEventListener("DOMContentLoaded", function (e) {
   //   });
   // }
 })();
+
+function selectBoxClub(event, coachsEncode) {
+  const selectBoxCoach = document.querySelector("#coach");
+
+  const coachs = JSON.parse(decodeURIComponent(coachsEncode));
+  const clubID = event.target.value;
+
+  let coachSelect = coachs.filter((coach) => coach.clubs.some((club) => club._id === clubID));
+  // console.log(coachSelect);
+
+  const optionCoachs = Object.entries(coachSelect).map((key) => `<option value='${key[1]?._id}'>${key[1]?.firstName} ${key[1]?.lastName}</option>`);
+
+  addOptionToSelectBox(selectBoxCoach, optionCoachs, clubID);
+}
+
+function addOptionToSelectBox(selectBox, option, clubID) {
+  const selectBoxCoachs = document.querySelector("#select-box-coachs");
+  const errorCoach = document.querySelector("#error-empty-coach");
+  selectBox.innerHTML = "";
+
+  if (option.length > 0) {
+    selectBoxCoachs.classList.remove("d-none");
+    errorCoach.classList.add("d-none");
+    selectBox.insertAdjacentHTML(
+      "beforeend",
+      `
+      <option value="">انتخاب باشگاه</option>
+      ${option.join("")}
+      `
+    );
+  } else if (!clubID) {
+    errorCoach.classList.add("d-none");
+    selectBoxCoachs.classList.add("d-none");
+  } else {
+    selectBoxCoachs.classList.add("d-none");
+    errorCoach.classList.remove("d-none");
+  }
+}
+
+document.addEventListener("DOMContentLoaded", function (e) {
+  (function () {
+    // Update/reset user image of account page
+    let accountUserImage = document.getElementById("uploadedAvatar");
+    const fileInput = document.querySelector(".account-file-input"),
+      resetFileInput = document.querySelector(".account-image-reset");
+
+    if (accountUserImage) {
+      const resetImage = accountUserImage.src;
+      fileInput.onchange = () => {
+        if (fileInput.files[0]) {
+          accountUserImage.src = window.URL.createObjectURL(fileInput.files[0]);
+        }
+      };
+      resetFileInput.onclick = () => {
+        const studentProfile = document.querySelector('[data-field="studentProfile"]');
+
+        if (studentProfile) {
+          studentProfile.innerHTML = "";
+        }
+
+        fileInput.value = "";
+
+        accountUserImage.src = resetImage;
+      };
+    }
+  })();
+});

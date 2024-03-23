@@ -1,7 +1,7 @@
 <div class="container-xxl flex-grow-1 container-p-y">
   <h4 class="py-3 mb-0">
     <span class="text-muted fw-light">هنرجویان / </span>
-    بروزرسانی
+    بروزرسانی هنرجو
   </h4>
   <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-3">
     <div class="d-flex flex-column justify-content-center">
@@ -11,16 +11,34 @@
       <button class="btn btn-primary" name="submitButton" type="submit">ارسال</button>
     </div> -->
   </div>
-  <form class="row" id="formValidationNewStudent" method="POST" action="/api/v1/students/register">
-    <div class="col-12 col-lg-8">
+  <form class="row"  id="formValidationNewStudent" method="POST" action="/api/v1/students/<%- student._id %>>/update-profile" enctype="multipart/form-data">
+    <div class="col-12 col-lg-8 mb-4">
       <div class="card">
         <h5 class="card-header">اطلاعات شخصی</h5>
         <div class="card-body">
           <!-- Account Details -->
           <div class="row">
+            <div class="col-12 mb-3">
+              <div class="d-flex align-items-start align-items-sm-center gap-4">
+                <img alt="کاربر-آواتار" class="d-block w-px-100 h-px-100 rounded" id="uploadedAvatar" src="<%- student.imageUrl ? student.imageUrl :
+                "/uploads/profile-student.jpg" %>" />
+                <div class="button-wrapper">
+                  <label class="btn btn-primary me-2 mb-3" for="upload" tabindex="0">
+                    <span class="d-none d-sm-block">آپلود عکس جدید</span>
+                    <i class="ti ti-upload d-block d-sm-none"></i>
+                    <input accept="image/png, image/jpeg" class="account-file-input" hidden id="upload" type="file" name="studentProfile" />
+                  </label>
+                  <button class="btn btn-label-secondary account-image-reset mb-3" type="button">
+                    <i class="ti ti-refresh-dot d-block d-sm-none"></i>
+                    <span class="d-none d-sm-block">حذف عکس</span>
+                  </button>
+                  <div class="text-muted">حداکثر حجم 2 مگابایت فرمت png , jpeg , jpg</div>
+                </div>
+              </div>
+            </div>
             <div class="col-md-6 mb-3">
               <label class="form-label" for="firstName">نام</label>
-              <input class="form-control" id="firstName" name="firstName" placeholder="مصطفی" type="text" value="<%- student.firstName %>" />
+              <input class="form-control" id="firstName" name="firstName" placeholder="" type="text" value="<%- student.firstName %>" />
             </div>
             <div class="col-md-6 mb-3">
               <label class="form-label" for="lastName">نام خانوادگی</label>
@@ -62,7 +80,8 @@
                   <div class="col-6">
                     <div class="form-check custom-option">
                       <label class="p-2 d-flex justify-content-center align-items-center form-check-label custom-option-content" for="radio-man">
-                        <input <%- student.gender === "مرد" && "checked" %> class="form-check-input" id="radio-man" name="gender" type="radio" value="مرد" />
+                        <input <%- student.gender === "مرد" && "checked" %> checked class="form-check-input" id="radio-man" name="gender" type="radio"
+                        value="مرد" />
                         <span class="custom-option-body">
                           <span class="custom-option-title ms-2">مرد</span>
                         </span>
@@ -98,10 +117,7 @@
               <label class="form-label" for="phone">تلفن داخلی</label>
               <input maxlength="12" class="form-control ltr" id="phone" name="phone" placeholder="" type="text" value="<%- student.phone %>" />
             </div>
-            <div class="col-md-6 mb-3">
-              <label class="form-label" for="studentProfile">عکس پروفایل</label>
-              <input class="form-control" id="studentProfile" name="formValidationFile" type="file" />
-            </div>
+
             <div class="mb-3 col-md-6 ecommerce-select2-dropdown">
               <label class="form-label" for="bs-datepicker-register-date">تاریخ ثبت نام</label>
               <input
@@ -114,10 +130,11 @@
                 value="<%- student.registerDate %>"
               />
             </div>
+
             <div class="col mb-3">
               <div class="form-group">
                 <label class="form-label" for="ecommerce-product-name">آدرس</label>
-                <textarea class="form-control" id="exampleFormControlTextarea1" name="address" rows="3"><%- student.address %></textarea>
+                <textarea class="form-control" id="exampleFormControlTextarea1" name="address" rows="2"><%- student.address %></textarea>
               </div>
             </div>
           </div>
@@ -137,19 +154,40 @@
           <!-- Vendor -->
           <div class="mb-3 col-12">
             <label class="form-label" for="club">انتخاب باشگاه</label>
-            <select class="form-select select2" data-allow-clear="true" id="club" data-placeholder="انتخاب باشگاه" name="club">
-              <option value="">باشگاه را انتخاب کنید</option>
-              <option value="Australia">آکادمی تکواندو یاری</option>
+            <select
+              class="form-select select2"
+              data-allow-clear="true"
+              id="club"
+              data-placeholder="انتخاب باشگاه"
+              onchange="selectBoxClub(event,'<%- encodeURIComponent(JSON.stringify(coachs))%>')"
+              name="club"
+            >
+              <option value="">انتخاب باشگاه</option>
+              <% for (const club of clubs) { %>
+              <option <%- student.club.name === club.name && "selected" %> value="<%- club._id %>"><%- club.name %></option>
+              <% } %>
             </select>
           </div>
 
-          <div class="mb-3 col ecommerce-select2-dropdown">
+          <div class="mb-3 col-12 d-none" id="error-empty-coach">
+            <div class="d-flex flex-column align-items-center justify-content-center">
+              <span class="text-danger">مربی برای باشگاه وجود ندارد!</span>
+              <a href="/coach/register"><button class="btn btn-primary waves-effect waves-light mt-3" type="button">ثبت مربی جدید</button></a>
+            </div>
+          </div>
+
+
+          <% let coachSelect = coachs.filter((coach) => coach.clubs.some((club) => club._id.toString() == student.club._id)) %>
+
+          <div class="mb-3 col-12 " id="select-box-coachs">
             <label class="form-label mb-1" for="coach">انتخاب مربی</label>
             <select class="form-select select2" name="coach" data-allow-clear="true" data-placeholder="انتخاب مربی" id="coach">
-              <option value="">مربی را انتخاب کنید</option>
-              <option value="men-clothing">محمدرضا یاری</option>
+              <% for (const coach of coachSelect) { %>
+                <option <%- student.coach._id == coach._id.toString()  && "selected" %> value="<%- coach._id %>"><%- coach.firstName %> <%- coach.lastName %></option>
+              <% } %>
             </select>
           </div>
+
         </div>
       </div>
       <div class="card mb-4">
@@ -158,29 +196,27 @@
         </div>
         <div class="card-body">
           <!-- Vendor -->
-          <div class="mb-3 col ecommerce-select2-dropdown">
+          <div class="mb-3 col-12">
             <label class="form-label mb-1" for="belt">کمربند فعلی</label>
             <select class="select2 form-select" name="belt" data-allow-clear="true" data-placeholder="انتخاب کمربند" id="belt">
-              <option value="">.کمربند را انتخاب کنید</option>
-              <option value="men-clothing">سفید</option>
-              <option value="women-clothing">زرد</option>
-              <option value="kid-clothing">سبز</option>
-              <option value="kid-clothing">آبی</option>
-              <option value="kid-clothing">قرمز</option>
-              <option value="kid-clothing">پوم 1</option>
-              <option value="kid-clothing">دان 1</option>
-              <option value="kid-clothing">پوم 2</option>
-              <option value="kid-clothing">دان 2</option>
-              <option value="kid-clothing">پوم 3</option>
-              <option value="kid-clothing">دان 3</option>
-              <option value="kid-clothing">پوم 4</option>
-              <option value="kid-clothing">دان 4</option>
+              <option value="">انتخاب کمربند</option>
+              <% for (const belt of belts) { %>
+              <option <%- student.belt.name === belt.name && "selected" %> value="<%- belt._id %>"><%- belt.name %></option>
+              <%} %>
             </select>
           </div>
 
-          <div class="co mb-3">
+          <div class="mb-3 col-12">
             <label class="form-label" for="bs-datepicker-belt-date">تاریخ کمربند</label>
-            <input class="form-control" maxlength="10" id="bs-datepicker-belt-date" placeholder="1400/02/06" type="text" />
+            <input
+              class="form-control"
+              maxlength="10"
+              id="bs-datepicker-belt-date"
+              name="beltDate"
+              placeholder="1400/02/06"
+              type="text"
+              value="<%- student.belt.beltDate %>"
+            />
           </div>
         </div>
       </div>
@@ -189,19 +225,32 @@
           <h5 class="card-title mb-0">اطلاعات بیشتر</h5>
         </div>
         <div class="card-body">
-          <!-- Vendor -->
           <div class="mb-3 col ecommerce-select2-dropdown">
             <label class="form-label" for="bs-datepicker-sportsInsurance-date">تاریخ بیمه ورزشی</label>
-            <input class="form-control" maxlength="10" id="bs-datepicker-sportsInsurance-date" placeholder="1400/05/06" type="text" />
+            <input
+              class="form-control"
+              maxlength="10"
+              id="bs-datepicker-sportsInsurance-date"
+              placeholder="1400/05/06"
+              type="text"
+              value="<%- student.sportsInsuranceDate %>"
+            />
           </div>
 
           <div class="col-12 mb-3">
             <label class="form-label" for="memberShipValidity">شارژ بانک اطلاعاتی</label>
-            <input maxlength="4" class="form-control" id="memberShipValidity" name="memberShipValidity" placeholder="1402" type="text" />
+            <input
+              maxlength="4"
+              class="form-control"
+              id="memberShipValidity"
+              name="memberShipValidity"
+              placeholder="1402"
+              type="text"
+              value="<%- student.memberShipValidity.date %>"
+            />
           </div>
         </div>
       </div>
-      <!-- /Organize Card -->
     </div>
   </form>
 </div>

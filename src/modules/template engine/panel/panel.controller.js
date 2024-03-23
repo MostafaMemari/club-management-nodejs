@@ -54,7 +54,20 @@ class PanelController {
       const userAuth = req.userAuth;
       const student = await this.#studentService.findByID(studentID);
 
-      res.render("./pages/panel/student/update.ejs", { student, urlPath, userAuth });
+      const clubs = await this.#clubService.getClubsByAdminClubID(userAuth._id);
+      const clubsArr = clubs.map((club) => club._id);
+
+      const coachs = await this.#coachModel
+        .find({ clubs: { $in: clubsArr } })
+        .select("clubs belt firstName lastName _id")
+        .populate({ path: "clubs", strictPopulate: false, select: "name" })
+        .populate({ path: "belt", strictPopulate: false, select: "name" })
+        .lean();
+
+      const belts = await this.#beltService.find();
+      const ageGroups = await this.#ageGroupSerivce.find();
+
+      res.render("./pages/panel/student/update.ejs", { student, urlPath, userAuth, clubs, coachs, belts, ageGroups });
     } catch (error) {
       next(error);
     }

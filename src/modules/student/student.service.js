@@ -17,6 +17,7 @@ const { StudentMessage } = require("./student.message");
 const { StudentModel } = require("./student.model");
 const beltExamService = require("../baseData/beltExam/beltExam.service");
 const ageGroupService = require("../baseData/ageGroup/ageGroup.service");
+const { CoachModel } = require("../coach/coach.model");
 
 class StudentService {
   #Model;
@@ -126,19 +127,31 @@ class StudentService {
             },
           },
         },
-        // {
-        //   $lookup: {
-        //     from: "clubs",
-        //     localField: "club",
-        //     foreignField: "_id",
-        //     as: "club",
-        //   },
-        // },
-        { $unwind: "$club" },
-        { $addFields: { club: "$club.name" } },
+        {
+          $lookup: {
+            from: "clubs",
+            localField: "club",
+            foreignField: "_id",
+            as: "clubs",
+          },
+        },
+        {
+          $lookup: {
+            from: "coaches",
+            localField: "coach",
+            foreignField: "_id",
+            as: "coachs",
+          },
+        },
+        { $unwind: "$clubs" },
+        { $unwind: "$coachs" },
+        { $addFields: { club: { _id: "$clubs._id", name: "$clubs.name" } } },
+        { $addFields: { coach: { _id: "$coachs._id", name: { $concat: ["$coachs.firstName", " ", "$coachs.lastName"] } } } },
         {
           $project: {
             beltDate: 0,
+            coachs: 0,
+            clubs: 0,
           },
         },
       ])

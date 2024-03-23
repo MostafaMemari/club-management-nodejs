@@ -335,14 +335,16 @@ function selectBoxClub(event, coachsEncode) {
   const coachs = JSON.parse(decodeURIComponent(coachsEncode));
   const clubID = event.target.value;
 
-  let coachSelect = [];
-  for (const coach of coachs) {
-    coach.clubs.forEach((club) => {
-      if (club._id === clubID) {
-        coachSelect.push(coach);
-      }
-    });
-  }
+  // let coachSelect = [];
+  // for (const coach of coachs) {
+  //   coach.clubs.forEach((club) => {
+  //     if (club._id === clubID) {
+  //       coachSelect.push(coach);
+  //     }
+  //   });
+  // }
+
+  let coachSelect = coachs.filter((coach) => coach.clubs.some((club) => club._id === clubID));
 
   const optionCoachs = Object.entries(coachSelect).map((key) => `<option value='${key[1]?._id}'>${key[1]?.firstName} ${key[1]?.lastName}</option>`);
 
