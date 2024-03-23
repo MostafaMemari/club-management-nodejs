@@ -52,6 +52,7 @@ class StudentService {
       {
         $match: {},
       },
+      { $sort: { updatedAt: -1 } },
       {
         $limit: 100,
       },

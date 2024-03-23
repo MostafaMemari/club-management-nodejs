@@ -84,24 +84,24 @@ document.addEventListener("DOMContentLoaded", function (e) {
         firstName: {
           validators: {
             notEmpty: {
-              message: "لطفا نام خود را وارد کنید.",
+              message: "فیلد نام الزامی است",
             },
             stringLength: {
               min: 2,
               max: 50,
-              message: "نام وارد شده معتبر نمی باشد.",
+              message: "نام وارد شده معتبر نمی باشد",
             },
           },
         },
         lastName: {
           validators: {
             notEmpty: {
-              message: "لطفا نام خانوادگی خود را وارد کنید.",
+              message: "فیلد نام خانوادگی الزامی است",
             },
             stringLength: {
               min: 2,
               max: 50,
-              message: "نام خانوادگی وارد شده معتبر نمی باشد.",
+              message: "نام خانوادگی وارد شده معتبر نمی باشد",
             },
           },
         },
@@ -109,7 +109,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
           validators: {
             regexp: {
               regexp: /^([0-9]){10}$/,
-              message: "کدملی وارد شده معتبر نمی باشد.",
+              message: "کدملی وارد شده معتبر نمی باشد",
             },
           },
         },
@@ -126,7 +126,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
             stringLength: {
               min: 2,
               max: 50,
-              message: "نام پدر معتبر نمی باشد.",
+              message: "نام پدر معتبر نمی باشد",
             },
           },
         },
@@ -134,7 +134,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
           validators: {
             regexp: {
               regexp: /^(098|0098|98|\+98|0)?9(0[0-5]|[1 3]\d|2[0-3]|9[0-9]|41)\d{7}$/,
-              message: "شماره تلفن وارد شده معتبر نمی باشد.",
+              message: "شماره تلفن وارد شده معتبر نمی باشد",
             },
           },
         },
@@ -143,19 +143,19 @@ document.addEventListener("DOMContentLoaded", function (e) {
             stringLength: {
               min: 9,
               max: 12,
-              message: "تلفن داخلی وارد شده صحیح نمی باشد.",
+              message: "تلفن داخلی وارد شده صحیح نمی باشد",
             },
           },
         },
-        formValidationFile: {
+        studentProfile: {
           validators: {
             regexp: {
-              regexp: /\.(jpe?g)$/i,
-              message: "تصویر وارد شده معتبر نمی باشد.",
+              regexp: /\.(jpe?g|png)$/i,
+              message: "تصویر وارد شده معتبر نمی باشد",
             },
             file: {
               maxSize: 2097152,
-              message: "تصویر وارد شده باید کمتر از 2 مگابایت باشد.",
+              message: "تصویر وارد شده باید کمتر از 2 مگابایت باشد",
             },
           },
         },
@@ -163,21 +163,39 @@ document.addEventListener("DOMContentLoaded", function (e) {
           validators: {
             date: {
               format: "YYYY/MM/DD",
-              message: "تاریخ ثبت نام معتبر نمی باشد.",
+              message: "تاریخ ثبت نام معتبر نمی باشد",
             },
           },
         },
         club: {
           validators: {
             notEmpty: {
-              message: "لطفا باشگاه را انتخاب کنید.",
+              message: "فیلد باشگاه الزامی است",
             },
           },
         },
         coach: {
           validators: {
             notEmpty: {
-              message: "لطفا مربی را انتخاب کنید.",
+              message: "فیلد مربی الزامی است",
+            },
+          },
+        },
+        belt: {
+          validators: {
+            notEmpty: {
+              message: "فیلد کمربند الزامی است",
+            },
+          },
+        },
+        beltDate: {
+          validators: {
+            notEmpty: {
+              message: "فیلد تاریخ کمربند الزامی است",
+            },
+            date: {
+              format: "YYYY/MM/DD",
+              message: "تاریخ کمربند وارد شده معتبر نمی باشد",
             },
           },
         },
@@ -186,7 +204,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
             between: {
               min: 1370,
               max: 1410,
-              message: "شارژ بانک اطلاعاتی معتبر نمی باشد.",
+              message: "شارژ بانک اطلاعاتی معتبر نمی باشد",
             },
           },
         },
@@ -203,6 +221,10 @@ document.addEventListener("DOMContentLoaded", function (e) {
               case "club":
                 return ".col-12";
               case "coach":
+                return ".col-12";
+              case "beltDate":
+                return ".col-12";
+              case "belt":
                 return ".col-12";
 
               case "memberShipValidity":
@@ -323,10 +345,11 @@ function selectBoxClub(event, coachsEncode) {
   }
 
   const optionCoachs = Object.entries(coachSelect).map((key) => `<option value='${key[1]?._id}'>${key[1]?.firstName} ${key[1]?.lastName}</option>`);
-  addOptionToSelectBox(selectBoxCoach, optionCoachs);
+
+  addOptionToSelectBox(selectBoxCoach, optionCoachs, clubID);
 }
 
-function addOptionToSelectBox(selectBox, option) {
+function addOptionToSelectBox(selectBox, option, clubID) {
   const selectBoxCoachs = document.querySelector("#select-box-coachs");
   const errorCoach = document.querySelector("#error-empty-coach");
   selectBox.innerHTML = "";
@@ -341,8 +364,39 @@ function addOptionToSelectBox(selectBox, option) {
       ${option.join("")}
       `
     );
+  } else if (!clubID) {
+    errorCoach.classList.add("d-none");
+    selectBoxCoachs.classList.add("d-none");
   } else {
     selectBoxCoachs.classList.add("d-none");
     errorCoach.classList.remove("d-none");
   }
 }
+document.addEventListener("DOMContentLoaded", function (e) {
+  (function () {
+    // Update/reset user image of account page
+    let accountUserImage = document.getElementById("uploadedAvatar");
+    const fileInput = document.querySelector(".account-file-input"),
+      resetFileInput = document.querySelector(".account-image-reset");
+
+    if (accountUserImage) {
+      const resetImage = accountUserImage.src;
+      fileInput.onchange = () => {
+        if (fileInput.files[0]) {
+          accountUserImage.src = window.URL.createObjectURL(fileInput.files[0]);
+        }
+      };
+      resetFileInput.onclick = () => {
+        const studentProfile = document.querySelector('[data-field="studentProfile"]');
+
+        if (studentProfile) {
+          studentProfile.innerHTML = "";
+        }
+
+        fileInput.value = "";
+
+        accountUserImage.src = resetImage;
+      };
+    }
+  })();
+});

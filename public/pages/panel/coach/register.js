@@ -95,12 +95,12 @@ document.addEventListener("DOMContentLoaded", function (e) {
         lastName: {
           validators: {
             notEmpty: {
-              message: "لطفا نام خانوادگی خود را وارد کنید.",
+              message: "فیلد نام الزامی است",
             },
             stringLength: {
               min: 2,
               max: 50,
-              message: "نام خانوادگی وارد شده معتبر نمی باشد.",
+              message: "فیلد نام خانوادگی الزامی است",
             },
           },
         },
@@ -125,7 +125,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
             stringLength: {
               min: 2,
               max: 50,
-              message: "نام پدر معتبر نمی باشد.",
+              message: "نام پدر معتبر نمی باشد",
             },
           },
         },
@@ -140,7 +140,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
         coachProfile: {
           validators: {
             regexp: {
-              regexp: /\.(jpe?g)$/i,
+              regexp: /\.(jpe?g|png)$/i,
               message: "تصویر وارد شده معتبر نمی باشد.",
             },
             file: {
@@ -152,7 +152,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
         clubs: {
           validators: {
             notEmpty: {
-              message: "لطفا باشگاه را انتخاب کنید.",
+              message: "فیلد باشگاه الزامی است",
             },
           },
         },

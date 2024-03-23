@@ -12,12 +12,29 @@
     </div> -->
   </div>
   <form class="row" id="formValidationNewStudent" method="POST" action="/api/v1/students/register" enctype="multipart/form-data">
-    <div class="col-12 col-lg-8">
+    <div class="col-12 col-lg-8 mb-4">
       <div class="card">
         <h5 class="card-header">اطلاعات شخصی</h5>
         <div class="card-body">
           <!-- Account Details -->
           <div class="row">
+            <div class="col-12 mb-3">
+              <div class="d-flex align-items-start align-items-sm-center gap-4">
+                <img alt="کاربر-آواتار" class="d-block w-px-100 h-px-100 rounded" id="uploadedAvatar" src="/uploads/profile-student.jpg" />
+                <div class="button-wrapper">
+                  <label class="btn btn-primary me-2 mb-3" for="upload" tabindex="0">
+                    <span class="d-none d-sm-block">آپلود عکس جدید</span>
+                    <i class="ti ti-upload d-block d-sm-none"></i>
+                    <input accept="image/png, image/jpeg" class="account-file-input" hidden id="upload" type="file" name="studentProfile" />
+                  </label>
+                  <button class="btn btn-label-secondary account-image-reset mb-3" type="button">
+                    <i class="ti ti-refresh-dot d-block d-sm-none"></i>
+                    <span class="d-none d-sm-block">حذف عکس</span>
+                  </button>
+                  <div class="text-muted">حداکثر حجم 2 مگابایت فرمت png , jpeg , jpg</div>
+                </div>
+              </div>
+            </div>
             <div class="col-md-6 mb-3">
               <label class="form-label" for="firstName">نام</label>
               <input class="form-control" id="firstName" name="firstName" placeholder="" type="text" />
@@ -73,10 +90,7 @@
               <label class="form-label" for="phone">تلفن داخلی</label>
               <input maxlength="12" class="form-control ltr" id="phone" name="phone" placeholder="" type="text" />
             </div>
-            <div class="col-md-6 mb-3">
-              <label class="form-label" for="studentProfile">عکس پروفایل</label>
-              <input class="form-control" id="studentProfile" name="formValidationFile" type="file" />
-            </div>
+
             <div class="mb-3 col-md-6 ecommerce-select2-dropdown">
               <label class="form-label" for="bs-datepicker-register-date">تاریخ ثبت نام</label>
               <input class="form-control" maxlength="10" id="bs-datepicker-register-date" name="registerDate" placeholder="1402/12/20" type="text" />
@@ -84,7 +98,7 @@
             <div class="col mb-3">
               <div class="form-group">
                 <label class="form-label" for="ecommerce-product-name">آدرس</label>
-                <textarea class="form-control" id="exampleFormControlTextarea1" name="address" rows="3"></textarea>
+                <textarea class="form-control" id="exampleFormControlTextarea1" name="address" rows="2"></textarea>
               </div>
             </div>
           </div>
@@ -138,7 +152,7 @@
         </div>
         <div class="card-body">
           <!-- Vendor -->
-          <div class="mb-3 col ecommerce-select2-dropdown">
+          <div class="mb-3 col-12">
             <label class="form-label mb-1" for="belt">کمربند فعلی</label>
             <select class="select2 form-select" name="belt" data-allow-clear="true" data-placeholder="انتخاب کمربند" id="belt">
               <option value="">انتخاب کمربند</option>
@@ -148,11 +162,17 @@
             </select>
           </div>
 
-          <div class="co mb-3">
+          <div class="mb-3 col-12">
             <label class="form-label" for="bs-datepicker-belt-date">تاریخ کمربند</label>
             <input class="form-control" maxlength="10" id="bs-datepicker-belt-date" name="beltDate" placeholder="1400/02/06" type="text" />
           </div>
-
+        </div>
+      </div>
+      <div class="card mb-4">
+        <div class="card-header">
+          <h5 class="card-title mb-0">اطلاعات بیشتر</h5>
+        </div>
+        <div class="card-body">
           <div class="mb-3 col ecommerce-select2-dropdown">
             <label class="form-label" for="bs-datepicker-sportsInsurance-date">تاریخ بیمه ورزشی</label>
             <input class="form-control" maxlength="10" id="bs-datepicker-sportsInsurance-date" placeholder="1400/05/06" type="text" />
