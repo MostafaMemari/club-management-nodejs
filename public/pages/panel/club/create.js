@@ -84,25 +84,3 @@ document.addEventListener("DOMContentLoaded", function (e) {
     }
   })();
 });
-//Toastr (jquery)
-// --------------------------------------------------------------------
-$(function () {
-  const successMessage = document.querySelector("#success-message").innerHTML;
-  if (successMessage) {
-    // $("#showtoast").on("click", function () {
-    toastr.options = {
-      newestOnTop: false,
-      positionClass: "toast-top-center",
-      showDuration: 300,
-      hideDuration: 1000,
-      timeOut: 5000,
-      extendedTimeOut: 1000,
-      showEasing: "swing",
-      hideEasing: "linear",
-      showMethod: "fadeIn",
-      hideMethod: "fadeOut",
-    };
-    toastr.success(successMessage);
-    // });
-  }
-});

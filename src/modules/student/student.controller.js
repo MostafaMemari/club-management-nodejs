@@ -91,8 +91,9 @@ class StudentController {
     try {
       const { id: studentID } = req.params;
 
-      await this.#service.checkExistStudentByID(studentID);
+      const studentExist = await this.#service.checkExistStudentByID(studentID);
       await this.#service.remove(studentID);
+      studentExist.imageUrl && deleteFileInPublic(studentExist.imageUrl);
 
       res.status(StatusCodes.OK).json({
         status: "success",
@@ -103,5 +104,56 @@ class StudentController {
     }
   }
 }
+class StudentControllerForm {
+  #service;
+  #ageGroupService;
+  #beltExamService;
+  #coachService;
+  constructor() {
+    autoBind(this);
+    this.#service = studentService;
+    this.#ageGroupService = ageGroupService;
+    this.#beltExamService = beltExamService;
+    this.#coachService = coachService;
+  }
+  async register(req, res, next) {
+    try {
+      validate(req);
+      const bodyData = matchedData(req, { locations: ["body"] });
+      const userAuth = req.userAuth;
 
-module.exports = new StudentController();
+      if (userAuth.role === "SUPER_ADMIN" || userAuth.role === "ADMIN_CLUB") {
+        await this.#coachService.checkClubInCoach(bodyData.coach, bodyData.club);
+      }
+      await this.#service.register(bodyData, userAuth);
+
+      req.flash("success", "هنرجو با موفقیت ثبت شد");
+      return res.redirect("/students");
+    } catch (error) {
+      req.body.imageUrl && deleteFileInPublic(req.body.imageUrl);
+      next(error);
+    }
+  }
+  async update(req, res, next) {
+    try {
+      validate(req);
+      const bodyData = matchedData(req, { locations: ["body"] });
+      const paramData = req.params;
+
+      await this.#service.update(bodyData, paramData);
+
+      res.status(StatusCodes.OK).json({
+        status: "success",
+        message: StudentMessage.Update,
+      });
+    } catch (error) {
+      req.body.imageUrl && deleteFileInPublic(req.body.imageUrl);
+      next(error);
+    }
+  }
+}
+
+module.exports = {
+  StudentController: new StudentController(),
+  StudentControllerForm: new StudentControllerForm(),
+};
