@@ -401,6 +401,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
   (function () {
     // Update/reset user image of account page
     let accountUserImage = document.getElementById("uploadedAvatar");
+    let defaultProfile = document.getElementById("default-profile");
     const fileInput = document.querySelector(".account-file-input"),
       resetFileInput = document.querySelector(".account-image-reset");
 
@@ -408,19 +409,20 @@ document.addEventListener("DOMContentLoaded", function (e) {
       const resetImage = accountUserImage.src;
       fileInput.onchange = () => {
         if (fileInput.files[0]) {
+          accountUserImage.classList.remove("d-none");
+          defaultProfile.classList.add("d-none");
           accountUserImage.src = window.URL.createObjectURL(fileInput.files[0]);
         }
       };
       resetFileInput.onclick = () => {
         const studentProfile = document.querySelector('[data-field="studentProfile"]');
-
         if (studentProfile) {
           studentProfile.innerHTML = "";
         }
-
         fileInput.value = "";
 
-        accountUserImage.src = resetImage;
+        accountUserImage.classList.add("d-none");
+        defaultProfile.classList.remove("d-none");
       };
     }
   })();

@@ -2,7 +2,7 @@ const createHttpError = require("http-errors");
 const { isValidObjectId } = require("mongoose");
 const { Types } = require("mongoose");
 
-const { filterAssignAgeGroupsByBirthDay } = require("../../common/utils/function");
+const { filterAssignAgeGroupsByBirthDay, deleteFileInPublic } = require("../../common/utils/function");
 const { AgeGroupModel } = require("../baseData/ageGroup/ageGroup.model");
 const {
   nextBeltByBirthDay,
@@ -89,9 +89,12 @@ class StudentService {
   }
 
   async update(bodyData, paramData) {
-    await this.checkExistStudentByID(paramData.id);
+    const studentExist = await this.checkExistStudentByID(paramData.id);
+
     const studentCreated = await this.#Model.updateOne({ _id: paramData.id }, { ...bodyData });
     if (!studentCreated.modifiedCount) throw createHttpError.InternalServerError("بروزرسانی اطلاعات با خطا مواجه شد");
+
+    studentExist.imageUrl && deleteFileInPublic(studentExist.imageUrl);
   }
   async findByID(studentID) {
     const studentExist = await this.checkExistStudentByID(studentID);

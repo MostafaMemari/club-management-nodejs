@@ -21,23 +21,30 @@
           <!-- Account Details -->
           <div class="row">
             <div class="col-12 mb-3">
-              <div class="d-flex align-items-start align-items-sm-center gap-4">
-                <img alt="کاربر-آواتار" class="d-block w-px-100 h-px-100 rounded" id="uploadedAvatar" src="<%- student.imageUrl ? student.imageUrl :
-                "/uploads/profile-student.jpg" %>" />
+              <div class="d-flex flex-column flex-sm-row align-items-start align-items-sm-center align-items-center dir gap-4">
+                  <% const name = `${student.firstName.charAt(0)}‌${student.lastName.charAt(0)}` %>
+                  <div class="avatar avatar-xl d-block w-px-100 h-px-100 rounded">
+                        <img alt="" class="d-block w-px-100 h-px-100 rounded <%- !student.imageUrl && "d-none" %>" id="uploadedAvatar" src="<%- student.imageUrl %>" />
+                        <span class="avatar-initial rounded-circle bg-primary text-white w-px-100 h-px-100 <%- student.imageUrl && "d-none" %>" id="default-profile" ><%- name %></span>
+                  </div>
+
                 <div class="button-wrapper">
                   <label class="btn btn-primary me-2 mb-3" for="upload" tabindex="0">
-                    <span class="d-none d-sm-block">آپلود عکس جدید</span>
-                    <i class="ti ti-upload d-block d-sm-none"></i>
+                    <!-- <span class="d-none d-sm-block">آپلود عکس جدید</span>
+                    <i class="ti ti-upload d-block d-sm-none"></i> -->
+                    <span class="">آپلود عکس جدید</span>
                     <input accept="image/png, image/jpeg" class="account-file-input" hidden id="upload" type="file" name="studentProfile" />
                   </label>
                   <button class="btn btn-label-secondary account-image-reset mb-3" type="button">
-                    <i class="ti ti-refresh-dot d-block d-sm-none"></i>
-                    <span class="d-none d-sm-block">حذف عکس</span>
+                    <!-- <i class="ti ti-refresh-dot d-block d-sm-none"></i>
+                    <span class="d-none d-sm-block">حذف عکس</span> -->
+                    <span class="">حذف عکس</span>
                   </button>
                   <div class="text-muted">حداکثر حجم 512 کیلوبایت فرمت png , jpeg , jpg</div>
                 </div>
               </div>
             </div>
+
             <div class="col-md-6 mb-3">
               <label class="form-label" for="firstName">نام</label>
               <input class="form-control" id="firstName" name="firstName" placeholder="" type="text" value="<%- student.firstName %>" />
