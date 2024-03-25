@@ -1,8 +1,5 @@
-/**
- * Form Picker
- */
-
-"use strict";
+const formUpdateStudent = document.getElementById("form-update-student");
+const studentID = document.getElementById("student-id").innerHTML;
 
 /* important for jalali bootstrap date */
 window.Date = window.JDate;
@@ -70,16 +67,13 @@ $(function () {
     });
   }
 });
-
 document.addEventListener("DOMContentLoaded", function (e) {
   (function () {
-    // document.getElementById("radio-man").checked = true;
-    const formValidationNewStudent = document.getElementById("formValidationNewStudent"),
-      clubEle = jQuery(formValidationNewStudent.querySelector('[name="club"]')),
-      coachEle = jQuery(formValidationNewStudent.querySelector('[name="coach"]')),
-      beltEle = jQuery(formValidationNewStudent.querySelector('[name="belt"]'));
+    const clubEle = jQuery(formUpdateStudent.querySelector('[name="club"]')),
+      coachEle = jQuery(formUpdateStudent.querySelector('[name="coach"]')),
+      beltEle = jQuery(formUpdateStudent.querySelector('[name="belt"]'));
 
-    const fv = FormValidation.formValidation(formValidationNewStudent, {
+    const fv = FormValidation.formValidation(formUpdateStudent, {
       fields: {
         firstName: {
           validators: {
@@ -113,14 +107,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
             },
           },
         },
-        birthDay: {
-          validators: {
-            date: {
-              format: "YYYY/MM/DD",
-              message: "تاریخ تولد وارد شده معتبر نمی باشد",
-            },
-          },
-        },
+
         fatherName: {
           validators: {
             stringLength: {
@@ -147,26 +134,19 @@ document.addEventListener("DOMContentLoaded", function (e) {
             },
           },
         },
-        formValidationFile: {
+        studentProfile: {
           validators: {
             regexp: {
-              regexp: /\.(jpe?g)$/i,
+              regexp: /\.(jpe?g|png)$/i,
               message: "تصویر وارد شده معتبر نمی باشد.",
             },
             file: {
-              maxSize: 2097152,
-              message: "تصویر وارد شده باید کمتر از 2 مگابایت باشد.",
+              maxSize: 2 * 1000 * 512,
+              message: "تصویر وارد شده باید کمتر از 512 کیلوبایت باشد",
             },
           },
         },
-        registerDate: {
-          validators: {
-            date: {
-              format: "YYYY/MM/DD",
-              message: "تاریخ ثبت نام معتبر نمی باشد.",
-            },
-          },
-        },
+
         club: {
           validators: {
             notEmpty: {
@@ -180,6 +160,38 @@ document.addEventListener("DOMContentLoaded", function (e) {
               min: 1370,
               max: 1410,
               message: "شارژ بانک اطلاعاتی معتبر نمی باشد.",
+            },
+          },
+        },
+        beltDate: {
+          validators: {
+            regexp: {
+              regexp: /^[1-4]\d{3}\/((0[1-6]\/((3[0-1])|([1-2][0-9])|(0[1-9])))|((1[0-2]|(0[7-9]))\/(30|31|([1-2][0-9])|(0[1-9]))))$/,
+              message: "تاریخ کمربند معتبر نمی باشد",
+            },
+          },
+        },
+        registerDate: {
+          validators: {
+            regexp: {
+              regexp: /^[1-4]\d{3}\/((0[1-6]\/((3[0-1])|([1-2][0-9])|(0[1-9])))|((1[0-2]|(0[7-9]))\/(30|31|([1-2][0-9])|(0[1-9]))))$/,
+              message: "تاریخ ثبت نام معتبر نمی باشد",
+            },
+          },
+        },
+        birthDay: {
+          validators: {
+            regexp: {
+              regexp: /^[1-4]\d{3}\/((0[1-6]\/((3[0-1])|([1-2][0-9])|(0[1-9])))|((1[0-2]|(0[7-9]))\/(30|31|([1-2][0-9])|(0[1-9]))))$/,
+              message: "تاریخ تولد معتبر نمی باشد",
+            },
+          },
+        },
+        sportsInsuranceDate: {
+          validators: {
+            regexp: {
+              regexp: /^[1-4]\d{3}\/((0[1-6]\/((3[0-1])|([1-2][0-9])|(0[1-9])))|((1[0-2]|(0[7-9]))\/(30|31|([1-2][0-9])|(0[1-9]))))$/,
+              message: "تاریخ بیمه ورزشی معتبر نمی باشد",
             },
           },
         },
@@ -204,11 +216,50 @@ document.addEventListener("DOMContentLoaded", function (e) {
             }
           },
         }),
-        submitButton: new FormValidation.plugins.SubmitButton(),
+        // submitButton: new FormValidation.plugins.SubmitButton(),
         // Submit the form when all fields are valid
-        defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
+        // defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
         autoFocus: new FormValidation.plugins.AutoFocus(),
       },
+    });
+
+    const formDataOrginalValue = new FormData(formUpdateStudent);
+    const originalValues = new Map();
+    // ذخیره مقادیر اولیه
+    for (const pair of formDataOrginalValue.entries()) {
+      originalValues.set(pair[0], pair[1]);
+    }
+
+    formUpdateStudent.addEventListener("submit", function (e) {
+      e.preventDefault();
+      fv.validate().then(function (status) {
+        if (status === "Valid") {
+          const formData = new FormData(formUpdateStudent);
+          const changedValues = {};
+
+          // بررسی تغییر مقادیر
+          for (const pair of formData.entries()) {
+            if (originalValues.get(pair[0]) !== pair[1]) {
+              changedValues[pair[0]] = pair[1];
+            }
+          }
+
+          // **ایجاد FormData جدید فقط با مقادیر تغییر یافته**
+          const changedFormData = new FormData();
+          for (const key in changedValues) {
+            changedFormData.append(key, changedValues[key]);
+          }
+          console.log(changedFormData);
+
+          // ارسال مقادیر تغییر یافته به بک اند
+          fetch(`${apiUrl}/students/${studentID}/update-profile`, {
+            method: "PUT",
+            body: changedFormData,
+          })
+            .then((res) => res.json())
+            .then((result) => console.log(result));
+        }
+      });
     });
 
     // Select2 (club)
@@ -252,6 +303,16 @@ document.addEventListener("DOMContentLoaded", function (e) {
     }
   })();
 });
+
+// for (const input of formUpdateStudent.querySelectorAll("input, select, textarea")) {
+//   if (input.type === "radio") {
+//     if (input.checked) {
+//       input.dataset.originalValue = input.value;
+//     }
+//   } else {
+//     input.dataset.originalValue = input.value;
+//   }
+// }
 
 (function () {
   const bsDatepickerBirthday = document.querySelector("#bs-datepicker-birthday"),

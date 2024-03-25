@@ -11,7 +11,9 @@
       <button class="btn btn-primary" name="submitButton" type="submit">ارسال</button>
     </div> -->
   </div>
-  <form class="row"  id="formValidationNewStudent" method="POST" action="/api/v1/students/<%- student._id %>>/update-profile" enctype="multipart/form-data">
+  <span id="student-id" style="display: none"><%- student._id %></span>
+  <form class="row" id="form-update-student">
+
     <div class="col-12 col-lg-8 mb-4">
       <div class="card">
         <h5 class="card-header">اطلاعات شخصی</h5>
@@ -32,7 +34,7 @@
                     <i class="ti ti-refresh-dot d-block d-sm-none"></i>
                     <span class="d-none d-sm-block">حذف عکس</span>
                   </button>
-                  <div class="text-muted">حداکثر حجم 2 مگابایت فرمت png , jpeg , jpg</div>
+                  <div class="text-muted">حداکثر حجم 512 کیلوبایت فرمت png , jpeg , jpg</div>
                 </div>
               </div>
             </div>
@@ -74,13 +76,13 @@
               <input class="form-control" id="fatherName" name="fatherName" placeholder="علیرضا" type="text" value="<%- student.fatherName %>" />
             </div>
             <div class="col-md-6 mb-3">
-              <label class="d-block form-label">جنسیت</label>
+              <label class="d-block form-label" >جنسیت</label>
               <div class="d-flex col">
                 <div class="row mt-0 col">
                   <div class="col-6">
                     <div class="form-check custom-option">
-                      <label class="p-2 d-flex justify-content-center align-items-center form-check-label custom-option-content" for="radio-man">
-                        <input <%- student.gender === "مرد" && "checked" %> checked class="form-check-input" id="radio-man" name="gender" type="radio"
+                      <label class="p-2 d-flex justify-content-center align-items-center form-check-label custom-option-content">
+                        <input <%- student.gender === "مرد" && "checked" %> checked class="form-check-input" name="gender" type="radio"
                         value="مرد" />
                         <span class="custom-option-body">
                           <span class="custom-option-title ms-2">مرد</span>
@@ -90,8 +92,8 @@
                   </div>
                   <div class="col-6">
                     <div class="form-check custom-option">
-                      <label class="p-2 d-flex justify-content-center align-items-center form-check-label custom-option-content" for="radio-female">
-                        <input <%- student.gender === "زن" && "checked" %> class="form-check-input" id="radio-female" name="gender" type="radio" value="زن" />
+                      <label class="p-2 d-flex justify-content-center align-items-center form-check-label custom-option-content">
+                        <input <%- student.gender === "زن" && "checked" %> class="form-check-input" name="gender" type="radio" value="زن" />
                         <span class="custom-option-body">
                           <span class="custom-option-title ms-2">زن</span>
                         </span>
@@ -140,7 +142,7 @@
           </div>
 
           <div class="col-12">
-            <button id="btn-create-student" class="btn btn-primary" name="submitButton" type="submit">ثبت هنرجو</button>
+            <button id="btn-update-student" class="btn btn-primary" name="submitButton" type="submit">بروزرسانی هنرجو</button>
           </div>
         </div>
       </div>
@@ -225,7 +227,7 @@
           <h5 class="card-title mb-0">اطلاعات بیشتر</h5>
         </div>
         <div class="card-body">
-          <div class="mb-3 col ecommerce-select2-dropdown">
+          <div class="mb-3 col-12">
             <label class="form-label" for="bs-datepicker-sportsInsurance-date">تاریخ بیمه ورزشی</label>
             <input
               class="form-control"
@@ -233,6 +235,7 @@
               id="bs-datepicker-sportsInsurance-date"
               placeholder="1400/05/06"
               type="text"
+              name="sportsInsuranceDate"
               value="<%- student.sportsInsuranceDate %>"
             />
           </div>

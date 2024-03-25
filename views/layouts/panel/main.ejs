@@ -11,6 +11,8 @@
   <%- include ('../panel/partials/_head.ejs') %>
   <!---->
   <body>
+    <span id="success-message" style="display: none"><%= locals.messages.success %></span>
+    <span id="error-message" style="display: none"><%= locals.messages.error %></span>
     <!-- Layout wrapper -->
     <div class="layout-wrapper layout-content-navbar">
       <div class="layout-container">

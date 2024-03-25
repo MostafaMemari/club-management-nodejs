@@ -154,8 +154,8 @@ document.addEventListener("DOMContentLoaded", function (e) {
               message: "تصویر وارد شده معتبر نمی باشد",
             },
             file: {
-              maxSize: 2097152,
-              message: "تصویر وارد شده باید کمتر از 2 مگابایت باشد",
+              maxSize: 2 * 1000 * 512,
+              message: "تصویر وارد شده باید کمتر از 512 کیلوبایت باشد",
             },
           },
         },
