@@ -49,8 +49,6 @@ class StudentController {
       const bodyData = matchedData(req, { locations: ["body"] });
       const paramData = req.params;
 
-      console.log(bodyData);
-
       await this.#service.update(bodyData, paramData);
 
       res.status(StatusCodes.OK).json({
@@ -131,23 +129,6 @@ class StudentControllerForm {
 
       req.flash("success", "هنرجو با موفقیت ثبت شد");
       return res.redirect("/students");
-    } catch (error) {
-      req.body.imageUrl && deleteFileInPublic(req.body.imageUrl);
-      next(error);
-    }
-  }
-  async update(req, res, next) {
-    try {
-      validate(req);
-      const bodyData = matchedData(req, { locations: ["body"] });
-      const paramData = req.params;
-
-      await this.#service.update(bodyData, paramData);
-
-      res.status(StatusCodes.OK).json({
-        status: "success",
-        message: StudentMessage.Update,
-      });
     } catch (error) {
       req.body.imageUrl && deleteFileInPublic(req.body.imageUrl);
       next(error);

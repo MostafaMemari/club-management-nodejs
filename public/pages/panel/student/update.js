@@ -165,6 +165,10 @@ document.addEventListener("DOMContentLoaded", function (e) {
         },
         beltDate: {
           validators: {
+            date: {
+              format: "YYYY/MM/DD",
+              message: "تاریخ کمربند معتبر نمی باشد",
+            },
             regexp: {
               regexp: /^[1-4]\d{3}\/((0[1-6]\/((3[0-1])|([1-2][0-9])|(0[1-9])))|((1[0-2]|(0[7-9]))\/(30|31|([1-2][0-9])|(0[1-9]))))$/,
               message: "تاریخ کمربند معتبر نمی باشد",
@@ -232,7 +236,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
 
     formUpdateStudent.addEventListener("submit", function (e) {
       e.preventDefault();
-      fv.validate().then(function (status) {
+      fv.validate().then(async function (status) {
         if (status === "Valid") {
           const formData = new FormData(formUpdateStudent);
           const changedValues = {};
@@ -249,15 +253,28 @@ document.addEventListener("DOMContentLoaded", function (e) {
           for (const key in changedValues) {
             changedFormData.append(key, changedValues[key]);
           }
-          console.log(changedFormData);
 
           // ارسال مقادیر تغییر یافته به بک اند
-          fetch(`${apiUrl}/students/${studentID}/update-profile`, {
+          const res = await fetch(`${apiUrl}/students/${studentID}/update-profile`, {
             method: "PUT",
             body: changedFormData,
-          })
-            .then((res) => res.json())
-            .then((result) => console.log(result));
+          });
+
+          if (res.ok) {
+            Swal.fire({
+              title: "موفق!",
+              text: "هنرجو با موفقیت بروزرسانی شد",
+              icon: "success",
+              showConfirmButton: false,
+              timer: 1700,
+              customClass: {
+                confirmButton: "btn btn-primary waves-effect waves-light",
+              },
+              buttonsStyling: false,
+            }).then(() => {
+              window.location.href = "/students";
+            });
+          }
         }
       });
     });

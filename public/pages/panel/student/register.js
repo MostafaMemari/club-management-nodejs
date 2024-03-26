@@ -149,6 +149,12 @@ document.addEventListener("DOMContentLoaded", function (e) {
         },
         studentProfile: {
           validators: {
+            // file: {
+            //   extension: "jpg,jpeg,png",
+            //   type: "image/jpeg,image/png",
+            //   maxSize: 2 * 1000 * 512,
+            //   message: "The selected file is not valid",
+            // },
             regexp: {
               regexp: /\.(jpe?g|png)$/i,
               message: "تصویر وارد شده معتبر نمی باشد",
@@ -183,21 +189,49 @@ document.addEventListener("DOMContentLoaded", function (e) {
         },
         belt: {
           validators: {
-            notEmpty: {
-              message: "فیلد کمربند الزامی است",
-            },
+            // notEmpty: {
+            //   message: "فیلد کمربند الزامی است",
+            // },
           },
         },
         beltDate: {
           validators: {
-            notEmpty: {
-              message: "فیلد تاریخ کمربند الزامی است",
-            },
-            date: {
-              format: "YYYY/MM/DD",
-              message: "تاریخ کمربند وارد شده معتبر نمی باشد",
+            callback: {
+              message: "Please enter a value for the second field",
+              callback: function (input) {
+                // بررسی اینکه آیا فیلد اول مقدار دارد یا خیر
+                var firstFieldValue = formValidationNewStudent.querySelector('[name="belt"]').value;
+
+                // اگر فیلد اول مقدار دارد، فیلد دوم را اجباری کنید و در صورت خالی بودن خطا ارسال کنید
+                if (firstFieldValue.length > 0) {
+                  return input.value.length > 0;
+                }
+
+                // اگر فیلد اول مقدار ندارد، هیچ خطایی ارسال نکنید
+                return true;
+              },
             },
           },
+          // validators: {
+          //   // notEmpty: {
+          //   //   message: "فیلد تاریخ کمربند الزامی است",
+          //   // },
+          //   date: {
+          //     format: "YYYY/MM/DD",
+          //     message: "تاریخ کمربند معتبر نمی باشد",
+          //   },
+          //   callback: {
+          //     callback: function (input) {
+          //       if (input.value.length > 0) {
+          //         return "test";
+          //       }
+          //     },
+          //   },
+          //   // regexp: {
+          //   //   regexp: /^[1-4]\d{3}\/((0[1-6]\/((3[0-1])|([1-2][0-9])|(0[1-9])))|((1[0-2]|(0[7-9]))\/(30|31|([1-2][0-9])|(0[1-9]))))$/,
+          //   //   message: "تاریخ کمربند معتبر نمی باشد",
+          //   // },
+          // },
         },
         memberShipValidity: {
           validators: {

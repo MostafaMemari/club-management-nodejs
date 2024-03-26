@@ -94,7 +94,7 @@ class StudentService {
     const studentCreated = await this.#Model.updateOne({ _id: paramData.id }, { ...bodyData });
     if (!studentCreated.modifiedCount) throw createHttpError.InternalServerError("بروزرسانی اطلاعات با خطا مواجه شد");
 
-    studentExist.imageUrl && deleteFileInPublic(studentExist.imageUrl);
+    bodyData.imageUrl && deleteFileInPublic(studentExist.imageUrl);
   }
   async findByID(studentID) {
     const studentExist = await this.checkExistStudentByID(studentID);

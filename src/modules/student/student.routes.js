@@ -26,6 +26,5 @@ router.post(
   StudentValidationOptional(),
   StudentControllerForm.register
 );
-router.post("/:id/update-profile/form", profileUploader.single("studentProfile"), StudentValidationOptional(), StudentControllerForm.update);
 
 module.exports = { studentRouter: router };
