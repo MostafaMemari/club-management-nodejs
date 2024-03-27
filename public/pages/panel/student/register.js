@@ -189,9 +189,21 @@ document.addEventListener("DOMContentLoaded", function (e) {
         },
         belt: {
           validators: {
-            // notEmpty: {
-            //   message: "فیلد کمربند الزامی است",
-            // },
+            callback: {
+              message: "Please enter a value for the second field",
+              callback: function (input) {
+                // بررسی اینکه آیا فیلد اول مقدار دارد یا خیر
+                var firstFieldValue = formValidationNewStudent.querySelector('[name="beltDate"]').value;
+
+                // اگر فیلد اول مقدار دارد، فیلد دوم را اجباری کنید و در صورت خالی بودن خطا ارسال کنید
+                if (firstFieldValue.length > 0) {
+                  return input.value.length > 0;
+                }
+
+                // اگر فیلد اول مقدار ندارد، هیچ خطایی ارسال نکنید
+                return true;
+              },
+            },
           },
         },
         beltDate: {
@@ -210,6 +222,10 @@ document.addEventListener("DOMContentLoaded", function (e) {
                 // اگر فیلد اول مقدار ندارد، هیچ خطایی ارسال نکنید
                 return true;
               },
+            },
+            regexp: {
+              regexp: /^[1-4]\d{3}\/((0[1-6]\/((3[0-1])|([1-2][0-9])|(0[1-9])))|((1[0-2]|(0[7-9]))\/(30|31|([1-2][0-9])|(0[1-9]))))$/,
+              message: "تاریخ کمربند معتبر نمی باشد",
             },
           },
           // validators: {
