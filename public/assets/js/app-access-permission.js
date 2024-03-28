@@ -44,7 +44,7 @@ $(function () {
           targets: 2,
           render: function (data, type, full, meta) {
             var $name = full['name'];
-            return '<span class="text-nowrap">' + $name + '</span>';
+            return '<span class="text-nowrap fw-semibold">' + $name + '</span>';
           }
         },
         {
@@ -55,12 +55,12 @@ $(function () {
             var $assignedTo = full['assigned_to'],
               $output = '';
             var roleBadgeObj = {
-              Admin: '<a href="' + userList + '"><span class="badge bg-label-primary m-1">Administrator</span></a>',
-              Manager: '<a href="' + userList + '"><span class="badge bg-label-warning m-1">Manager</span></a>',
-              Users: '<a href="' + userList + '"><span class="badge bg-label-success m-1">Users</span></a>',
-              Support: '<a href="' + userList + '"><span class="badge bg-label-info m-1">Support</span></a>',
-              Restricted:
-                '<a href="' + userList + '"><span class="badge bg-label-danger m-1">Restricted User</span></a>'
+              'سرپرست': '<a href="' + userList + '"><span class="badge  bg-label-primary m-1">سرپرست</span></a>',
+              'مدیر': '<a href="' + userList + '"><span class="badge  bg-label-warning m-1">مدیر</span></a>',
+              'کاربران': '<a href="' + userList + '"><span class="badge  bg-label-success m-1">کاربران</span></a>',
+              'پشتیبانی': '<a href="' + userList + '"><span class="badge  bg-label-info m-1">پشتیبانی</span></a>',
+              'محدود شده':
+                '<a href="' + userList + '"><span class="badge  bg-label-danger m-1">کاربر محدود</span></a>'
             };
             for (var i = 0; i < $assignedTo.length; i++) {
               var val = $assignedTo[i];
@@ -82,12 +82,12 @@ $(function () {
           // Actions
           targets: -1,
           searchable: false,
-          title: 'Actions',
+          title: 'عمل‌ها',
           orderable: false,
           render: function (data, type, full, meta) {
             return (
-              '<span class="text-nowrap"><button class="btn btn-sm btn-icon me-2" data-bs-target="#editPermissionModal" data-bs-toggle="modal" data-bs-dismiss="modal"><i class="ti ti-edit"></i></button>' +
-              '<button class="btn btn-sm btn-icon delete-record"><i class="ti ti-trash"></i></button></span>'
+              '<span class="text-nowrap"><button class="btn btn-sm btn-icon me-2" data-bs-target="#editPermissionModal" data-bs-toggle="modal" data-bs-dismiss="modal"><i class="bx bx-edit"></i></button>' +
+              '<button class="btn btn-sm btn-icon delete-record"><i class="bx bx-trash"></i></button></span>'
             );
           }
         }
@@ -96,22 +96,22 @@ $(function () {
       dom:
         '<"row mx-1"' +
         '<"col-sm-12 col-md-3" l>' +
-        '<"col-sm-12 col-md-9"<"dt-action-buttons text-xl-end text-lg-start text-md-end text-start d-flex align-items-center justify-content-md-end justify-content-center flex-wrap me-1"<"me-3"f>B>>' +
+        '<"col-sm-12 col-md-9"<"dt-action-buttons text-xl-end text-lg-start text-md-end text-start d-flex align-items-center justify-content-md-end justify-content-center flex-wrap me-1"<"me-0 me-sm-3"f>B>>' +
         '>t' +
         '<"row mx-2"' +
         '<"col-sm-12 col-md-6"i>' +
         '<"col-sm-12 col-md-6"p>' +
         '>',
       language: {
-        sLengthMenu: 'Show _MENU_',
-        search: 'Search',
-        searchPlaceholder: 'Search..'
+        sLengthMenu: '_MENU_',
+        search: 'جستجو:',
+        searchPlaceholder: 'جستجو ...'
       },
       // Buttons with Dropdown
       buttons: [
         {
-          text: 'Add Permission',
-          className: 'add-new btn btn-primary mb-3 mb-md-0 waves-effect waves-light',
+          text: 'افزودن مجوز',
+          className: 'add-new btn btn-primary mb-3 mb-sm-0',
           attr: {
             'data-bs-toggle': 'modal',
             'data-bs-target': '#addPermissionModal'
@@ -127,7 +127,7 @@ $(function () {
           display: $.fn.dataTable.Responsive.display.modal({
             header: function (row) {
               var data = row.data();
-              return 'Details of ' + data['name'];
+              return 'جزئیات ' + data['name'];
             }
           }),
           type: 'column',
@@ -161,7 +161,7 @@ $(function () {
           .every(function () {
             var column = this;
             var select = $(
-              '<select id="UserRole" class="form-select text-capitalize"><option value=""> Select Role </option></select>'
+              '<select id="UserRole" class="form-select text-capitalize"><option value=""> انتخاب نقش </option></select>'
             )
               .appendTo('.user_role')
               .on('change', function () {

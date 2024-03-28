@@ -19,7 +19,11 @@
   // Date
   if (flatpickrDate) {
     flatpickrDate.flatpickr({
-      monthSelectorType: 'static'
+      monthSelectorType: 'static',
+      locale: 'fa',
+      altInput: true,
+      altFormat: 'Y/m/d',
+      disableMobile: true
     });
   }
 
@@ -27,7 +31,11 @@
   if (flatpickrTime) {
     flatpickrTime.flatpickr({
       enableTime: true,
-      noCalendar: true
+      noCalendar: true,
+      locale: 'fa',
+      altInput: true,
+      altFormat: 'H:i',
+      disableMobile: true
     });
   }
 
@@ -35,7 +43,10 @@
   if (flatpickrDateTime) {
     flatpickrDateTime.flatpickr({
       enableTime: true,
-      dateFormat: 'Y-m-d H:i'
+      locale: 'fa',
+      altInput: true,
+      altFormat: 'Y/m/d - H:i',
+      disableMobile: true
     });
   }
 
@@ -45,14 +56,23 @@
       weekNumbers: true,
       enableTime: true,
       mode: 'multiple',
-      minDate: 'today'
+      conjunction: ' , ',
+      minDate: 'today',
+      locale: 'fa',
+      altInput: true,
+      altFormat: 'Y/m/d - H:i',
+      disableMobile: true
     });
   }
 
   // Range
   if (typeof flatpickrRange != undefined) {
     flatpickrRange.flatpickr({
-      mode: 'range'
+      mode: 'range',
+      locale: 'fa',
+      altInput: true,
+      altFormat: 'Y/m/d',
+      disableMobile: true
     });
   }
 
@@ -61,7 +81,11 @@
     flatpickrInline.flatpickr({
       inline: true,
       allowInput: false,
-      monthSelectorType: 'static'
+      monthSelectorType: 'static',
+      locale: 'fa',
+      altInput: true,
+      altFormat: 'Y/m/d',
+      disableMobile: true
     });
   }
 
@@ -69,24 +93,28 @@
   if (flatpickrFriendly) {
     flatpickrFriendly.flatpickr({
       altInput: true,
-      altFormat: 'F j, Y',
-      dateFormat: 'Y-m-d'
+      altFormat: 'j F Y',
+      locale: 'fa',
+      disableMobile: true
     });
   }
 
   // Disabled Date Range
   if (flatpickrDisabledRange) {
-    const fromDate = new Date(Date.now() - 3600 * 1000 * 48);
-    const toDate = new Date(Date.now() + 3600 * 1000 * 48);
+    const fromDate = new JDate(Date.now() - 3600 * 1000 * 48);
+    const toDate = new JDate(Date.now() + 3600 * 1000 * 48);
 
     flatpickrDisabledRange.flatpickr({
-      dateFormat: 'Y-m-d',
+      locale: 'fa',
+      altInput: true,
+      altFormat: 'Y/m/d',
       disable: [
         {
-          from: fromDate.toISOString().split('T')[0],
-          to: toDate.toISOString().split('T')[0]
+          from: fromDate.toLocaleString().split(' ')[0],
+          to: toDate.toLocaleString().split(' ')[0]
         }
-      ]
+      ],
+      disableMobile: true
     });
   }
 })();
@@ -95,6 +123,19 @@
 $(function () {
   // Bootstrap Datepicker
   // --------------------------------------------------------------------
+  
+  $.fn.datepicker.dates['fa'] = {
+		days: ["یک‌شنبه", "دوشنبه", "سه‌شنبه", "چهارشنبه", "پنج‌شنبه", "جمعه", "شنبه", "یک‌شنبه"],
+		daysShort: ["یک", "دو", "سه", "چهار", "پنج", "جمعه", "شنبه", "یک"],
+		daysMin: ["ی", "د", "س", "چ", "پ", "ج", "ش", "ی"],
+		months: ["ژانویه", "فوریه", "مارس", "آوریل", "مه", "ژوئن", "ژوئیه", "اوت", "سپتامبر", "اکتبر", "نوامبر", "دسامبر"],
+		monthsShort: ["ژان", "فور", "مار", "آور", "مه", "ژون", "ژوی", "اوت", "سپت", "اکت", "نوا", "دسا"],
+		today: "امروز",
+		clear: "پاک کردن",
+		weekStart: 1,
+		format: "yyyy/mm/dd"
+	};
+
   var bsDatepickerBasic = $('#bs-datepicker-basic'),
     bsDatepickerFormat = $('#bs-datepicker-format'),
     bsDatepickerRange = $('#bs-datepicker-daterange'),
@@ -107,6 +148,7 @@ $(function () {
   // Basic
   if (bsDatepickerBasic.length) {
     bsDatepickerBasic.datepicker({
+      language: 'fa',
       todayHighlight: true,
       orientation: isRtl ? 'auto right' : 'auto left'
     });
@@ -115,6 +157,7 @@ $(function () {
   // Format
   if (bsDatepickerFormat.length) {
     bsDatepickerFormat.datepicker({
+      language: 'fa',
       todayHighlight: true,
       format: 'dd/mm/yyyy',
       orientation: isRtl ? 'auto right' : 'auto left'
@@ -124,6 +167,7 @@ $(function () {
   // Range
   if (bsDatepickerRange.length) {
     bsDatepickerRange.datepicker({
+      language: 'fa',
       todayHighlight: true,
       orientation: isRtl ? 'auto right' : 'auto left'
     });
@@ -132,6 +176,7 @@ $(function () {
   // Disabled Days
   if (bsDatepickerDisabledDays.length) {
     bsDatepickerDisabledDays.datepicker({
+      language: 'fa',
       todayHighlight: true,
       daysOfWeekDisabled: [0, 6],
       orientation: isRtl ? 'auto right' : 'auto left'
@@ -141,6 +186,7 @@ $(function () {
   // Multiple
   if (bsDatepickerMultidate.length) {
     bsDatepickerMultidate.datepicker({
+      language: 'fa',
       multidate: true,
       todayHighlight: true,
       orientation: isRtl ? 'auto right' : 'auto left'
@@ -150,6 +196,7 @@ $(function () {
   // Options
   if (bsDatepickerOptions.length) {
     bsDatepickerOptions.datepicker({
+      language: 'fa',
       calendarWeeks: true,
       clearBtn: true,
       todayHighlight: true,
@@ -160,6 +207,7 @@ $(function () {
   // Auto close
   if (bsDatepickerAutoclose.length) {
     bsDatepickerAutoclose.datepicker({
+      language: 'fa',
       todayHighlight: true,
       autoclose: true,
       orientation: isRtl ? 'auto right' : 'auto left'
@@ -169,23 +217,62 @@ $(function () {
   // Inline picker
   if (bsDatepickerInlinedate.length) {
     bsDatepickerInlinedate.datepicker({
+      language: 'fa',
       todayHighlight: true
     });
   }
 
   // Bootstrap Daterange Picker
   // --------------------------------------------------------------------
+  
+  var dateRangePickerLocaleFa = {
+		"format": "YYYY/MM/DD",
+		"separator": " - ",
+		"applyLabel": "اعمال",
+		"cancelLabel": "انصراف",
+		"startLabel": 'تاریخ شروع',
+		"endLabel": 'تاریخ پایان',
+		"fromLabel": "از",
+		"toLabel": "تا",
+		"customRangeLabel": "سفارشی",
+		"weekLabel": "هفته",
+		"daysOfWeek": [
+			"ی",
+			"د",
+			"س",
+			"چ",
+			"پ",
+			"ج",
+			"ش"
+		],
+		"monthNames": [
+			"ژانویه",
+			"فوریه",
+			"مارس",
+			"آوریل",
+			"مه",
+			"ژوئن",
+			"جولای",
+			"اوت",
+			"سپتامبر",
+			"اکتبر",
+			"نوامبر",
+			"دسامبر"
+		],
+		"firstDay": 6
+	};
+
   var bsRangePickerBasic = $('#bs-rangepicker-basic'),
     bsRangePickerSingle = $('#bs-rangepicker-single'),
     bsRangePickerTime = $('#bs-rangepicker-time'),
     bsRangePickerRange = $('#bs-rangepicker-range'),
     bsRangePickerWeekNum = $('#bs-rangepicker-week-num'),
-    bsRangePickerDropdown = $('#bs-rangepicker-dropdown'),
-    bsRangePickerCancelBtn = document.getElementsByClassName('cancelBtn');
+    bsRangePickerDropdown = $('#bs-rangepicker-dropdown');
 
   // Basic
   if (bsRangePickerBasic.length) {
     bsRangePickerBasic.daterangepicker({
+		  locale: dateRangePickerLocaleFa,
       opens: isRtl ? 'left' : 'right'
     });
   }
@@ -193,6 +280,7 @@ $(function () {
   // Single
   if (bsRangePickerSingle.length) {
     bsRangePickerSingle.daterangepicker({
+		  locale: dateRangePickerLocaleFa,
       singleDatePicker: true,
       opens: isRtl ? 'left' : 'right'
     });
@@ -203,22 +291,21 @@ $(function () {
     bsRangePickerTime.daterangepicker({
       timePicker: true,
       timePickerIncrement: 30,
-      locale: {
-        format: 'MM/DD/YYYY h:mm A'
-      },
+      locale: Object.assign({}, dateRangePickerLocaleFa, { format: 'YYYY/MM/DD h:mm A' }),
       opens: isRtl ? 'left' : 'right'
     });
   }
 
   if (bsRangePickerRange.length) {
     bsRangePickerRange.daterangepicker({
+		  locale: dateRangePickerLocaleFa,
       ranges: {
-        Today: [moment(), moment()],
-        Yesterday: [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-        'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-        'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-        'This Month': [moment().startOf('month'), moment().endOf('month')],
-        'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+        'امروز': [moment(), moment()],
+        'دیروز': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+        '7 روز اخیر': [moment().subtract(6, 'days'), moment()],
+        '30 روز اخیر': [moment().subtract(29, 'days'), moment()],
+        'این ماه': [moment().startOf('month'), moment().endOf('month')],
+        'ماه قبل': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
       },
       opens: isRtl ? 'left' : 'right'
     });
@@ -227,26 +314,35 @@ $(function () {
   // Week Numbers
   if (bsRangePickerWeekNum.length) {
     bsRangePickerWeekNum.daterangepicker({
+		  locale: dateRangePickerLocaleFa,
       showWeekNumbers: true,
       opens: isRtl ? 'left' : 'right'
     });
   }
+
   // Dropdown
   if (bsRangePickerDropdown.length) {
     bsRangePickerDropdown.daterangepicker({
+		  locale: dateRangePickerLocaleFa,
       showDropdowns: true,
       opens: isRtl ? 'left' : 'right'
     });
   }
 
-  // Adding btn-label-secondary class in cancel btn
-  for (var i = 0; i < bsRangePickerCancelBtn.length; i++) {
-    bsRangePickerCancelBtn[i].classList.remove('btn-default');
-    bsRangePickerCancelBtn[i].classList.add('btn-label-primary');
-  }
-
   // jQuery Timepicker
   // --------------------------------------------------------------------
+  
+  var timePickerLocaleFa = {
+    am: ' ق.ظ',
+    pm: ' ب.ظ',
+    AM: ' ق.ظ',
+    PM: ' ب.ظ',
+    decimal: '.',
+    mins: 'دقیقه',
+    hr: 'ساعت',
+    hrs: 'ساعت'
+  };
+
   var basicTimepicker = $('#timepicker-basic'),
     minMaxTimepicker = $('#timepicker-min-max'),
     disabledTimepicker = $('#timepicker-disabled-times'),
@@ -257,6 +353,7 @@ $(function () {
   // Basic
   if (basicTimepicker.length) {
     basicTimepicker.timepicker({
+      lang: timePickerLocaleFa,
       orientation: isRtl ? 'r' : 'l'
     });
   }
@@ -264,6 +361,7 @@ $(function () {
   // Min & Max
   if (minMaxTimepicker.length) {
     minMaxTimepicker.timepicker({
+      lang: timePickerLocaleFa,
       minTime: '2:00pm',
       maxTime: '7:00pm',
       showDuration: true,
@@ -274,6 +372,7 @@ $(function () {
   // Disabled Picker
   if (disabledTimepicker.length) {
     disabledTimepicker.timepicker({
+      lang: timePickerLocaleFa,
       disableTimeRanges: [
         ['12am', '3am'],
         ['4am', '4:30am']
@@ -285,6 +384,7 @@ $(function () {
   // Format Picker
   if (formatTimepicker.length) {
     formatTimepicker.timepicker({
+      lang: timePickerLocaleFa,
       timeFormat: 'H:i:s',
       orientation: isRtl ? 'r' : 'l'
     });
@@ -293,6 +393,7 @@ $(function () {
   // Steps Picker
   if (stepTimepicker.length) {
     stepTimepicker.timepicker({
+      lang: timePickerLocaleFa,
       step: 15,
       orientation: isRtl ? 'r' : 'l'
     });
@@ -301,6 +402,7 @@ $(function () {
   // 24 Hours Format
   if (altHourTimepicker.length) {
     altHourTimepicker.timepicker({
+      lang: timePickerLocaleFa,
       show: '24:00',
       timeFormat: 'H:i:s',
       orientation: isRtl ? 'r' : 'l'
@@ -311,6 +413,17 @@ $(function () {
 // color picker (pickr)
 // --------------------------------------------------------------------
 (function () {
+  
+  var colorPickerLocaleFa = {
+    'ui:dialog': 'دیالوگ انتخاب رنگ',
+    'btn:toggle': 'تغییر وضعیت دیالوگ انتخاب رنگ',
+    'btn:swatch': 'نمونه رنگ',
+    'btn:last-color': 'استفاده از رنگ قبلی',
+    'btn:save': 'ذخیره',
+    'btn:cancel': 'لغو',
+    'btn:clear': 'پاک کردن'
+  };
+
   const classicPicker = document.querySelector('#color-picker-classic'),
     monolithPicker = document.querySelector('#color-picker-monolith'),
     nanoPicker = document.querySelector('#color-picker-nano');
@@ -345,7 +458,8 @@ $(function () {
           clear: true,
           save: true
         }
-      }
+      },
+      i18n: colorPickerLocaleFa
     });
   }
 
@@ -379,7 +493,8 @@ $(function () {
           clear: true,
           save: true
         }
-      }
+      },
+      i18n: colorPickerLocaleFa
     });
   }
 
@@ -413,7 +528,8 @@ $(function () {
           clear: true,
           save: true
         }
-      }
+      },
+      i18n: colorPickerLocaleFa
     });
   }
 })();

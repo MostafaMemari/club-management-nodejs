@@ -28,11 +28,12 @@
 
   // datepicker init
   if (datePicker) {
-    datePicker.flatpickr({
+    var dueDate = datePicker.flatpickr({
       monthSelectorType: 'static',
+      locale: 'fa',
       altInput: true,
-      altFormat: 'j F, Y',
-      dateFormat: 'Y-m-d'
+      altFormat: 'Y/m/d',
+      disableMobile: true
     });
   }
 
@@ -50,7 +51,7 @@
     select2.each(function () {
       var $this = $(this);
       $this.wrap("<div class='position-relative'></div>").select2({
-        placeholder: 'Select Label',
+        placeholder: 'انتخاب برچسب',
         dropdownParent: $this.parent(),
         templateResult: renderLabels,
         templateSelection: renderLabels,
@@ -67,7 +68,7 @@
       modules: {
         toolbar: '.comment-toolbar'
       },
-      placeholder: 'Write a Comment... ',
+      placeholder: 'یک دیدگاه بنویسید ... ',
       theme: 'snow'
     });
   }
@@ -76,11 +77,11 @@
   function renderBoardDropdown() {
     return (
       "<div class='dropdown'>" +
-      "<i class='dropdown-toggle ti ti-dots-vertical cursor-pointer' id='board-dropdown' data-bs-toggle='dropdown' aria-haspopup='true' aria-expanded='false'></i>" +
+      "<i class='dropdown-toggle bx bx-dots-vertical-rounded cursor-pointer fs-4' id='board-dropdown' data-bs-toggle='dropdown' aria-haspopup='true' aria-expanded='false'></i>" +
       "<div class='dropdown-menu dropdown-menu-end' aria-labelledby='board-dropdown'>" +
-      "<a class='dropdown-item delete-board' href='javascript:void(0)'> <i class='ti ti-trash ti-xs' me-1></i> <span class='align-middle'>Delete</span></a>" +
-      "<a class='dropdown-item' href='javascript:void(0)'><i class='ti ti-edit ti-xs' me-1></i> <span class='align-middle'>Rename</span></a>" +
-      "<a class='dropdown-item' href='javascript:void(0)'><i class='ti ti-archive ti-xs' me-1></i> <span class='align-middle'>Archive</span></a>" +
+      "<a class='dropdown-item delete-board' href='javascript:void(0)'> <i class='bx bx-trash bx-xs me-1'></i> <span class='align-middle'>حذف</span></a>" +
+      "<a class='dropdown-item' href='javascript:void(0)'><i class='bx bx-rename bx-xs'></i> <span class='align-middle'>تغییر نام</span></a>" +
+      "<a class='dropdown-item' href='javascript:void(0)'><i class='bx bx-archive bx-xs'></i> <span class='align-middle'>بایگانی</span></a>" +
       '</div>' +
       '</div>'
     );
@@ -89,11 +90,11 @@
   function renderDropdown() {
     return (
       "<div class='dropdown kanban-tasks-item-dropdown'>" +
-      "<i class='dropdown-toggle ti ti-dots-vertical' id='kanban-tasks-item-dropdown' data-bs-toggle='dropdown' aria-haspopup='true' aria-expanded='false'></i>" +
+      "<i class='dropdown-toggle bx bx-dots-vertical-rounded' id='kanban-tasks-item-dropdown' data-bs-toggle='dropdown' aria-haspopup='true' aria-expanded='false'></i>" +
       "<div class='dropdown-menu dropdown-menu-end' aria-labelledby='kanban-tasks-item-dropdown'>" +
-      "<a class='dropdown-item' href='javascript:void(0)'>Copy task link</a>" +
-      "<a class='dropdown-item' href='javascript:void(0)'>Duplicate task</a>" +
-      "<a class='dropdown-item delete-task' href='javascript:void(0)'>Delete</a>" +
+      "<a class='dropdown-item' href='javascript:void(0)'>کپی لینک وظیفه</a>" +
+      "<a class='dropdown-item' href='javascript:void(0)'>تکثیر وظیفه</a>" +
+      "<a class='dropdown-item delete-task' href='javascript:void(0)'>حذف</a>" +
       '</div>' +
       '</div>'
     );
@@ -154,11 +155,11 @@
   function renderFooter(attachments, comments, assigned, members) {
     return (
       "<div class='d-flex justify-content-between align-items-center flex-wrap mt-2 pt-1'>" +
-      "<div class='d-flex'> <span class='d-flex align-items-center me-2'><i class='ti ti-paperclip ti-xs me-1'></i>" +
+      "<div class='d-flex'> <span class='d-flex align-items-center me-2'><i class='bx bx-paperclip me-1'></i>" +
       "<span class='attachments'>" +
       attachments +
       '</span>' +
-      "</span> <span class='d-flex align-items-center ms-1'><i class='ti ti-message-dots ti-xs me-1'></i>" +
+      "</span> <span class='d-flex align-items-center ms-1'><i class='bx bx-chat me-1'></i>" +
       '<span> ' +
       comments +
       ' </span>' +
@@ -178,11 +179,11 @@
     boards: boards,
     dragBoards: true,
     addItemButton: true,
-    buttonContent: '+ Add Item',
+    buttonContent: '+ افزودن آیتم',
     itemAddOptions: {
       enabled: true, // add a button to board for easy item creation
-      content: '+ Add New Item', // text or html content of the board button
-      class: 'kanban-title-button btn', // default class of the button
+      content: '+ افزودن آیتم جدید', // text or html content of the board button
+      class: 'kanban-title-button btn btn-default', // default class of the button
       footer: false // position the button on footer
     },
     click: function (el) {
@@ -192,10 +193,9 @@
           : element.textContent,
         date = element.getAttribute('data-due-date'),
         dateObj = new Date(),
-        year = dateObj.getFullYear(),
         dateToUse = date
-          ? date + ', ' + year
-          : dateObj.getDate() + ' ' + dateObj.toLocaleString('en', { month: 'long' }) + ', ' + year,
+          ? date
+          : dateObj,
         label = element.getAttribute('data-badge-text'),
         avatars = element.getAttribute('data-assigned');
 
@@ -204,7 +204,7 @@
 
       // To get data on sidebar
       kanbanSidebar.querySelector('#title').value = title;
-      kanbanSidebar.querySelector('#due-date').nextSibling.value = dateToUse;
+      dueDate.setDate(new JDate(dateToUse), true, 'Y/m/d');
 
       // ! Using jQuery method to get sidebar due to select2 dependency
       $('.kanban-update-item-sidebar').find(select2).val(label).trigger('change');
@@ -217,7 +217,7 @@
           'afterbegin',
           renderAvatar(avatars, false, 'xs', '1', el.getAttribute('data-members')) +
             "<div class='avatar avatar-xs ms-1'>" +
-            "<span class='avatar-initial rounded-circle bg-label-secondary'><i class='ti ti-plus ti-xs text-heading'></i></span>" +
+            "<span class='avatar-initial rounded-circle bg-label-secondary'><i class='bx bx-plus'></i></span>" +
             '</div>'
         );
     },
@@ -227,11 +227,11 @@
       addNew.setAttribute('class', 'new-item-form');
       addNew.innerHTML =
         '<div class="mb-3">' +
-        '<textarea class="form-control add-new-item" rows="2" placeholder="Add Content" autofocus required></textarea>' +
+        '<textarea class="form-control add-new-item" rows="2" placeholder="افزودن محتوا" autofocus required></textarea>' +
         '</div>' +
         '<div class="mb-3">' +
-        '<button type="submit" class="btn btn-primary btn-sm me-2 waves-effect waves-light">Add</button>' +
-        '<button type="button" class="btn btn-label-secondary btn-sm cancel-add-item waves-effect waves-light">Cancel</button>' +
+        '<button type="submit" class="btn btn-primary btn-sm me-2">افزودن</button>' +
+        '<button type="button" class="btn btn-label-secondary btn-sm cancel-add-item">انصراف</button>' +
         '</div>';
       kanban.addForm(boardId, addNew);
 
@@ -298,12 +298,7 @@
       const element = "<span class='kanban-text'>" + el.textContent + '</span>';
       let img = '';
       if (el.getAttribute('data-image') !== null) {
-        img =
-          "<img class='img-fluid rounded mb-2' src='" +
-          assetsPath +
-          'img/elements/' +
-          el.getAttribute('data-image') +
-          "'>";
+        img = "<img class='img-fluid rounded mb-2' src='" + assetsPath + 'img/elements/' + el.getAttribute('data-image') + "'>";
       }
       el.textContent = '';
       if (el.getAttribute('data-badge') !== undefined && el.getAttribute('data-badge-text') !== undefined) {

@@ -107,61 +107,61 @@
   const usersList = [
     {
       value: 1,
-      name: 'Justinian Hattersley',
+      name: 'تونی استارک',
       avatar: 'https://i.pravatar.cc/80?img=1',
       email: 'jhattersley0@ucsd.edu'
     },
     {
       value: 2,
-      name: 'Antons Esson',
+      name: 'بیل گیتس',
       avatar: 'https://i.pravatar.cc/80?img=2',
       email: 'aesson1@ning.com'
     },
     {
       value: 3,
-      name: 'Ardeen Batisse',
+      name: 'استیو راجرز',
       avatar: 'https://i.pravatar.cc/80?img=3',
       email: 'abatisse2@nih.gov'
     },
     {
       value: 4,
-      name: 'Graeme Yellowley',
+      name: 'امیلیا کلارک',
       avatar: 'https://i.pravatar.cc/80?img=4',
       email: 'gyellowley3@behance.net'
     },
     {
       value: 5,
-      name: 'Dido Wilford',
+      name: 'دیوید بکهام',
       avatar: 'https://i.pravatar.cc/80?img=5',
       email: 'dwilford4@jugem.jp'
     },
     {
       value: 6,
-      name: 'Celesta Orwin',
+      name: 'تام کروز',
       avatar: 'https://i.pravatar.cc/80?img=6',
       email: 'corwin5@meetup.com'
     },
     {
       value: 7,
-      name: 'Sally Main',
+      name: 'اولیور کوئین',
       avatar: 'https://i.pravatar.cc/80?img=7',
       email: 'smain6@techcrunch.com'
     },
     {
       value: 8,
-      name: 'Grethel Haysman',
+      name: 'بری الن',
       avatar: 'https://i.pravatar.cc/80?img=8',
       email: 'ghaysman7@mashable.com'
     },
     {
       value: 9,
-      name: 'Marvin Mandrake',
+      name: 'بروس وین',
       avatar: 'https://i.pravatar.cc/80?img=9',
       email: 'mmandrake8@sourceforge.net'
     },
     {
       value: 10,
-      name: 'Corrie Tidey',
+      name: 'ایلان ماسک',
       avatar: 'https://i.pravatar.cc/80?img=10',
       email: 'ctidey9@youtube.com'
     }
@@ -201,18 +201,10 @@
         </div>`
           : ''
       }
-      <div class="fw-medium">${tagData.name}</div>
+      <strong>${tagData.name}</strong>
       <span>${tagData.email}</span>
     </div>
   `;
-  }
-  function dropdownHeaderTemplate(suggestions) {
-    return `
-        <div class="${this.settings.classNames.dropdownItem} ${this.settings.classNames.dropdownItem}__addAll">
-            <strong>${this.value.length ? `Add remaning` : 'Add All'}</strong>
-            <span>${suggestions.length} members</span>
-        </div>
-    `;
   }
 
   // initialize Tagify on the above input node reference
@@ -228,24 +220,44 @@
     },
     templates: {
       tag: tagTemplate,
-      dropdownItem: suggestionItemTemplate,
-      dropdownHeader: dropdownHeaderTemplate
+      dropdownItem: suggestionItemTemplate
     },
     whitelist: usersList
   });
 
-  // attach events listeners
-  TagifyUserList.on('dropdown:select', onSelectSuggestion) // allows selecting all the suggested (whitelist) items
-    .on('edit:start', onEditStart); // show custom text in the tag while in edit-mode
+  TagifyUserList.on('dropdown:show dropdown:updated', onDropdownShow);
+  TagifyUserList.on('dropdown:select', onSelectSuggestion);
 
-  function onSelectSuggestion(e) {
-    // custom class from "dropdownHeaderTemplate"
-    if (e.detail.elm.classList.contains(`${TagifyUserList.settings.classNames.dropdownItem}__addAll`))
-      TagifyUserList.dropdown.selectAll();
+  let addAllSuggestionsEl;
+
+  function onDropdownShow(e) {
+    let dropdownContentEl = e.detail.tagify.DOM.dropdown.content;
+
+    if (TagifyUserList.suggestedListItems.length > 1) {
+      addAllSuggestionsEl = getAddAllSuggestionsEl();
+
+      // insert "addAllSuggestionsEl" as the first element in the suggestions list
+      dropdownContentEl.insertBefore(addAllSuggestionsEl, dropdownContentEl.firstChild);
+    }
   }
 
-  function onEditStart({ detail: { tag, data } }) {
-    TagifyUserList.setTagTextNode(tag, `${data.name} <${data.email}>`);
+  function onSelectSuggestion(e) {
+    if (e.detail.elm == addAllSuggestionsEl) TagifyUserList.dropdown.selectAll.call(TagifyUserList);
+  }
+
+  // create an "add all" custom suggestion element every time the dropdown changes
+  function getAddAllSuggestionsEl() {
+    // suggestions items should be based on "dropdownItem" template
+    return TagifyUserList.parseTemplate('dropdownItem', [
+      {
+        class: 'addAll',
+        name: 'افزودن همه',
+        email:
+          TagifyUserList.settings.whitelist.reduce(function (remainingSuggestions, item) {
+            return TagifyUserList.isTagDuplicate(item.value) ? remainingSuggestions : remainingSuggestions + 1;
+          }, 0) + ' کاربر'
+      }
+    ]);
   }
 
   // Email List suggestion

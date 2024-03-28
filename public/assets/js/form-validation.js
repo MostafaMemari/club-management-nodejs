@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 (function () {
   // Init custom option check
@@ -7,34 +7,38 @@
   // Bootstrap validation example
   //------------------------------------------------------------------------------------------
   // const flatPickrEL = $('.flatpickr-validation');
-  const flatPickrList = [].slice.call(document.querySelectorAll(".flatpickr-validation"));
+  const flatPickrList = [].slice.call(document.querySelectorAll('.flatpickr-validation'));
   // Flat pickr
   if (flatPickrList) {
-    flatPickrList.forEach((flatPickr) => {
+    flatPickrList.forEach(flatPickr => {
       flatPickr.flatpickr({
         allowInput: true,
-        monthSelectorType: "static",
+        monthSelectorType: 'static',
+        locale: 'fa',
+        altInput: true,
+        altFormat: 'Y/m/d',
+        disableMobile: true
       });
     });
   }
 
   // Fetch all the forms we want to apply custom Bootstrap validation styles to
-  const bsValidationForms = document.querySelectorAll(".needs-validation");
+  const bsValidationForms = document.querySelectorAll('.needs-validation');
 
   // Loop over them and prevent submission
   Array.prototype.slice.call(bsValidationForms).forEach(function (form) {
     form.addEventListener(
-      "submit",
+      'submit',
       function (event) {
         if (!form.checkValidity()) {
           event.preventDefault();
           event.stopPropagation();
         } else {
           // Submit your form
-          alert("Submitted!!!");
+          alert('ثبت شد!!!');
         }
 
-        form.classList.add("was-validated");
+        form.classList.add('was-validated');
       },
       false
     );
@@ -47,309 +51,232 @@
  * ? Though If we've miss any 3rd party libraries, then refer: https://formvalidation.io/guide/examples/integrating-with-3rd-party-libraries
  */
 //------------------------------------------------------------------------------------------
-document.addEventListener("DOMContentLoaded", function (e) {
+document.addEventListener('DOMContentLoaded', function (e) {
   (function () {
-    document.getElementById("radio-man").checked = true;
-    const formValidationNewStudent = document.getElementById("formValidationNewStudent"),
-      formValidationSelect2Ele = jQuery(formValidationNewStudent.querySelector('[name="formValidationSelect2"]')),
-      formValidationTechEle = jQuery(formValidationNewStudent.querySelector('[name="formValidationTech"]')),
-      formValidationLangEle = formValidationNewStudent.querySelector('[name="formValidationLang"]'),
-      formValidationHobbiesEle = jQuery(formValidationNewStudent.querySelector(".selectpicker")),
-      tech = ["ReactJS", "Angular", "VueJS", "Html", "Css", "Sass", "Pug", "Gulp", "Php", "Laravel", "Python", "Bootstrap", "Material Design", "NodeJS"];
+    const formValidationExamples = document.getElementById('formValidationExamples'),
+      formValidationSelect2Ele = jQuery(formValidationExamples.querySelector('[name="formValidationSelect2"]')),
+      formValidationTechEle = jQuery(formValidationExamples.querySelector('[name="formValidationTech"]')),
+      formValidationLangEle = formValidationExamples.querySelector('[name="formValidationLang"]'),
+      formValidationHobbiesEle = jQuery(formValidationExamples.querySelector('.selectpicker')),
+      tech = [
+        'ReactJS',
+        'Angular',
+        'VueJS',
+        'Html',
+        'Css',
+        'Sass',
+        'Pug',
+        'Gulp',
+        'Php',
+        'Laravel',
+        'Python',
+        'Bootstrap',
+        'Material Design',
+        'NodeJS'
+      ];
 
-    const fv = FormValidation.formValidation(formValidationNewStudent, {
+    const fv = FormValidation.formValidation(formValidationExamples, {
       fields: {
-        firstName: {
+        formValidationName: {
           validators: {
             notEmpty: {
-              message: "لطفا نام خود را وارد کنید.",
+              message: 'لطفا نام خود را وارد کنید'
             },
             stringLength: {
               min: 6,
               max: 30,
-              message: "The name must be more than 6 and less than 30 characters long",
+              message: 'نام وارد شده باید بیشتر از 6 و کمتر از 30 حرف باشد'
             },
             regexp: {
               regexp: /^[a-zA-Z0-9 ]+$/,
-              message: "The name can only consist of alphabetical, number and space",
-            },
-          },
+              message: 'نام فقط می‌تواند شامل حروف الفبا، عدد و فاصله باشد'
+            }
+          }
         },
-        lastName: {
-          validators: {
-            notEmpty: {
-              message: "لطفا نام خانوادگی خود را وارد کنید.",
-            },
-            stringLength: {
-              min: 6,
-              max: 30,
-              message: "The name must be more than 6 and less than 30 characters long",
-            },
-            regexp: {
-              regexp: /^[a-zA-Z0-9 ]+$/,
-              message: "The name can only consist of alphabetical, number and space",
-            },
-          },
-        },
-        nationalCode: {
-          validators: {
-            stringLength: {
-              min: 10,
-              max: 10,
-              message: "کد ملی وارد شده صحیح نمی باشد",
-            },
-          },
-        },
-        birthDay: {
-          validators: {
-            date: {
-              format: "YYYY/MM/DD",
-              message: "تاریخ تولد وارد شده معتبر نمی باشد",
-            },
-          },
-        },
-        fatherName: {
-          validators: {
-            stringLength: {
-              min: 2,
-              max: 50,
-              message: "نام پدر معتبر نمی باشد.",
-            },
-          },
-        },
-        mobile: {
-          validators: {
-            regexp: {
-              regexp: /^(098|0098|98|\+98|0)?9(0[0-5]|[1 3]\d|2[0-3]|9[0-9]|41)\d{7}$/,
-              message: "شماره تلفن وارد شده معتبر نمی باشد.",
-            },
-          },
-        },
-        phone: {
-          validators: {
-            stringLength: {
-              min: 9,
-              max: 12,
-              message: "تلفن داخلی وارد شده صحیح نمی باشد.",
-            },
-          },
-        },
-        formValidationFile: {
-          validators: {
-            regexp: {
-              regexp: /\.(jpe?g)$/i,
-              message: "تصویر وارد شده معتبر نمی باشد.",
-            },
-            file: {
-              maxSize: 2097152,
-              message: "تصویر وارد شده باید کمتر از 2 مگابایت باشد.",
-            },
-          },
-        },
-        registerDate: {
-          validators: {
-            date: {
-              format: "YYYY/MM/DD",
-              message: "تاریخ ثبت نام معتبر نمی باشد.",
-            },
-          },
-        },
-        club: {
-          validators: {
-            notEmpty: {
-              message: "لطفا نام باشگاه را انتخاب کنید.",
-            },
-          },
-        },
-        memberShipValidity: {
-          validators: {
-            between: {
-              min: 1370,
-              max: 1410,
-              message: "شارژ بانک اطلاعاتی معتبر نمی باشد.",
-            },
-          },
-        },
-
         formValidationEmail: {
           validators: {
             notEmpty: {
-              message: "Please enter your email",
+              message: 'لطفا ایمیل خود را وارد کنید'
             },
             emailAddress: {
-              message: "The value is not a valid email address",
-            },
-          },
+              message: 'مقدار وارد شده یک آدرس ایمیل معتبر نیست'
+            }
+          }
         },
         formValidationPass: {
           validators: {
             notEmpty: {
-              message: "Please enter your password",
-            },
-          },
+              message: 'لطفا رمز عبور خود را وارد کنید'
+            }
+          }
         },
-
         formValidationConfirmPass: {
           validators: {
             notEmpty: {
-              message: "Please confirm password",
+              message: 'لطفا رمز عبور خود را تایید کنید'
             },
             identical: {
               compare: function () {
-                return formValidationNewStudent.querySelector('[name="formValidationPass"]').value;
+                return formValidationExamples.querySelector('[name="formValidationPass"]').value;
               },
-              message: "The password and its confirm are not the same",
-            },
-          },
+              message: 'رمز عبور و تایید آن یکسان نیستند'
+            }
+          }
         },
-
+        formValidationFile: {
+          validators: {
+            notEmpty: {
+              message: 'لطفا فایل را انتخاب کنید'
+            }
+          }
+        },
         formValidationDob: {
           validators: {
             notEmpty: {
-              message: "Please select your DOB",
+              message: 'لطفا تاریخ تولد خود را انتخاب کنید'
             },
             date: {
-              format: "YYYY/MM/DD",
-              message: "The value is not a valid date",
-            },
-          },
+              format: 'YYYY/MM/DD',
+              message: 'مقدار وارد شده یک تاریخ معتبر نیست'
+            }
+          }
         },
         formValidationSelect2: {
           validators: {
             notEmpty: {
-              message: "Please select your country",
-            },
-          },
+              message: 'لطفا کشور خود را انتخاب کنید'
+            }
+          }
         },
         formValidationLang: {
           validators: {
             notEmpty: {
-              message: "Please add your language",
-            },
-          },
+              message: 'لطفا زبان خود را اضافه کنید'
+            }
+          }
         },
         formValidationTech: {
           validators: {
             notEmpty: {
-              message: "Please select technology",
-            },
-          },
+              message: 'لطفا تکنولوژی را انتخاب کنید'
+            }
+          }
         },
         formValidationHobbies: {
           validators: {
             notEmpty: {
-              message: "Please select your hobbies",
-            },
-          },
+              message: 'لطفا سرگرمی‌های خود را انتخاب کنید'
+            }
+          }
         },
         formValidationBio: {
           validators: {
             notEmpty: {
-              message: "Please enter your bio",
+              message: 'لطفا بیوگرافی خود را وارد کنید'
             },
             stringLength: {
               min: 100,
               max: 500,
-              message: "The bio must be more than 100 and less than 500 characters long",
-            },
-          },
+              message: 'بیوگرافی باید شامل بیشتر از 100 و کمتر از 500 حرف باشد.'
+            }
+          }
         },
         formValidationGender: {
           validators: {
             notEmpty: {
-              message: "لطفا جنسیت را وارد کنید",
-            },
-          },
+              message: 'لطفا جنسیت خود را انتخاب کنید'
+            }
+          }
         },
-
+        formValidationPlan: {
+          validators: {
+            notEmpty: {
+              message: 'لطفا پلن مورد نظر خود را انتخاب کنید'
+            }
+          }
+        },
         formValidationSwitch: {
           validators: {
             notEmpty: {
-              message: "Please select your preference",
-            },
-          },
+              message: 'لطفا اولویت خود را انتخاب کنید'
+            }
+          }
         },
         formValidationCheckbox: {
           validators: {
             notEmpty: {
-              message: "Please confirm our T&C",
-            },
-          },
-        },
+              message: 'لطفا قوانین و مقررات ما را تایید کنید'
+            }
+          }
+        }
       },
       plugins: {
         trigger: new FormValidation.plugins.Trigger(),
         bootstrap5: new FormValidation.plugins.Bootstrap5({
           // Use this for enabling/changing valid/invalid class
           // eleInvalidClass: '',
-          eleValidClass: "",
+          eleValidClass: '',
           rowSelector: function (field, ele) {
             // field is the field name & ele is the field element
             switch (field) {
-              case "firstName":
-              case "lastName":
-              case "nationalCode":
-
-              case "club":
-                return ".col-12";
-
-              case "memberShipValidity":
-                return ".col-12";
-
-              case "formValidationEmail":
-              case "formValidationPass":
-              case "formValidationConfirmPass":
-              case "formValidationFile":
-              case "formValidationDob":
-              case "formValidationLang":
-              case "formValidationTech":
-              case "formValidationHobbies":
-              case "formValidationBio":
-              case "formValidationGender":
-                return ".col-md-6";
-                return ".col-xl-3";
-              case "formValidationSwitch":
-              case "formValidationCheckbox":
-                return ".col-12";
-
+              case 'formValidationName':
+              case 'formValidationEmail':
+              case 'formValidationPass':
+              case 'formValidationConfirmPass':
+              case 'formValidationFile':
+              case 'formValidationDob':
+              case 'formValidationSelect2':
+              case 'formValidationLang':
+              case 'formValidationTech':
+              case 'formValidationHobbies':
+              case 'formValidationBio':
+              case 'formValidationGender':
+                return '.col-md-6';
+              case 'formValidationPlan':
+                return '.col-xl-3';
+              case 'formValidationSwitch':
+              case 'formValidationCheckbox':
+                return '.col-12';
               default:
-                return ".row";
+                return '.row';
             }
-          },
+          }
         }),
         submitButton: new FormValidation.plugins.SubmitButton(),
         // Submit the form when all fields are valid
         defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
-        autoFocus: new FormValidation.plugins.AutoFocus(),
+        autoFocus: new FormValidation.plugins.AutoFocus()
       },
-      init: (instance) => {
-        instance.on("plugins.message.placed", function (e) {
+      init: instance => {
+        instance.on('plugins.message.placed', function (e) {
           //* Move the error message out of the `input-group` element
-          if (e.element.parentElement.classList.contains("input-group")) {
+          if (e.element.parentElement.classList.contains('input-group')) {
             // `e.field`: The field name
             // `e.messageElement`: The message element
             // `e.element`: The field element
-            e.element.parentElement.insertAdjacentElement("afterend", e.messageElement);
+            e.element.parentElement.insertAdjacentElement('afterend', e.messageElement);
           }
           //* Move the error message out of the `row` element for custom-options
-          if (e.element.parentElement.parentElement.classList.contains("custom-option")) {
-            e.element.closest(".row").insertAdjacentElement("afterend", e.messageElement);
+          if (e.element.parentElement.parentElement.classList.contains('custom-option')) {
+            e.element.closest('.row').insertAdjacentElement('afterend', e.messageElement);
           }
         });
-      },
+      }
     });
 
     //? Revalidation third-party libs inputs on change trigger
 
     // Flatpickr
-    flatpickr(formValidationNewStudent.querySelector('[name="formValidationDob"]'), {
+    flatpickr(formValidationExamples.querySelector('[name="formValidationDob"]'), {
       enableTime: false,
       // See https://flatpickr.js.org/formatting/
-      dateFormat: "Y/m/d",
+      dateFormat: 'Y/m/d',
+      locale: 'fa',
       // After selecting a date, we need to revalidate the field
       onChange: function () {
-        fv.revalidateField("formValidationDob");
+        fv.revalidateField('formValidationDob');
       },
+      disableMobile: true
     });
 
     // Select2 (Country)
@@ -357,12 +284,12 @@ document.addEventListener("DOMContentLoaded", function (e) {
       formValidationSelect2Ele.wrap('<div class="position-relative"></div>');
       formValidationSelect2Ele
         .select2({
-          placeholder: "Select country",
-          dropdownParent: formValidationSelect2Ele.parent(),
+          placeholder: 'انتخاب کشور',
+          dropdownParent: formValidationSelect2Ele.parent()
         })
-        .on("change.select2", function () {
+        .on('change.select2', function () {
           // Revalidate the color field when an option is chosen
-          fv.revalidateField("formValidationSelect2");
+          fv.revalidateField('formValidationSelect2');
         });
     }
 
@@ -373,7 +300,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
       return function findMatches(q, cb) {
         var matches, substrRegex;
         matches = [];
-        substrRegex = new RegExp(q, "i");
+        substrRegex = new RegExp(q, 'i');
         $.each(strs, function (i, str) {
           if (substrRegex.test(str)) {
             matches.push(str);
@@ -386,12 +313,12 @@ document.addEventListener("DOMContentLoaded", function (e) {
 
     // Check if rtl
     if (isRtl) {
-      const typeaheadList = [].slice.call(document.querySelectorAll(".typeahead"));
+      const typeaheadList = [].slice.call(document.querySelectorAll('.typeahead'));
 
       // Flat pickr
       if (typeaheadList) {
-        typeaheadList.forEach((typeahead) => {
-          typeahead.setAttribute("dir", "rtl");
+        typeaheadList.forEach(typeahead => {
+          typeahead.setAttribute('dir', 'rtl');
         });
       }
     }
@@ -399,24 +326,24 @@ document.addEventListener("DOMContentLoaded", function (e) {
       {
         hint: !isRtl,
         highlight: true,
-        minLength: 1,
+        minLength: 1
       },
       {
-        name: "tech",
-        source: substringMatcher(tech),
+        name: 'tech',
+        source: substringMatcher(tech)
       }
     );
 
     // Tagify
     let formValidationLangTagify = new Tagify(formValidationLangEle);
-    formValidationLangEle.addEventListener("change", onChange);
+    formValidationLangEle.addEventListener('change', onChange);
     function onChange() {
-      fv.revalidateField("formValidationLang");
+      fv.revalidateField('formValidationLang');
     }
 
     //Bootstrap select
-    formValidationHobbiesEle.on("changed.bs.select", function (e, clickedIndex, isSelected, previousValue) {
-      fv.revalidateField("formValidationHobbies");
+    formValidationHobbiesEle.on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
+      fv.revalidateField('formValidationHobbies');
     });
   })();
 });

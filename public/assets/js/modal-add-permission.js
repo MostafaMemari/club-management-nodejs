@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
         modalPermissionName: {
           validators: {
             notEmpty: {
-              message: 'Please enter permission name'
+              message: 'لطفا نام مجوز را وارد کنید'
             }
           }
         }

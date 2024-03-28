@@ -17,14 +17,14 @@ document.addEventListener('DOMContentLoaded', function (e) {
           firstName: {
             validators: {
               notEmpty: {
-                message: 'Please enter first name'
+                message: 'لطفا نام را وارد کنید'
               }
             }
           },
           lastName: {
             validators: {
               notEmpty: {
-                message: 'Please enter last name'
+                message: 'لطفا نام خانوادگی را وارد کنید'
               }
             }
           }
@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
           accountActivation: {
             validators: {
               notEmpty: {
-                message: 'Please confirm you want to delete account'
+                message: 'لطفا حذف حساب را تایید کنید'
               }
             }
           }
@@ -99,33 +99,36 @@ document.addEventListener('DOMContentLoaded', function (e) {
       deactivateButton.onclick = function () {
         if (accountActivation.checked == true) {
           Swal.fire({
-            text: 'Are you sure you would like to deactivate your account?',
+            text: 'آیا از غیرفعال کردن حساب خود اطمینان دارید؟',
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonText: 'Yes',
+            confirmButtonText: 'بله',
+            cancelButtonText: 'انصراف',
             customClass: {
-              confirmButton: 'btn btn-primary me-2 waves-effect waves-light',
-              cancelButton: 'btn btn-label-secondary waves-effect waves-light'
+              confirmButton: 'btn btn-primary me-2',
+              cancelButton: 'btn btn-label-secondary'
             },
             buttonsStyling: false
           }).then(function (result) {
             if (result.value) {
               Swal.fire({
                 icon: 'success',
-                title: 'Deleted!',
-                text: 'Your file has been deleted.',
+                title: 'غیرفعال شد!',
+                text: 'حساب شما غیرفعال شد.',
                 customClass: {
-                  confirmButton: 'btn btn-success waves-effect waves-light'
-                }
+                  confirmButton: 'btn btn-success'
+                },
+                confirmButtonText: 'باشه'
               });
             } else if (result.dismiss === Swal.DismissReason.cancel) {
               Swal.fire({
-                title: 'Cancelled',
-                text: 'Deactivation Cancelled!!',
+                title: 'لغو شد',
+                text: 'غیرفعال‌سازی حساب لغو شد!!',
                 icon: 'error',
                 customClass: {
-                  confirmButton: 'btn btn-success waves-effect waves-light'
-                }
+                  confirmButton: 'btn btn-success'
+                },
+                confirmButtonText: 'باشه'
               });
             }
           });

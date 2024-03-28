@@ -15,18 +15,6 @@ if (document.getElementById('layout-menu')) {
 }
 
 (function () {
-  setTimeout(function () {
-    window.Helpers.initCustomOptionCheck();
-  }, 1000);
-
-  if (typeof Waves !== 'undefined') {
-    Waves.init();
-    Waves.attach(".btn[class*='btn-']:not([class*='btn-outline-']):not([class*='btn-label-'])", ['waves-light']);
-    Waves.attach("[class*='btn-outline-']");
-    Waves.attach("[class*='btn-label-']");
-    Waves.attach('.pagination .page-item .page-link');
-  }
-
   // Initialize menu
   //-----------------
 
@@ -60,12 +48,6 @@ if (document.getElementById('layout-menu')) {
             'templateCustomizer-' + templateName + '--LayoutCollapsed',
             String(window.Helpers.isCollapsed())
           );
-          // Update customizer checkbox state on click of menu toggler
-          let layoutCollapsedCustomizerOptions = document.querySelector('.template-customizer-layouts-options');
-          if (layoutCollapsedCustomizerOptions) {
-            let layoutCollapsedVal = window.Helpers.isCollapsed() ? 'collapsed' : 'expanded';
-            layoutCollapsedCustomizerOptions.querySelector(`input[value="${layoutCollapsedVal}"]`).click();
-          }
         } catch (e) {}
       }
     });
@@ -96,15 +78,50 @@ if (document.getElementById('layout-menu')) {
     });
   }
 
+  // Style Switcher (Light/Dark Mode)
+  //---------------------------------
+
+  let styleSwitcherToggleEl = document.querySelector('.style-switcher-toggle');
+  if (window.templateCustomizer) {
+    // setStyle light/dark on click of styleSwitcherToggleEl
+    if (styleSwitcherToggleEl) {
+      styleSwitcherToggleEl.addEventListener('click', function () {
+        if (window.Helpers.isLightStyle()) {
+          window.templateCustomizer.setStyle('dark');
+        } else {
+          window.templateCustomizer.setStyle('light');
+        }
+      });
+    }
+    // Update style switcher icon and tooltip based on current style
+    if (window.Helpers.isLightStyle()) {
+      if (styleSwitcherToggleEl) {
+        styleSwitcherToggleEl.querySelector('i').classList.add('bx-moon');
+        new bootstrap.Tooltip(styleSwitcherToggleEl, {
+          title: 'حالت تیره',
+          fallbackPlacements: ['bottom']
+        });
+      }
+      switchImage('light');
+    } else {
+      if (styleSwitcherToggleEl) {
+        styleSwitcherToggleEl.querySelector('i').classList.add('bx-sun');
+        new bootstrap.Tooltip(styleSwitcherToggleEl, {
+          title: 'حالت روشن',
+          fallbackPlacements: ['bottom']
+        });
+      }
+      switchImage('dark');
+    }
+  } else {
+    // Removed style switcher element if not using template customizer
+    if( styleSwitcherToggleEl !== null ){
+      styleSwitcherToggleEl.parentElement.remove();
+    }
+  }
+
   // Update light/dark image based on current style
   function switchImage(style) {
-    if (style === 'system') {
-      if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        style = 'dark';
-      } else {
-        style = 'light';
-      }
-    }
     const switchImagesList = [].slice.call(document.querySelectorAll('[data-app-' + style + '-img]'));
     switchImagesList.map(function (imageEl) {
       const setImage = imageEl.getAttribute('data-app-' + style + '-img');
@@ -112,132 +129,86 @@ if (document.getElementById('layout-menu')) {
     });
   }
 
-  //Style Switcher (Light/Dark/System Mode)
-  let styleSwitcher = document.querySelector('.dropdown-style-switcher');
-
-  // Get style from local storage or use 'system' as default
-  let storedStyle =
-    localStorage.getItem('templateCustomizer-' + templateName + '--Style') || //if no template style then use Customizer style
-    (window.templateCustomizer?.settings?.defaultStyle ?? 'light'); //!if there is no Customizer then use default style as light
-
-  // Set style on click of style switcher item if template customizer is enabled
-  if (window.templateCustomizer && styleSwitcher) {
-    let styleSwitcherItems = [].slice.call(styleSwitcher.children[1].querySelectorAll('.dropdown-item'));
-    styleSwitcherItems.forEach(function (item) {
-      item.addEventListener('click', function () {
-        let currentStyle = this.getAttribute('data-theme');
-        if (currentStyle === 'light') {
-          window.templateCustomizer.setStyle('light');
-        } else if (currentStyle === 'dark') {
-          window.templateCustomizer.setStyle('dark');
-        } else {
-          window.templateCustomizer.setStyle('system');
-        }
-      });
-    });
-
-    // Update style switcher icon based on the stored style
-
-    const styleSwitcherIcon = styleSwitcher.querySelector('i');
-
-    if (storedStyle === 'light') {
-      styleSwitcherIcon.classList.add('ti-sun');
-      new bootstrap.Tooltip(styleSwitcherIcon, {
-        title: 'Light Mode',
-        fallbackPlacements: ['bottom']
-      });
-    } else if (storedStyle === 'dark') {
-      styleSwitcherIcon.classList.add('ti-moon');
-      new bootstrap.Tooltip(styleSwitcherIcon, {
-        title: 'Dark Mode',
-        fallbackPlacements: ['bottom']
-      });
-    } else {
-      styleSwitcherIcon.classList.add('ti-device-desktop');
-      new bootstrap.Tooltip(styleSwitcherIcon, {
-        title: 'System Mode',
-        fallbackPlacements: ['bottom']
-      });
+  // Navbar Scroll class
+  //---------------------
+  function scrollTopFn() {
+    if (document.getElementById('layout-navbar')) {
+      if (document.body.scrollTop > 10 || document.documentElement.scrollTop > 10) {
+        document.getElementById('layout-navbar').classList.add('navbar-elevated');
+      } else {
+        document.getElementById('layout-navbar').classList.remove('navbar-elevated');
+      }
     }
   }
-
-  // Run switchImage function based on the stored style
-  switchImage(storedStyle);
-
+  window.onscroll = function () {
+    scrollTopFn();
+  };
   // Internationalization (Language Dropdown)
   // ---------------------------------------
 
   if (typeof i18next !== 'undefined' && typeof i18NextHttpBackend !== 'undefined') {
     i18next
-      .use(i18NextHttpBackend)
-      .init({
-        lng: window.templateCustomizer ? window.templateCustomizer.settings.lang : 'en',
-        debug: false,
-        fallbackLng: 'en',
-        backend: {
-          loadPath: assetsPath + 'json/locales/{{lng}}.json'
-        },
-        returnObjects: true
-      })
-      .then(function (t) {
-        localize();
-      });
-  }
+    .use(i18NextHttpBackend)
+    .init({
+      lng: 'fa',
+      debug: false,
+      fallbackLng: 'fa',
+      backend: {
+        loadPath: assetsPath + 'json/locales/{{lng}}.json'
+      },
+      returnObjects: true
+    })
+    .then(function (t) {
+      localize();
+    });
+      
+    // Language Dropdown
+    let languageDropdown = document.getElementsByClassName('dropdown-language');
 
-  let languageDropdown = document.getElementsByClassName('dropdown-language');
+    if (languageDropdown.length) {
+      let dropdownItems = languageDropdown[0].querySelectorAll('.dropdown-item');
 
-  if (languageDropdown.length) {
-    let dropdownItems = languageDropdown[0].querySelectorAll('.dropdown-item');
+      for (let i = 0; i < dropdownItems.length; i++) {
+        dropdownItems[i].addEventListener('click', function () {
+          let currentLanguage = this.getAttribute('data-language'),
+            selectedLangFlag = this.querySelector('.fi').getAttribute('class'),
+            startsWith = 'fs-',
+            classes = selectedLangFlag.split(' ').filter(function (v) {
+              return v.lastIndexOf(startsWith, 0) !== 0;
+            });
+          selectedLangFlag = classes.join(' ').trim() + ' fs-3';
 
-    for (let i = 0; i < dropdownItems.length; i++) {
-      dropdownItems[i].addEventListener('click', function () {
-        let currentLanguage = this.getAttribute('data-language');
-        let textDirection = this.getAttribute('data-text-direction');
-
-        for (let sibling of this.parentNode.children) {
-          var siblingEle = sibling.parentElement.parentNode.firstChild;
-
-          // Loop through each sibling and push to the array
-          while (siblingEle) {
-            if (siblingEle.nodeType === 1 && siblingEle !== siblingEle.parentElement) {
-              siblingEle.querySelector('.dropdown-item').classList.remove('active');
-            }
-            siblingEle = siblingEle.nextSibling;
+          for (let sibling of this.parentNode.children) {
+            sibling.classList.remove('selected');
           }
-        }
-        this.classList.add('active');
+          this.classList.add('selected');
 
-        i18next.changeLanguage(currentLanguage, (err, t) => {
-          window.templateCustomizer ? window.templateCustomizer.setLang(currentLanguage) : '';
-          directionChange(textDirection);
-          if (err) return console.log('something went wrong loading', err);
-          localize();
+          languageDropdown[0].querySelector('.dropdown-toggle .fi').className = selectedLangFlag;
+
+          i18next.changeLanguage(currentLanguage, (err, t) => {
+            if (err) return console.log('ایرادی در بارگذاری پیش آمد', err);
+            localize();
+          });
         });
-      });
-    }
-    function directionChange(textDirection) {
-      if (textDirection === 'rtl') {
-        if (localStorage.getItem('templateCustomizer-' + templateName + '--Rtl') !== 'true')
-          window.templateCustomizer ? window.templateCustomizer.setRtl(true) : '';
-      } else {
-        if (localStorage.getItem('templateCustomizer-' + templateName + '--Rtl') === 'true')
-          window.templateCustomizer ? window.templateCustomizer.setRtl(false) : '';
       }
     }
-  }
+    
+    // Localize Function
+    function localize() {
+      let i18nList = document.querySelectorAll('[data-i18n]');
+      // Set the current language in dd
+      let currentLanguageEle = document.querySelector('.dropdown-item[data-language="' + i18next.language + '"]');
 
-  function localize() {
-    let i18nList = document.querySelectorAll('[data-i18n]');
-    // Set the current language in dd
-    let currentLanguageEle = document.querySelector('.dropdown-item[data-language="' + i18next.language + '"]');
+      if (currentLanguageEle) {
+        currentLanguageEle.click();
+      }
 
-    if (currentLanguageEle) {
-      currentLanguageEle.click();
+      if (i18next.resolvedLanguage !== undefined){
+        i18nList.forEach(function (item) {
+          item.innerHTML = i18next.t(item.dataset.i18n);
+        });
+      }
     }
-
-    i18nList.forEach(function (item) {
-      item.innerHTML = i18next.t(item.dataset.i18n);
-    });
   }
 
   // Notification
@@ -295,9 +266,9 @@ if (document.getElementById('layout-menu')) {
   });
 
   // If layout is RTL add .dropdown-menu-end class to .dropdown-menu
-  // if (isRtl) {
-  //   Helpers._addClass('dropdown-menu-end', document.querySelectorAll('#layout-navbar .dropdown-menu'));
-  // }
+  if (isRtl) {
+    Helpers._addClass('dropdown-menu-end', document.querySelectorAll('#layout-navbar .dropdown-menu'));
+  }
 
   // Auto update layout based on screen size
   window.Helpers.setAutoUpdate(true);
@@ -310,16 +281,6 @@ if (document.getElementById('layout-menu')) {
 
   // Init PerfectScrollbar in Navbar Dropdown (i.e notification)
   window.Helpers.initNavbarDropdownScrollbar();
-
-  let horizontalMenuTemplate = document.querySelector("[data-template^='horizontal-menu']");
-  if (horizontalMenuTemplate) {
-    // if screen size is small then set navbar fixed
-    if (window.innerWidth < window.Helpers.LAYOUT_BREAKPOINT) {
-      window.Helpers.setNavbarFixed('fixed');
-    } else {
-      window.Helpers.setNavbarFixed('');
-    }
-  }
 
   // On window resize listener
   // -------------------------
@@ -334,13 +295,8 @@ if (document.getElementById('layout-menu')) {
         }
       }
       // Horizontal Layout : Update menu based on window size
+      let horizontalMenuTemplate = document.querySelector("[data-template^='horizontal-menu']");
       if (horizontalMenuTemplate) {
-        // if screen size is small then set navbar fixed
-        if (window.innerWidth < window.Helpers.LAYOUT_BREAKPOINT) {
-          window.Helpers.setNavbarFixed('fixed');
-        } else {
-          window.Helpers.setNavbarFixed('');
-        }
         setTimeout(function () {
           if (window.innerWidth < window.Helpers.LAYOUT_BREAKPOINT) {
             if (document.getElementById('layout-menu')) {
@@ -375,8 +331,6 @@ if (document.getElementById('layout-menu')) {
   if (typeof TemplateCustomizer !== 'undefined') {
     if (window.templateCustomizer.settings.defaultMenuCollapsed) {
       window.Helpers.setCollapsed(true, false);
-    } else {
-      window.Helpers.setCollapsed(false, false);
     }
   }
 
@@ -384,7 +338,10 @@ if (document.getElementById('layout-menu')) {
   if (typeof config !== 'undefined') {
     if (config.enableMenuLocalStorage) {
       try {
-        if (localStorage.getItem('templateCustomizer-' + templateName + '--LayoutCollapsed') !== null)
+        if (
+          localStorage.getItem('templateCustomizer-' + templateName + '--LayoutCollapsed') !== null &&
+          localStorage.getItem('templateCustomizer-' + templateName + '--LayoutCollapsed') !== 'false'
+        )
           window.Helpers.setCollapsed(
             localStorage.getItem('templateCustomizer-' + templateName + '--LayoutCollapsed') === 'true',
             false
@@ -431,19 +388,12 @@ if (typeof $ !== 'undefined') {
         }
       }
     });
-    // Note: Following code is required to update container class of typeahead dropdown width on focus of search input. setTimeout is required to allow time to initiate Typeahead UI.
-    setTimeout(function () {
-      var twitterTypeahead = $('.twitter-typeahead');
-      searchInput.on('focus', function () {
-        if (searchInputWrapper.hasClass('container-xxl')) {
-          searchInputWrapper.find(twitterTypeahead).addClass('container-xxl');
-          twitterTypeahead.removeClass('container-fluid');
-        } else if (searchInputWrapper.hasClass('container-fluid')) {
-          searchInputWrapper.find(twitterTypeahead).addClass('container-fluid');
-          twitterTypeahead.removeClass('container-xxl');
-        }
-      });
-    }, 10);
+    // Todo: Add container-xxl to twitter-typeahead
+    searchInput.on('focus', function () {
+      if (searchInputWrapper.hasClass('container-xxl')) {
+        searchInputWrapper.find('.twitter-typeahead').addClass('container-xxl');
+      }
+    });
 
     if (searchInput.length) {
       // Filter config
@@ -502,14 +452,14 @@ if (typeof $ !== 'undefined') {
               limit: 5,
               source: filterConfig(searchData.pages),
               templates: {
-                header: '<h6 class="suggestions-header text-primary mb-0 mx-3 mt-3 pb-2">Pages</h6>',
+                header: '<h6 class="suggestions-header text-primary mb-0 mx-3 mt-3 pb-2">صفحات</h6>',
                 suggestion: function ({ url, icon, name }) {
                   return (
                     '<a href="' +
                     url +
                     '">' +
                     '<div>' +
-                    '<i class="ti ' +
+                    '<i class="bx ' +
                     icon +
                     ' me-2"></i>' +
                     '<span class="align-middle">' +
@@ -521,8 +471,8 @@ if (typeof $ !== 'undefined') {
                 },
                 notFound:
                   '<div class="not-found px-3 py-2">' +
-                  '<h6 class="suggestions-header text-primary mb-2">Pages</h6>' +
-                  '<p class="py-2 mb-0"><i class="ti ti-alert-circle ti-xs me-2"></i> No Results Found</p>' +
+                  '<h6 class="suggestions-header text-primary mb-2">صفحات</h6>' +
+                  '<p class="py-2 mb-0"><i class="bx bx-error-circle bx-xs me-2"></i> نتیجه‌ای پیدا نشد</p>' +
                   '</div>'
               }
             },
@@ -533,7 +483,7 @@ if (typeof $ !== 'undefined') {
               limit: 4,
               source: filterConfig(searchData.files),
               templates: {
-                header: '<h6 class="suggestions-header text-primary mb-0 mx-3 mt-3 pb-2">Files</h6>',
+                header: '<h6 class="suggestions-header text-primary mb-0 mx-3 mt-3 pb-2">فایل‌ها</h6>',
                 suggestion: function ({ src, name, subtitle, meta }) {
                   return (
                     '<a href="javascript:;">' +
@@ -561,8 +511,8 @@ if (typeof $ !== 'undefined') {
                 },
                 notFound:
                   '<div class="not-found px-3 py-2">' +
-                  '<h6 class="suggestions-header text-primary mb-2">Files</h6>' +
-                  '<p class="py-2 mb-0"><i class="ti ti-alert-circle ti-xs me-2"></i> No Results Found</p>' +
+                  '<h6 class="suggestions-header text-primary mb-2">فایل‌ها</h6>' +
+                  '<p class="py-2 mb-0"><i class="bx bx-error-circle bx-xs me-2"></i> نتیجه‌ای پیدا نشد</p>' +
                   '</div>'
               }
             },
@@ -573,7 +523,7 @@ if (typeof $ !== 'undefined') {
               limit: 4,
               source: filterConfig(searchData.members),
               templates: {
-                header: '<h6 class="suggestions-header text-primary mb-0 mx-3 mt-3 pb-2">Members</h6>',
+                header: '<h6 class="suggestions-header text-primary mb-0 mx-3 mt-3 pb-2">اعضا</h6>',
                 suggestion: function ({ name, src, subtitle }) {
                   return (
                     '<a href="app-user-view-account.html">' +
@@ -598,8 +548,8 @@ if (typeof $ !== 'undefined') {
                 },
                 notFound:
                   '<div class="not-found px-3 py-2">' +
-                  '<h6 class="suggestions-header text-primary mb-2">Members</h6>' +
-                  '<p class="py-2 mb-0"><i class="ti ti-alert-circle ti-xs me-2"></i> No Results Found</p>' +
+                  '<h6 class="suggestions-header text-primary mb-2">اعضا</h6>' +
+                  '<p class="py-2 mb-0"><i class="bx bx-error-circle bx-xs me-2"></i> نتیجه‌ای پیدا نشد</p>' +
                   '</div>'
               }
             }

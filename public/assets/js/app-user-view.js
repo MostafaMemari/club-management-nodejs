@@ -10,33 +10,36 @@
   if (suspendUser) {
     suspendUser.onclick = function () {
       Swal.fire({
-        title: 'Are you sure?',
-        text: "You won't be able to revert user!",
+        title: 'آیا اطمینان دارید؟',
+        text: "قادر به بازگردانی کاربر نخواهید بود!",
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonText: 'Yes, Suspend user!',
+        confirmButtonText: 'بله، معلق کن!',
+        cancelButtonText: 'انصراف',
         customClass: {
-          confirmButton: 'btn btn-primary me-2 waves-effect waves-light',
-          cancelButton: 'btn btn-label-secondary waves-effect waves-light'
+          confirmButton: 'btn btn-primary me-2',
+          cancelButton: 'btn btn-label-secondary'
         },
         buttonsStyling: false
       }).then(function (result) {
         if (result.value) {
           Swal.fire({
             icon: 'success',
-            title: 'Suspended!',
-            text: 'User has been suspended.',
+            title: 'معلق شد!',
+            text: 'کاربر معلق شد.',
+            confirmButtonText: 'باشه',
             customClass: {
-              confirmButton: 'btn btn-success waves-effect waves-light'
+              confirmButton: 'btn btn-success'
             }
           });
         } else if (result.dismiss === Swal.DismissReason.cancel) {
           Swal.fire({
-            title: 'Cancelled',
-            text: 'Cancelled Suspension :)',
+            title: 'لغو شد',
+            text: 'معلق سازی کاربر لغو شد :)',
+            confirmButtonText: 'باشه',
             icon: 'error',
             customClass: {
-              confirmButton: 'btn btn-success waves-effect waves-light'
+              confirmButton: 'btn btn-success'
             }
           });
         }
@@ -53,32 +56,35 @@
     cancelSubscription.forEach(btnCancle => {
       btnCancle.onclick = function () {
         Swal.fire({
-          text: 'Are you sure you would like to cancel your subscription?',
+          text: 'آیا از لغو کردن اشتراک اطمینان دارید؟',
           icon: 'warning',
           showCancelButton: true,
-          confirmButtonText: 'Yes',
+          confirmButtonText: 'بله',
+          cancelButtonText: 'انصراف',
           customClass: {
-            confirmButton: 'btn btn-primary me-2 waves-effect waves-light',
-            cancelButton: 'btn btn-label-secondary waves-effect waves-light'
+            confirmButton: 'btn btn-primary me-2',
+            cancelButton: 'btn btn-label-secondary'
           },
           buttonsStyling: false
         }).then(function (result) {
           if (result.value) {
             Swal.fire({
               icon: 'success',
-              title: 'Unsubscribed!',
-              text: 'Your subscription cancelled successfully.',
+              title: 'اشتراک لغو شد!',
+              text: 'اشتراک با موفقیت لغو شد.',
+              confirmButtonText: 'باشه',
               customClass: {
-                confirmButton: 'btn btn-success waves-effect waves-light'
+                confirmButton: 'btn btn-success'
               }
             });
           } else if (result.dismiss === Swal.DismissReason.cancel) {
             Swal.fire({
-              title: 'Cancelled',
-              text: 'Unsubscription Cancelled!!',
+              title: 'انصراف داده شد',
+              text: 'از لغو اشتراک انصراف داده شد!!',
+              confirmButtonText: 'باشه',
               icon: 'error',
               customClass: {
-                confirmButton: 'btn btn-success waves-effect waves-light'
+                confirmButton: 'btn btn-success'
               }
             });
           }

@@ -15,7 +15,7 @@ let events = [
   {
     id: 1,
     url: '',
-    title: 'Design Review',
+    title: 'بررسی طراحی',
     start: date,
     end: nextDay,
     allDay: false,
@@ -26,7 +26,7 @@ let events = [
   {
     id: 2,
     url: '',
-    title: 'Meeting With Client',
+    title: 'ملاقات با مشتری',
     start: new Date(date.getFullYear(), date.getMonth() + 1, -11),
     end: new Date(date.getFullYear(), date.getMonth() + 1, -10),
     allDay: true,
@@ -37,7 +37,7 @@ let events = [
   {
     id: 3,
     url: '',
-    title: 'Family Trip',
+    title: 'گردش خانوادگی',
     allDay: true,
     start: new Date(date.getFullYear(), date.getMonth() + 1, -9),
     end: new Date(date.getFullYear(), date.getMonth() + 1, -7),
@@ -48,7 +48,7 @@ let events = [
   {
     id: 4,
     url: '',
-    title: "Doctor's Appointment",
+    title: "وقت ویزیت دکتر",
     start: new Date(date.getFullYear(), date.getMonth() + 1, -11),
     end: new Date(date.getFullYear(), date.getMonth() + 1, -10),
     extendedProps: {
@@ -58,7 +58,7 @@ let events = [
   {
     id: 5,
     url: '',
-    title: 'Dart Game?',
+    title: 'بازی دارت؟',
     start: new Date(date.getFullYear(), date.getMonth() + 1, -13),
     end: new Date(date.getFullYear(), date.getMonth() + 1, -12),
     allDay: true,
@@ -69,7 +69,7 @@ let events = [
   {
     id: 6,
     url: '',
-    title: 'Meditation',
+    title: 'مدیتیشن',
     start: new Date(date.getFullYear(), date.getMonth() + 1, -13),
     end: new Date(date.getFullYear(), date.getMonth() + 1, -12),
     allDay: true,
@@ -80,7 +80,7 @@ let events = [
   {
     id: 7,
     url: '',
-    title: 'Dinner',
+    title: 'شام',
     start: new Date(date.getFullYear(), date.getMonth() + 1, -13),
     end: new Date(date.getFullYear(), date.getMonth() + 1, -12),
     extendedProps: {
@@ -90,7 +90,7 @@ let events = [
   {
     id: 8,
     url: '',
-    title: 'Product Review',
+    title: 'بررسی محصول',
     start: new Date(date.getFullYear(), date.getMonth() + 1, -13),
     end: new Date(date.getFullYear(), date.getMonth() + 1, -12),
     allDay: true,
@@ -101,7 +101,7 @@ let events = [
   {
     id: 9,
     url: '',
-    title: 'Monthly Meeting',
+    title: 'جلسه ماهانه',
     start: nextMonth,
     end: nextMonth,
     allDay: true,
@@ -112,7 +112,7 @@ let events = [
   {
     id: 10,
     url: '',
-    title: 'Monthly Checkup',
+    title: 'چک‌آپ ماهانه',
     start: prevMonth,
     end: prevMonth,
     allDay: true,

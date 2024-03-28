@@ -38,10 +38,11 @@
   if (basicAlert) {
     basicAlert.onclick = function () {
       Swal.fire({
-        title: 'Any fool can use a computer',
+        text: 'کامپیوتر وسیله خوبیه',
         customClass: {
-          confirmButton: 'btn btn-primary waves-effect waves-light'
+          confirmButton: 'btn btn-primary'
         },
+        confirmButtonText: 'باشه',
         buttonsStyling: false
       });
     };
@@ -51,11 +52,12 @@
   if (withTitle) {
     withTitle.onclick = function () {
       Swal.fire({
-        title: 'The Internet?,',
-        text: 'That thing is still around?',
+        title: 'اینترنت؟',
+        text: 'مگه هنوز وجود داره؟',
         customClass: {
-          confirmButton: 'btn btn-primary waves-effect waves-light'
+          confirmButton: 'btn btn-primary'
         },
+        confirmButtonText: 'باشه',
         buttonsStyling: false
       });
     };
@@ -66,12 +68,13 @@
     footerAlert.onclick = function () {
       Swal.fire({
         icon: 'error',
-        title: 'Oops...',
-        text: 'Something went wrong!',
-        footer: '<a href>Why do I have this issue?</a>',
+        title: 'اوپس ...',
+        text: 'یه مشکلی پیش اومد!',
+        footer: '<a href>من چرا این مشکلو دارم؟</a>',
         customClass: {
-          confirmButton: 'btn btn-primary waves-effect waves-light'
+          confirmButton: 'btn btn-primary'
         },
+        confirmButtonText: 'باشه',
         buttonsStyling: false
       });
     };
@@ -81,22 +84,22 @@
   if (htmlAlert) {
     htmlAlert.onclick = function () {
       Swal.fire({
-        title: '<span class="fw-medium">HTML <u>example</u></span>',
+        title: '<strong><u>مثال</u> HTML</strong>',
         icon: 'info',
         html:
-          'You can use <b>bold text</b>, ' +
-          '<a href="https://pixinvent.com/" target="_blank">links</a> ' +
-          'and other HTML tags',
+          'میتونید از <b>متن ضخیم</b> ، ' +
+          '<a href="#" target="_blank">لینک</a> ' +
+          'و سایر تگ های HTML استفاده کنید',
         showCloseButton: true,
         showCancelButton: true,
         focusConfirm: false,
-        confirmButtonText: '<i class="ti ti-thumb-up"></i> Great!',
-        confirmButtonAriaLabel: 'Thumbs up, great!',
-        cancelButtonText: '<i class="ti ti-thumb-down"></i>',
-        cancelButtonAriaLabel: 'Thumbs down',
+        confirmButtonText: '<i class="fa fa-thumbs-up"></i> عالیه!',
+        confirmButtonAriaLabel: 'عالیه!',
+        cancelButtonText: '<i class="fa fa-thumbs-down"></i>',
+        cancelButtonAriaLabel: 'خوب نیست',
         customClass: {
-          confirmButton: 'btn btn-primary me-3 waves-effect waves-light',
-          cancelButton: 'btn btn-label-secondary waves-effect waves-light'
+          confirmButton: 'btn btn-primary me-3',
+          cancelButton: 'btn btn-label-secondary'
         },
         buttonsStyling: false
       });
@@ -112,11 +115,11 @@
       Swal.fire({
         position: 'top-start',
         icon: 'success',
-        title: 'Your work has been saved',
+        title: 'کار شما ذخیره شد',
         showConfirmButton: false,
         timer: 1500,
         customClass: {
-          confirmButton: 'btn btn-primary waves-effect waves-light'
+          confirmButton: 'btn btn-primary'
         },
         buttonsStyling: false
       });
@@ -129,11 +132,11 @@
       Swal.fire({
         position: 'top-end',
         icon: 'success',
-        title: 'Your work has been saved',
+        title: 'کار شما ذخیره شد',
         showConfirmButton: false,
         timer: 1500,
         customClass: {
-          confirmButton: 'btn btn-primary waves-effect waves-light'
+          confirmButton: 'btn btn-primary'
         },
         buttonsStyling: false
       });
@@ -146,11 +149,11 @@
       Swal.fire({
         position: 'bottom-start',
         icon: 'success',
-        title: 'Your work has been saved',
+        title: 'کار شما ذخیره شد',
         showConfirmButton: false,
         timer: 1500,
         customClass: {
-          confirmButton: 'btn btn-primary waves-effect waves-light'
+          confirmButton: 'btn btn-primary'
         },
         buttonsStyling: false
       });
@@ -163,11 +166,11 @@
       Swal.fire({
         position: 'bottom-end',
         icon: 'success',
-        title: 'Your work has been saved',
+        title: 'کار شما ذخیره شد',
         showConfirmButton: false,
         timer: 1500,
         customClass: {
-          confirmButton: 'btn btn-primary waves-effect waves-light'
+          confirmButton: 'btn btn-primary'
         },
         buttonsStyling: false
       });
@@ -181,13 +184,14 @@
   if (bounceInAnimation) {
     bounceInAnimation.onclick = function () {
       Swal.fire({
-        title: 'Bounce In Animation',
+        title: 'انیمیشن Bounce In',
         showClass: {
           popup: 'animate__animated animate__bounceIn'
         },
         customClass: {
-          confirmButton: 'btn btn-primary waves-effect waves-light'
+          confirmButton: 'btn btn-primary'
         },
+        confirmButtonText: 'باشه',
         buttonsStyling: false
       });
     };
@@ -197,13 +201,14 @@
   if (fadeInAnimation) {
     fadeInAnimation.onclick = function () {
       Swal.fire({
-        title: 'Fade In Animation',
+        title: 'انیمیشن Fade In',
         showClass: {
           popup: 'animate__animated animate__fadeIn'
         },
         customClass: {
-          confirmButton: 'btn btn-primary waves-effect waves-light'
+          confirmButton: 'btn btn-primary'
         },
+        confirmButtonText: 'باشه',
         buttonsStyling: false
       });
     };
@@ -213,13 +218,14 @@
   if (flipXAnimation) {
     flipXAnimation.onclick = function () {
       Swal.fire({
-        title: 'Flip In Animation',
+        title: 'انیمیشن Flip In',
         showClass: {
           popup: 'animate__animated animate__flipInX'
         },
         customClass: {
-          confirmButton: 'btn btn-primary waves-effect waves-light'
+          confirmButton: 'btn btn-primary'
         },
+        confirmButtonText: 'باشه',
         buttonsStyling: false
       });
     };
@@ -229,13 +235,14 @@
   if (tadaAnimation) {
     tadaAnimation.onclick = function () {
       Swal.fire({
-        title: 'Tada Animation',
+        title: 'انیمیشن Tada',
         showClass: {
           popup: 'animate__animated animate__tada'
         },
         customClass: {
-          confirmButton: 'btn btn-primary waves-effect waves-light'
+          confirmButton: 'btn btn-primary'
         },
+        confirmButtonText: 'باشه',
         buttonsStyling: false
       });
     };
@@ -245,13 +252,14 @@
   if (shakeAnimation) {
     shakeAnimation.onclick = function () {
       Swal.fire({
-        title: 'Shake Animation',
+        title: 'انیمیشن Shake',
         showClass: {
           popup: 'animate__animated animate__shakeX'
         },
         customClass: {
-          confirmButton: 'btn btn-primary waves-effect waves-light'
+          confirmButton: 'btn btn-primary'
         },
+        confirmButtonText: 'باشه',
         buttonsStyling: false
       });
     };
@@ -264,12 +272,13 @@
   if (iconSuccess) {
     iconSuccess.onclick = function () {
       Swal.fire({
-        title: 'Good job!',
-        text: 'You clicked the button!',
+        title: 'کارت درسته!',
+        text: 'شما روی دکمه کلیک کردید!',
         icon: 'success',
         customClass: {
-          confirmButton: 'btn btn-primary waves-effect waves-light'
+          confirmButton: 'btn btn-primary'
         },
+        confirmButtonText: 'باشه',
         buttonsStyling: false
       });
     };
@@ -279,12 +288,13 @@
   if (iconInfo) {
     iconInfo.onclick = function () {
       Swal.fire({
-        title: 'Info!',
-        text: 'You clicked the button!',
+        title: 'اطلاعات!',
+        text: 'شما روی دکمه کلیک کردید!',
         icon: 'info',
         customClass: {
-          confirmButton: 'btn btn-primary waves-effect waves-light'
+          confirmButton: 'btn btn-primary'
         },
+        confirmButtonText: 'باشه',
         buttonsStyling: false
       });
     };
@@ -294,12 +304,13 @@
   if (iconWarning) {
     iconWarning.onclick = function () {
       Swal.fire({
-        title: 'Warning!',
-        text: ' You clicked the button!',
+        title: 'هشدار!',
+        text: ' شما روی دکمه کلیک کردید!',
         icon: 'warning',
         customClass: {
-          confirmButton: 'btn btn-primary waves-effect waves-light'
+          confirmButton: 'btn btn-primary'
         },
+        confirmButtonText: 'باشه',
         buttonsStyling: false
       });
     };
@@ -309,12 +320,13 @@
   if (iconError) {
     iconError.onclick = function () {
       Swal.fire({
-        title: 'Error!',
-        text: ' You clicked the button!',
+        title: 'خطا!',
+        text: ' شما روی دکمه کلیک کردید!',
         icon: 'error',
         customClass: {
-          confirmButton: 'btn btn-primary waves-effect waves-light'
+          confirmButton: 'btn btn-primary'
         },
+        confirmButtonText: 'باشه',
         buttonsStyling: false
       });
     };
@@ -324,12 +336,13 @@
   if (iconQuestion) {
     iconQuestion.onclick = function () {
       Swal.fire({
-        title: 'Question!',
-        text: ' You clicked the button!',
+        title: 'سوال!',
+        text: ' شما روی دکمه کلیک کردید!',
         icon: 'question',
         customClass: {
-          confirmButton: 'btn btn-primary waves-effect waves-light'
+          confirmButton: 'btn btn-primary'
         },
+        confirmButtonText: 'باشه',
         buttonsStyling: false
       });
     };
@@ -342,14 +355,15 @@
   if (customImage) {
     customImage.onclick = function () {
       Swal.fire({
-        title: 'Sweet!',
-        text: 'Modal with a custom image.',
-        imageUrl: assetsPath + 'img/backgrounds/5.jpg',
+        title: 'عالیه!',
+        text: 'مودال با یک تصویر سفارشی.',
+        imageUrl: assetsPath + 'img/backgrounds/15.jpg',
         imageWidth: 400,
-        imageAlt: 'Custom image',
+        imageAlt: 'تصویر سفارشی',
         customClass: {
-          confirmButton: 'btn btn-primary waves-effect waves-light'
+          confirmButton: 'btn btn-primary'
         },
+        confirmButtonText: 'باشه',
         buttonsStyling: false
       });
     };
@@ -360,12 +374,13 @@
     autoClose.onclick = function () {
       var timerInterval;
       Swal.fire({
-        title: 'Auto close alert!',
-        html: 'I will close in <span class="fw-medium"></span> seconds.',
+        title: 'هشدار خود بسته شونده!',
+        html: 'من تا <strong></strong> میلی ثانیه بسته میشم.',
         timer: 2000,
         customClass: {
-          confirmButton: 'btn btn-primary waves-effect waves-light'
+          confirmButton: 'btn btn-primary'
         },
+        confirmButtonText: 'باشه',
         buttonsStyling: false,
         willOpen: function () {
           Swal.showLoading();
@@ -381,7 +396,7 @@
           // Read more about handling dismissals
           result.dismiss === Swal.DismissReason.timer
         ) {
-          console.log('I was closed by the timer');
+          console.log('من توسط تایمر بسته شدم');
         }
       });
     };
@@ -391,13 +406,14 @@
   if (outsideClick) {
     outsideClick.onclick = function () {
       Swal.fire({
-        title: 'Click outside to close!',
-        text: 'This is a cool message!',
+        title: 'برای بستن در بیرون کادر کلیک کنید!',
+        text: 'این یه پیام جذابه!',
         backdrop: true,
         allowOutsideClick: true,
         customClass: {
-          confirmButton: 'btn btn-primary waves-effect waves-light'
+          confirmButton: 'btn btn-primary'
         },
+        confirmButtonText: 'باشه',
         buttonsStyling: false
       });
     };
@@ -408,14 +424,14 @@
     progressSteps.onclick = function () {
       const steps = ['1', '2', '3'];
       const swalQueueStep = Swal.mixin({
-        confirmButtonText: 'Forward',
-        cancelButtonText: 'Back',
+        confirmButtonText: 'بعدی',
+        cancelButtonText: 'قبلی',
         progressSteps: steps,
         input: 'text',
         inputAttributes: {
           required: true
         },
-        validationMessage: 'This field is required'
+        validationMessage: 'این فیلد الزامی است'
       });
 
       async function backAndForward() {
@@ -424,7 +440,7 @@
 
         for (currentStep = 0; currentStep < steps.length; ) {
           const result = await new swalQueueStep({
-            title: 'Question ' + steps[currentStep],
+            title: 'سوال ' + steps[currentStep],
             showCancelButton: currentStep > 0,
             currentProgressStep: currentStep
           });
@@ -448,17 +464,18 @@
   if (ajaxRequest) {
     ajaxRequest.onclick = function () {
       Swal.fire({
-        title: 'Submit your Github username',
+        title: 'نام کاربری گیت‌هاب خود را وارد کنید',
         input: 'text',
         inputAttributes: {
           autocapitalize: 'off'
         },
         showCancelButton: true,
-        confirmButtonText: 'Look up',
+        confirmButtonText: 'جستجو',
+        cancelButtonText: 'انصراف',
         showLoaderOnConfirm: true,
         customClass: {
-          confirmButton: 'btn btn-primary me-3 waves-effect waves-light',
-          cancelButton: 'btn btn-label-danger waves-effect waves-light'
+          confirmButton: 'btn btn-primary me-3',
+          cancelButton: 'btn btn-label-danger'
         },
         preConfirm: login => {
           return fetch('//api.github.com/users/' + login)
@@ -469,7 +486,7 @@
               return response.json();
             })
             .catch(error => {
-              Swal.showValidationMessage('Request failed:' + error);
+              Swal.showValidationMessage('درخواست ناموفق: ' + error);
             });
         },
         backdrop: true,
@@ -477,11 +494,11 @@
       }).then(result => {
         if (result.isConfirmed) {
           Swal.fire({
-            title: result.value.login + "'s avatar",
+            title: 'آواتار ' + result.value.login,
             imageUrl: result.value.avatar_url,
             customClass: {
-              confirmButtonText: 'Close me!',
-              confirmButton: 'btn btn-primary waves-effect waves-light'
+              confirmButtonText: 'بستن!',
+              confirmButton: 'btn btn-primary'
             }
           });
         }
@@ -493,25 +510,27 @@
   if (confirmText) {
     confirmText.onclick = function () {
       Swal.fire({
-        title: 'Are you sure?',
-        text: "You won't be able to revert this!",
+        title: 'آیا مطمئنید؟',
+        text: "این عمل قابل بازگشت نخواهد بود!",
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonText: 'Yes, delete it!',
+        confirmButtonText: 'بله، حذف کن!',
+        cancelButtonText: 'انصراف',
         customClass: {
-          confirmButton: 'btn btn-primary me-3 waves-effect waves-light',
-          cancelButton: 'btn btn-label-secondary waves-effect waves-light'
+          confirmButton: 'btn btn-primary me-3',
+          cancelButton: 'btn btn-label-secondary'
         },
         buttonsStyling: false
       }).then(function (result) {
         if (result.value) {
           Swal.fire({
             icon: 'success',
-            title: 'Deleted!',
-            text: 'Your file has been deleted.',
+            title: 'حذف شد!',
+            text: 'فایل شما حذف شد.',
             customClass: {
-              confirmButton: 'btn btn-success waves-effect waves-light'
-            }
+              confirmButton: 'btn btn-success'
+            },
+            confirmButtonText: 'باشه'
           });
         }
       });
@@ -522,34 +541,37 @@
   if (confirmColor) {
     confirmColor.onclick = function () {
       Swal.fire({
-        title: 'Are you sure?',
-        text: "You won't be able to revert this!",
+        title: 'آیا مطمئنید؟',
+        text: "این عمل قابل بازگشت نخواهد بود!",
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonText: 'Yes, delete it!',
+        confirmButtonText: 'بله، حذف کن!',
+        cancelButtonText: 'انصراف',
         customClass: {
-          confirmButton: 'btn btn-primary me-3 waves-effect waves-light',
-          cancelButton: 'btn btn-label-secondary waves-effect waves-light'
+          confirmButton: 'btn btn-primary me-3',
+          cancelButton: 'btn btn-label-secondary'
         },
         buttonsStyling: false
       }).then(function (result) {
         if (result.value) {
           Swal.fire({
             icon: 'success',
-            title: 'Deleted!',
-            text: 'Your file has been deleted.',
+            title: 'حذف شد!',
+            text: 'فایل شما حذف شد.',
             customClass: {
-              confirmButton: 'btn btn-success waves-effect waves-light'
-            }
+              confirmButton: 'btn btn-success'
+            },
+            confirmButtonText: 'باشه'
           });
         } else if (result.dismiss === Swal.DismissReason.cancel) {
           Swal.fire({
-            title: 'Cancelled',
-            text: 'Your imaginary file is safe :)',
+            title: 'لغو شد',
+            text: 'فایل فرضی شما در امان است :)',
             icon: 'error',
             customClass: {
-              confirmButton: 'btn btn-success waves-effect waves-light'
-            }
+              confirmButton: 'btn btn-success'
+            },
+            confirmButtonText: 'باشه'
           });
         }
       });

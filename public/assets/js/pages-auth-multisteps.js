@@ -14,7 +14,7 @@ $(function () {
       var $this = $(this);
       $this.wrap('<div class="position-relative"></div>');
       $this.select2({
-        placeholder: 'Select an country',
+        placeholder: 'انتخاب استان',
         dropdownParent: $this.parent()
       });
     });
@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
         new Cleave(multiStepsExDate, {
           date: true,
           delimiter: '/',
-          datePattern: ['m', 'y']
+          datePattern: ['y', 'm']
         });
       }
 
@@ -56,7 +56,8 @@ document.addEventListener('DOMContentLoaded', function (e) {
       if (multiStepsCvv) {
         new Cleave(multiStepsCvv, {
           numeral: true,
-          numeralPositiveOnly: true
+          numeralPositiveOnly: true,
+          numeralThousandsGroupStyle: 'none'
         });
       }
 
@@ -101,46 +102,46 @@ document.addEventListener('DOMContentLoaded', function (e) {
           multiStepsUsername: {
             validators: {
               notEmpty: {
-                message: 'Please enter username'
+                message: 'لطفا نام کاربری را وارد کنید'
               },
               stringLength: {
                 min: 6,
                 max: 30,
-                message: 'The name must be more than 6 and less than 30 characters long'
+                message: 'نام کاربری باید بیش از 6 و کمتر از 30 کاراکتر باشد'
               },
               regexp: {
                 regexp: /^[a-zA-Z0-9 ]+$/,
-                message: 'The name can only consist of alphabetical, number and space'
+                message: 'نام کاربری فقط می‌تواند شامل حروف الفبا، اعداد و فاصله باشد'
               }
             }
           },
           multiStepsEmail: {
             validators: {
               notEmpty: {
-                message: 'Please enter email address'
+                message: 'لطفا آدرس ایمیل را وارد کنید'
               },
               emailAddress: {
-                message: 'The value is not a valid email address'
+                message: 'مقدار وارد شده یک آدرس ایمیل معتبر نیست'
               }
             }
           },
           multiStepsPass: {
             validators: {
               notEmpty: {
-                message: 'Please enter password'
+                message: 'لطفا رمز عبور را وارد کنید'
               }
             }
           },
           multiStepsConfirmPass: {
             validators: {
               notEmpty: {
-                message: 'Confirm Password is required'
+                message: 'تایید رمز عبور الزامی است'
               },
               identical: {
                 compare: function () {
                   return stepsValidationFormStep1.querySelector('[name="multiStepsPass"]').value;
                 },
-                message: 'The password and its confirm are not the same'
+                message: 'رمز عبور و تایید آن یکسان نیستند'
               }
             }
           }
@@ -174,14 +175,14 @@ document.addEventListener('DOMContentLoaded', function (e) {
           multiStepsFirstName: {
             validators: {
               notEmpty: {
-                message: 'Please enter first name'
+                message: 'لطفا نام را وارد کنید'
               }
             }
           },
           multiStepsAddress: {
             validators: {
               notEmpty: {
-                message: 'Please enter your address'
+                message: 'لطفا آدرس خود را وارد کنید'
               }
             }
           }
@@ -219,7 +220,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
           multiStepsCard: {
             validators: {
               notEmpty: {
-                message: 'Please enter card number'
+                message: 'لطفا شماره کارت را وارد کنید'
               }
             }
           }
@@ -257,7 +258,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
         // stepsValidationForm.submit()
         // or send the form data to server via an Ajax request
         // To make the demo simple, I just placed an alert
-        alert('Submitted..!!');
+        alert('ثبت شد ...!!');
       });
 
       stepsValidationNext.forEach(item => {

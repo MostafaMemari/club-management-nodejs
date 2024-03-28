@@ -35,13 +35,21 @@
   if (invoiceDate) {
     invoiceDate.flatpickr({
       monthSelectorType: 'static',
-      defaultDate: date
+      defaultDate: new JDate(date),
+      locale: 'fa',
+      altInput: true,
+      altFormat: 'Y/m/d',
+      disableMobile: true
     });
   }
   if (dueDate) {
     dueDate.flatpickr({
       monthSelectorType: 'static',
-      defaultDate: new Date(date.getFullYear(), date.getMonth(), date.getDate() + 5)
+      defaultDate: new JDate(new Date(date.getFullYear(), date.getMonth(), date.getDate() + 5)),
+      locale: 'fa',
+      altInput: true,
+      altFormat: 'Y/m/d',
+      disableMobile: true
     });
   }
 })();
@@ -57,10 +65,10 @@ $(function () {
     taxInput2,
     sourceItem = $('.source-item'),
     adminDetails = {
-      'App Design': 'Designed UI kit & app pages.',
-      'App Customization': 'Customization & Bug Fixes.',
-      'ABC Template': 'Bootstrap 4 admin template.',
-      'App Development': 'Native App Development.'
+      'App Design': 'طراحی ابزار UI و صفحات برنامه.',
+      'App Customization': 'سفارشی سازی و رفع ایراد.',
+      'ABC Template': 'قالب مدیریت بوت‌استرپ 4.',
+      'App Development': 'توسعه برنامه بومی.'
     };
 
   // Prevent dropdown from closing on tax change

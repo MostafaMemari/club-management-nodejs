@@ -8,7 +8,9 @@
   // Bootstrap toasts example
   // --------------------------------------------------------------------
   const toastAnimationExample = document.querySelector('.toast-ex'),
+    toastAnimationHeaderExample = document.querySelector('.toast-ex .toast-header'),
     toastPlacementExample = document.querySelector('.toast-placement-ex'),
+    toastPlacementHeaderExample = document.querySelector('.toast-placement-ex .toast-header'),
     toastAnimationBtn = document.querySelector('#showToastAnimation'),
     toastPlacementBtn = document.querySelector('#showToastPlacement');
   let selectedType, selectedAnimation, selectedPlacement, toast, toastAnimation, toastPlacement;
@@ -21,8 +23,9 @@
       }
       selectedType = document.querySelector('#selectType').value;
       selectedAnimation = document.querySelector('#selectAnimation').value;
+
       toastAnimationExample.classList.add(selectedAnimation);
-      toastAnimationExample.querySelector('.ti').classList.add(selectedType);
+      toastAnimationHeaderExample.classList.add(selectedType);
       toastAnimation = new bootstrap.Toast(toastAnimationExample);
       toastAnimation.show();
     };
@@ -32,13 +35,12 @@
   function toastDispose(toast) {
     if (toast && toast._element !== null) {
       if (toastPlacementExample) {
-        toastPlacementExample.classList.remove(selectedType);
-        toastPlacementExample.querySelector('.ti').classList.remove(selectedType);
+        toastPlacementHeaderExample.classList.remove(selectedType);
         DOMTokenList.prototype.remove.apply(toastPlacementExample.classList, selectedPlacement);
       }
       if (toastAnimationExample) {
-        toastAnimationExample.classList.remove(selectedType, selectedAnimation);
-        toastAnimationExample.querySelector('.ti').classList.remove(selectedType);
+        toastAnimationExample.classList.remove(selectedAnimation);
+        toastAnimationHeaderExample.classList.remove(selectedType);
       }
       toast.dispose();
     }
@@ -52,7 +54,7 @@
       selectedType = document.querySelector('#selectTypeOpt').value;
       selectedPlacement = document.querySelector('#selectPlacement').value.split(' ');
 
-      toastPlacementExample.querySelector('.ti').classList.add(selectedType);
+      toastPlacementHeaderExample.classList.add(selectedType);
       DOMTokenList.prototype.add.apply(toastPlacementExample.classList, selectedPlacement);
       toastPlacement = new bootstrap.Toast(toastPlacementExample);
       toastPlacement.show();
@@ -68,12 +70,12 @@ $(function () {
   var $toastlast;
   var getMessage = function () {
     var msgs = [
-      "Don't be pushed around by the fears in your mind. Be led by the dreams in your heart.",
-      '<div class="mb-3"><input class="input-small form-control" value="Textbox"/>&nbsp;<a href="http://johnpapa.net" target="_blank">This is a hyperlink</a></div><div class="d-flex"><button type="button" id="okBtn" class="btn btn-primary btn-sm me-2 waves-effect waves-light">Close me</button><button type="button" id="surpriseBtn" class="btn btn-sm btn-secondary waves-effect waves-light">Surprise me</button></div>',
-      'Live the Life of Your Dreams',
-      'Believe in Your Self!',
-      'Be mindful. Be grateful. Be positive.',
-      'Accept yourself, love yourself!'
+      "با ترس های ذهنی خود زندگی نکنید. با رویاهای قلب خود هدایت شوید.",
+      '<div class="mb-3"><input class="input-small form-control mb-1" value="ورودی متنی"/>&nbsp;<a href="http://johnpapa.net" target="_blank">این یک لینک است</a></div><div class="d-flex"><button type="button" id="okBtn" class="btn btn-danger btn-sm me-2">منو ببند</button><button type="button" id="surpriseBtn" class="btn btn-sm btn-success">منو سورپرایز کن</button></div>',
+      'زندگی خودت رو مثل رویاهات بکن',
+      'به خودت باور داشته باش!',
+      'آرام باش. شکرگزار باش. مثبت باش.',
+      'خودت رو قبول کن، عاشق خودت باش!'
     ];
     i++;
     if (i === msgs.length) {
@@ -82,8 +84,8 @@ $(function () {
     return msgs[i];
   };
   var getMessageWithClearButton = function (msg) {
-    msg = msg ? msg : 'Clear itself?';
-    msg += '<br /><br /><button type="button" class="btn btn-secondary clear waves-effect waves-light">Yes</button>';
+    msg = msg ? msg : 'خودش رو پاک کنه؟';
+    msg += '<br /><br /><button type="button" class="btn btn-sm btn-success clear">بله</button>';
     return msg;
   };
   $('#closeButton').on('click', function () {
@@ -135,12 +137,12 @@ $(function () {
 
     if ($('#addBehaviorOnToastClick').prop('checked')) {
       toastr.options.onclick = function () {
-        alert('You can perform some custom action after a toast goes away');
+        alert('شما می توانید عمل های سفارشی را پس از محو شدن توست اجرا کنید');
       };
     }
     if ($('#addBehaviorOnToastCloseClick').prop('checked')) {
       toastr.options.onCloseClick = function () {
-        alert('You can perform some custom action when the close button is clicked');
+        alert('شما می توانید عمل های سفارشی را در هنگام کلیک دکمه بستن اجرا کنید');
       };
     }
     if ($showDuration.val().length) {
@@ -181,13 +183,13 @@ $(function () {
     }
     if ($toast.find('#okBtn').length) {
       $toast.delegate('#okBtn', 'click', function () {
-        alert('you clicked me. i was toast #' + toastIndex + '. goodbye!');
+        alert('شما منو کلیک کردید. من توست #' + toastIndex + ' بودم. خدانگهدار!');
         $toast.remove();
       });
     }
     if ($toast.find('#surpriseBtn').length) {
       $toast.delegate('#surpriseBtn', 'click', function () {
-        alert('Surprise! you clicked me. i was toast #' + toastIndex + '. You could perform an action here.');
+        alert('سورپراز! شما منو کلیک کردید. من توست #' + toastIndex + ' بودم. شما می‌تونید یک عمل اینجا اجرا کنید.');
       });
     }
     if ($toast.find('.clear').length) {
@@ -202,6 +204,7 @@ $(function () {
   function getLastToast() {
     return $toastlast;
   }
+
   $('#clearlasttoast').on('click', function () {
     toastr.clear(getLastToast());
   });

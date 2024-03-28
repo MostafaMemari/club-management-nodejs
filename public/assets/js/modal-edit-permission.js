@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
         editPermissionName: {
           validators: {
             notEmpty: {
-              message: 'Please enter permission name'
+              message: 'لطفا نام مجوز را وارد کنید'
             }
           }
         }
@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
           // Use this for enabling/changing valid/invalid class
           // eleInvalidClass: '',
           eleValidClass: '',
-          rowSelector: '.col-sm-9'
+          rowSelector: '.col-sm-8'
         }),
         submitButton: new FormValidation.plugins.SubmitButton(),
         // Submit the form when all fields are valid

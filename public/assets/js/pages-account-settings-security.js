@@ -16,39 +16,39 @@ document.addEventListener('DOMContentLoaded', function (e) {
           currentPassword: {
             validators: {
               notEmpty: {
-                message: 'Please current password'
+                message: 'لطفا رمز عبور کنونی راوارد کنید'
               },
               stringLength: {
                 min: 8,
-                message: 'Password must be more than 8 characters'
+                message: 'رمز عبور باید بیش از 8 کاراکتر باشد'
               }
             }
           },
           newPassword: {
             validators: {
               notEmpty: {
-                message: 'Please enter new password'
+                message: 'لطفا رمز عبور جدید را وارد کنید'
               },
               stringLength: {
                 min: 8,
-                message: 'Password must be more than 8 characters'
+                message: 'رمز عبور باید بیش از 8 کاراکتر باشد'
               }
             }
           },
           confirmPassword: {
             validators: {
               notEmpty: {
-                message: 'Please confirm new password'
+                message: 'لطفا رمز عبور جدید را تایید کنید'
               },
               identical: {
                 compare: function () {
                   return formChangePass.querySelector('[name="newPassword"]').value;
                 },
-                message: 'The password and its confirm are not the same'
+                message: 'رمز عبور و تایید آن یکسان نیستند'
               },
               stringLength: {
                 min: 8,
-                message: 'Password must be more than 8 characters'
+                message: 'رمز عبور باید بیش از 8 کاراکتر باشد'
               }
             }
           }
@@ -81,7 +81,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
           apiKey: {
             validators: {
               notEmpty: {
-                message: 'Please enter API key name'
+                message: 'لطفا نام کلید API را وارد کنید'
               }
             }
           }

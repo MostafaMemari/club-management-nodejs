@@ -20,7 +20,7 @@ $(function () {
     $(document).on('idle.idleTimer', function (event, elem, obj) {
       timerDoc
         .val(function (i, value) {
-          return value + 'Idle @ ' + moment().format() + ' \n';
+          return value + 'بیکار @ ' + moment().format('YYYY/MM/DD - HH:mm:ss') + ' \n';
         })
         .removeClass('alert-success')
         .addClass('alert-warning');
@@ -28,7 +28,7 @@ $(function () {
     $(document).on('active.idleTimer', function (event, elem, obj, e) {
       timerDoc
         .val(function (i, value) {
-          return value + 'Active [' + e.type + '] [' + e.target.nodeName + '] @ ' + moment().format() + ' \n';
+          return value + 'فعال [' + e.type + '] [' + e.target.nodeName + '] @ ' + moment().format('YYYY/MM/DD - HH:mm:ss') + ' \n';
         })
         .addClass('alert-success')
         .removeClass('alert-warning');
@@ -39,7 +39,7 @@ $(function () {
       // Pause
       $(document).idleTimer('pause');
       timerDoc.val(function (i, value) {
-        return value + 'Paused @ ' + moment().format() + ' \n';
+        return value + 'مکث کرد @ ' + moment().format('YYYY/MM/DD - HH:mm:ss') + ' \n';
       });
       $(this).blur();
       return false;
@@ -48,7 +48,7 @@ $(function () {
       // Resume
       $(document).idleTimer('resume');
       timerDoc.val(function (i, value) {
-        return value + 'Resumed @ ' + moment().format() + ' \n';
+        return value + 'ادامه داده شد @ ' + moment().format('YYYY/MM/DD - HH:mm:ss') + ' \n';
       });
       $(this).blur();
       return false;
@@ -56,7 +56,7 @@ $(function () {
     btnElapsed.on('click', function () {
       // Elapsed
       timerDoc.val(function (i, value) {
-        return value + 'Elapsed (since becoming active): ' + $(document).idleTimer('getElapsedTime') + ' \n';
+        return value + 'گذشته (از زمان فعال شدن): ' + $(document).idleTimer('getElapsedTime') + ' \n';
       });
       $(this).blur();
       return false;
@@ -66,7 +66,7 @@ $(function () {
       $(document).idleTimer('destroy');
       timerDoc
         .val(function (i, value) {
-          return value + 'Destroyed: @ ' + moment().format() + ' \n';
+          return value + 'از بین رفت: @ ' + moment().format('YYYY/MM/DD - HH:mm:ss') + ' \n';
         })
         .removeClass('alert-success')
         .removeClass('alert-warning');
@@ -80,7 +80,7 @@ $(function () {
         timeout: docTimeout
       });
       timerDoc.val(function (i, value) {
-        return value + 'Init: @ ' + moment().format() + ' \n';
+        return value + 'راه‌اندازی: @ ' + moment().format('YYYY/MM/DD - HH:mm:ss') + ' \n';
       });
 
       // Apply classes for default state
@@ -103,14 +103,14 @@ $(function () {
     if ($(document).idleTimer('isIdle')) {
       timerDoc
         .val(function (i, value) {
-          return value + 'Initial Idle State @ ' + moment().format() + ' \n';
+          return value + 'وضعیت بیکار اولیه @ ' + moment().format('YYYY/MM/DD - HH:mm:ss') + ' \n';
         })
         .removeClass('alert-success')
         .addClass('alert-warning');
     } else {
       timerDoc
         .val(function (i, value) {
-          return value + 'Initial Active State @ ' + moment().format() + ' \n';
+          return value + 'وضعیت فعال اولیه @ ' + moment().format('YYYY/MM/DD - HH:mm:ss') + ' \n';
         })
         .addClass('alert-success')
         .removeClass('alert-warning');
@@ -132,7 +132,7 @@ $(function () {
 
       elementTimer
         .val(function (i, value) {
-          return value + 'Idle @ ' + moment().format() + ' \n';
+          return value + 'بیکار @ ' + moment().format('YYYY/MM/DD - HH:mm:ss') + ' \n';
         })
         .removeClass('alert-success')
         .addClass('alert-warning');
@@ -142,7 +142,7 @@ $(function () {
 
       elementTimer
         .val(function (i, value) {
-          return value + 'Active @ ' + moment().format() + ' \n';
+          return value + 'فعال @ ' + moment().format('YYYY/MM/DD - HH:mm:ss') + ' \n';
         })
         .addClass('alert-success')
         .removeClass('alert-warning');
@@ -152,7 +152,7 @@ $(function () {
     btnReset.on('click', function () {
       // Reset
       elementTimer.idleTimer('reset').val(function (i, value) {
-        return value + 'Reset @ ' + moment().format() + ' \n';
+        return value + 'بازنشانی @ ' + moment().format('YYYY/MM/DD - HH:mm:ss') + ' \n';
       });
 
       // classes for default state
@@ -167,7 +167,7 @@ $(function () {
     btnRemaining.on('click', function () {
       // Remaining
       elementTimer.val(function (i, value) {
-        return value + 'Remaining: ' + elementTimer.idleTimer('getRemainingTime') + ' \n';
+        return value + 'باقی مانده: ' + elementTimer.idleTimer('getRemainingTime') + ' \n';
       });
       $(this).blur();
       return false;
@@ -175,7 +175,7 @@ $(function () {
     btnLastActive.on('click', function () {
       // Last Active
       elementTimer.val(function (i, value) {
-        return value + 'LastActive: ' + elementTimer.idleTimer('getLastActiveTime') + ' \n';
+        return value + 'آخرین فعال: ' + elementTimer.idleTimer('getLastActiveTime') + ' \n';
       });
       $(this).blur();
       return false;
@@ -183,7 +183,7 @@ $(function () {
     btnState.on('click', function () {
       // State
       elementTimer.val(function (i, value) {
-        return value + 'State: ' + ($('#element-Status').idleTimer('isIdle') ? 'idle' : 'active') + ' \n';
+        return value + 'وضعیت: ' + ($('#element-Status').idleTimer('isIdle') ? 'idle' : 'active') + ' \n';
       });
       $(this).blur();
       return false;
@@ -196,14 +196,14 @@ $(function () {
     if (elementTimer.idleTimer('isIdle')) {
       elementTimer
         .val(function (i, value) {
-          return value + 'Initial Idle @ ' + moment().format() + ' \n';
+          return value + 'بیکار اولیه @ ' + moment().format('YYYY/MM/DD - HH:mm:ss') + ' \n';
         })
         .removeClass('alert-success')
         .addClass('alert-warning');
     } else {
       elementTimer
         .val(function (i, value) {
-          return value + 'Initial Active @ ' + moment().format() + ' \n';
+          return value + 'فعال اولیه @ ' + moment().format('YYYY/MM/DD - HH:mm:ss') + ' \n';
         })
         .addClass('alert-success')
         .removeClass('alert-warning');

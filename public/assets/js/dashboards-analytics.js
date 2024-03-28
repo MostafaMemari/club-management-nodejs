@@ -1,50 +1,270 @@
 /**
- * Dashboard Analytics
+ * Analytics Dashboard
  */
 
 'use strict';
-
 (function () {
-  let cardColor, headingColor, labelColor, shadeColor, grayColor;
+  let cardColor, headingColor, labelColor, legendColor, borderColor, shadeColor;
+
   if (isDarkStyle) {
     cardColor = config.colors_dark.cardColor;
-    labelColor = config.colors_dark.textMuted;
     headingColor = config.colors_dark.headingColor;
+    labelColor = config.colors_dark.textMuted;
+    legendColor = config.colors_dark.bodyColor;
+    borderColor = config.colors_dark.borderColor;
     shadeColor = 'dark';
-    grayColor = '#5E6692'; // gray color is for stacked bar chart
   } else {
     cardColor = config.colors.cardColor;
-    labelColor = config.colors.textMuted;
     headingColor = config.colors.headingColor;
-    shadeColor = '';
-    grayColor = '#817D8D';
+    labelColor = config.colors.textMuted;
+    legendColor = config.colors.bodyColor;
+    borderColor = config.colors.borderColor;
+    shadeColor = 'light';
   }
 
-  // swiper loop and autoplay
+  Apex.chart = {
+		fontFamily: 'inherit',
+		locales: [{
+			"name": "fa",
+			"options": {
+				"months": ["ژانویه", "فوریه", "مارس", "آوریل", "می", "ژوئن", "جولای", "آگوست", "سپتامبر", "اکتبر", "نوامبر", "دسامبر"],
+				"shortMonths": ["ژانویه", "فوریه", "مارس", "آوریل", "می", "ژوئن", "جولای", "آگوست", "سپتامبر", "اکتبر", "نوامبر", "دسامبر"],
+				"days": ["یکشنبه", "دوشنبه", "سه‌شنبه", "چهارشنبه", "پنجشنبه", "جمعه", "شنبه"],
+				"shortDays": ["ی", "د", "س", "چ", "پ", "ج", "ش"],
+				"toolbar": {
+					"exportToSVG": "دریافت SVG",
+					"exportToPNG": "دریافت PNG",
+					"menu": "فهرست",
+					"selection": "انتخاب",
+					"selectionZoom": "بزرگنمایی قسمت انتخاب شده",
+					"zoomIn": "بزرگ نمایی",
+					"zoomOut": "کوچک نمایی",
+					"pan": "جا به جایی",
+					"reset": "بازنشانی بزرگ نمایی"
+				}
+			}
+		}],
+		defaultLocale: "fa"
+	}
+
+  // Report Chart
   // --------------------------------------------------------------------
-  const swiperWithPagination = document.querySelector('#swiper-with-pagination-cards');
-  if (swiperWithPagination) {
-    new Swiper(swiperWithPagination, {
-      loop: true,
-      autoplay: {
-        delay: 2500,
-        disableOnInteraction: false
+
+  // Radial bar chart functions
+  function radialBarChart(color, value) {
+    const radialBarChartOpt = {
+      chart: {
+        height: 50,
+        width: 50,
+        type: 'radialBar'
       },
-      pagination: {
-        clickable: true,
-        el: '.swiper-pagination'
-      }
+      plotOptions: {
+        radialBar: {
+          hollow: {
+            size: '25%'
+          },
+          dataLabels: {
+            show: false
+          },
+          track: {
+            background: borderColor
+          }
+        }
+      },
+      stroke: {
+        lineCap: 'round'
+      },
+      colors: [color],
+      grid: {
+        padding: {
+          top: -8,
+          bottom: -10,
+          left: -5,
+          right: 0
+        }
+      },
+      series: [value],
+      labels: ['پیشرفت']
+    };
+    return radialBarChartOpt;
+  }
+
+  const ReportchartList = document.querySelectorAll('.chart-report');
+  if (ReportchartList) {
+    ReportchartList.forEach(function (ReportchartEl) {
+      const color = config.colors[ReportchartEl.dataset.color],
+        series = ReportchartEl.dataset.series;
+      const optionsBundle = radialBarChart(color, series);
+      const reportChart = new ApexCharts(ReportchartEl, optionsBundle);
+      reportChart.render();
     });
   }
 
-  // Revenue Generated Area Chart
+  // Analytics - Bar Chart
   // --------------------------------------------------------------------
-  const revenueGeneratedEl = document.querySelector('#revenueGenerated'),
-    revenueGeneratedConfig = {
+  const analyticsBarChartEl = document.querySelector('#analyticsBarChart'),
+    analyticsBarChartConfig = {
       chart: {
-        height: 130,
-        type: 'area',
+        height: 250,
+        type: 'bar',
+        toolbar: {
+          show: false
+        }
+      },
+      plotOptions: {
+        bar: {
+          horizontal: false,
+          columnWidth: '20%',
+          borderRadius: 3,
+          startingShape: 'rounded'
+        }
+      },
+      dataLabels: {
+        enabled: false
+      },
+      colors: [config.colors.primary, config.colors_label.primary],
+      series: [
+        {
+          name: '1400',
+          data: [8, 9, 15, 20, 14, 22, 29, 27, 13]
+        },
+        {
+          name: '1401',
+          data: [5, 7, 12, 17, 9, 17, 26, 21, 10]
+        }
+      ],
+      grid: {
+        borderColor: borderColor,
+        padding: {
+          bottom: -8
+        }
+      },
+      xaxis: {
+        categories: ['فروردین', 'اردیبهشت', 'خرداد', 'تیر', 'مرداد', 'شهریور', 'مهر', 'آبان', 'آذر'],
+        axisBorder: {
+          show: false
+        },
+        axisTicks: {
+          show: false
+        },
+        labels: {
+          style: {
+            colors: labelColor
+          }
+        }
+      },
+      yaxis: {
+        min: 0,
+        max: 30,
+        tickAmount: 3,
+        labels: {
+          style: {
+            colors: labelColor
+          }
+        }
+      },
+      legend: {
+        show: false
+      },
+      tooltip: {
+        y: {
+          formatter: function (val) {
+            return val + ' هزار تومان';
+          }
+        }
+      }
+    };
+  if (typeof analyticsBarChartEl !== undefined && analyticsBarChartEl !== null) {
+    const analyticsBarChart = new ApexCharts(analyticsBarChartEl, analyticsBarChartConfig);
+    analyticsBarChart.render();
+  }
+
+  // Referral - Line Chart
+  // --------------------------------------------------------------------
+  const referralLineChartEl = document.querySelector('#referralLineChart'),
+    referralLineChartConfig = {
+      series: [
+        {
+          name: 'سری 1',
+          data: [0, 150, 25, 100, 15, 149]
+        }
+      ],
+      chart: {
+        height: 100,
         parentHeightOffset: 0,
+        parentWidthOffset: 0,
+        type: 'line',
+        toolbar: {
+          show: false
+        }
+      },
+      markers: {
+        size: 6,
+        colors: 'transparent',
+        strokeColors: 'transparent',
+        strokeWidth: 4,
+        discrete: [
+          {
+            fillColor: cardColor,
+            seriesIndex: 0,
+            dataPointIndex: 5,
+            strokeColor: config.colors.success,
+            strokeWidth: 4,
+            size: 6,
+            radius: 2
+          }
+        ],
+        hover: {
+          size: 7
+        }
+      },
+      dataLabels: {
+        enabled: false
+      },
+      stroke: {
+        width: 4,
+        curve: 'smooth'
+      },
+      grid: {
+        show: false,
+        padding: {
+          top: -25,
+          bottom: -20
+        }
+      },
+      colors: [config.colors.success],
+      xaxis: {
+        show: false,
+        axisBorder: {
+          show: false
+        },
+        axisTicks: {
+          show: false
+        },
+        labels: {
+          show: false
+        }
+      },
+      yaxis: {
+        labels: {
+          show: false
+        }
+      }
+    };
+
+  if (typeof referralLineChartEl !== undefined && referralLineChartEl !== null) {
+    const referralLineChart = new ApexCharts(referralLineChartEl, referralLineChartConfig);
+    referralLineChart.render();
+  }
+
+  // Conversion - Bar Chart
+  // --------------------------------------------------------------------
+  const conversionBarChartEl = document.querySelector('#conversionBarchart'),
+    conversionBarChartConfig = {
+      chart: {
+        height: 100,
+        stacked: true,
+        type: 'bar',
         toolbar: {
           show: false
         },
@@ -52,71 +272,360 @@
           enabled: true
         }
       },
-      markers: {
-        colors: 'transparent',
-        strokeColors: 'transparent'
+      plotOptions: {
+        bar: {
+          columnWidth: '25%',
+          borderRadius: 2,
+          startingShape: 'rounded'
+        },
+        distributed: true
       },
+      colors: [config.colors.primary, config.colors.warning],
+      series: [
+        {
+          name: 'مشتریان جدید',
+          data: [75, 150, 225, 200, 35, 50, 150, 180, 50, 150, 240, 140, 75, 35, 60, 120]
+        },
+        {
+          name: 'مشتریان قدیمی',
+          data: [-100, -55, -40, -120, -70, -40, -60, -50, -70, -30, -60, -40, -50, -70, -40, -50]
+        }
+      ],
       grid: {
+        show: false,
+        padding: {
+          top: 0,
+          bottom: -10
+        }
+      },
+      legend: {
         show: false
       },
-      colors: [config.colors.success],
-      fill: {
-        type: 'gradient',
-        gradient: {
-          shade: shadeColor,
-          shadeIntensity: 0.8,
-          opacityFrom: 0.6,
-          opacityTo: 0.1
+      dataLabels: {
+        enabled: false
+      },
+      tooltip: {
+        x: {
+          show: false
+        }
+      }
+    };
+
+  if (typeof conversionBarChartEl !== undefined && conversionBarChartEl !== null) {
+    const conversionBarChart = new ApexCharts(conversionBarChartEl, conversionBarChartConfig);
+    conversionBarChart.render();
+  }
+
+  // Impression - Donut Chart
+  // --------------------------------------------------------------------
+  const impressionDonutChartEl = document.querySelector('#impressionDonutChart'),
+    impressionDonutChartConfig = {
+      chart: {
+        height: 185,
+        type: 'donut'
+      },
+      dataLabels: {
+        enabled: false
+      },
+      grid: {
+        padding: {
+          bottom: -10
+        }
+      },
+      series: [80, 30, 60],
+      labels: ['اجتماعی', 'ایمیل', 'جستجو'],
+      stroke: {
+        width: 0,
+        lineCap: 'round'
+      },
+      colors: [config.colors.primary, config.colors.info, config.colors.warning],
+      plotOptions: {
+        pie: {
+          donut: {
+            size: '90%',
+            labels: {
+              show: true,
+              name: {
+                fontSize: '0.938rem',
+                offsetY: 22
+              },
+              value: {
+                show: true,
+                fontSize: '1.625rem',
+                fontWeight: '500',
+                color: headingColor,
+                offsetY: -22,
+                formatter: function (val) {
+                  return val;
+                }
+              },
+              total: {
+                show: true,
+                label: 'بازدید',
+                color: legendColor,
+                formatter: function (w) {
+                  return w.globals.seriesTotals.reduce(function (a, b) {
+                    return a + b;
+                  }, 0);
+                }
+              }
+            }
+          }
+        }
+      },
+      legend: {
+        show: true,
+        position: 'bottom',
+        offsetY: 8,
+        horizontalAlign: 'center',
+        labels: {
+          colors: legendColor,
+          useSeriesColors: false
+        },
+        markers: {
+          width: 10,
+          height: 10,
+          offsetX: -3
+        }
+      }
+    };
+
+  if (typeof impressionDonutChartEl !== undefined && impressionDonutChartEl !== null) {
+    const impressionDonutChart = new ApexCharts(impressionDonutChartEl, impressionDonutChartConfig);
+    impressionDonutChart.render();
+  }
+
+  // Conversion - Gradient Line Chart
+  // --------------------------------------------------------------------
+  const conversationChartEl = document.querySelector('#conversationChart'),
+    conversationChartConfig = {
+      series: [
+        {
+          data: [50, 100, 0, 60, 20, 30]
+        }
+      ],
+      chart: {
+        height: 40,
+        type: 'line',
+        zoom: {
+          enabled: false
+        },
+        sparkline: {
+          enabled: true
+        },
+        toolbar: {
+          show: false
         }
       },
       dataLabels: {
         enabled: false
       },
-      stroke: {
-        width: 2,
-        curve: 'smooth'
+      tooltip: {
+        enabled: false
       },
-      series: [
-        {
-          data: [300, 350, 330, 380, 340, 400, 380]
+      stroke: {
+        curve: 'smooth',
+        width: 3
+      },
+      grid: {
+        show: false,
+        padding: {
+          top: 5,
+          left: 10,
+          right: 10,
+          bottom: 5
         }
-      ],
+      },
+      colors: [config.colors.primary],
+      fill: {
+        type: 'gradient',
+        gradient: {
+          shade: shadeColor,
+          type: 'horizontal',
+          gradientToColors: undefined,
+          opacityFrom: 0,
+          opacityTo: 0.9,
+          stops: [0, 30, 70, 100]
+        }
+      },
       xaxis: {
-        show: true,
-        lines: {
-          show: false
-        },
         labels: {
           show: false
         },
-        stroke: {
-          width: 0
-        },
         axisBorder: {
+          show: false
+        },
+        axisTicks: {
           show: false
         }
       },
       yaxis: {
-        stroke: {
-          width: 0
+        labels: {
+          show: false
+        }
+      }
+    };
+  if (typeof conversationChartEl !== undefined && conversationChartEl !== null) {
+    const conversationChart = new ApexCharts(conversationChartEl, conversationChartConfig);
+    conversationChart.render();
+  }
+
+  // Income - Gradient Line Chart
+  // --------------------------------------------------------------------
+  const incomeChartEl = document.querySelector('#incomeChart'),
+    incomeChartConfig = {
+      series: [
+        {
+          data: [40, 70, 38, 90, 40, 65]
+        }
+      ],
+      chart: {
+        height: 40,
+        type: 'line',
+        zoom: {
+          enabled: false
         },
-        show: false
+        sparkline: {
+          enabled: true
+        },
+        toolbar: {
+          show: false
+        }
+      },
+      dataLabels: {
+        enabled: false
       },
       tooltip: {
         enabled: false
+      },
+      stroke: {
+        curve: 'smooth',
+        width: 3
+      },
+      grid: {
+        show: false,
+        padding: {
+          top: 10,
+          left: 10,
+          right: 10,
+          bottom: 0
+        }
+      },
+      colors: [config.colors.warning],
+      fill: {
+        type: 'gradient',
+        gradient: {
+          shade: shadeColor,
+          type: 'horizontal',
+          gradientToColors: undefined,
+          opacityFrom: 0,
+          opacityTo: 0.9,
+          stops: [0, 30, 70, 100]
+        }
+      },
+      xaxis: {
+        labels: {
+          show: false
+        },
+        axisBorder: {
+          show: false
+        },
+        axisTicks: {
+          show: false
+        }
+      },
+      yaxis: {
+        labels: {
+          show: false
+        }
       }
     };
-  if (typeof revenueGeneratedEl !== undefined && revenueGeneratedEl !== null) {
-    const revenueGenerated = new ApexCharts(revenueGeneratedEl, revenueGeneratedConfig);
-    revenueGenerated.render();
+  if (typeof incomeChartEl !== undefined && incomeChartEl !== null) {
+    const incomeChart = new ApexCharts(incomeChartEl, incomeChartConfig);
+    incomeChart.render();
   }
 
-  // Earning Reports Bar Chart
+  // Registrations Bar Chart
   // --------------------------------------------------------------------
-  const weeklyEarningReportsEl = document.querySelector('#weeklyEarningReports'),
-    weeklyEarningReportsConfig = {
+  const registrationsBarChartEl = document.querySelector('#registrationsBarChart'),
+    registrationsBarChartConfig = {
       chart: {
-        height: 202,
+        height: 95,
+        width: 155,
+        type: 'bar',
+        toolbar: {
+          show: false
+        }
+      },
+      plotOptions: {
+        bar: {
+          barHeight: '80%',
+          columnWidth: '50%',
+          startingShape: 'rounded',
+          endingShape: 'rounded',
+          borderRadius: 2,
+          distributed: true
+        }
+      },
+      grid: {
+        show: false,
+        padding: {
+          top: -20,
+          bottom: -20,
+          left: 0,
+          right: 0
+        }
+      },
+      colors: [
+        config.colors_label.warning,
+        config.colors_label.warning,
+        config.colors_label.warning,
+        config.colors_label.warning,
+        config.colors.warning,
+        config.colors_label.warning,
+        config.colors_label.warning
+      ],
+      dataLabels: {
+        enabled: false
+      },
+      series: [
+        {
+          name: 'سری 1',
+          data: [30, 55, 45, 95, 70, 50, 65]
+        }
+      ],
+      legend: {
+        show: false
+      },
+      xaxis: {
+        categories: ['د', 'س', 'چ', 'پ', 'ج', 'ش', 'ی'],
+        axisBorder: {
+          show: false
+        },
+        axisTicks: {
+          show: false
+        },
+        labels: {
+          show: false
+        }
+      },
+      yaxis: {
+        labels: {
+          show: false
+        }
+      }
+    };
+  if (typeof registrationsBarChartEl !== undefined && registrationsBarChartEl !== null) {
+    const registrationsBarChart = new ApexCharts(registrationsBarChartEl, registrationsBarChartConfig);
+    registrationsBarChart.render();
+  }
+
+  // Sales Bar Chart
+  // --------------------------------------------------------------------
+  const salesBarChartEl = document.querySelector('#salesChart'),
+    salesBarChartConfig = {
+      chart: {
+        height: 120,
         parentHeightOffset: 0,
         type: 'bar',
         toolbar: {
@@ -125,45 +634,46 @@
       },
       plotOptions: {
         bar: {
-          barHeight: '60%',
-          columnWidth: '38%',
+          barHeight: '100%',
+          columnWidth: '25px',
           startingShape: 'rounded',
           endingShape: 'rounded',
-          borderRadius: 4,
-          distributed: true
+          borderRadius: 5,
+          distributed: true,
+          colors: {
+            backgroundBarColors: [
+              config.colors_label.primary,
+              config.colors_label.primary,
+              config.colors_label.primary,
+              config.colors_label.primary
+            ],
+            backgroundBarRadius: 5
+          }
         }
       },
       grid: {
         show: false,
         padding: {
           top: -30,
-          bottom: 0,
-          left: -10,
-          right: -10
+          left: -12,
+          bottom: 10
         }
       },
-      colors: [
-        config.colors_label.primary,
-        config.colors_label.primary,
-        config.colors_label.primary,
-        config.colors_label.primary,
-        config.colors.primary,
-        config.colors_label.primary,
-        config.colors_label.primary
-      ],
+      colors: [config.colors.primary],
       dataLabels: {
         enabled: false
       },
       series: [
         {
-          data: [40, 65, 50, 45, 90, 55, 70]
+          name: 'سری 1',
+          data: [60, 35, 25, 75, 15, 42, 85]
         }
       ],
       legend: {
         show: false
       },
       xaxis: {
-        categories: ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'],
+        categories: ['ی', 'د', 'س', 'چ', 'پ', 'ج', 'ش'],
         axisBorder: {
           show: false
         },
@@ -173,8 +683,7 @@
         labels: {
           style: {
             colors: labelColor,
-            fontSize: '13px',
-            fontFamily: 'font-primary'
+            fontSize: '13px'
           }
         }
       },
@@ -183,480 +692,123 @@
           show: false
         }
       },
-      tooltip: {
-        enabled: false
-      },
       responsive: [
         {
-          breakpoint: 1025,
+          breakpoint: 1440,
           options: {
-            chart: {
-              height: 199
+            plotOptions: {
+              bar: {
+                columnWidth: '30%'
+              }
+            }
+          }
+        },
+        {
+          breakpoint: 1200,
+          options: {
+            plotOptions: {
+              bar: {
+                columnWidth: '15%'
+              }
+            }
+          }
+        },
+        {
+          breakpoint: 768,
+          options: {
+            plotOptions: {
+              bar: {
+                columnWidth: '12%'
+              }
+            }
+          }
+        },
+        {
+          breakpoint: 450,
+          options: {
+            plotOptions: {
+              bar: {
+                columnWidth: '19%'
+              }
             }
           }
         }
       ]
     };
-  if (typeof weeklyEarningReportsEl !== undefined && weeklyEarningReportsEl !== null) {
-    const weeklyEarningReports = new ApexCharts(weeklyEarningReportsEl, weeklyEarningReportsConfig);
-    weeklyEarningReports.render();
+  if (typeof salesBarChartEl !== undefined && salesBarChartEl !== null) {
+    const salesBarChart = new ApexCharts(salesBarChartEl, salesBarChartConfig);
+    salesBarChart.render();
   }
 
-  // Support Tracker - Radial Bar Chart
+  // Growth - Radial Bar Chart
   // --------------------------------------------------------------------
-  const supportTrackerEl = document.querySelector('#supportTracker'),
-    supportTrackerOptions = {
-      series: [100],
-      labels: ['وقت آزمون رسیده'],
+  const growthRadialChartEl = document.querySelector('#growthRadialChart'),
+    growthRadialChartConfig = {
       chart: {
-        height: 360,
-        type: 'radialBar'
-      },
-      plotOptions: {
-        radialBar: {
-          offsetY: 10,
-          startAngle: -140,
-          endAngle: 130,
-          hollow: {
-            size: '65%'
-          },
-          track: {
-            background: cardColor,
-            strokeWidth: '100%'
-          },
-          dataLabels: {
-            name: {
-              offsetY: -20,
-              color: labelColor,
-              fontSize: '13px',
-              fontWeight: '400',
-              fontFamily: 'font-primary'
-            },
-            value: {
-              offsetY: 10,
-              color: headingColor,
-              fontSize: '38px',
-              fontWeight: '500',
-              fontFamily: 'font-primary'
-            }
-          }
+        height: 265,
+        type: 'radialBar',
+        sparkline: {
+          show: true
         }
-      },
-      colors: [config.colors.primary],
-      fill: {
-        type: 'gradient',
-        gradient: {
-          shade: 'dark',
-          shadeIntensity: 0.5,
-          gradientToColors: [config.colors.primary],
-          inverseColors: true,
-          opacityFrom: 1,
-          opacityTo: 0.6,
-          stops: [30, 70, 100]
-        }
-      },
-      stroke: {
-        dashArray: 10
-      },
-      grid: {
-        padding: {
-          top: -20,
-          bottom: 5
-        }
-      },
-      states: {
-        hover: {
-          filter: {
-            type: 'none'
-          }
-        },
-        active: {
-          filter: {
-            type: 'none'
-          }
-        }
-      },
-      responsive: [
-        {
-          breakpoint: 1025,
-          options: {
-            chart: {
-              height: 330
-            }
-          }
-        },
-        {
-          breakpoint: 769,
-          options: {
-            chart: {
-              height: 280
-            }
-          }
-        }
-      ]
-    };
-  if (typeof supportTrackerEl !== undefined && supportTrackerEl !== null) {
-    const supportTracker = new ApexCharts(supportTrackerEl, supportTrackerOptions);
-    supportTracker.render();
-  }
-
-  // Total Earning Chart - Bar Chart
-  // --------------------------------------------------------------------
-  const totalEarningChartEl = document.querySelector('#totalEarningChart'),
-    totalEarningChartOptions = {
-      series: [
-        {
-          name: 'Earning',
-          data: [15, 10, 20, 8, 12, 18, 12, 5]
-        },
-        {
-          name: 'Expense',
-          data: [-7, -10, -7, -12, -6, -9, -5, -8]
-        }
-      ],
-      chart: {
-        height: 230,
-        parentHeightOffset: 0,
-        stacked: true,
-        type: 'bar',
-        toolbar: { show: false }
-      },
-      tooltip: {
-        enabled: false
-      },
-      legend: {
-        show: false
-      },
-      plotOptions: {
-        bar: {
-          horizontal: false,
-          columnWidth: '18%',
-          borderRadius: 5,
-          startingShape: 'rounded',
-          endingShape: 'rounded'
-        }
-      },
-      colors: [config.colors.primary, grayColor],
-      dataLabels: {
-        enabled: false
       },
       grid: {
         show: false,
         padding: {
-          top: -40,
-          bottom: -20,
-          left: -10,
-          right: -2
+          top: -23,
+          bottom: -2
         }
       },
-      xaxis: {
-        labels: {
-          show: false
-        },
-        axisTicks: {
-          show: false
-        },
-        axisBorder: {
-          show: false
-        }
-      },
-      yaxis: {
-        labels: {
-          show: false
-        }
-      },
-      responsive: [
-        {
-          breakpoint: 1468,
-          options: {
-            plotOptions: {
-              bar: {
-                columnWidth: '22%'
-              }
-            }
-          }
-        },
-        {
-          breakpoint: 1197,
-          options: {
-            chart: {
-              height: 228
-            },
-            plotOptions: {
-              bar: {
-                borderRadius: 8,
-                columnWidth: '26%'
-              }
-            }
-          }
-        },
-        {
-          breakpoint: 783,
-          options: {
-            chart: {
-              height: 232
-            },
-            plotOptions: {
-              bar: {
-                borderRadius: 6,
-                columnWidth: '28%'
-              }
-            }
-          }
-        },
-        {
-          breakpoint: 589,
-          options: {
-            plotOptions: {
-              bar: {
-                columnWidth: '16%'
-              }
-            }
-          }
-        },
-        {
-          breakpoint: 520,
-          options: {
-            plotOptions: {
-              bar: {
-                borderRadius: 6,
-                columnWidth: '18%'
-              }
-            }
-          }
-        },
-        {
-          breakpoint: 426,
-          options: {
-            plotOptions: {
-              bar: {
-                borderRadius: 5,
-                columnWidth: '20%'
-              }
-            }
-          }
-        },
-        {
-          breakpoint: 381,
-          options: {
-            plotOptions: {
-              bar: {
-                columnWidth: '24%'
-              }
-            }
-          }
-        }
-      ],
-      states: {
-        hover: {
-          filter: {
-            type: 'none'
-          }
-        },
-        active: {
-          filter: {
-            type: 'none'
-          }
-        }
-      }
-    };
-  if (typeof totalEarningChartEl !== undefined && totalEarningChartEl !== null) {
-    const totalEarningChart = new ApexCharts(totalEarningChartEl, totalEarningChartOptions);
-    totalEarningChart.render();
-  }
-
-  //  For Datatable
-  // --------------------------------------------------------------------
-  var dt_projects_table = $('.datatables-projects');
-
-  if (dt_projects_table.length) {
-    var dt_project = dt_projects_table.DataTable({
-      ajax: assetsPath + 'json/user-profile.json',
-      columns: [
-        { data: '' },
-        { data: 'id' },
-        { data: 'project_name' },
-        { data: 'project_leader' },
-        { data: '' },
-        { data: 'status' },
-        { data: '' }
-      ],
-      columnDefs: [
-        {
-          // For Responsive
-          className: 'control',
-          searchable: false,
-          orderable: false,
-          responsivePriority: 2,
-          targets: 0,
-          render: function (data, type, full, meta) {
-            return '';
-          }
-        },
-        {
-          // For Checkboxes
-          targets: 1,
-          orderable: false,
-          searchable: false,
-          responsivePriority: 3,
-          checkboxes: true,
-          render: function () {
-            return '<input type="checkbox" class="dt-checkboxes form-check-input">';
+      plotOptions: {
+        radialBar: {
+          size: 100,
+          startAngle: -135,
+          endAngle: 135,
+          offsetY: 10,
+          hollow: {
+            size: '55%'
           },
-          checkboxes: {
-            selectAllRender: '<input type="checkbox" class="form-check-input">'
-          }
-        },
-        {
-          // Avatar image/badge, Name and post
-          targets: 2,
-          responsivePriority: 4,
-          render: function (data, type, full, meta) {
-            var $user_img = full['project_img'],
-              $name = full['project_name'],
-              $date = full['date'];
-            if ($user_img) {
-              // For Avatar image
-              var $output =
-                '<img src="' + assetsPath + 'img/icons/brands/' + $user_img + '" alt="Avatar" class="rounded-circle">';
-            } else {
-              // For Avatar badge
-              var stateNum = Math.floor(Math.random() * 6);
-              var states = ['success', 'danger', 'warning', 'info', 'primary', 'secondary'];
-              var $state = states[stateNum],
-                $name = full['project_name'],
-                $initials = $name.match(/\b\w/g) || [];
-              $initials = (($initials.shift() || '') + ($initials.pop() || '')).toUpperCase();
-              $output = '<span class="avatar-initial rounded-circle bg-label-' + $state + '">' + $initials + '</span>';
+          track: {
+            strokeWidth: '50%',
+            background: cardColor
+          },
+          dataLabels: {
+            value: {
+              offsetY: -22,
+              color: headingColor,
+              fontWeight: 500,
+              fontSize: '26px'
+            },
+            name: {
+              fontSize: '15px',
+              color: legendColor,
+              offsetY: 20
             }
-            // Creates full output for row
-            var $row_output =
-              '<div class="d-flex justify-content-left align-items-center">' +
-              '<div class="avatar-wrapper">' +
-              '<div class="avatar me-2">' +
-              $output +
-              '</div>' +
-              '</div>' +
-              '<div class="d-flex flex-column">' +
-              '<span class="text-truncate fw-medium">' +
-              $name +
-              '</span>' +
-              '<small class="text-truncate text-muted">' +
-              $date +
-              '</small>' +
-              '</div>' +
-              '</div>';
-            return $row_output;
-          }
-        },
-        {
-          // Teams
-          targets: 4,
-          orderable: false,
-          searchable: false,
-          render: function (data, type, full, meta) {
-            var $team = full['team'],
-              $output;
-            $output = '<div class="d-flex align-items-center avatar-group">';
-            for (var i = 0; i < $team.length; i++) {
-              $output +=
-                '<div class="avatar avatar-sm">' +
-                '<img src="' +
-                assetsPath +
-                'img/avatars/' +
-                $team[i] +
-                '" alt="Avatar" class="rounded-circle pull-up">' +
-                '</div>';
-            }
-            $output += '</div>';
-            return $output;
-          }
-        },
-        {
-          // Label
-          targets: -2,
-          render: function (data, type, full, meta) {
-            var $status_number = full['status'];
-            return (
-              '<div class="d-flex align-items-center">' +
-              '<div class="progress w-100 me-3" style="height: 6px;">' +
-              '<div class="progress-bar" style="width: ' +
-              $status_number +
-              '" aria-valuenow="' +
-              $status_number +
-              '" aria-valuemin="0" aria-valuemax="100"></div>' +
-              '</div>' +
-              '<span>' +
-              $status_number +
-              '</span></div>'
-            );
-          }
-        },
-        {
-          // Actions
-          targets: -1,
-          searchable: false,
-          title: 'Actions',
-          orderable: false,
-          render: function (data, type, full, meta) {
-            return (
-              '<div class="d-inline-block">' +
-              '<a href="javascript:;" class="btn btn-sm btn-icon dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i class="ti ti-dots-vertical"></i></a>' +
-              '<div class="dropdown-menu dropdown-menu-end m-0">' +
-              '<a href="javascript:;" class="dropdown-item">Details</a>' +
-              '<a href="javascript:;" class="dropdown-item">Archive</a>' +
-              '<div class="dropdown-divider"></div>' +
-              '<a href="javascript:;" class="dropdown-item text-danger delete-record">Delete</a>' +
-              '</div>' +
-              '</div>'
-            );
           }
         }
-      ],
-      order: [[2, 'desc']],
-      dom: '<"card-header pb-0 pt-sm-0"<"head-label text-center"><"d-flex justify-content-center justify-content-md-end"f>>t<"row mx-2"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
-      displayLength: 5,
-      lengthMenu: [5, 10, 25, 50, 75, 100],
-      responsive: {
-        details: {
-          display: $.fn.dataTable.Responsive.display.modal({
-            header: function (row) {
-              var data = row.data();
-              return 'Details of "' + data['project_name'] + '" Project';
-            }
-          }),
-          type: 'column',
-          renderer: function (api, rowIdx, columns) {
-            var data = $.map(columns, function (col, i) {
-              return col.title !== '' // ? Do not show row in modal popup if title is blank (for check box)
-                ? '<tr data-dt-row="' +
-                    col.rowIndex +
-                    '" data-dt-column="' +
-                    col.columnIndex +
-                    '">' +
-                    '<td>' +
-                    col.title +
-                    ':' +
-                    '</td> ' +
-                    '<td>' +
-                    col.data +
-                    '</td>' +
-                    '</tr>'
-                : '';
-            }).join('');
+      },
+      colors: [config.colors.danger],
+      fill: {
+        type: 'gradient',
+        gradient: {
+          shade: 'dark',
+          type: 'horizontal',
+          shadeIntensity: 0.5,
+          gradientToColors: [config.colors.primary],
+          inverseColors: true,
+          opacityFrom: 1,
+          opacityTo: 1,
+          stops: [0, 100]
+        }
+      },
+      stroke: {
+        dashArray: 3
+      },
+      series: [78],
+      labels: ['رشد']
+    };
 
-            return data ? $('<table class="table"/><tbody />').append(data) : false;
-          }
-        }
-      }
-    });
-    $('div.head-label').html('<h5 class="card-title mb-0">Projects</h5>');
+  if (typeof growthRadialChartEl !== undefined && growthRadialChartEl !== null) {
+    const growthRadialChart = new ApexCharts(growthRadialChartEl, growthRadialChartConfig);
+    growthRadialChart.render();
   }
-
-  // Filter form control to default size
-  // ? setTimeout used for multilingual table initialization
-  setTimeout(() => {
-    $('.dataTables_filter .form-control').removeClass('form-control-sm');
-    $('.dataTables_length .form-select').removeClass('form-select-sm');
-  }, 300);
 })();

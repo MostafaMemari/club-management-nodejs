@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
         modalRoleName: {
           validators: {
             notEmpty: {
-              message: 'Please enter role name'
+              message: 'لطفا نام نقش را وارد کنید'
             }
           }
         }

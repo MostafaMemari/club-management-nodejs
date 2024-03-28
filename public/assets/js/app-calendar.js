@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', function () {
         return $badge;
       }
       eventLabel.wrap('<div class="position-relative"></div>').select2({
-        placeholder: 'Select value',
+        placeholder: 'انتخاب',
         dropdownParent: eventLabel.parent(),
         templateResult: renderBadges,
         templateSelection: renderBadges,
@@ -101,7 +101,7 @@ document.addEventListener('DOMContentLoaded', function () {
         return $avatar;
       }
       eventGuests.wrap('<div class="position-relative"></div>').select2({
-        placeholder: 'Select value',
+        placeholder: 'انتخاب',
         dropdownParent: eventGuests.parent(),
         closeOnSelect: false,
         templateResult: renderGuestAvatar,
@@ -116,12 +116,15 @@ document.addEventListener('DOMContentLoaded', function () {
     if (eventStartDate) {
       var start = eventStartDate.flatpickr({
         enableTime: true,
-        altFormat: 'Y-m-dTH:i:S',
+        altInput: true,
+        altFormat: 'Y/m/d - H:i',
         onReady: function (selectedDates, dateStr, instance) {
           if (instance.isMobile) {
             instance.mobileInput.setAttribute('step', null);
           }
-        }
+        },
+        locale: 'fa',
+        disableMobile: true
       });
     }
 
@@ -129,12 +132,15 @@ document.addEventListener('DOMContentLoaded', function () {
     if (eventEndDate) {
       var end = eventEndDate.flatpickr({
         enableTime: true,
-        altFormat: 'Y-m-dTH:i:S',
+        altInput: true,
+        altFormat: 'Y/m/d - H:i',
         onReady: function (selectedDates, dateStr, instance) {
           if (instance.isMobile) {
             instance.mobileInput.setAttribute('step', null);
           }
-        }
+        },
+        locale: 'fa',
+        disableMobile: true
       });
     }
 
@@ -142,7 +148,9 @@ document.addEventListener('DOMContentLoaded', function () {
     if (inlineCalendar) {
       inlineCalInstance = inlineCalendar.flatpickr({
         monthSelectorType: 'static',
-        inline: true
+        inline: true,
+        locale: 'fa',
+        disableMobile: true
       });
     }
 
@@ -156,19 +164,19 @@ document.addEventListener('DOMContentLoaded', function () {
       bsAddEventSidebar.show();
       // For update event set offcanvas title text: Update Event
       if (offcanvasTitle) {
-        offcanvasTitle.innerHTML = 'Update Event';
+        offcanvasTitle.innerHTML = 'به‌روزرسانی رویداد';
       }
-      btnSubmit.innerHTML = 'Update';
+      btnSubmit.innerHTML = 'به‌روزرسانی';
       btnSubmit.classList.add('btn-update-event');
       btnSubmit.classList.remove('btn-add-event');
       btnDeleteEvent.classList.remove('d-none');
 
       eventTitle.value = eventToUpdate.title;
-      start.setDate(eventToUpdate.start, true, 'Y-m-d');
+      start.setDate(new JDate(eventToUpdate.start), true, 'Y-m-d');
       eventToUpdate.allDay === true ? (allDaySwitch.checked = true) : (allDaySwitch.checked = false);
       eventToUpdate.end !== null
-        ? end.setDate(eventToUpdate.end, true, 'Y-m-d')
-        : end.setDate(eventToUpdate.start, true, 'Y-m-d');
+        ? end.setDate(new JDate(eventToUpdate.end), true, 'Y-m-d')
+        : end.setDate(new JDate(eventToUpdate.start), true, 'Y-m-d');
       eventLabel.val(eventToUpdate.extendedProps.calendar).trigger('change');
       eventToUpdate.extendedProps.location !== undefined
         ? (eventLocation.value = eventToUpdate.extendedProps.location)
@@ -199,7 +207,7 @@ document.addEventListener('DOMContentLoaded', function () {
       fcSidebarToggleButton.setAttribute('data-bs-toggle', 'sidebar');
       fcSidebarToggleButton.setAttribute('data-overlay', '');
       fcSidebarToggleButton.setAttribute('data-target', '#app-calendar-sidebar');
-      fcSidebarToggleButton.insertAdjacentHTML('beforeend', '<i class="ti ti-menu-2 ti-sm text-heading"></i>');
+      fcSidebarToggleButton.insertAdjacentHTML('beforeend', '<i class="bx bx-menu bx-sm"></i>');
     }
 
     // Filter events by calender
@@ -260,7 +268,7 @@ document.addEventListener('DOMContentLoaded', function () {
       eventResizableFromStart: true,
       customButtons: {
         sidebarToggle: {
-          text: 'Sidebar'
+          text: 'نوار کناری'
         }
       },
       headerToolbar: {
@@ -276,20 +284,20 @@ document.addEventListener('DOMContentLoaded', function () {
         return ['fc-event-' + colorName];
       },
       dateClick: function (info) {
-        let date = moment(info.date).format('YYYY-MM-DD');
+        let date = new JDate(info.date);
         resetValues();
         bsAddEventSidebar.show();
 
         // For new event set offcanvas title text: Add Event
         if (offcanvasTitle) {
-          offcanvasTitle.innerHTML = 'Add Event';
+          offcanvasTitle.innerHTML = 'افزودن رویداد';
         }
-        btnSubmit.innerHTML = 'Add';
+        btnSubmit.innerHTML = 'افزودن';
         btnSubmit.classList.remove('btn-update-event');
         btnSubmit.classList.add('btn-add-event');
         btnDeleteEvent.classList.add('d-none');
-        eventStartDate.value = date;
-        eventEndDate.value = date;
+        start.setDate(date, true, 'Y-m-d');
+        end.setDate(date, true, 'Y-m-d');
       },
       eventClick: function (info) {
         eventClick(info);
@@ -299,7 +307,24 @@ document.addEventListener('DOMContentLoaded', function () {
       },
       viewDidMount: function () {
         modifyToggler();
-      }
+      },
+
+      // Locale
+      locale: 'fa',
+      firstDay: 6,
+      buttonText: {
+        today: 'امروز',
+        month: 'ماه',
+        week: 'هفته',
+        day: 'روز',
+        list: 'لیست'
+      },
+      weekText: 'هفته',
+      allDayText: 'تمام روز',
+      moreLinkText: function(n) {
+        return '+' + n + ' مورد دیگر';
+      },
+      noEventsText: 'رویدادی برای نمایش وجود ندارد'
     });
 
     // Render calendar
@@ -313,21 +338,21 @@ document.addEventListener('DOMContentLoaded', function () {
         eventTitle: {
           validators: {
             notEmpty: {
-              message: 'Please enter event title '
+              message: 'لطفا عنوان رویداد را وارد کنید '
             }
           }
         },
         eventStartDate: {
           validators: {
             notEmpty: {
-              message: 'Please enter start date '
+              message: 'لطفا تاریخ شروع را وارد کنید '
             }
           }
         },
         eventEndDate: {
           validators: {
             notEmpty: {
-              message: 'Please enter end date '
+              message: 'لطفا تاریخ پایان را وارد کنید '
             }
           }
         }
@@ -451,8 +476,8 @@ document.addEventListener('DOMContentLoaded', function () {
           let newEvent = {
             id: calendar.getEvents().length + 1,
             title: eventTitle.value,
-            start: eventStartDate.value,
-            end: eventEndDate.value,
+            start: new JDate(eventStartDate.value)['_date'],
+            end: new JDate(eventEndDate.value)['_date'],
             startStr: eventStartDate.value,
             endStr: eventEndDate.value,
             display: 'block',
@@ -479,8 +504,8 @@ document.addEventListener('DOMContentLoaded', function () {
           let eventData = {
             id: eventToUpdate.id,
             title: eventTitle.value,
-            start: eventStartDate.value,
-            end: eventEndDate.value,
+            start: new JDate(eventStartDate.value)['_date'],
+            end: new JDate(eventEndDate.value)['_date'],
             url: eventUrl.value,
             extendedProps: {
               location: eventLocation.value,
@@ -526,14 +551,18 @@ document.addEventListener('DOMContentLoaded', function () {
     // Hide left sidebar if the right sidebar is open
     btnToggleSidebar.addEventListener('click', e => {
       if (offcanvasTitle) {
-        offcanvasTitle.innerHTML = 'Add Event';
+        offcanvasTitle.innerHTML = 'افزودن رویداد';
       }
-      btnSubmit.innerHTML = 'Add';
+      btnSubmit.innerHTML = 'افزودن';
       btnSubmit.classList.remove('btn-update-event');
       btnSubmit.classList.add('btn-add-event');
       btnDeleteEvent.classList.add('d-none');
       appCalendarSidebar.classList.remove('show');
       appOverlay.classList.remove('show');
+
+      let date = new JDate();
+      start.setDate(date, true, 'Y-m-d');
+      end.setDate(date, true, 'Y-m-d');
     });
 
     // Calender filter functionality
@@ -562,7 +591,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Jump to date on sidebar(inline) calendar change
     inlineCalInstance.config.onChange.push(function (date) {
-      calendar.changeView(calendar.view.type, moment(date[0]).format('YYYY-MM-DD'));
+      calendar.changeView(calendar.view.type, moment(date[0]['_date']).format('YYYY-MM-DD'));
       modifyToggler();
       appCalendarSidebar.classList.remove('show');
       appOverlay.classList.remove('show');

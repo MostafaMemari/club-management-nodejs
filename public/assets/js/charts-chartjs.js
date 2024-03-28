@@ -4,6 +4,9 @@
 'use strict';
 
 (function () {
+
+  Chart.defaults.font.family = '"primary-font", "segoe ui", "tahoma"';
+  
   // Color Variables
   const purpleColor = '#836AF9',
     yellowColor = '#ffe800',
@@ -130,7 +133,7 @@
     const horizontalBarChartVar = new Chart(horizontalBarChart, {
       type: 'bar',
       data: {
-        labels: ['MON', 'TUE', 'WED ', 'THU', 'FRI', 'SAT', 'SUN'],
+        labels: ["یکشنبه", "دوشنبه", "سه‌شنبه", "چهارشنبه", "پنجشنبه", "جمعه", "شنبه"],
         datasets: [
           {
             data: [710, 350, 470, 580, 230, 460, 120],
@@ -206,7 +209,7 @@
         datasets: [
           {
             data: [80, 150, 180, 270, 210, 160, 160, 202, 265, 210, 270, 255, 290, 360, 375],
-            label: 'Europe',
+            label: 'اروپا',
             borderColor: config.colors.danger,
             tension: 0.5,
             pointStyle: 'circle',
@@ -221,7 +224,7 @@
           },
           {
             data: [80, 125, 105, 130, 215, 195, 140, 160, 230, 300, 220, 170, 210, 200, 280],
-            label: 'Asia',
+            label: 'آسیا',
             borderColor: config.colors.primary,
             tension: 0.5,
             pointStyle: 'circle',
@@ -236,7 +239,7 @@
           },
           {
             data: [80, 99, 82, 90, 115, 115, 74, 75, 130, 155, 125, 90, 140, 130, 180],
-            label: 'Africa',
+            label: 'آفریقا',
             borderColor: yellowColor,
             tension: 0.5,
             pointStyle: 'circle',
@@ -326,10 +329,10 @@
     const radarChartVar = new Chart(radarChart, {
       type: 'radar',
       data: {
-        labels: ['STA', 'STR', 'AGI', 'VIT', 'CHA', 'INT'],
+        labels: ["آفریقا", "آسیا", "اروپا", "آمریکای لاتین", "آمریکای شمالی", "استرالیا"],
         datasets: [
           {
-            label: 'Donté Panlin',
+            label: '2050',
             data: [25, 59, 90, 81, 60, 82],
             fill: true,
             pointStyle: 'dash',
@@ -338,7 +341,7 @@
             pointBorderColor: 'transparent'
           },
           {
-            label: 'Mireska Sunbreeze',
+            label: '1950',
             data: [40, 100, 40, 90, 40, 90],
             fill: true,
             pointStyle: 'dash',
@@ -401,10 +404,10 @@
     const polarChartVar = new Chart(polarChart, {
       type: 'polarArea',
       data: {
-        labels: ['Africa', 'Asia', 'Europe', 'America', 'Antarctica', 'Australia'],
+        labels: ["آفریقا", "آسیا", "اروپا", "آمریکای لاتین", "آمریکای شمالی", "استرالیا"],
         datasets: [
           {
-            label: 'Population (millions)',
+            label: 'جمعیت (میلیون)',
             backgroundColor: [purpleColor, yellowColor, orangeColor, oceanBlueColor, greyColor, cyanColor],
             data: [19, 17.5, 15, 13.5, 11, 9],
             borderWidth: 0
@@ -467,7 +470,7 @@
         },
         datasets: [
           {
-            label: 'Dataset 1',
+            label: 'سری داده 1',
             backgroundColor: purpleColor,
             borderColor: purpleColor,
             data: [
@@ -539,7 +542,7 @@
             ]
           },
           {
-            label: 'Dataset 2',
+            label: 'سری داده 2',
             backgroundColor: yellowColor,
             borderColor: yellowColor,
             data: [
@@ -689,7 +692,7 @@
         ],
         datasets: [
           {
-            label: 'Africa',
+            label: 'آفریقا',
             data: [40, 55, 45, 75, 65, 55, 70, 60, 100, 98, 90, 120, 125, 140, 155],
             tension: 0,
             fill: true,
@@ -704,7 +707,7 @@
             pointHoverBorderColor: cardColor
           },
           {
-            label: 'Asia',
+            label: 'آسیا',
             data: [70, 85, 75, 150, 100, 140, 110, 105, 160, 150, 125, 190, 200, 240, 275],
             tension: 0,
             fill: true,
@@ -719,7 +722,7 @@
             pointHoverBorderColor: cardColor
           },
           {
-            label: 'Europe',
+            label: 'اروپا',
             data: [240, 195, 160, 215, 185, 215, 185, 200, 250, 210, 195, 250, 235, 300, 315],
             tension: 0,
             fill: true,
@@ -796,7 +799,7 @@
     const doughnutChartVar = new Chart(doughnutChart, {
       type: 'doughnut',
       data: {
-        labels: ['Tablet', 'Mobile', 'Desktop'],
+        labels: ['تبلت', 'موبایل', 'دسکتاپ'],
         datasets: [
           {
             data: [10, 10, 80],
@@ -848,7 +851,7 @@
       data: {
         datasets: [
           {
-            label: 'iPhone',
+            label: 'آیفون',
             data: [
               {
                 x: 72,
@@ -922,7 +925,7 @@
             pointRadius: 5
           },
           {
-            label: 'Samsung Note',
+            label: 'سامسونگ نوت',
             data: [
               {
                 x: 13,
@@ -990,7 +993,7 @@
             pointRadius: 5
           },
           {
-            label: 'OnePlus',
+            label: 'وان پلاس',
             data: [
               {
                 x: 70,

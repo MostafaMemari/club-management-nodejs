@@ -9,7 +9,11 @@
   const flatpickrRange = document.querySelector('#dealDuration');
   if (flatpickrRange) {
     flatpickrRange.flatpickr({
-      mode: 'range'
+      mode: 'range',
+      locale: 'fa',
+      altInput: true,
+      altFormat: 'Y/m/d',
+      disableMobile: true
     });
   }
 
@@ -41,17 +45,17 @@
         dealAmount: {
           validators: {
             notEmpty: {
-              message: 'Please enter amount'
+              message: 'لطفا مقدار را وارد کنید'
             },
             numeric: {
-              message: 'The amount must be a number'
+              message: 'مقدار باید یک عدد باشد'
             }
           }
         },
         dealRegion: {
           validators: {
             notEmpty: {
-              message: 'Please select region'
+              message: 'لطفا منطقه را انتخاب کنید'
             }
           }
         }
@@ -79,7 +83,7 @@
       dealRegion.wrap('<div class="position-relative"></div>');
       dealRegion
         .select2({
-          placeholder: 'Select an region',
+          placeholder: 'انتخاب منطقه',
           dropdownParent: dealRegion.parent()
         })
         .on('change.select2', function () {
@@ -95,23 +99,23 @@
         dealTitle: {
           validators: {
             notEmpty: {
-              message: 'Please enter deal title'
+              message: 'لطفا عنوان معامله را وارد کنید'
             }
           }
         },
         dealCode: {
           validators: {
             notEmpty: {
-              message: 'Please enter deal code'
+              message: 'لطفا کد معامله را وارد کنید'
             },
             stringLength: {
               min: 4,
               max: 10,
-              message: 'The deal code must be more than 4 and less than 10 characters long'
+              message: 'کد معامله باید بیش از 4 و کمتر از 10 کاراکتر باشد'
             },
             regexp: {
               regexp: /^[A-Z0-9]+$/,
-              message: 'The deal code can only consist of capital alphabetical and number'
+              message: 'کد معامله فقط می‌تواند شامل حروف الفبای بزرگ و عدد باشد'
             }
           }
         }
@@ -138,7 +142,7 @@
       dealOfferedItem.wrap('<div class="position-relative"></div>');
       dealOfferedItem
         .select2({
-          placeholder: 'Select an offered item',
+          placeholder: 'یک مورد پیشنهاد شده انتخاب کنید',
           dropdownParent: dealOfferedItem.parent()
         })
         .on('change.select2', function () {
@@ -188,7 +192,7 @@
       // wizardCreateDealForm.submit()
       // or send the form data to server via an Ajax request
       // To make the demo simple, I just placed an alert
-      alert('Submitted..!!');
+      alert('ثبت شد ...!!');
     });
 
     wizardCreateDealNext.forEach(item => {

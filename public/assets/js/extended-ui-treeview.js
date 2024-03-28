@@ -100,19 +100,19 @@ $(function () {
       plugins: ['types'],
       types: {
         default: {
-          icon: 'ti ti-folder'
+          icon: 'bx bx-folder'
         },
         html: {
-          icon: 'ti ti-brand-html5 text-danger'
+          icon: 'bx bxl-html5 text-danger'
         },
         css: {
-          icon: 'ti ti-brand-css3 text-info'
+          icon: 'bx bxl-css3 text-info'
         },
         img: {
-          icon: 'ti ti-photo text-success'
+          icon: 'bx bx-image text-success'
         },
         js: {
-          icon: 'ti ti-brand-javascript text-warning'
+          icon: 'bx bxl-nodejs text-warning'
         }
       }
     });
@@ -194,19 +194,32 @@ $(function () {
       plugins: ['types', 'contextmenu'],
       types: {
         default: {
-          icon: 'ti ti-folder'
+          icon: 'bx bx-folder'
         },
         html: {
-          icon: 'ti ti-brand-html5 text-danger'
+          icon: 'bx bxl-html5 text-danger'
         },
         css: {
-          icon: 'ti ti-brand-css3 text-info'
+          icon: 'bx bxl-css3 text-info'
         },
         img: {
-          icon: 'ti ti-photo text-success'
+          icon: 'bx bx-image text-success'
         },
         js: {
-          icon: 'ti ti-brand-javascript text-warning'
+          icon: 'bx bxl-nodejs text-warning'
+        }
+      },
+      contextmenu: {
+        items: function(n) {
+            var items = $.jstree.defaults.contextmenu.items();
+            items.create.label = 'ایجاد';
+            items.rename.label = 'تغییر نام';
+            items.remove.label = 'حذف';
+            items.ccp.label = 'ویرایش';
+            items.ccp.submenu.cut.label = 'برش';
+            items.ccp.submenu.copy.label = 'کپی';
+            items.ccp.submenu.paste.label = 'چسباندن';
+            return items;
         }
       }
     });
@@ -288,19 +301,19 @@ $(function () {
       plugins: ['types', 'dnd'],
       types: {
         default: {
-          icon: 'ti ti-folder'
+          icon: 'bx bx-folder'
         },
         html: {
-          icon: 'ti ti-brand-html5 text-danger'
+          icon: 'bx bxl-html5 text-danger'
         },
         css: {
-          icon: 'ti ti-brand-css3 text-info'
+          icon: 'bx bxl-css3 text-info'
         },
         img: {
-          icon: 'ti ti-photo text-success'
+          icon: 'bx bx-image text-success'
         },
         js: {
-          icon: 'ti ti-brand-javascript text-warning'
+          icon: 'bx bxl-nodejs text-warning'
         }
       }
     });
@@ -381,19 +394,19 @@ $(function () {
       plugins: ['types', 'checkbox', 'wholerow'],
       types: {
         default: {
-          icon: 'ti ti-folder'
+          icon: 'bx bx-folder'
         },
         html: {
-          icon: 'ti ti-brand-html5 text-danger'
+          icon: 'bx bxl-html5 text-danger'
         },
         css: {
-          icon: 'ti ti-brand-css3 text-info'
+          icon: 'bx bxl-css3 text-info'
         },
         img: {
-          icon: 'ti ti-photo text-success'
+          icon: 'bx bx-image text-success'
         },
         js: {
-          icon: 'ti ti-brand-javascript text-warning'
+          icon: 'bx bxl-nodejs text-warning'
         }
       }
     });
@@ -420,19 +433,19 @@ $(function () {
       plugins: ['types', 'state'],
       types: {
         default: {
-          icon: 'ti ti-folder'
+          icon: 'bx bx-folder'
         },
         html: {
-          icon: 'ti ti-brand-html5 text-danger'
+          icon: 'bx bxl-html5 text-danger'
         },
         css: {
-          icon: 'ti ti-brand-css3 text-info'
+          icon: 'bx bxl-css3 text-info'
         },
         img: {
-          icon: 'ti ti-photo text-success'
+          icon: 'bx bx-image text-success'
         },
         js: {
-          icon: 'ti ti-brand-javascript text-warning'
+          icon: 'bx bxl-nodejs text-warning'
         }
       }
     });

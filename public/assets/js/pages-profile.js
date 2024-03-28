@@ -40,10 +40,10 @@ $(function () {
           responsivePriority: 3,
           checkboxes: true,
           render: function () {
-            return '<input type="checkbox" class="dt-checkboxes form-check-input">';
+            return '<input type="checkbox" class="dt-checkboxes form-check-input mt-0 align-middle">';
           },
           checkboxes: {
-            selectAllRender: '<input type="checkbox" class="form-check-input">'
+            selectAllRender: '<input type="checkbox" class="form-check-input mt-0 align-middle">'
           }
         },
         {
@@ -57,15 +57,14 @@ $(function () {
             if ($user_img) {
               // For Avatar image
               var $output =
-                '<img src="' + assetsPath + 'img/icons/brands/' + $user_img + '" alt="Avatar" class="rounded-circle">';
+                '<img src="' + assetsPath + 'img/icons/brands/' + $user_img + '" alt="آواتار" class="rounded-circle">';
             } else {
               // For Avatar badge
               var stateNum = Math.floor(Math.random() * 6);
-              var states = ['success', 'danger', 'warning', 'info', 'primary', 'secondary'];
+              var states = ['success', 'danger', 'warning', 'info', 'dark', 'primary', 'secondary'];
               var $state = states[stateNum],
                 $name = full['project_name'],
-                $initials = $name.match(/\b\w/g) || [];
-              $initials = (($initials.shift() || '') + ($initials.pop() || '')).toUpperCase();
+                $initials = $name.split(' ').slice(0, 2).map(word => word[0]).join('‌') || '';
               $output = '<span class="avatar-initial rounded-circle bg-label-' + $state + '">' + $initials + '</span>';
             }
             // Creates full output for row
@@ -77,7 +76,7 @@ $(function () {
               '</div>' +
               '</div>' +
               '<div class="d-flex flex-column">' +
-              '<span class="text-truncate fw-medium">' +
+              '<span class="text-truncate fw-bold">' +
               $name +
               '</span>' +
               '<small class="text-truncate text-muted">' +
@@ -104,7 +103,7 @@ $(function () {
                 assetsPath +
                 'img/avatars/' +
                 $team[i] +
-                '" alt="Avatar" class="rounded-circle pull-up">' +
+                '" alt="آواتار" class="rounded-circle pull-up">' +
                 '</div>';
             }
             $output += '</div>';
@@ -135,17 +134,17 @@ $(function () {
           // Actions
           targets: -1,
           searchable: false,
-          title: 'Actions',
+          title: 'عمل‌ها',
           orderable: false,
           render: function (data, type, full, meta) {
             return (
               '<div class="d-inline-block">' +
-              '<a href="javascript:;" class="btn btn-sm btn-icon dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i class="ti ti-dots-vertical"></i></a>' +
+              '<a href="javascript:;" class="btn btn-sm btn-icon dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i class="bx bx-dots-vertical-rounded"></i></a>' +
               '<div class="dropdown-menu dropdown-menu-end m-0">' +
-              '<a href="javascript:;" class="dropdown-item">Details</a>' +
-              '<a href="javascript:;" class="dropdown-item">Archive</a>' +
+              '<a href="javascript:;" class="dropdown-item">جزئیات</a>' +
+              '<a href="javascript:;" class="dropdown-item">بایگانی</a>' +
               '<div class="dropdown-divider"></div>' +
-              '<a href="javascript:;" class="dropdown-item text-danger delete-record">Delete</a>' +
+              '<a href="javascript:;" class="dropdown-item text-danger delete-record">حذف</a>' +
               '</div>' +
               '</div>'
             );
@@ -153,7 +152,7 @@ $(function () {
         }
       ],
       order: [[2, 'desc']],
-      dom: '<"card-header pb-0 pt-sm-0"<"head-label text-center"><"d-flex justify-content-center justify-content-md-end"f>>t<"row mx-2"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
+      dom: '<"card-header pb-0 pt-sm-0"<"head-label text-start"><"d-flex justify-content-center justify-content-md-end primary-font"f>>t<"row mx-2"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
       displayLength: 7,
       lengthMenu: [7, 10, 25, 50, 75, 100],
       responsive: {
@@ -161,7 +160,7 @@ $(function () {
           display: $.fn.dataTable.Responsive.display.modal({
             header: function (row) {
               var data = row.data();
-              return 'Details of "' + data['project_name'] + '" Project';
+              return 'جزئیات پروژه';
             }
           }),
           type: 'column',
@@ -189,7 +188,7 @@ $(function () {
         }
       }
     });
-    $('div.head-label').html('<h5 class="card-title mb-0">Projects</h5>');
+    $('div.head-label').html('<h5 class="card-title mb-0">پروژه‌ها</h5>');
   }
 
   // Filter form control to default size

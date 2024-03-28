@@ -128,14 +128,11 @@
 
 .katex * {
   -ms-high-contrast-adjust: none !important;
-}
-
-.katex * {
   border-color: currentColor;
 }
 
 .katex .katex-version::after {
-  content: "0.16.8";
+  content: "0.16.4";
 }
 
 .katex .katex-mathml {

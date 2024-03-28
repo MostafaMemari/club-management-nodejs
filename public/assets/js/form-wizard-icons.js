@@ -19,7 +19,7 @@ $(function () {
       var $this = $(this);
       $this.wrap('<div class="position-relative"></div>');
       $this.select2({
-        placeholder: 'Select value',
+        placeholder: 'انتخاب',
         dropdownParent: $this.parent()
       });
     });
@@ -55,7 +55,7 @@ $(function () {
     }
     if (wizardIconsBtnSubmit) {
       wizardIconsBtnSubmit.addEventListener('click', event => {
-        alert('Submitted..!!');
+        alert('ثبت شد ...!!');
       });
     }
   }
@@ -89,7 +89,7 @@ $(function () {
     }
     if (wizardIconsVerticalBtnSubmit) {
       wizardIconsVerticalBtnSubmit.addEventListener('click', event => {
-        alert('Submitted..!!');
+        alert('ثبت شد ...!!');
       });
     }
   }
@@ -123,7 +123,7 @@ $(function () {
     }
     if (wizardIconsModernBtnSubmit) {
       wizardIconsModernBtnSubmit.addEventListener('click', event => {
-        alert('Submitted..!!');
+        alert('ثبت شد ...!!');
       });
     }
   }
@@ -157,7 +157,7 @@ $(function () {
     }
     if (wizardIconsModernVerticalBtnSubmit) {
       wizardIconsModernVerticalBtnSubmit.addEventListener('click', event => {
-        alert('Submitted..!!');
+        alert('ثبت شد ...!!');
       });
     }
   }

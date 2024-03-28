@@ -5,7 +5,7 @@
 'use strict';
 
 (function () {
-  let cardColor, headingColor, labelColor, borderColor, legendColor;
+  let cardColor, headingColor, labelColor, borderColor, legendColor, radialTrackColor;
 
   if (isDarkStyle) {
     cardColor = config.colors_dark.cardColor;
@@ -13,13 +13,40 @@
     labelColor = config.colors_dark.textMuted;
     legendColor = config.colors_dark.bodyColor;
     borderColor = config.colors_dark.borderColor;
+    radialTrackColor = '#36435C';
   } else {
     cardColor = config.colors.cardColor;
     headingColor = config.colors.headingColor;
     labelColor = config.colors.textMuted;
     legendColor = config.colors.bodyColor;
     borderColor = config.colors.borderColor;
+    radialTrackColor = config.colors_label.secondary;
   }
+
+  Apex.chart = {
+		fontFamily: 'inherit',
+		locales: [{
+			"name": "fa",
+			"options": {
+				"months": ["ژانویه", "فوریه", "مارس", "آوریل", "می", "ژوئن", "جولای", "آگوست", "سپتامبر", "اکتبر", "نوامبر", "دسامبر"],
+				"shortMonths": ["ژانویه", "فوریه", "مارس", "آوریل", "می", "ژوئن", "جولای", "آگوست", "سپتامبر", "اکتبر", "نوامبر", "دسامبر"],
+				"days": ["یکشنبه", "دوشنبه", "سه‌شنبه", "چهارشنبه", "پنجشنبه", "جمعه", "شنبه"],
+				"shortDays": ["ی", "د", "س", "چ", "پ", "ج", "ش"],
+				"toolbar": {
+					"exportToSVG": "دریافت SVG",
+					"exportToPNG": "دریافت PNG",
+					"menu": "فهرست",
+					"selection": "انتخاب",
+					"selectionZoom": "بزرگنمایی قسمت انتخاب شده",
+					"zoomIn": "بزرگ نمایی",
+					"zoomOut": "کوچک نمایی",
+					"pan": "جا به جایی",
+					"reset": "بازنشانی بزرگ نمایی"
+				}
+			}
+		}],
+		defaultLocale: "fa"
+	}
 
   // Color constant
   const chartColors = {
@@ -97,15 +124,15 @@
       colors: [chartColors.area.series3, chartColors.area.series2, chartColors.area.series1],
       series: [
         {
-          name: 'Visits',
+          name: 'بازدیدها',
           data: [100, 120, 90, 170, 130, 160, 140, 240, 220, 180, 270, 280, 375]
         },
         {
-          name: 'Clicks',
+          name: 'کلیک‌ها',
           data: [60, 80, 70, 110, 80, 100, 90, 180, 160, 140, 200, 220, 275]
         },
         {
-          name: 'Sales',
+          name: 'فروش‌ها',
           data: [20, 40, 30, 70, 40, 60, 50, 140, 120, 100, 140, 180, 220]
         }
       ],
@@ -215,11 +242,11 @@
       },
       series: [
         {
-          name: 'Apple',
+          name: 'اپل',
           data: [90, 120, 55, 100, 80, 125, 175, 70, 88, 180]
         },
         {
-          name: 'Samsung',
+          name: 'سامسونگ',
           data: [85, 100, 30, 40, 95, 90, 30, 110, 62, 20]
         }
       ],
@@ -291,7 +318,7 @@
       colors: [config.colors.warning, config.colors.primary, config.colors.success],
       series: [
         {
-          name: 'Angular',
+          name: 'انگولار',
           data: [
             [5.4, 170],
             [5.4, 100],
@@ -311,7 +338,7 @@
           ]
         },
         {
-          name: 'Vue',
+          name: 'ویو',
           data: [
             [14.0, 220],
             [15.0, 280],
@@ -329,7 +356,7 @@
           ]
         },
         {
-          name: 'React',
+          name: 'ری‌اکت',
           data: [
             [14.0, 290],
             [13.0, 190],
@@ -400,7 +427,7 @@
       markers: {
         strokeWidth: 7,
         strokeOpacity: 1,
-        strokeColors: [cardColor],
+        strokeColors: [config.colors.white],
         colors: [config.colors.warning]
       },
       dataLabels: {
@@ -508,11 +535,12 @@
       },
       series: [
         {
+          name: 'سری 1',
           data: [700, 350, 480, 600, 210, 550, 150]
         }
       ],
       xaxis: {
-        categories: ['MON, 11', 'THU, 14', 'FRI, 15', 'MON, 18', 'WED, 20', 'FRI, 21', 'MON, 23'],
+        categories: ['دوشنبه، 11', 'پنج‌شنبه، 14', 'جمعه، 15', 'دوشنبه، 18', 'چهارشنبه، 20', 'جمعه، 21', 'دوشنبه، 23'],
         axisBorder: {
           show: false
         },
@@ -739,14 +767,6 @@
         labels: {
           colors: legendColor,
           useSeriesColors: false
-        },
-        markers: {
-          offsetY: 0,
-          offsetX: -3
-        },
-        itemMargin: {
-          vertical: 3,
-          horizontal: 10
         }
       },
       stroke: {
@@ -757,49 +777,49 @@
       },
       series: [
         {
-          name: 'SUN',
+          name: 'یک‌شنبه',
           data: generateDataHeat(24, {
             min: 0,
             max: 60
           })
         },
         {
-          name: 'MON',
+          name: 'دوشنبه',
           data: generateDataHeat(24, {
             min: 0,
             max: 60
           })
         },
         {
-          name: 'TUE',
+          name: 'سه‌شنبه',
           data: generateDataHeat(24, {
             min: 0,
             max: 60
           })
         },
         {
-          name: 'WED',
+          name: 'چهارشنبه',
           data: generateDataHeat(24, {
             min: 0,
             max: 60
           })
         },
         {
-          name: 'THU',
+          name: 'پنج‌شنبه',
           data: generateDataHeat(24, {
             min: 0,
             max: 60
           })
         },
         {
-          name: 'FRI',
+          name: 'جمعه',
           data: generateDataHeat(24, {
             min: 0,
             max: 60
           })
         },
         {
-          name: 'SAT',
+          name: 'شنبه',
           data: generateDataHeat(24, {
             min: 0,
             max: 60
@@ -852,24 +872,23 @@
           },
           track: {
             margin: 10,
-            background: config.colors_label.secondary
+            background: radialTrackColor
           },
           dataLabels: {
             name: {
               fontSize: '2rem',
-              fontFamily: 'font-primary'
+              offsetY: -10
             },
             value: {
               fontSize: '1.2rem',
               color: legendColor,
-              fontFamily: 'font-primary'
+              offsetY: 10
             },
             total: {
               show: true,
-              fontWeight: 400,
               fontSize: '1.3rem',
               color: headingColor,
-              label: 'Comments',
+              label: 'دیدگاه‌ها',
               formatter: function (w) {
                 return '80%';
               }
@@ -896,7 +915,7 @@
         lineCap: 'round'
       },
       series: [80, 50, 35],
-      labels: ['Comments', 'Replies', 'Shares']
+      labels: ['دیدگاه‌ها', 'پاسخ‌ها', 'اشتراک‌گذاری‌ها']
     };
   if (typeof radialBarChartEl !== undefined && radialBarChartEl !== null) {
     const radialChart = new ApexCharts(radialBarChartEl, radialBarChartConfig);
@@ -942,23 +961,22 @@
       },
       series: [
         {
-          name: 'iPhone 12',
+          name: 'آیفون 12',
           data: [41, 64, 81, 60, 42, 42, 33, 23]
         },
         {
-          name: 'Samsung s20',
+          name: 'سامسونگ s20',
           data: [65, 46, 42, 25, 58, 63, 76, 43]
         }
       ],
       colors: [chartColors.donut.series1, chartColors.donut.series3],
       xaxis: {
-        categories: ['Battery', 'Brand', 'Camera', 'Memory', 'Storage', 'Display', 'OS', 'Price'],
+        categories: ['باتری', 'برند', 'دوربین', 'حافظه', 'ذخیره‌سازی', 'صفحه نمایش', 'سیستم عامل', 'قیمت'],
         labels: {
           show: true,
           style: {
             colors: [labelColor, labelColor, labelColor, labelColor, labelColor, labelColor, labelColor, labelColor],
-            fontSize: '13px',
-            fontFamily: 'font-primary'
+            fontSize: '13px'
           }
         }
       },
@@ -993,8 +1011,8 @@
         height: 390,
         type: 'donut'
       },
-      labels: ['Operational', 'Networking', 'Hiring', 'R&D'],
-      series: [42, 7, 25, 25],
+      labels: ['عملیاتی', 'شبکه سازی', 'استخدام', 'تحقیق و توسعه'],
+      series: [42, 8, 25, 25],
       colors: [
         chartColors.donut.series1,
         chartColors.donut.series4,
@@ -1008,17 +1026,12 @@
       dataLabels: {
         enabled: true,
         formatter: function (val, opt) {
-          return parseInt(val, 10) + '%';
+          return parseInt(val) + '%';
         }
       },
       legend: {
         show: true,
         position: 'bottom',
-        markers: { offsetX: -3 },
-        itemMargin: {
-          vertical: 3,
-          horizontal: 10
-        },
         labels: {
           colors: legendColor,
           useSeriesColors: false
@@ -1031,21 +1044,22 @@
               show: true,
               name: {
                 fontSize: '2rem',
-                fontFamily: 'font-primary'
+                offsetY: -13,
+                color: legendColor
               },
               value: {
                 fontSize: '1.2rem',
+                offsetY: 12,
                 color: legendColor,
-                fontFamily: 'font-primary',
                 formatter: function (val) {
-                  return parseInt(val, 10) + '%';
+                  return parseInt(val) + '%';
                 }
               },
               total: {
                 show: true,
                 fontSize: '1.5rem',
                 color: headingColor,
-                label: 'Operational',
+                label: 'عملیاتی',
                 formatter: function (w) {
                   return '42%';
                 }

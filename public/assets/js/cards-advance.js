@@ -5,88 +5,45 @@
 'use strict';
 
 (function () {
-  let cardColor, headingColor, legendColor, labelColor;
+  let labelColor;
   if (isDarkStyle) {
-    cardColor = config.colors_dark.cardColor;
     labelColor = config.colors_dark.textMuted;
-    legendColor = config.colors_dark.bodyColor;
-    headingColor = config.colors_dark.headingColor;
   } else {
-    cardColor = config.colors.cardColor;
     labelColor = config.colors.textMuted;
-    legendColor = config.colors.bodyColor;
-    headingColor = config.colors.headingColor;
   }
 
-  // Radial bar chart functions
-  function radialBarChart(color, value, show) {
-    const radialBarChartOpt = {
-      chart: {
-        height: show == 'true' ? 58 : 53,
-        width: show == 'true' ? 58 : 43,
-        type: 'radialBar'
-      },
-      plotOptions: {
-        radialBar: {
-          hollow: {
-            size: show == 'true' ? '50%' : '33%'
-          },
-          dataLabels: {
-            show: show == 'true' ? true : false,
-            value: {
-              offsetY: -10,
-              fontSize: '15px',
-              fontWeight: 500,
-              fontFamily: 'font-primary',
-              color: headingColor
-            }
-          },
-          track: {
-            background: config.colors_label.secondary
-          }
-        }
-      },
-      stroke: {
-        lineCap: 'round'
-      },
-      colors: [color],
-      grid: {
-        padding: {
-          top: show == 'true' ? -12 : -15,
-          bottom: show == 'true' ? -17 : -15,
-          left: show == 'true' ? -17 : -5,
-          right: -15
-        }
-      },
-      series: [value],
-      labels: show == 'true' ? [''] : ['Progress']
-    };
-    return radialBarChartOpt;
-  }
+  Apex.chart = {
+		fontFamily: 'inherit',
+		locales: [{
+			"name": "fa",
+			"options": {
+				"months": ["ژانویه", "فوریه", "مارس", "آوریل", "می", "ژوئن", "جولای", "آگوست", "سپتامبر", "اکتبر", "نوامبر", "دسامبر"],
+				"shortMonths": ["ژانویه", "فوریه", "مارس", "آوریل", "می", "ژوئن", "جولای", "آگوست", "سپتامبر", "اکتبر", "نوامبر", "دسامبر"],
+				"days": ["یکشنبه", "دوشنبه", "سه‌شنبه", "چهارشنبه", "پنجشنبه", "جمعه", "شنبه"],
+				"shortDays": ["ی", "د", "س", "چ", "پ", "ج", "ش"],
+				"toolbar": {
+					"exportToSVG": "دریافت SVG",
+					"exportToPNG": "دریافت PNG",
+					"menu": "فهرست",
+					"selection": "انتخاب",
+					"selectionZoom": "بزرگنمایی قسمت انتخاب شده",
+					"zoomIn": "بزرگ نمایی",
+					"zoomOut": "کوچک نمایی",
+					"pan": "جا به جایی",
+					"reset": "بازنشانی بزرگ نمایی"
+				}
+			}
+		}],
+		defaultLocale: "fa"
+	}
 
-  // Progress Chart
+  // Sales Bar Chart
   // --------------------------------------------------------------------
-  // All progress chart
-  const chartProgressList = document.querySelectorAll('.chart-progress');
-  if (chartProgressList) {
-    chartProgressList.forEach(function (chartProgressEl) {
-      const color = config.colors[chartProgressEl.dataset.color],
-        series = chartProgressEl.dataset.series;
-      const progress_variant = chartProgressEl.dataset.progress_variant
-        ? chartProgressEl.dataset.progress_variant
-        : 'false';
-      const optionsBundle = radialBarChart(color, series, progress_variant);
-      const chart = new ApexCharts(chartProgressEl, optionsBundle);
-      chart.render();
-    });
-  }
-
-  // Earning Reports Bar Chart
-  // --------------------------------------------------------------------
-  const reportBarChartEl = document.querySelector('#reportBarChart'),
-    reportBarChartConfig = {
+  const salesBarChartEl = document.querySelector('#salesChart'),
+    salesBarChartConfig = {
       chart: {
-        height: 200,
+        height: 120,
+        parentHeightOffset: 0,
         type: 'bar',
         toolbar: {
           show: false
@@ -94,45 +51,45 @@
       },
       plotOptions: {
         bar: {
-          barHeight: '60%',
-          columnWidth: '60%',
+          barHeight: '100%',
+          columnWidth: '25px',
           startingShape: 'rounded',
           endingShape: 'rounded',
-          borderRadius: 4,
-          distributed: true
+          borderRadius: 5,
+          distributed: true,
+          colors: {
+            backgroundBarColors: [
+              config.colors_label.primary,
+              config.colors_label.primary,
+              config.colors_label.primary,
+              config.colors_label.primary
+            ],
+            backgroundBarRadius: 5
+          }
         }
       },
       grid: {
         show: false,
         padding: {
-          top: -20,
-          bottom: 0,
-          left: -10,
-          right: -10
+          top: -30,
+          left: -12,
+          bottom: 10
         }
       },
-      colors: [
-        config.colors_label.primary,
-        config.colors_label.primary,
-        config.colors_label.primary,
-        config.colors_label.primary,
-        config.colors.primary,
-        config.colors_label.primary,
-        config.colors_label.primary
-      ],
+      colors: [config.colors.primary],
       dataLabels: {
         enabled: false
       },
       series: [
         {
-          data: [40, 95, 60, 45, 90, 50, 75]
+          data: [60, 35, 25, 75, 15, 42, 85]
         }
       ],
       legend: {
         show: false
       },
       xaxis: {
-        categories: ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'],
+        categories: ["ی", "د", "س", "چ", "پ", "ج", "ش"],
         axisBorder: {
           show: false
         },
@@ -150,27 +107,52 @@
         labels: {
           show: false
         }
-      }
-    };
-  if (typeof reportBarChartEl !== undefined && reportBarChartEl !== null) {
-    const barChart = new ApexCharts(reportBarChartEl, reportBarChartConfig);
-    barChart.render();
-  }
-
-  // swiper loop and autoplay
-  // --------------------------------------------------------------------
-  const swiperWithPagination = document.querySelector('#swiper-with-pagination-cards');
-  if (swiperWithPagination) {
-    new Swiper(swiperWithPagination, {
-      loop: true,
-      autoplay: {
-        delay: 2500,
-        disableOnInteraction: false
       },
-      pagination: {
-        clickable: true,
-        el: '.swiper-pagination'
-      }
-    });
+      responsive: [
+        {
+          breakpoint: 1440,
+          options: {
+            plotOptions: {
+              bar: {
+                columnWidth: '30%'
+              }
+            }
+          }
+        },
+        {
+          breakpoint: 1200,
+          options: {
+            plotOptions: {
+              bar: {
+                columnWidth: '15%'
+              }
+            }
+          }
+        },
+        {
+          breakpoint: 768,
+          options: {
+            plotOptions: {
+              bar: {
+                columnWidth: '12%'
+              }
+            }
+          }
+        },
+        {
+          breakpoint: 450,
+          options: {
+            plotOptions: {
+              bar: {
+                columnWidth: '19%'
+              }
+            }
+          }
+        }
+      ]
+    };
+  if (typeof salesBarChartEl !== undefined && salesBarChartEl !== null) {
+    const salesBarChart = new ApexCharts(salesBarChartEl, salesBarChartConfig);
+    salesBarChart.render();
   }
 })();

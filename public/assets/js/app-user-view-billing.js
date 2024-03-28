@@ -12,32 +12,35 @@
   if (cancelSubscription) {
     cancelSubscription.onclick = function () {
       Swal.fire({
-        text: 'Are you sure you would like to cancel your subscription?',
+        text: 'آیا از لغو کردن اشتراک اطمینان دارید؟',
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonText: 'Yes',
+        confirmButtonText: 'بله',
+        cancelButtonText: 'انصراف',
         customClass: {
-          confirmButton: 'btn btn-primary me-2 waves-effect waves-light',
-          cancelButton: 'btn btn-label-secondary waves-effect waves-light'
+          confirmButton: 'btn btn-primary me-2',
+          cancelButton: 'btn btn-label-secondary'
         },
         buttonsStyling: false
       }).then(function (result) {
         if (result.value) {
           Swal.fire({
             icon: 'success',
-            title: 'Unsubscribed!',
-            text: 'Your subscription cancelled successfully.',
+            title: 'اشتراک لغو شد!',
+            text: 'اشتراک با موفقیت لغو شد.',
+            confirmButtonText: 'باشه',
             customClass: {
-              confirmButton: 'btn btn-success waves-effect waves-light'
+              confirmButton: 'btn btn-success'
             }
           });
         } else if (result.dismiss === Swal.DismissReason.cancel) {
           Swal.fire({
-            title: 'Cancelled',
-            text: 'Unsubscription Cancelled!!',
+            title: 'انصراف داده شد',
+            text: 'از لغو اشتراک انصراف داده شد!!',
+            confirmButtonText: 'باشه',
             icon: 'error',
             customClass: {
-              confirmButton: 'btn btn-success waves-effect waves-light'
+              confirmButton: 'btn btn-success'
             }
           });
         }
@@ -51,7 +54,7 @@
     addressSubTitle = document.querySelector('.address-subtitle');
 
   addressEdit.onclick = function () {
-    addressTitle.innerHTML = 'Edit Address'; // reset text
-    addressSubTitle.innerHTML = 'Edit your current address';
+    addressTitle.innerHTML = 'ویرایش آدرس'; // reset text
+    addressSubTitle.innerHTML = 'آدرس خود را ویرایش کنید';
   };
 })();

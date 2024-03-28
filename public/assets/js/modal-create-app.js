@@ -1,5 +1,5 @@
 /**
- *  Modal Example Create App
+ *  Modal Example Wizard
  */
 
 'use strict';
@@ -36,7 +36,7 @@ $(function () {
     new Cleave(expiryDateMask1, {
       date: true,
       delimiter: '/',
-      datePattern: ['m', 'y']
+      datePattern: ['y', 'm']
     });
   }
 
@@ -44,7 +44,8 @@ $(function () {
   if (cvvMask1) {
     new Cleave(cvvMask1, {
       numeral: true,
-      numeralPositiveOnly: true
+      numeralPositiveOnly: true,
+      numeralThousandsGroupStyle: 'none'
     });
   }
   appModal.addEventListener('show.bs.modal', function (event) {
@@ -78,7 +79,7 @@ $(function () {
 
       if (wizardCreateAppBtnSubmit) {
         wizardCreateAppBtnSubmit.addEventListener('click', event => {
-          alert('Submitted..!!');
+          alert('ثبت شد ...!!');
         });
       }
     }

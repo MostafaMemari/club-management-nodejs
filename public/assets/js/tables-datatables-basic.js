@@ -35,42 +35,42 @@ document.addEventListener('DOMContentLoaded', function (e) {
         basicFullname: {
           validators: {
             notEmpty: {
-              message: 'The name is required'
+              message: 'وارد کردن نام الزامی است'
             }
           }
         },
         basicPost: {
           validators: {
             notEmpty: {
-              message: 'Post field is required'
+              message: 'وارد کردن شغل الزامی است'
             }
           }
         },
         basicEmail: {
           validators: {
             notEmpty: {
-              message: 'The Email is required'
+              message: 'وارد کردن ایمیل الزامی است'
             },
             emailAddress: {
-              message: 'The value is not a valid email address'
+              message: 'مقدار وارد شده یک آدرس ایمیل معتبر نیست'
             }
           }
         },
         basicDate: {
           validators: {
             notEmpty: {
-              message: 'Joining Date is required'
+              message: 'وارد کردن تاریخ عضویت الزامی است'
             },
             date: {
-              format: 'MM/DD/YYYY',
-              message: 'The value is not a valid date'
+              format: 'YYYY/MM/DD',
+              message: 'مقدار وارد شده یک تاریخ معتبر نیست'
             }
           }
         },
         basicSalary: {
           validators: {
             notEmpty: {
-              message: 'Basic Salary is required'
+              message: 'وارد کردن حقوق پایه الزامی است'
             }
           }
         }
@@ -100,11 +100,13 @@ document.addEventListener('DOMContentLoaded', function (e) {
     flatpickr(formAddNewRecord.querySelector('[name="basicDate"]'), {
       enableTime: false,
       // See https://flatpickr.js.org/formatting/
-      dateFormat: 'm/d/Y',
+      locale: 'fa',
+      dateFormat: 'Y/m/d',
       // After selecting a date, we need to revalidate the field
       onChange: function () {
         fv.revalidateField('basicDate');
-      }
+      },
+      disableMobile: true
     });
   })();
 });
@@ -154,10 +156,10 @@ $(function () {
           responsivePriority: 3,
           checkboxes: true,
           render: function () {
-            return '<input type="checkbox" class="dt-checkboxes form-check-input">';
+            return '<input type="checkbox" class="dt-checkboxes form-check-input mt-0 align-middle">';
           },
           checkboxes: {
-            selectAllRender: '<input type="checkbox" class="form-check-input">'
+            selectAllRender: '<input type="checkbox" class="form-check-input mt-0 align-middle">'
           }
         },
         {
@@ -176,15 +178,14 @@ $(function () {
             if ($user_img) {
               // For Avatar image
               var $output =
-                '<img src="' + assetsPath + 'img/avatars/' + $user_img + '" alt="Avatar" class="rounded-circle">';
+                '<img src="' + assetsPath + 'img/avatars/' + $user_img + '" alt="آواتار" class="rounded-circle">';
             } else {
               // For Avatar badge
               var stateNum = Math.floor(Math.random() * 6);
-              var states = ['success', 'danger', 'warning', 'info', 'primary', 'secondary'];
+              var states = ['success', 'danger', 'warning', 'info', 'dark', 'primary', 'secondary'];
               var $state = states[stateNum],
                 $name = full['full_name'],
-                $initials = $name.match(/\b\w/g) || [];
-              $initials = (($initials.shift() || '') + ($initials.pop() || '')).toUpperCase();
+                $initials = $name.split(' ').slice(0, 2).map(word => word[0]).join('‌') || '';
               $output = '<span class="avatar-initial rounded-circle bg-label-' + $state + '">' + $initials + '</span>';
             }
             // Creates full output for row
@@ -217,55 +218,59 @@ $(function () {
           render: function (data, type, full, meta) {
             var $status_number = full['status'];
             var $status = {
-              1: { title: 'Current', class: 'bg-label-primary' },
-              2: { title: 'Professional', class: ' bg-label-success' },
-              3: { title: 'Rejected', class: ' bg-label-danger' },
-              4: { title: 'Resigned', class: ' bg-label-warning' },
-              5: { title: 'Applied', class: ' bg-label-info' }
+              1: { title: 'کنونی', class: 'bg-label-primary' },
+              2: { title: 'حرفه‌ای', class: ' bg-label-success' },
+              3: { title: 'رد شده', class: ' bg-label-danger' },
+              4: { title: 'استعفا داده', class: ' bg-label-warning' },
+              5: { title: 'درخواست داده', class: ' bg-label-info' }
             };
             if (typeof $status[$status_number] === 'undefined') {
               return data;
             }
             return (
-              '<span class="badge ' + $status[$status_number].class + '">' + $status[$status_number].title + '</span>'
+              '<span class="badge rounded-pill ' +
+              $status[$status_number].class +
+              '">' +
+              $status[$status_number].title +
+              '</span>'
             );
           }
         },
         {
           // Actions
           targets: -1,
-          title: 'Actions',
+          title: 'عمل‌ها',
           orderable: false,
           searchable: false,
           render: function (data, type, full, meta) {
             return (
               '<div class="d-inline-block">' +
-              '<a href="javascript:;" class="btn btn-sm btn-icon dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i class="text-primary ti ti-dots-vertical"></i></a>' +
+              '<a href="javascript:;" class="btn btn-sm btn-icon dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i class="bx bx-dots-vertical-rounded"></i></a>' +
               '<ul class="dropdown-menu dropdown-menu-end m-0">' +
-              '<li><a href="javascript:;" class="dropdown-item">Details</a></li>' +
-              '<li><a href="javascript:;" class="dropdown-item">Archive</a></li>' +
+              '<li><a href="javascript:;" class="dropdown-item">جزئیات</a></li>' +
+              '<li><a href="javascript:;" class="dropdown-item">بایگانی</a></li>' +
               '<div class="dropdown-divider"></div>' +
-              '<li><a href="javascript:;" class="dropdown-item text-danger delete-record">Delete</a></li>' +
+              '<li><a href="javascript:;" class="dropdown-item text-danger delete-record">حذف</a></li>' +
               '</ul>' +
               '</div>' +
-              '<a href="javascript:;" class="btn btn-sm btn-icon item-edit"><i class="text-primary ti ti-pencil"></i></a>'
+              '<a href="javascript:;" class="btn btn-sm btn-icon item-edit"><i class="bx bxs-edit"></i></a>'
             );
           }
         }
       ],
-      order: [[2, 'desc']],
-      dom: '<"card-header flex-column flex-md-row"<"head-label text-center"><"dt-action-buttons text-end pt-3 pt-md-0"B>><"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6 d-flex justify-content-center justify-content-md-end"f>>t<"row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
+      order: [[2, 'asc']],
+      dom: '<"card-header flex-column flex-md-row"<"head-label text-center"><"dt-action-buttons text-end primary-font pt-3 pt-md-0"B>><"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6 d-flex justify-content-center justify-content-md-end"f>>t<"row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
       displayLength: 7,
       lengthMenu: [7, 10, 25, 50, 75, 100],
       buttons: [
         {
           extend: 'collection',
-          className: 'btn btn-label-primary dropdown-toggle me-2 waves-effect waves-light',
-          text: '<i class="ti ti-file-export me-sm-1"></i> <span class="d-none d-sm-inline-block">Export</span>',
+          className: 'btn btn-label-primary dropdown-toggle',
+          text: '<i class="bx bx-export me-sm-1"></i> <span class="d-none d-sm-inline-block">برون‌بری</span>',
           buttons: [
             {
               extend: 'print',
-              text: '<i class="ti ti-printer me-1" ></i>Print',
+              text: '<i class="bx bx-printer me-1" ></i>چاپ',
               className: 'dropdown-item',
               exportOptions: {
                 columns: [3, 4, 5, 6, 7],
@@ -302,7 +307,7 @@ $(function () {
             },
             {
               extend: 'csv',
-              text: '<i class="ti ti-file-text me-1" ></i>Csv',
+              text: '<i class="bx bx-file me-1" ></i>CSV',
               className: 'dropdown-item',
               exportOptions: {
                 columns: [3, 4, 5, 6, 7],
@@ -326,7 +331,7 @@ $(function () {
             },
             {
               extend: 'excel',
-              text: '<i class="ti ti-file-spreadsheet me-1"></i>Excel',
+              text: '<i class="bx bxs-file-export me-1"></i>Excel',
               className: 'dropdown-item',
               exportOptions: {
                 columns: [3, 4, 5, 6, 7],
@@ -350,7 +355,7 @@ $(function () {
             },
             {
               extend: 'pdf',
-              text: '<i class="ti ti-file-description me-1"></i>Pdf',
+              text: '<i class="bx bxs-file-pdf me-1"></i>PDF',
               className: 'dropdown-item',
               exportOptions: {
                 columns: [3, 4, 5, 6, 7],
@@ -374,7 +379,7 @@ $(function () {
             },
             {
               extend: 'copy',
-              text: '<i class="ti ti-copy me-1" ></i>Copy',
+              text: '<i class="bx bx-copy me-1" ></i>کپی',
               className: 'dropdown-item',
               exportOptions: {
                 columns: [3, 4, 5, 6, 7],
@@ -399,8 +404,8 @@ $(function () {
           ]
         },
         {
-          text: '<i class="ti ti-plus me-sm-1"></i> <span class="d-none d-sm-inline-block">Add New Record</span>',
-          className: 'create-new btn btn-primary waves-effect waves-light'
+          text: '<i class="bx bx-plus me-sm-1"></i> <span class="d-none d-sm-inline-block">افزودن رکورد جدید</span>',
+          className: 'create-new btn btn-primary ms-2'
         }
       ],
       responsive: {
@@ -408,7 +413,7 @@ $(function () {
           display: $.fn.dataTable.Responsive.display.modal({
             header: function (row) {
               var data = row.data();
-              return 'Details of ' + data['full_name'];
+              return 'جزئیات ' + data['full_name'];
             }
           }),
           type: 'column',
@@ -436,7 +441,7 @@ $(function () {
         }
       }
     });
-    $('div.head-label').html('<h5 class="card-title mb-0">DataTable with Buttons</h5>');
+    $('div.head-label').html('<h5 class="card-title mb-0">جدول داده با دکمه</h5>');
   }
 
   // Add New record
@@ -496,37 +501,41 @@ $(function () {
           render: function (data, type, full, meta) {
             var $status_number = full['status'];
             var $status = {
-              1: { title: 'Current', class: 'bg-label-primary' },
-              2: { title: 'Professional', class: ' bg-label-success' },
-              3: { title: 'Rejected', class: ' bg-label-danger' },
-              4: { title: 'Resigned', class: ' bg-label-warning' },
-              5: { title: 'Applied', class: ' bg-label-info' }
+              1: { title: 'کنونی', class: 'bg-label-primary' },
+              2: { title: 'حرفه‌ای', class: ' bg-label-success' },
+              3: { title: 'رد شده', class: ' bg-label-danger' },
+              4: { title: 'استعفا داده', class: ' bg-label-warning' },
+              5: { title: 'درخواست داده', class: ' bg-label-info' }
             };
             if (typeof $status[$status_number] === 'undefined') {
               return data;
             }
             return (
-              '<span class="badge ' + $status[$status_number].class + '">' + $status[$status_number].title + '</span>'
+              '<span class="badge rounded-pill ' +
+              $status[$status_number].class +
+              '">' +
+              $status[$status_number].title +
+              '</span>'
             );
           }
         },
         {
           // Actions
           targets: -1,
-          title: 'Actions',
+          title: 'عمل‌ها',
           orderable: false,
           render: function (data, type, full, meta) {
             return (
               '<div class="d-inline-block">' +
-              '<a href="javascript:;" class="btn btn-sm btn-icon dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i class="text-primary ti ti-dots-vertical"></i></a>' +
+              '<a href="javascript:;" class="btn btn-sm btn-icon dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i class="bx bx-dots-vertical-rounded"></i></a>' +
               '<div class="dropdown-menu dropdown-menu-end m-0">' +
-              '<a href="javascript:;" class="dropdown-item">Details</a>' +
-              '<a href="javascript:;" class="dropdown-item">Archive</a>' +
+              '<a href="javascript:;" class="dropdown-item">جزئیات</a>' +
+              '<a href="javascript:;" class="dropdown-item">بایگانی</a>' +
               '<div class="dropdown-divider"></div>' +
-              '<a href="javascript:;" class="dropdown-item text-danger delete-record">Delete</a>' +
+              '<a href="javascript:;" class="dropdown-item text-danger delete-record">حذف</a>' +
               '</div>' +
               '</div>' +
-              '<a href="javascript:;" class="btn btn-sm btn-icon item-edit"><i class="text-primary ti ti-pencil"></i></a>'
+              '<a href="javascript:;" class="btn btn-sm btn-icon item-edit"><i class="bx bxs-edit"></i></a>'
             );
           }
         }
@@ -573,38 +582,42 @@ $(function () {
           render: function (data, type, full, meta) {
             var $status_number = full['status'];
             var $status = {
-              1: { title: 'Current', class: 'bg-label-primary' },
-              2: { title: 'Professional', class: ' bg-label-success' },
-              3: { title: 'Rejected', class: ' bg-label-danger' },
-              4: { title: 'Resigned', class: ' bg-label-warning' },
-              5: { title: 'Applied', class: ' bg-label-info' }
+              1: { title: 'کنونی', class: 'bg-label-primary' },
+              2: { title: 'حرفه‌ای', class: ' bg-label-success' },
+              3: { title: 'رد شده', class: ' bg-label-danger' },
+              4: { title: 'استعفا داده', class: ' bg-label-warning' },
+              5: { title: 'درخواست داده', class: ' bg-label-info' }
             };
             if (typeof $status[$status_number] === 'undefined') {
               return data;
             }
             return (
-              '<span class="badge ' + $status[$status_number].class + '">' + $status[$status_number].title + '</span>'
+              '<span class="badge rounded-pill ' +
+              $status[$status_number].class +
+              '">' +
+              $status[$status_number].title +
+              '</span>'
             );
           }
         },
         {
           // Actions
           targets: -1,
-          title: 'Actions',
+          title: 'عمل‌ها',
           orderable: false,
           searchable: false,
           render: function (data, type, full, meta) {
             return (
               '<div class="d-inline-block">' +
-              '<a href="javascript:;" class="btn btn-sm btn-icon dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i class="text-primary ti ti-dots-vertical"></i></a>' +
+              '<a href="javascript:;" class="btn btn-sm btn-icon dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i class="bx bx-dots-vertical-rounded"></i></a>' +
               '<div class="dropdown-menu dropdown-menu-end m-0">' +
-              '<a href="javascript:;" class="dropdown-item">Details</a>' +
-              '<a href="javascript:;" class="dropdown-item">Archive</a>' +
+              '<a href="javascript:;" class="dropdown-item">جزئیات</a>' +
+              '<a href="javascript:;" class="dropdown-item">بایگانی</a>' +
               '<div class="dropdown-divider"></div>' +
-              '<a href="javascript:;" class="dropdown-item text-danger delete-record">Delete</a>' +
+              '<a href="javascript:;" class="dropdown-item text-danger delete-record">حذف</a>' +
               '</div>' +
               '</div>' +
-              '<a href="javascript:;" class="btn btn-sm btn-icon item-edit"><i class="text-primary ti ti-pencil"></i></a>'
+              '<a href="javascript:;" class="btn btn-sm btn-icon item-edit"><i class="bx bxs-edit"></i></a>'
             );
           }
         }
@@ -636,7 +649,7 @@ $(function () {
           display: $.fn.dataTable.Responsive.display.modal({
             header: function (row) {
               var data = row.data();
-              return 'Details of ' + data['full_name'];
+              return 'جزئیات ' + data['full_name'];
             }
           }),
           type: 'column',
@@ -679,7 +692,7 @@ $(function () {
   // Multilingual DataTable
   // --------------------------------------------------------------------
 
-  var lang = 'German';
+  var lang = 'English';
   if (dt_multilingual_table.length) {
     var table_language = dt_multilingual_table.DataTable({
       ajax: assetsPath + 'json/table-datatable.json',
@@ -720,7 +733,11 @@ $(function () {
               return data;
             }
             return (
-              '<span class="badge ' + $status[$status_number].class + '">' + $status[$status_number].title + '</span>'
+              '<span class="badge rounded-pill ' +
+              $status[$status_number].class +
+              '">' +
+              $status[$status_number].title +
+              '</span>'
             );
           }
         },
@@ -733,7 +750,7 @@ $(function () {
           render: function (data, type, full, meta) {
             return (
               '<div class="d-inline-block">' +
-              '<a href="javascript:;" class="btn btn-sm btn-icon dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i class="text-primary ti ti-dots-vertical"></i></a>' +
+              '<a href="javascript:;" class="btn btn-sm btn-icon dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i class="bx bx-dots-vertical-rounded"></i></a>' +
               '<div class="dropdown-menu dropdown-menu-end m-0">' +
               '<a href="javascript:;" class="dropdown-item">Details</a>' +
               '<a href="javascript:;" class="dropdown-item">Archive</a>' +
@@ -741,7 +758,7 @@ $(function () {
               '<a href="javascript:;" class="dropdown-item text-danger delete-record">Delete</a>' +
               '</div>' +
               '</div>' +
-              '<a href="javascript:;" class="btn btn-sm btn-icon item-edit"><i class="text-primary ti ti-pencil"></i></a>'
+              '<a href="javascript:;" class="btn btn-sm btn-icon item-edit"><i class="bx bxs-edit"></i></a>'
             );
           }
         }

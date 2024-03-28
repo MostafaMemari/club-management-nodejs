@@ -21,56 +21,56 @@ $(function () {
     };
   };
   var states = [
-    'Alabama',
-    'Alaska',
-    'Arizona',
-    'Arkansas',
-    'California',
-    'Colorado',
-    'Connecticut',
-    'Delaware',
-    'Florida',
-    'Georgia',
-    'Hawaii',
-    'Idaho',
-    'Illinois',
-    'Indiana',
-    'Iowa',
-    'Kansas',
-    'Kentucky',
-    'Louisiana',
-    'Maine',
-    'Maryland',
-    'Massachusetts',
-    'Michigan',
-    'Minnesota',
-    'Mississippi',
-    'Missouri',
-    'Montana',
-    'Nebraska',
-    'Nevada',
-    'New Hampshire',
-    'New Jersey',
-    'New Mexico',
-    'New York',
-    'North Carolina',
-    'North Dakota',
-    'Ohio',
-    'Oklahoma',
-    'Oregon',
-    'Pennsylvania',
-    'Rhode Island',
-    'South Carolina',
-    'South Dakota',
-    'Tennessee',
-    'Texas',
-    'Utah',
-    'Vermont',
-    'Virginia',
-    'Washington',
-    'West Virginia',
-    'Wisconsin',
-    'Wyoming'
+    'آلاباما',
+    'آلاسکا',
+    'آریزونا',
+    'آرکانزاس',
+    'کالیفرنیا',
+    'کولرادو',
+    'کانکتیکات',
+    'دلاویر',
+    'فلوریدا',
+    'جورجیا',
+    'هاوایی',
+    'ایداهو',
+    'ایلینویس',
+    'ایندیانا',
+    'آیوا',
+    'کانزاس',
+    'کنتاکی',
+    'لویزیانا',
+    'مین',
+    'مریلند',
+    'ماساچوست',
+    'میشیگان',
+    'مینه‌سوتا',
+    'میسیسیپی',
+    'میسوری',
+    'مونتانا',
+    'نبراسکا',
+    'نوادا',
+    'نیوهمپشیر',
+    'نیوجرسی',
+    'نیومکزیکو',
+    'نیویورک',
+    'کارولینای شمالی',
+    'داکوتای شمالی',
+    'اوهایو',
+    'اوکلاهاما',
+    'اورگون',
+    'پنسیلوانیا',
+    'جزید رود',
+    'کارولینای جنوبی',
+    'داکوتای جنوبی',
+    'تنسی',
+    'تگزاس',
+    'یوتا',
+    'ورمونت',
+    'ویرجینیا',
+    'واشنگتن',
+    'ویرجینیای غربی',
+    'ویسکونسین',
+    'ویومینگ'
   ];
 
   if (isRtl) {
@@ -134,7 +134,7 @@ $(function () {
   // Render default Suggestions
   function renderDefaults(q, sync) {
     if (q === '') {
-      sync(prefetchExample.get('Alaska', 'New York', 'Washington'));
+      sync(prefetchExample.get('آلاسکا', 'نیویورک', 'واشنگتن'));
     } else {
       prefetchExample.search(q, sync);
     }
@@ -170,11 +170,11 @@ $(function () {
     templates: {
       empty: [
         '<div class="empty-message p-2">',
-        'unable to find any Best Picture winners that match the current query',
+        'قادر به یافتن برنده جایزه مطابق با عبارت وارد شده نشدیم',
         '</div>'
       ].join('\n'),
       suggestion: function (data) {
-        return '<div><span class="fw-medium">' + data.value + '</span> – ' + data.year + '</div>';
+        return '<div><strong>' + data.value + '</strong> – ' + data.year + '</div>';
       }
     }
   });
@@ -268,7 +268,7 @@ $(function () {
       source: nbaExample,
       display: 'team',
       templates: {
-        header: '<h5 class="league-name border-bottom mb-0 mx-3 mt-3 pb-2">NBA Teams</h5>'
+        header: '<h5 class="league-name border-bottom mb-0 mx-3 mt-3 pb-2">تیم‌های NBA</h5>'
       }
     },
     {
@@ -276,7 +276,7 @@ $(function () {
       source: nhlExample,
       display: 'team',
       templates: {
-        header: '<h5 class="league-name border-bottom mb-0 mx-3 mt-3 pb-2">NHL Teams</h5>'
+        header: '<h5 class="league-name border-bottom mb-0 mx-3 mt-3 pb-2">تیم‌های NHL</h5>'
       }
     }
   );

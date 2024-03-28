@@ -8,81 +8,81 @@
   const startBtn = document.querySelector('#shepherd-example');
 
   function setupTour(tour) {
-    const backBtnClass = 'btn btn-sm btn-label-secondary md-btn-flat waves-effect waves-light',
-      nextBtnClass = 'btn btn-sm btn-primary btn-next waves-effect waves-light';
+    const backBtnClass = 'btn btn-sm btn-label-secondary md-btn-flat',
+      nextBtnClass = 'btn btn-sm btn-primary btn-next';
     tour.addStep({
-      title: 'Navbar',
-      text: 'This is your navbar',
+      title: 'نوار ناوبری',
+      text: 'این نوار ناوبری شماست',
       attachTo: { element: '.navbar', on: 'bottom' },
       buttons: [
         {
           action: tour.cancel,
           classes: backBtnClass,
-          text: 'Skip'
+          text: 'رد کردن'
         },
         {
-          text: 'Next',
+          text: 'بعدی',
           classes: nextBtnClass,
           action: tour.next
         }
       ]
     });
     tour.addStep({
-      title: 'Card',
-      text: 'This is a card',
+      title: 'کارت',
+      text: 'این یک کارت است',
       attachTo: { element: '.tour-card', on: 'top' },
       buttons: [
         {
-          text: 'Skip',
+          text: 'رد کردن',
           classes: backBtnClass,
           action: tour.cancel
         },
         {
-          text: 'Back',
+          text: 'قبلی',
           classes: backBtnClass,
           action: tour.back
         },
         {
-          text: 'Next',
+          text: 'بعدی',
           classes: nextBtnClass,
           action: tour.next
         }
       ]
     });
     tour.addStep({
-      title: 'Footer',
-      text: 'This is the Footer',
+      title: 'فوتر',
+      text: 'این فوتر است',
       attachTo: { element: '.footer', on: 'top' },
       buttons: [
         {
-          text: 'Skip',
+          text: 'رد کردن',
           classes: backBtnClass,
           action: tour.cancel
         },
         {
-          text: 'Back',
+          text: 'قبلی',
           classes: backBtnClass,
           action: tour.back
         },
         {
-          text: 'Next',
+          text: 'بعدی',
           classes: nextBtnClass,
           action: tour.next
         }
       ]
     });
     tour.addStep({
-      title: 'Upgrade',
-      text: 'Click here to upgrade plan',
+      title: 'ارتقا',
+      text: 'برای ارتقای پلن اینجا کلیک کنید',
       attachTo: { element: '.footer-link', on: 'top' },
       buttons: [
         {
-          text: 'Back',
+          text: 'قبلی',
           classes: backBtnClass,
           action: tour.back
         },
         {
-          text: 'Finish',
+          text: 'پایان',
           classes: nextBtnClass,
           action: tour.cancel
         }
@@ -113,59 +113,59 @@
   const startBtnDocs = document.querySelector('#shepherd-docs-example');
 
   function setupTourDocs(tour) {
-    const backBtnClass = 'btn btn-sm btn-label-secondary md-btn-flat waves-effect waves-light',
-      nextBtnClass = 'btn btn-sm btn-primary btn-next waves-effect waves-light';
+    const backBtnClass = 'btn btn-sm btn-label-secondary md-btn-flat',
+      nextBtnClass = 'btn btn-sm btn-primary btn-next';
     tour.addStep({
-      title: 'Navbar',
-      text: 'This is your navbar',
+      title: 'نوار ناوبری',
+      text: 'این نوار ناوبری شماست',
       attachTo: { element: '.navbar', on: 'bottom' },
       buttons: [
         {
           action: tour.cancel,
           classes: backBtnClass,
-          text: 'Skip'
+          text: 'رد کردن'
         },
         {
-          text: 'Next',
+          text: 'بعدی',
           classes: nextBtnClass,
           action: tour.next
         }
       ]
     });
     tour.addStep({
-      title: 'Footer',
-      text: 'This is the Footer',
+      title: 'فوتر',
+      text: 'این فوتر است',
       attachTo: { element: '.footer', on: 'top' },
       buttons: [
         {
-          text: 'Skip',
+          text: 'رد کردن',
           classes: backBtnClass,
           action: tour.cancel
         },
         {
-          text: 'Back',
+          text: 'قبلی',
           classes: backBtnClass,
           action: tour.back
         },
         {
-          text: 'Next',
+          text: 'بعدی',
           classes: nextBtnClass,
           action: tour.next
         }
       ]
     });
     tour.addStep({
-      title: 'Social Link',
-      text: 'Click here share on social media',
+      title: 'لینک اجتماعی',
+      text: 'برای اشتراک گذاری در رسانه اجتماعی اینجا کلیک کنید',
       attachTo: { element: '.footer-link', on: 'top' },
       buttons: [
         {
-          text: 'Back',
+          text: 'قبلی',
           classes: backBtnClass,
           action: tour.back
         },
         {
-          text: 'Finish',
+          text: 'پایان',
           classes: nextBtnClass,
           action: tour.cancel
         }

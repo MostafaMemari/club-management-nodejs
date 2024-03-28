@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
         modalEnableOTPPhone: {
           validators: {
             notEmpty: {
-              message: 'Please enter your mobile number'
+              message: 'لطفا شماره موبایل خود را وارد کنید'
             }
           }
         }

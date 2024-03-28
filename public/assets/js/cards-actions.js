@@ -21,8 +21,8 @@
         new bootstrap.Collapse(collapseElement.closest('.card').querySelector('.collapse'));
         // Toggle collapsed class in `.card-header` element
         collapseElement.closest('.card-header').classList.toggle('collapsed');
-        // Toggle class ti-chevron-down & ti-chevron-right
-        Helpers._toggleClass(collapseElement.firstElementChild, 'ti-chevron-down', 'ti-chevron-right');
+        // Toggle class bx-chevron-down & bx-chevron-up
+        Helpers._toggleClass(collapseElement.firstElementChild, 'bx-chevron-down', 'bx-chevron-up');
       });
     });
   }
@@ -33,8 +33,8 @@
     expandElementList.map(function (expandElement) {
       expandElement.addEventListener('click', event => {
         event.preventDefault();
-        // Toggle class ti-arrows-maximize & ti-arrows-minimize
-        Helpers._toggleClass(expandElement.firstElementChild, 'ti-arrows-maximize', 'ti-arrows-minimize');
+        // Toggle class bx-fullscreen & bx-exit-fullscreen
+        Helpers._toggleClass(expandElement.firstElementChild, 'bx-fullscreen', 'bx-exit-fullscreen');
 
         expandElement.closest('.card').classList.toggle('card-fullscreen');
       });
@@ -47,13 +47,13 @@
     //Esc button
     if (event.key === 'Escape') {
       const cardFullscreen = document.querySelector('.card-fullscreen');
-      // Toggle class ti-arrows-maximize & ti-arrows-minimize
+      // Toggle class bx-fullscreen & bx-exit-fullscreen
 
       if (cardFullscreen) {
         Helpers._toggleClass(
           cardFullscreen.querySelector('.card-expand').firstChild,
-          'ti-arrows-maximize',
-          'ti-arrows-minimize'
+          'bx-fullscreen',
+          'bx-exit-fullscreen'
         );
         cardFullscreen.classList.toggle('card-fullscreen');
       }
@@ -91,7 +91,7 @@ $(function () {
       var $this = $(this);
       $this.closest('.card').block({
         message:
-          '<div class="sk-fold sk-primary"><div class="sk-fold-cube"></div><div class="sk-fold-cube"></div><div class="sk-fold-cube"></div><div class="sk-fold-cube"></div></div><h5>LOADING...</h5>',
+          '<div class="sk-fold sk-primary"><div class="sk-fold-cube"></div><div class="sk-fold-cube"></div><div class="sk-fold-cube"></div><div class="sk-fold-cube"></div></div><h5>در حال بارگذاری ...</h5>',
 
         css: {
           backgroundColor: 'transparent',
@@ -109,7 +109,7 @@ $(function () {
             .closest('.card')
             .find('.card-alert')
             .html(
-              '<div class="alert alert-danger alert-dismissible fade show" role="alert"><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button><span class="fw-medium">Holy grail!</span> Your success/error message here.</div>'
+              '<div class="alert alert-solid-danger alert-dismissible fade show" role="alert"><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button><strong>انجام شد!</strong> پیام موفقیت / خطا در اینجا.</div>'
             );
         }
       }, 2500);

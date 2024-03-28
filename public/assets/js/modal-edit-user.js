@@ -13,7 +13,7 @@ $(function () {
     select2.each(function () {
       var $this = $(this);
       $this.wrap('<div class="position-relative"></div>').select2({
-        placeholder: 'Select value',
+        placeholder: 'انتخاب',
         dropdownParent: $this.parent()
       });
     });
@@ -49,38 +49,38 @@ document.addEventListener('DOMContentLoaded', function (e) {
         modalEditUserFirstName: {
           validators: {
             notEmpty: {
-              message: 'Please enter your first name'
+              message: 'لطفا نام را وارد کنید'
             },
             regexp: {
               regexp: /^[a-zA-Zs]+$/,
-              message: 'The first name can only consist of alphabetical'
+              message: 'نام فقط می‌تواند شامل حروف الفبا باشد'
             }
           }
         },
         modalEditUserLastName: {
           validators: {
             notEmpty: {
-              message: 'Please enter your last name'
+              message: 'لطفا نام خانوادگی را وارد کنید'
             },
             regexp: {
               regexp: /^[a-zA-Zs]+$/,
-              message: 'The last name can only consist of alphabetical'
+              message: 'نام خانوادگی فقط می‌تواند شامل حروف الفبا باشد'
             }
           }
         },
         modalEditUserName: {
           validators: {
             notEmpty: {
-              message: 'Please enter your username'
+              message: 'لطفا نام کاربری را وارد کنید'
             },
             stringLength: {
               min: 6,
               max: 30,
-              message: 'The name must be more than 6 and less than 30 characters long'
+              message: 'نام کاربری باید بیش از 6 و کمتر از 30 کاراکتر باشد'
             },
             regexp: {
               regexp: /^[a-zA-Z0-9 ]+$/,
-              message: 'The name can only consist of alphabetical, number and space'
+              message: 'نام کاربری فقط می‌تواند شامل حروف الفبا، اعداد و فاصله باشد'
             }
           }
         }

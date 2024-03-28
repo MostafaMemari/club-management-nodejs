@@ -16,30 +16,28 @@ $(function () {
   // --------------------------------------------------------------------
 
   // Datepicker for advanced filter
-  var rangePickr = $('.flatpickr-range'),
-    dateFormat = 'MM/DD/YYYY';
+  var rangePickr = $('.flatpickr-range');
 
   if (rangePickr.length) {
     rangePickr.flatpickr({
       mode: 'range',
-      dateFormat: 'm/d/Y',
+      locale: 'fa',
+      dateFormat: 'Y/m/d',
       orientation: isRtl ? 'auto right' : 'auto left',
-      locale: {
-        format: dateFormat
-      },
       onClose: function (selectedDates, dateStr, instance) {
         var startDate = '',
           endDate = new Date();
         if (selectedDates[0] != undefined) {
-          startDate = moment(selectedDates[0]).format('MM/DD/YYYY');
+          startDate = selectedDates[0];
           startDateEle.val(startDate);
         }
         if (selectedDates[1] != undefined) {
-          endDate = moment(selectedDates[1]).format('MM/DD/YYYY');
+          endDate = selectedDates[1];
           endDateEle.val(endDate);
         }
         $(rangePickr).trigger('change').trigger('keyup');
-      }
+      },
+      disableMobile: true
     });
   }
 
@@ -65,7 +63,7 @@ $(function () {
   var filterByDate = function (column, startDate, endDate) {
     // Custom filter syntax requires pushing the new filter to the global filter array
     $.fn.dataTableExt.afnFiltering.push(function (oSettings, aData, iDataIndex) {
-      var rowDate = normalizeDate(aData[column]),
+      var rowDate = normalizeDate(new JDate(aData[column])['_date']),
         start = normalizeDate(startDate),
         end = normalizeDate(endDate);
 
@@ -84,7 +82,7 @@ $(function () {
 
   // converts date strings to a Date object, then normalized into a YYYYMMMDD format (ex: 20131220). Makes comparing dates easier. ex: 20131220 > 20121220
   var normalizeDate = function (dateString) {
-    var date = new Date(dateString);
+    var date = new JDate( new Date(dateString) );
     var normalized =
       date.getFullYear() + '' + ('0' + (date.getMonth() + 1)).slice(-2) + '' + ('0' + date.getDate()).slice(-2);
     return normalized;
@@ -110,7 +108,7 @@ $(function () {
     $('.dt-column-search thead tr').clone(true).appendTo('.dt-column-search thead');
     $('.dt-column-search thead tr:eq(1) th').each(function (i) {
       var title = $(this).text();
-      $(this).html('<input type="text" class="form-control" placeholder="Search ' + title + '" />');
+      $(this).html('<input type="text" class="form-control" placeholder="جستجوی ' + title + '" />');
 
       $('input', this).on('keyup change', function () {
         if (dt_filter.column(i).search() !== this.value) {
@@ -168,7 +166,7 @@ $(function () {
           display: $.fn.dataTable.Responsive.display.modal({
             header: function (row) {
               var data = row.data();
-              return 'Details of ' + data['full_name'];
+              return 'جزئیات ' + data['full_name'];
             }
           }),
           type: 'column',
@@ -237,17 +235,21 @@ $(function () {
           render: function (data, type, full, meta) {
             var $status_number = full['status'];
             var $status = {
-              1: { title: 'Current', class: 'bg-label-primary' },
-              2: { title: 'Professional', class: ' bg-label-success' },
-              3: { title: 'Rejected', class: ' bg-label-danger' },
-              4: { title: 'Resigned', class: ' bg-label-warning' },
-              5: { title: 'Applied', class: ' bg-label-info' }
+              1: { title: 'کنونی', class: 'bg-label-primary' },
+              2: { title: 'حرفه‌ای', class: ' bg-label-success' },
+              3: { title: 'رد شده', class: ' bg-label-danger' },
+              4: { title: 'استعفا داده', class: ' bg-label-warning' },
+              5: { title: 'درخواست داده', class: ' bg-label-info' }
             };
             if (typeof $status[$status_number] === 'undefined') {
               return data;
             }
             return (
-              '<span class="badge ' + $status[$status_number].class + '">' + $status[$status_number].title + '</span>'
+              '<span class="badge rounded-pill ' +
+              $status[$status_number].class +
+              '">' +
+              $status[$status_number].title +
+              '</span>'
             );
           }
         }
@@ -260,7 +262,7 @@ $(function () {
           display: $.fn.dataTable.Responsive.display.modal({
             header: function (row) {
               var data = row.data();
-              return 'Details of ' + data['full_name'];
+              return 'جزئیات ' + data['full_name'];
             }
           }),
           type: 'column',

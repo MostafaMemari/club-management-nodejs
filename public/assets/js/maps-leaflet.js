@@ -4435,7 +4435,7 @@
     const markerLocation = L.marker([48.817152, 2.455], {
       draggable: 'true'
     }).addTo(draggableMap);
-    markerLocation.bindPopup("<b>You're here!</b>").openPopup();
+    markerLocation.bindPopup("<b>شما اینجا هستید!</b>").openPopup();
     L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png', {
       attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>',
       maxZoom: 18
@@ -4456,7 +4456,7 @@
       const radius = e.accuracy;
       L.marker(e.latlng)
         .addTo(userLocation)
-        .bindPopup('You are somewhere around ' + radius + ' meters from this point')
+        .bindPopup('شما جایی در حدود ' + radius + ' متر از این مکان هستید')
         .openPopup();
       L.circle(e.latlng, radius).addTo(userLocation);
     }
@@ -4561,10 +4561,10 @@
   // --------------------------------------------------------------------
   const layerControlVar = document.getElementById('layerControl');
   if (layerControlVar) {
-    const littleton = L.marker([39.61, -105.02]).bindPopup('This is Littleton, CO.'),
-      denver = L.marker([39.74, -104.99]).bindPopup('This is Denver, CO.'),
-      aurora = L.marker([39.73, -104.8]).bindPopup('This is Aurora, CO.'),
-      golden = L.marker([39.77, -105.23]).bindPopup('This is Golden, CO.');
+    const littleton = L.marker([39.61, -105.02]).bindPopup('اینجا شرکت گوگل هست.'),
+      denver = L.marker([39.74, -104.99]).bindPopup('اینجا شرکت اپل هست.'),
+      aurora = L.marker([39.73, -104.8]).bindPopup('اینجا شرکت مایکروسافت هست.'),
+      golden = L.marker([39.77, -105.23]).bindPopup('اینجا شرکت اینتل هست.');
     const cities = L.layerGroup([littleton, denver, aurora, golden]);
     const street = L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png', {
         attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>',

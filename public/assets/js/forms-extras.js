@@ -52,7 +52,7 @@
   if (dateMask) {
     new Cleave(dateMask, {
       date: true,
-      delimiter: '-',
+      delimiter: '/',
       datePattern: ['Y', 'm', 'd']
     });
   }
@@ -84,7 +84,7 @@
   // Delimiter
   if (delimiterMask) {
     new Cleave(delimiterMask, {
-      delimiter: '·',
+      delimiter: '.',
       blocks: [3, 3, 3],
       uppercase: true
     });
@@ -121,9 +121,9 @@ $(function () {
       $(this).maxlength({
         warningClass: 'label label-success bg-success text-white',
         limitReachedClass: 'label label-danger',
-        separator: ' out of ',
-        preText: 'You typed ',
-        postText: ' chars available.',
+        separator: ' از ',
+        preText: 'شما ',
+        postText: ' حرف مجاز را تایپ کرده اید.',
         validate: true,
         threshold: +this.getAttribute('maxlength')
       });
@@ -157,7 +157,7 @@ $(function () {
         $(this).slideDown();
       },
       hide: function (e) {
-        confirm('Are you sure you want to delete this element?') && $(this).slideUp(e);
+        confirm('آیا از حذف این المان اطمینان دارید؟') && $(this).slideUp(e);
       }
     });
   }

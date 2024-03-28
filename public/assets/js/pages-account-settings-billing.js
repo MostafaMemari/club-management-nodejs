@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
       new Cleave(expiryDateMask, {
         date: true,
         delimiter: '/',
-        datePattern: ['m', 'y']
+        datePattern: ['y', 'm']
       });
     }
 
@@ -38,7 +38,8 @@ document.addEventListener('DOMContentLoaded', function (e) {
     if (CVVMask) {
       new Cleave(CVVMask, {
         numeral: true,
-        numeralPositiveOnly: true
+        numeralPositiveOnly: true,
+        numeralThousandsGroupStyle: 'none'
       });
     }
 
@@ -54,17 +55,17 @@ document.addEventListener('DOMContentLoaded', function (e) {
           companyName: {
             validators: {
               notEmpty: {
-                message: 'Please enter company name'
+                message: 'لطفا نام شرکت را وارد کنید'
               }
             }
           },
           billingEmail: {
             validators: {
               notEmpty: {
-                message: 'Please enter billing email'
+                message: 'لطفا ایمیل صورتحساب را وارد کنید'
               },
               emailAddress: {
-                message: 'Please enter valid email address'
+                message: 'لطفا یک آدرس ایمیل معتبر وارد کنید'
               }
             }
           }
@@ -90,7 +91,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
           paymentCard: {
             validators: {
               notEmpty: {
-                message: 'Please enter your credit card number'
+                message: 'لطفا شماره کارت اعتباری خود را وارد کنید'
               }
             }
           }
@@ -125,33 +126,36 @@ document.addEventListener('DOMContentLoaded', function (e) {
     if (cancelSubscription) {
       cancelSubscription.onclick = function () {
         Swal.fire({
-          text: 'Are you sure you would like to cancel your subscription?',
+          text: 'آیا از لغو اشتراک خود اطمینان دارید؟',
           icon: 'warning',
           showCancelButton: true,
-          confirmButtonText: 'Yes',
+          confirmButtonText: 'بله',
+          cancelButtonText: 'انصراف',
           customClass: {
-            confirmButton: 'btn btn-primary me-2 waves-effect waves-light',
-            cancelButton: 'btn btn-label-secondary waves-effect waves-light'
+            confirmButton: 'btn btn-primary me-2',
+            cancelButton: 'btn btn-label-secondary'
           },
           buttonsStyling: false
         }).then(function (result) {
           if (result.value) {
             Swal.fire({
               icon: 'success',
-              title: 'Unsubscribed!',
-              text: 'Your subscription cancelled successfully.',
+              title: 'لغو شد!',
+              text: 'اشتراک شما با موفقیت لغو شد.',
               customClass: {
-                confirmButton: 'btn btn-success waves-effect waves-light'
-              }
+                confirmButton: 'btn btn-success'
+              },
+              confirmButtonText: 'باشه'
             });
           } else if (result.dismiss === Swal.DismissReason.cancel) {
             Swal.fire({
-              title: 'Cancelled',
-              text: 'Unsubscription Cancelled!!',
+              title: 'انصراف داده شد',
+              text: 'از لغو اشتراک انصراف داده شد!!',
               icon: 'error',
               customClass: {
-                confirmButton: 'btn btn-success waves-effect waves-light'
-              }
+                confirmButton: 'btn btn-success'
+              },
+              confirmButtonText: 'باشه'
             });
           }
         });

@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
       new Cleave(editExpiryDateMaskEdit, {
         date: true,
         delimiter: '/',
-        datePattern: ['m', 'y']
+        datePattern: ['y', 'm']
       });
     }
 
@@ -38,7 +38,8 @@ document.addEventListener('DOMContentLoaded', function (e) {
     if (editCVVMaskEdit) {
       new Cleave(editCVVMaskEdit, {
         numeral: true,
-        numeralPositiveOnly: true
+        numeralPositiveOnly: true,
+        numeralThousandsGroupStyle: 'none'
       });
     }
 
@@ -48,7 +49,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
         modalEditCard: {
           validators: {
             notEmpty: {
-              message: 'Please enter your credit card number'
+              message: 'لطفا شماره کارت اعتباری خود را وارد کنید'
             }
           }
         }

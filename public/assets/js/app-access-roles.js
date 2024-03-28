@@ -8,16 +8,16 @@
 $(function () {
   var dtUserTable = $('.datatables-users'),
     statusObj = {
-      1: { title: 'Pending', class: 'bg-label-warning' },
-      2: { title: 'Active', class: 'bg-label-success' },
-      3: { title: 'Inactive', class: 'bg-label-secondary' }
+      1: { title: 'در انتظار', class: 'bg-label-warning' },
+      2: { title: 'فعال', class: 'bg-label-success' },
+      3: { title: 'غیرفعال', class: 'bg-label-secondary' }
     };
 
   var userView = 'app-user-view-account.html';
 
   // Users List datatable
   if (dtUserTable.length) {
-    var dtUser = dtUserTable.DataTable({
+    dtUserTable.DataTable({
       ajax: assetsPath + 'json/user-list.json', // JSON file to add data
       columns: [
         // columns according to JSON
@@ -52,29 +52,28 @@ $(function () {
             if ($image) {
               // For Avatar image
               var $output =
-                '<img src="' + assetsPath + 'img/avatars/' + $image + '" alt="Avatar" class="rounded-circle">';
+                '<img src="' + assetsPath + 'img/avatars/' + $image + '" alt="آواتار" class="rounded-circle">';
             } else {
               // For Avatar badge
-              var stateNum = Math.floor(Math.random() * 6);
-              var states = ['success', 'danger', 'warning', 'info', 'primary', 'secondary'];
+              var stateNum = Math.floor(Math.random() * 6) + 1;
+              var states = ['success', 'danger', 'warning', 'info', 'dark', 'primary', 'secondary'];
               var $state = states[stateNum],
                 $name = full['full_name'],
-                $initials = $name.match(/\b\w/g) || [];
-              $initials = (($initials.shift() || '') + ($initials.pop() || '')).toUpperCase();
+                $initials = $name.split(' ').slice(0, 2).map(word => word[0]).join('‌') || '';
               $output = '<span class="avatar-initial rounded-circle bg-label-' + $state + '">' + $initials + '</span>';
             }
             // Creates full output for row
             var $row_output =
               '<div class="d-flex justify-content-left align-items-center">' +
               '<div class="avatar-wrapper">' +
-              '<div class="avatar me-3">' +
+              '<div class="avatar avatar-sm me-3">' +
               $output +
               '</div>' +
               '</div>' +
               '<div class="d-flex flex-column">' +
               '<a href="' +
               userView +
-              '" class="text-body text-truncate"><span class="fw-medium">' +
+              '" class="text-body text-truncate"><span class="fw-semibold">' +
               $name +
               '</span></a>' +
               '<small class="text-muted">@' +
@@ -91,16 +90,16 @@ $(function () {
           render: function (data, type, full, meta) {
             var $role = full['role'];
             var roleBadgeObj = {
-              Subscriber:
-                '<span class="badge badge-center rounded-pill bg-label-warning me-3 w-px-30 h-px-30"><i class="ti ti-user ti-sm"></i></span>',
-              Author:
-                '<span class="badge badge-center rounded-pill bg-label-success me-3 w-px-30 h-px-30"><i class="ti ti-settings ti-sm"></i></span>',
-              Maintainer:
-                '<span class="badge badge-center rounded-pill bg-label-primary me-3 w-px-30 h-px-30"><i class="ti ti-chart-pie-2 ti-sm"></i></span>',
-              Editor:
-                '<span class="badge badge-center rounded-pill bg-label-info me-3 w-px-30 h-px-30"><i class="ti ti-edit ti-sm"></i></span>',
-              Admin:
-                '<span class="badge badge-center rounded-pill bg-label-secondary me-3 w-px-30 h-px-30"><i class="ti ti-device-laptop ti-sm"></i></span>'
+              'مشترک':
+                '<span class="badge badge-center rounded-pill bg-label-warning w-px-30 h-px-30 me-2"><i class="bx bx-user bx-xs"></i></span>',
+              'نویسنده':
+                '<span class="badge badge-center rounded-pill bg-label-success w-px-30 h-px-30 me-2"><i class="bx bx-cog bx-xs"></i></span>',
+              'نگهدارنده':
+                '<span class="badge badge-center rounded-pill bg-label-primary w-px-30 h-px-30 me-2"><i class="bx bx-pie-chart-alt bx-xs"></i></span>',
+              'ویرایشگر':
+                '<span class="badge badge-center rounded-pill bg-label-info w-px-30 h-px-30 me-2"><i class="bx bx-edit bx-xs"></i></span>',
+              'مدیر':
+                '<span class="badge badge-center rounded-pill bg-label-secondary w-px-30 h-px-30 me-2"><i class="bx bx-mobile-alt bx-xs"></i></span>'
             };
             return "<span class='text-truncate d-flex align-items-center'>" + roleBadgeObj[$role] + $role + '</span>';
           }
@@ -111,7 +110,7 @@ $(function () {
           render: function (data, type, full, meta) {
             var $plan = full['current_plan'];
 
-            return '<span class="fw-medium">' + $plan + '</span>';
+            return '<span class="fw-semibold">' + $plan + '</span>';
           }
         },
         {
@@ -120,52 +119,34 @@ $(function () {
           render: function (data, type, full, meta) {
             var $status = full['status'];
 
-            return (
-              '<span class="badge ' +
-              statusObj[$status].class +
-              '" text-capitalized>' +
-              statusObj[$status].title +
-              '</span>'
-            );
+            return '<span class="badge ' + statusObj[$status].class + '">' + statusObj[$status].title + '</span>';
           }
         },
         {
           // Actions
           targets: -1,
-          title: 'Actions',
+          title: 'نمایش',
           searchable: false,
           orderable: false,
           render: function (data, type, full, meta) {
-            return (
-              '<div class="d-flex align-items-center">' +
-              '<a href="' +
-              userView +
-              '" class="btn btn-sm btn-icon"><i class="ti ti-eye"></i></a>' +
-              '<a href="javascript:;" class="text-body delete-record"><i class="ti ti-trash ti-sm mx-2"></i></a>' +
-              '<a href="javascript:;" class="text-body dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i class="ti ti-dots-vertical ti-sm mx-1"></i></a>' +
-              '<div class="dropdown-menu dropdown-menu-end m-0">' +
-              '<a href="javascript:;"" class="dropdown-item">Edit</a>' +
-              '<a href="javascript:;" class="dropdown-item">Suspend</a>' +
-              '</div>' +
-              '</div>'
-            );
+            return '<a href="' + userView + '" class="btn btn-sm btn-icon"><i class="bx bx-show-alt"></i></a>';
           }
         }
       ],
-      order: [[1, 'desc']],
+      order: [[1, 'asc']],
       dom:
         '<"row mx-2"' +
         '<"col-sm-12 col-md-4 col-lg-6" l>' +
-        '<"col-sm-12 col-md-8 col-lg-6"<"dt-action-buttons text-xl-end text-lg-start text-md-end text-start d-flex align-items-center justify-content-md-end justify-content-center align-items-center flex-sm-nowrap flex-wrap me-1"<"me-3"f><"user_role w-px-200 pb-3 pb-sm-0">>>' +
+        '<"col-sm-12 col-md-8 col-lg-6"<"dt-action-buttons text-xl-end text-lg-start text-md-end text-start d-flex align-items-center justify-content-md-end justify-content-center align-items-center flex-sm-nowrap flex-wrap"<"me-4 me-sm-3 ms-4 ms-sm-0"f><"user_role w-px-200 pb-3 pb-sm-0">>>' +
         '>t' +
         '<"row mx-2"' +
         '<"col-sm-12 col-md-6"i>' +
         '<"col-sm-12 col-md-6"p>' +
         '>',
       language: {
-        sLengthMenu: 'Show _MENU_',
-        search: 'Search',
-        searchPlaceholder: 'Search..'
+        sLengthMenu: '_MENU_',
+        search: 'جستجو:',
+        searchPlaceholder: 'جستجو ...'
       },
       // For responsive popup
       responsive: {
@@ -173,7 +154,7 @@ $(function () {
           display: $.fn.dataTable.Responsive.display.modal({
             header: function (row) {
               var data = row.data();
-              return 'Details of ' + data['full_name'];
+              return 'جزئیات ' + data['full_name'];
             }
           }),
           type: 'column',
@@ -207,7 +188,7 @@ $(function () {
           .every(function () {
             var column = this;
             var select = $(
-              '<select id="UserRole" class="form-select text-capitalize"><option value=""> Select Role </option></select>'
+              '<select id="UserRole" class="form-select text-capitalize"><option value=""> انتخاب نقش </option></select>'
             )
               .appendTo('.user_role')
               .on('change', function () {
@@ -226,10 +207,6 @@ $(function () {
       }
     });
   }
-  // Delete Record
-  $('.datatables-users tbody').on('click', '.delete-record', function () {
-    dtUser.row($(this).parents('tr')).remove().draw();
-  });
 
   // Filter form control to default size
   // ? setTimeout used for multilingual table initialization
@@ -246,12 +223,12 @@ $(function () {
     roleTitle = document.querySelector('.role-title');
 
   roleAdd.onclick = function () {
-    roleTitle.innerHTML = 'Add New Role'; // reset text
+    roleTitle.innerHTML = 'افزودن نقش جدید'; // reset text
   };
   if (roleEditList) {
     roleEditList.forEach(function (roleEditEl) {
       roleEditEl.onclick = function () {
-        roleTitle.innerHTML = 'Edit Role'; // reset text
+        roleTitle.innerHTML = 'ویرایش نقش'; // reset text
       };
     });
   }

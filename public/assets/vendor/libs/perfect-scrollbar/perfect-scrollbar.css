@@ -162,7 +162,7 @@
 
 .light-style .ps__thumb-x,
 .light-style .ps__thumb-y {
-  background-color: rgba(75, 70, 92, 0.4);
+  background-color: rgba(38, 60, 85, 0.4);
 }
 .light-style .ps__rail-x:hover,
 .light-style .ps__rail-y:hover,
@@ -170,7 +170,7 @@
 .light-style .ps__rail-y:focus,
 .light-style .ps__rail-x.ps--clicking,
 .light-style .ps__rail-y.ps--clicking {
-  background-color: rgba(75, 70, 92, 0.2);
+  background-color: rgba(38, 60, 85, 0.2);
 }
 .light-style .ps__rail-x:hover > .ps__thumb-x,
 .light-style .ps__rail-y:hover > .ps__thumb-y,
@@ -178,7 +178,7 @@
 .light-style .ps__rail-y:focus > .ps__thumb-y,
 .light-style .ps__rail-x.ps--clicking > .ps__thumb-x,
 .light-style .ps__rail-y.ps--clicking > .ps__thumb-y {
-  background-color: rgba(75, 70, 92, 0.7);
+  background-color: rgba(38, 60, 85, 0.7);
 }
 .light-style .ps-inverted .ps__rail-x:hover,
 .light-style .ps-inverted .ps__rail-y:hover,
@@ -227,7 +227,7 @@
 .dark-style .ps__rail-y:focus > .ps__thumb-y,
 .dark-style .ps__rail-x.ps--clicking > .ps__thumb-x,
 .dark-style .ps__rail-y.ps--clicking > .ps__thumb-y {
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(0, 0, 0, 0.15);
 }
 .dark-style .ps-inverted .ps__rail-x:hover,
 .dark-style .ps-inverted .ps__rail-y:hover,
@@ -252,5 +252,4 @@
 
 [dir=rtl] .ps--active-y > .ps__rail-y {
   left: 0;
-  right: auto !important;
 }

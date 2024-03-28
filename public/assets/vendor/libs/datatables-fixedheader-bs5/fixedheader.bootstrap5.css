@@ -23,21 +23,21 @@ table.dataTable.fixedHeader-locked {
 }
 
 .light-style .dtfh-floatingparenthead {
-  border-bottom: 2px solid #f8f7fa;
+  border-bottom: 2px solid #f2f2f6;
 }
-.light-style .dt-fixedheader.fixedHeader-floating.table.dataTable thead > tr > th,
-.light-style .dt-fixedheader.fixedHeader-locked.table.dataTable thead > tr > th {
+.light-style .table-bordered.dt-fixedheader.fixedHeader-floating.table.dataTable thead > tr > th,
+.light-style .table-bordered.dt-fixedheader.fixedHeader-locked.table.dataTable thead > tr > th {
   background-color: #fff;
   border-bottom-width: 1px;
-  border-color: #f8f7fa;
+  border-color: #f2f2f6;
 }
 
 .dark-style .dtfh-floatingparenthead {
-  border-bottom: 2px solid #25293c;
+  border-bottom: 2px solid #1c222f;
 }
-.dark-style .dt-fixedheader.fixedHeader-floating.table.dataTable thead > tr > th,
-.dark-style .dt-fixedheader.fixedHeader-locked.table.dataTable thead > tr > th {
-  background-color: #2f3349;
+.dark-style .table-bordered.dt-fixedheader.fixedHeader-floating.table.dataTable thead > tr > th,
+.dark-style .table-bordered.dt-fixedheader.fixedHeader-locked.table.dataTable thead > tr > th {
+  background-color: #283144;
   border-bottom-width: 1px;
-  border-color: #25293c;
+  border-color: #1c222f;
 }

@@ -87,12 +87,13 @@ $(function () {
     sectionBlockCustom.on('click', function () {
       $('#section-block').block({
         message:
-          '<div class="d-flex justify-content-center"><p class="mb-0">Please wait...</p> <div class="sk-wave m-0"><div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div></div> </div>',
+          '<div class="d-flex justify-content-center"><p class="mb-0">لطفا صبر کنید ...</p> <div class="sk-wave m-0 ms-2"><div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div></div> </div>',
         timeout: 1000,
         css: {
           backgroundColor: 'transparent',
           color: '#fff',
-          border: '0'
+          border: '0',
+          width: '80%'
         },
         overlayCSS: {
           opacity: 0.5
@@ -105,11 +106,12 @@ $(function () {
     sectionBlockMultiple.on('click', function () {
       $('#section-block').block({
         message:
-          '<div class="d-flex justify-content-center"><p class="mb-0">Please wait...</p> <div class="sk-wave m-0"><div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div></div> </div>',
+          '<div class="d-flex justify-content-center"><p class="mb-0">لطفا صبر کنید ...</p> <div class="sk-wave m-0 ms-2"><div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div></div> </div>',
         css: {
           backgroundColor: 'transparent',
           color: '#fff',
-          border: '0'
+          border: '0',
+          width: '80%'
         },
         overlayCSS: {
           opacity: 0.5
@@ -117,24 +119,26 @@ $(function () {
         timeout: 1000,
         onUnblock: function () {
           $('#section-block').block({
-            message: '<p class="mb-0">Almost Done...</p>',
+            message: '<p class="mb-0">تقریبا تمام شد ...</p>',
             timeout: 1000,
             css: {
               backgroundColor: 'transparent',
               color: '#fff',
-              border: '0'
+              border: '0',
+              width: '80%'
             },
             overlayCSS: {
               opacity: 0.25
             },
             onUnblock: function () {
               $('#section-block').block({
-                message: '<div class="p-3 bg-success">Success</div>',
+                message: '<div class="p-3 bg-success">موفقیت</div>',
                 timeout: 500,
                 css: {
                   backgroundColor: 'transparent',
                   color: '#fff',
-                  border: '0'
+                  border: '0',
+                  width: '200px'
                 },
                 overlayCSS: {
                   opacity: 0.25
@@ -206,12 +210,13 @@ $(function () {
     cardBlockCustom.on('click', function () {
       $('#card-block').block({
         message:
-          '<div class="d-flex justify-content-center"><p class="mb-0">Please wait...</p> <div class="sk-wave m-0"><div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div></div> </div>',
+          '<div class="d-flex justify-content-center"><p class="mb-0">لطفا صبر کنید ...</p> <div class="sk-wave m-0 ms-2"><div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div></div> </div>',
         timeout: 1000,
         css: {
           backgroundColor: 'transparent',
           color: '#fff',
-          border: '0'
+          border: '0',
+          width: '80%'
         },
         overlayCSS: {
           opacity: 0.5
@@ -224,11 +229,12 @@ $(function () {
     cardBlockMultiple.on('click', function () {
       $('#card-block').block({
         message:
-          '<div class="d-flex justify-content-center"><p class="mb-0">Please wait...</p> <div class="sk-wave m-0"><div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div></div> </div>',
+          '<div class="d-flex justify-content-center"><p class="mb-0">لطفا صبر کنید ...</p> <div class="sk-wave m-0 ms-2"><div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div></div> </div>',
         css: {
           backgroundColor: 'transparent',
           color: '#fff',
-          border: '0'
+          border: '0',
+          width: '80%'
         },
         overlayCSS: {
           opacity: 0.5
@@ -236,24 +242,26 @@ $(function () {
         timeout: 1000,
         onUnblock: function () {
           $('#card-block').block({
-            message: '<p class="mb-0">Almost Done...</p>',
+            message: '<p class="mb-0">تقریبا تمام شد ...</p>',
             timeout: 1000,
             css: {
               backgroundColor: 'transparent',
               color: '#fff',
-              border: '0'
+              border: '0',
+              width: '80%'
             },
             overlayCSS: {
               opacity: 0.25
             },
             onUnblock: function () {
               $('#card-block').block({
-                message: '<div class="p-3 bg-success">Success</div>',
+                message: '<div class="p-3 bg-success">موفقیت</div>',
                 timeout: 500,
                 css: {
                   backgroundColor: 'transparent',
                   color: '#fff',
-                  border: '0'
+                  border: '0',
+                  width: '200px'
                 },
                 overlayCSS: {
                   opacity: 0.25
@@ -324,12 +332,13 @@ $(function () {
     pageBlockCustom.on('click', function () {
       $.blockUI({
         message:
-          '<div class="d-flex justify-content-center"><p class="mb-0">Please wait...</p> <div class="sk-wave m-0"><div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div></div> </div>',
+          '<div class="d-flex justify-content-center"><p class="mb-0">لطفا صبر کنید ...</p> <div class="sk-wave m-0 ms-2"><div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div></div> </div>',
         timeout: 1000,
         css: {
           backgroundColor: 'transparent',
           color: '#fff',
-          border: '0'
+          border: '0',
+          width: '80%'
         },
         overlayCSS: {
           opacity: 0.5
@@ -342,11 +351,12 @@ $(function () {
     pageBlockMultiple.on('click', function () {
       $.blockUI({
         message:
-          '<div class="d-flex justify-content-center"><p class="mb-0">Please wait...</p> <div class="sk-wave m-0"><div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div></div> </div>',
+          '<div class="d-flex justify-content-center"><p class="mb-0">لطفا صبر کنید ...</p> <div class="sk-wave m-0 ms-2"><div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div></div> </div>',
         css: {
           backgroundColor: 'transparent',
           color: '#fff',
-          border: '0'
+          border: '0',
+          width: '80%'
         },
         overlayCSS: {
           opacity: 0.5
@@ -354,24 +364,26 @@ $(function () {
         timeout: 1000,
         onUnblock: function () {
           $.blockUI({
-            message: '<p class="mb-0">Almost Done...</p>',
+            message: '<p class="mb-0">تقریبا تمام شد ...</p>',
             timeout: 1000,
             css: {
               backgroundColor: 'transparent',
               color: '#fff',
-              border: '0'
+              border: '0',
+              width: '80%'
             },
             overlayCSS: {
               opacity: 0.5
             },
             onUnblock: function () {
               $.blockUI({
-                message: '<div class="p-3 bg-success">Success</div>',
+                message: '<div class="p-3 bg-success">موفقیت</div>',
                 timeout: 500,
                 css: {
                   backgroundColor: 'transparent',
                   color: '#fff',
-                  border: '0'
+                  border: '0',
+                  width: '200px'
                 },
                 overlayCSS: {
                   opacity: 0.5
@@ -444,12 +456,13 @@ $(function () {
     formBlockCustom.on('click', function () {
       formSection.block({
         message:
-          '<div class="d-flex justify-content-center"><p class="mb-0">Please wait...</p> <div class="sk-wave m-0"><div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div></div> </div>',
+          '<div class="d-flex justify-content-center"><p class="mb-0">لطفا صبر کنید ...</p> <div class="sk-wave m-0 ms-2"><div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div></div> </div>',
         timeout: 1000,
         css: {
           backgroundColor: 'transparent',
           color: '#fff',
-          border: '0'
+          border: '0',
+          width: '80%'
         },
         overlayCSS: {
           opacity: 0.5
@@ -462,11 +475,12 @@ $(function () {
     formBlockMultiple.on('click', function () {
       formSection.block({
         message:
-          '<div class="d-flex justify-content-center"><p class="mb-0">Please wait...</p> <div class="sk-wave m-0"><div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div></div> </div>',
+          '<div class="d-flex justify-content-center"><p class="mb-0">لطفا صبر کنید ...</p> <div class="sk-wave m-0 ms-2"><div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div></div> </div>',
         css: {
           backgroundColor: 'transparent',
           color: '#fff',
-          border: '0'
+          border: '0',
+          width: '80%'
         },
         overlayCSS: {
           opacity: 0.5
@@ -474,22 +488,24 @@ $(function () {
         timeout: 1000,
         onUnblock: function () {
           formSection.block({
-            message: '<p class="mb-0">Almost Done...</p>',
+            message: '<p class="mb-0">تقریبا تمام شد ...</p>',
             timeout: 1000,
             css: {
               backgroundColor: 'transparent',
-              border: '0'
+              border: '0',
+              width: '80%'
             },
             overlayCSS: {
               opacity: 0.25
             },
             onUnblock: function () {
               formSection.block({
-                message: '<div class="p-3 bg-success">Success</div>',
+                message: '<div class="p-3 bg-success">موفقیت</div>',
                 timeout: 500,
                 css: {
                   backgroundColor: 'transparent',
-                  border: '0'
+                  border: '0',
+                  width: '200px'
                 },
                 overlayCSS: {
                   opacity: 0.25

@@ -26,28 +26,33 @@
   if (plCountry) {
     plCountry.wrap('<div class="position-relative"></div>');
     plCountry.select2({
-      placeholder: 'Select country',
+      placeholder: 'انتخاب کشور',
       dropdownParent: plCountry.parent()
     });
   }
 
   if (flatpickrRange) {
-    flatpickrRange.flatpickr();
+    flatpickrRange.flatpickr({
+        locale: 'fa',
+        altInput: true,
+        altFormat: 'Y/m/d',
+        disableMobile: true
+    });
   }
 
   // Tagify (Furnishing details)
   const furnishingList = [
-    'Fridge',
-    'TV',
-    'AC',
-    'WiFi',
-    'RO',
-    'Washing Machine',
-    'Sofa',
-    'Bed',
-    'Dining Table',
-    'Microwave',
-    'Cupboard'
+    'فریزر',
+    'تلویزیون',
+    'کولر',
+    'وای فای',
+    'سیستم گرمایشی',
+    'ماشین شستشو',
+    'مبلمان',
+    'تخت خواب',
+    'میز ناهارخوری',
+    'مایکروویو',
+    'میز ورزشی'
   ];
   if (plFurnishingDetailsSuggestionEl) {
     const plFurnishingDetailsSuggestion = new Tagify(plFurnishingDetailsSuggestionEl, {
@@ -90,14 +95,14 @@
         plFirstName: {
           validators: {
             notEmpty: {
-              message: 'Please enter your first name'
+              message: 'لطفا نام خود را وارد کنید'
             }
           }
         },
         plLastName: {
           validators: {
             notEmpty: {
-              message: 'Please enter your last name'
+              message: 'لطفا نام خانوادگی خود را وارد کنید'
             }
           }
         }
@@ -135,19 +140,19 @@
         plPropertyType: {
           validators: {
             notEmpty: {
-              message: 'Please select property type'
+              message: 'لطفا نوع ملک را انتخاب کنید'
             }
           }
         },
         plZipCode: {
           validators: {
             notEmpty: {
-              message: 'Please enter zip code'
+              message: 'لطفا کد پستی را وارد کنید'
             },
             stringLength: {
               min: 4,
               max: 10,
-              message: 'The zip code must be more than 4 and less than 10 characters long'
+              message: 'کد پستی باید حداقل 4 و حداکثر 10 رقم باشد'
             }
           }
         }
@@ -182,7 +187,7 @@
       plPropertyType.wrap('<div class="position-relative"></div>');
       plPropertyType
         .select2({
-          placeholder: 'Select property type',
+          placeholder: 'انتخاب نوع ملک',
           dropdownParent: plPropertyType.parent()
         })
         .on('change.select2', function () {
@@ -253,7 +258,7 @@
       // wizardPropertyListingForm.submit()
       // or send the form data to server via an Ajax request
       // To make the demo simple, I just placed an alert
-      alert('Submitted..!!');
+      alert('ثبت شد ...!!');
     });
 
     wizardPropertyListingNext.forEach(item => {

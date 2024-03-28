@@ -400,6 +400,7 @@ html:not([dir=rtl]) .noUi-horizontal .noUi-origin {
   position: absolute;
   transform-origin: center;
   transition: transform 0.2s;
+  border-color: transparent;
 }
 .noUi-handle:before, .noUi-handle:after {
   display: none;
@@ -417,8 +418,10 @@ html:not([dir=rtl]) .noUi-horizontal .noUi-origin {
 }
 
 .noUi-touch-area {
-  height: 100%;
-  width: 100%;
+  border-radius: 50%;
+  height: 0.75rem;
+  width: 0.75rem;
+  margin: 1px;
 }
 
 .noUi-state-tap .noUi-connect,
@@ -435,13 +438,13 @@ html:not([dir=rtl]) .noUi-horizontal .noUi-origin {
 }
 
 .noUi-horizontal .noUi-handle {
-  left: -0.4375rem;
-  width: 0.875rem;
-  height: 0.875rem;
+  left: -0.5rem;
+  width: 1rem;
+  height: 1rem;
   top: -5px !important;
 }
 html:not([dir=rtl]) .noUi-horizontal .noUi-handle {
-  right: -0.4375rem;
+  right: -0.5rem;
   left: auto;
 }
 
@@ -450,10 +453,10 @@ html:not([dir=rtl]) .noUi-horizontal .noUi-handle {
 }
 
 .noUi-vertical .noUi-handle {
-  left: -0.5985rem;
-  bottom: -0.875rem;
-  width: 0.875rem;
-  height: 0.875rem;
+  left: -0.7rem;
+  bottom: -1rem;
+  width: 1rem;
+  height: 1rem;
 }
 
 .noUi-target {
@@ -470,6 +473,7 @@ html:not([dir=rtl]) .noUi-horizontal .noUi-handle {
 
 .noUi-handle {
   border-radius: 10rem;
+  background: #fff;
   cursor: default;
 }
 
@@ -501,7 +505,7 @@ html:not([dir=rtl]) .noUi-horizontal .noUi-handle {
   position: absolute;
   white-space: nowrap;
   text-align: center;
-  font-size: 0.6875rem;
+  font-size: 0.625rem;
 }
 
 .noUi-marker {
@@ -511,7 +515,7 @@ html:not([dir=rtl]) .noUi-horizontal .noUi-handle {
 .noUi-pips-horizontal {
   left: 0;
   top: 100%;
-  padding: 0.625rem 0 0 0;
+  padding: 0.6875rem 0 0 0;
   height: 5rem;
   width: 100%;
 }
@@ -536,7 +540,7 @@ html:not([dir=rtl]) .noUi-horizontal .noUi-handle {
 .noUi-pips-vertical {
   top: 0;
   left: 100%;
-  padding: 0 0 0 0.625rem;
+  padding: 0 0 0 0.6875rem;
   height: 100%;
 }
 [dir=rtl] .noUi-pips-vertical {
@@ -546,7 +550,6 @@ html:not([dir=rtl]) .noUi-horizontal .noUi-handle {
 
 .noUi-value-vertical {
   padding-left: 0.875rem;
-  transform: translate(0, 50%);
 }
 [dir=rtl] .noUi-value-vertical {
   right: 100%;
@@ -566,24 +569,28 @@ html:not([dir=rtl]) .noUi-horizontal .noUi-handle {
 .noUi-tooltip {
   position: absolute;
   display: block;
-  padding: 0.282rem 0.25rem;
-  border-radius: 0.25rem;
+  padding: 0.1875rem 0.25rem;
+  border-radius: 2.81rem;
+  font-size: 85%;
   text-align: center;
+  font-weight: 500;
   line-height: 1;
   transition: transform 0.2s;
-  font-size: 0.8125rem;
-  border: 0;
+  box-shadow: none;
+  border-color: transparent;
+  color: #fff;
+  background: #495563;
 }
 
 .noUi-horizontal .noUi-tooltip {
-  bottom: 157%;
+  bottom: 125%;
   left: 50%;
   transform: translate(-50%, 0);
 }
 
 .noUi-vertical .noUi-tooltip {
   top: 50%;
-  right: 200%;
+  right: 125%;
   transform: translate(0, -50%);
 }
 [dir=rtl] .noUi-vertical .noUi-tooltip {
@@ -596,149 +603,151 @@ html:not([dir=rtl]) .noUi-horizontal .noUi-handle {
 }
 
 .light-style .noUi-target {
-  background: rgba(75, 70, 92, 0.08);
-}
-.light-style .noUi-connect {
-  background: #93909d !important;
+  background: #e9ecee;
 }
 .light-style .noUi-handle {
-  border: 2px solid #fff;
-  box-shadow: 0 0.125rem 0.25rem rgba(165, 163, 174, 0.3);
-  background: #6f6b7d !important;
+  box-shadow: 0 0.125rem 0.25rem rgba(147, 158, 170, 0.4);
 }
 .light-style .noUi-target[disabled] {
-  background: rgba(75, 70, 92, 0.24);
+  background: #e9ecee;
 }
 .light-style .noUi-value {
-  color: #a5a3ae;
+  color: #516377;
 }
 .light-style .noUi-marker {
-  background: #dbdade;
+  background: #d4d8dd;
 }
-.light-style .noUi-tooltip {
-  color: #5d596c;
-  background: #e2e1e5;
-  font-weight: 500;
+.light-style .noUi-touch-area {
+  background-color: rgba(38, 60, 85, 0.5);
+}
+.light-style .noUi-connect {
+  background: rgba(38, 60, 85, 0.5) !important;
+}
+.light-style .noUi-touch-area {
+  background-color: rgba(38, 60, 85, 0.5) !important;
 }
 .light-style .noUi-secondary .noUi-connect {
-  background: #a8aaae !important;
+  background: #69809a !important;
 }
-.light-style .noUi-secondary .noUi-handle {
-  background: #86888b !important;
+.light-style .noUi-secondary .noUi-touch-area {
+  background-color: #69809a !important;
 }
 .light-style .noUi-success .noUi-connect {
-  background: #28c76f !important;
+  background: #39da8a !important;
 }
-.light-style .noUi-success .noUi-handle {
-  background: #209f59 !important;
+.light-style .noUi-success .noUi-touch-area {
+  background-color: #39da8a !important;
 }
 .light-style .noUi-info .noUi-connect {
-  background: #00cfe8 !important;
+  background: #00cfdd !important;
 }
-.light-style .noUi-info .noUi-handle {
-  background: #00a6ba !important;
+.light-style .noUi-info .noUi-touch-area {
+  background-color: #00cfdd !important;
 }
 .light-style .noUi-warning .noUi-connect {
-  background: #ff9f43 !important;
+  background: #fdac41 !important;
 }
-.light-style .noUi-warning .noUi-handle {
-  background: #cc7f36 !important;
+.light-style .noUi-warning .noUi-touch-area {
+  background-color: #fdac41 !important;
 }
 .light-style .noUi-danger .noUi-connect {
-  background: #ea5455 !important;
+  background: #ff5b5c !important;
 }
-.light-style .noUi-danger .noUi-handle {
-  background: #bb4344 !important;
+.light-style .noUi-danger .noUi-touch-area {
+  background-color: #ff5b5c !important;
 }
 .light-style .noUi-light .noUi-connect {
-  background: #dfdfe3 !important;
+  background: #e5e9ed !important;
 }
-.light-style .noUi-light .noUi-handle {
-  background: #b2b2b6 !important;
+.light-style .noUi-light .noUi-touch-area {
+  background-color: #e5e9ed !important;
 }
 .light-style .noUi-dark .noUi-connect {
-  background: #4b4b4b !important;
+  background: #495563 !important;
 }
-.light-style .noUi-dark .noUi-handle {
-  background: #3c3c3c !important;
+.light-style .noUi-dark .noUi-touch-area {
+  background-color: #495563 !important;
 }
 .light-style .noUi-gray .noUi-connect {
-  background: rgba(75, 70, 92, 0.05) !important;
+  background: rgba(38, 60, 85, 0.5) !important;
 }
-.light-style .noUi-gray .noUi-handle {
-  background: rgba(7, 7, 9, 0.24) !important;
+.light-style .noUi-gray .noUi-touch-area {
+  background-color: rgba(38, 60, 85, 0.5) !important;
 }
 
 .dark-style .noUi-target {
-  background: rgba(134, 146, 208, 0.08);
+  background: #36445d;
 }
 .dark-style .noUi-connect {
-  background: #7983bb;
+  background: #637ba9;
 }
 .dark-style .noUi-handle {
-  border: 2px solid #2f3349;
-  box-shadow: 0 0.125rem 0.25rem rgba(15, 20, 34, 0.4);
-  background: #4a5072 !important;
+  background: #283144;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.2);
 }
 .dark-style .noUi-target[disabled] {
-  background: rgba(134, 146, 208, 0.24);
+  background: #596f98;
 }
 .dark-style .noUi-value {
-  color: #7983bb;
+  color: #d8deea;
 }
 .dark-style .noUi-marker {
-  background: #434968;
+  background: #546990;
 }
-.dark-style .noUi-tooltip {
-  color: #cfd3ec;
-  background: rgba(134, 146, 208, 0.16);
-  font-weight: 500;
+.dark-style .noUi-touch-area {
+  background-color: #637ba9;
+}
+.dark-style .noUi-connect {
+  background: #637ba9 !important;
+}
+.dark-style .noUi-touch-area {
+  background-color: #637ba9 !important;
 }
 .dark-style .noUi-secondary .noUi-connect {
-  background: #a8aaae !important;
+  background: #69809a !important;
 }
-.dark-style .noUi-secondary .noUi-handle {
-  background: #86888b !important;
+.dark-style .noUi-secondary .noUi-touch-area {
+  background-color: #69809a !important;
 }
 .dark-style .noUi-success .noUi-connect {
-  background: #28c76f !important;
+  background: #39da8a !important;
 }
-.dark-style .noUi-success .noUi-handle {
-  background: #209f59 !important;
+.dark-style .noUi-success .noUi-touch-area {
+  background-color: #39da8a !important;
 }
 .dark-style .noUi-info .noUi-connect {
-  background: #00cfe8 !important;
+  background: #00cfdd !important;
 }
-.dark-style .noUi-info .noUi-handle {
-  background: #00a6ba !important;
+.dark-style .noUi-info .noUi-touch-area {
+  background-color: #00cfdd !important;
 }
 .dark-style .noUi-warning .noUi-connect {
-  background: #ff9f43 !important;
+  background: #fdac41 !important;
 }
-.dark-style .noUi-warning .noUi-handle {
-  background: #cc7f36 !important;
+.dark-style .noUi-warning .noUi-touch-area {
+  background-color: #fdac41 !important;
 }
 .dark-style .noUi-danger .noUi-connect {
-  background: #ea5455 !important;
+  background: #ff5b5c !important;
 }
-.dark-style .noUi-danger .noUi-handle {
-  background: #bb4344 !important;
+.dark-style .noUi-danger .noUi-touch-area {
+  background-color: #ff5b5c !important;
 }
 .dark-style .noUi-light .noUi-connect {
-  background: #44475b !important;
+  background: #434c5f !important;
 }
-.dark-style .noUi-light .noUi-handle {
-  background: #363949 !important;
+.dark-style .noUi-light .noUi-touch-area {
+  background-color: #434c5f !important;
 }
 .dark-style .noUi-dark .noUi-connect {
-  background: #d7d8de !important;
+  background: #717784 !important;
 }
-.dark-style .noUi-dark .noUi-handle {
-  background: #acadb2 !important;
+.dark-style .noUi-dark .noUi-touch-area {
+  background-color: #717784 !important;
 }
 .dark-style .noUi-gray .noUi-connect {
-  background: rgba(255, 255, 255, 0.8) !important;
+  background: rgba(255, 255, 255, 0.75) !important;
 }
-.dark-style .noUi-gray .noUi-handle {
-  background: rgba(185, 185, 185, 0.84) !important;
+.dark-style .noUi-gray .noUi-touch-area {
+  background-color: rgba(255, 255, 255, 0.75) !important;
 }

@@ -77,13 +77,20 @@
         indent: '+1'
       }
     ],
-    [{ direction: 'rtl' }],
+    [
+      {
+        direction: 'rtl'
+      },
+      {
+        align: []
+      }
+    ],
     ['link', 'image', 'video', 'formula'],
     ['clean']
   ];
   const fullEditor = new Quill('#full-editor', {
     bounds: '#full-editor',
-    placeholder: 'Type Something...',
+    placeholder: 'چیزی بنویسید ...',
     modules: {
       formula: true,
       toolbar: fullToolbar

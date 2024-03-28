@@ -32,46 +32,46 @@
         formValidationUsername: {
           validators: {
             notEmpty: {
-              message: 'The name is required'
+              message: 'وارد کردن نام کاربری الزامی است'
             },
             stringLength: {
               min: 6,
               max: 30,
-              message: 'The name must be more than 6 and less than 30 characters long'
+              message: 'نام کاربری وارد شده باید بیشتر از 6 و کمتر از 30 حرف باشد'
             },
             regexp: {
               regexp: /^[a-zA-Z0-9 ]+$/,
-              message: 'The name can only consist of alphabetical, number and space'
+              message: 'نام کاربری فقط می‌تواند شامل حروف الفبا و عدد باشد'
             }
           }
         },
         formValidationEmail: {
           validators: {
             notEmpty: {
-              message: 'The Email is required'
+              message: 'وارد کردن ایمیل الزامی است'
             },
             emailAddress: {
-              message: 'The value is not a valid email address'
+              message: 'مقدار وارد شده یک آدرس ایمیل معتبر نیست'
             }
           }
         },
         formValidationPass: {
           validators: {
             notEmpty: {
-              message: 'The password is required'
+              message: 'وارد کردن رمز عبور الزامی است'
             }
           }
         },
         formValidationConfirmPass: {
           validators: {
             notEmpty: {
-              message: 'The Confirm Password is required'
+              message: 'وارد کردن تایید رمز عبور الزامی است'
             },
             identical: {
               compare: function () {
                 return wizardValidationFormStep1.querySelector('[name="formValidationPass"]').value;
               },
-              message: 'The password and its confirm are not the same'
+              message: 'رمز عبور و تایید آن یکسان نیستند'
             }
           }
         }
@@ -106,28 +106,28 @@
         formValidationFirstName: {
           validators: {
             notEmpty: {
-              message: 'The first name is required'
+              message: 'وارد کردن نام الزامی است'
             }
           }
         },
         formValidationLastName: {
           validators: {
             notEmpty: {
-              message: 'The last name is required'
+              message: 'وارد کردن نام خانوادگی الزامی است'
             }
           }
         },
         formValidationCountry: {
           validators: {
             notEmpty: {
-              message: 'The Country is required'
+              message: 'وارد کردن کشور الزامی است'
             }
           }
         },
         formValidationLanguage: {
           validators: {
             notEmpty: {
-              message: 'The Languages is required'
+              message: 'وارد کردن زبان الزامی است'
             }
           }
         }
@@ -165,7 +165,7 @@
         $this.wrap('<div class="position-relative"></div>');
         $this
           .select2({
-            placeholder: 'Select an country',
+            placeholder: 'انتخاب کشور',
             dropdownParent: $this.parent()
           })
           .on('change.select2', function () {
@@ -181,40 +181,40 @@
         formValidationTwitter: {
           validators: {
             notEmpty: {
-              message: 'The Twitter URL is required'
+              message: 'وارد کردن آدرس توییتر الزامی است'
             },
             uri: {
-              message: 'The URL is not proper'
+              message: 'آدرس وارد شده معتبر نیست'
             }
           }
         },
         formValidationFacebook: {
           validators: {
             notEmpty: {
-              message: 'The Facebook URL is required'
+              message: 'وارد کردن آدرس فیسبوک الزامی است'
             },
             uri: {
-              message: 'The URL is not proper'
+              message: 'آدرس وارد شده معتبر نیست'
             }
           }
         },
         formValidationGoogle: {
           validators: {
             notEmpty: {
-              message: 'The Google URL is required'
+              message: 'وارد کردن آدرس گوگل الزامی است'
             },
             uri: {
-              message: 'The URL is not proper'
+              message: 'آدرس وارد شده معتبر نیست'
             }
           }
         },
         formValidationLinkedIn: {
           validators: {
             notEmpty: {
-              message: 'The LinkedIn URL is required'
+              message: 'وارد کردن آدرس لینکدین الزامی است'
             },
             uri: {
-              message: 'The URL is not proper'
+              message: 'آدرس وارد شده معتبر نیست'
             }
           }
         }
@@ -235,7 +235,7 @@
       // wizardValidationForm.submit()
       // or send the form data to server via an Ajax request
       // To make the demo simple, I just placed an alert
-      alert('Submitted..!!');
+      alert('ثبت شد ...!!');
     });
 
     wizardValidationNext.forEach(item => {

@@ -13,7 +13,7 @@ $(function () {
     select2.each(function () {
       var $this = $(this);
       $this.wrap('<div class="position-relative"></div>').select2({
-        placeholder: 'Select value',
+        placeholder: 'انتخاب',
         dropdownParent: $this.parent()
       });
     });
@@ -35,22 +35,22 @@ document.addEventListener('DOMContentLoaded', function () {
         modalAddressFirstName: {
           validators: {
             notEmpty: {
-              message: 'Please enter your first name'
+              message: 'لطفا نام خود را وارد کنید'
             },
             regexp: {
               regexp: /^[a-zA-Zs]+$/,
-              message: 'The first name can only consist of alphabetical'
+              message: 'نام فقط می‌تواند شامل حروف الفبا باشد'
             }
           }
         },
         modalAddressLastName: {
           validators: {
             notEmpty: {
-              message: 'Please enter your last name'
+              message: 'لطفا نام خانوادگی خود را وارد کنید'
             },
             regexp: {
               regexp: /^[a-zA-Zs]+$/,
-              message: 'The last name can only consist of alphabetical'
+              message: 'نام خانوادگی فقط می‌تواند شامل حروف الفبا باشد'
             }
           }
         }

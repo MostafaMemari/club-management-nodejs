@@ -23,8 +23,7 @@ $(function () {
   if (basicRatings) {
     basicRatings.rateYo({
       rating: 3.6,
-      rtl: isRtl,
-      spacing: '8px'
+      rtl: isRtl
     });
   }
 
@@ -41,8 +40,7 @@ $(function () {
         ' 8.718h-9.167l7.416 5.389-2.833 8.718 7.417-5.388' +
         ' 7.416 5.388-2.833-8.718' +
         " 7.417-5.389h-9.167l-2.833-8.718z'-></path>",
-      rtl: isRtl,
-      spacing: '8px'
+      rtl: isRtl
     });
   }
 
@@ -51,10 +49,9 @@ $(function () {
   if (multiColor) {
     multiColor.rateYo({
       rtl: isRtl,
-      spacing: '8px',
       multiColor: {
         startColor: '#fffca0',
-        endColor: '#ffd950'
+        endColor: '#fdac41'
       }
     });
   }
@@ -64,7 +61,6 @@ $(function () {
   if (halfStar) {
     halfStar.rateYo({
       rtl: isRtl,
-      spacing: '8px',
 
       rating: 2
     });
@@ -75,7 +71,6 @@ $(function () {
   if (fullStar) {
     fullStar.rateYo({
       rtl: isRtl,
-      spacing: '8px',
 
       rating: 2
     });
@@ -86,8 +81,7 @@ $(function () {
   if (readOnlyRatings) {
     readOnlyRatings.rateYo({
       rating: 2,
-      rtl: isRtl,
-      spacing: '8px'
+      rtl: isRtl
     });
   }
 
@@ -98,11 +92,10 @@ $(function () {
   if (onSetEvents) {
     onSetEvents
       .rateYo({
-        rtl: isRtl,
-        spacing: '8px'
+        rtl: isRtl
       })
       .on('rateyo.set', function (e, data) {
-        alert('The rating is set to ' + data.rating + '!');
+        alert('امتیاز انتخاب شده: ' + data.rating + '!');
       });
   }
 
@@ -110,8 +103,7 @@ $(function () {
   if (onChangeEvents) {
     onChangeEvents
       .rateYo({
-        rtl: isRtl,
-        spacing: '8px'
+        rtl: isRtl
       })
       .on('rateyo.change', function (e, data) {
         var rating = data.rating;
@@ -123,15 +115,13 @@ $(function () {
   // --------------------------------------------------------------------
   if (ratingMethods) {
     var $instance = ratingMethods.rateYo({
-      rtl: isRtl,
-      spacing: '8px'
+      rtl: isRtl
     });
 
     if (initializeRatings) {
       initializeRatings.on('click', function () {
         $instance.rateYo({
-          rtl: isRtl,
-          spacing: '8px'
+          rtl: isRtl
         });
       });
     }
@@ -141,7 +131,7 @@ $(function () {
         if ($instance.hasClass('jq-ry-container')) {
           $instance.rateYo('destroy');
         } else {
-          window.alert('Please Initialize Ratings First');
+          window.alert('لطفا ابتدا امتیازدهی را راه‌اندازی کنید');
         }
       });
     }
@@ -150,9 +140,9 @@ $(function () {
       getRatings.on('click', function () {
         if ($instance.hasClass('jq-ry-container')) {
           var rating = $instance.rateYo('rating');
-          window.alert('Current Ratings are ' + rating);
+          window.alert('امتیاز کنونی: ' + rating);
         } else {
-          window.alert('Please Initialize Ratings First');
+          window.alert('لطفا ابتدا امتیازدهی را راه‌اندازی کنید');
         }
       });
     }
@@ -162,7 +152,7 @@ $(function () {
         if ($instance.hasClass('jq-ry-container')) {
           $instance.rateYo('rating', 1);
         } else {
-          window.alert('Please Initialize Ratings First');
+          window.alert('لطفا ابتدا امتیازدهی را راه‌اندازی کنید');
         }
       });
     }

@@ -2,84 +2,84 @@
   "data": [
     {
       "id": 1,
-      "name": "Management",
+      "name": "مدیریت",
       "assigned_to": [
-        "Admin"
+        "سرپرست"
       ],
-      "created_date": "14 Apr 2021, 8:43 PM"
+      "created_date": "14 فروردین 1401، 8:43 ب.ظ"
     },
     {
       "id": 2,
-      "name": "Manage Billing & Roles",
+      "name": "مدیریت پرداخت و نقش ها",
       "assigned_to": [
-        "Admin"
+        "سرپرست"
       ],
-      "created_date": "16 Sep 2021, 5:20 PM"
+      "created_date": "16 اردیبهشت 1401، 5:20 ب.ظ"
     },
     {
       "id": 3,
-      "name": "Add & Remove Users",
+      "name": "افزودن و حذف کاربران",
       "assigned_to": [
-        "Admin",
-        "Manager"
+        "سرپرست",
+        "مدیر"
       ],
-      "created_date": "14 Oct 2021, 10:20 AM"
+      "created_date": "14 خرداد 1401، 10:20 ق.ظ"
     },
     {
       "id": 4,
-      "name": "Project Planning",
+      "name": "برنامه ریزی پروژه",
       "assigned_to": [
-        "Admin",
-        "Users",
-        "Support"
+        "سرپرست",
+        "کاربران",
+        "پشتیبانی"
       ],
-      "created_date": "14 May 2021, 12:10 PM"
+      "created_date": "14 تیر 1401، 12:10 ب.ظ"
     },
     {
       "id": 5,
-      "name": "Manage Email Sequences",
+      "name": "مدیریت ایمیل ها",
       "assigned_to": [
-        "Admin",
-        "Users",
-        "Support"
+        "سرپرست",
+        "کاربران",
+        "پشتیبانی"
       ],
-      "created_date": "23 Aug 2021, 2:00 PM"
+      "created_date": "23 مرداد 1401، 2:00 ب.ظ"
     },
     {
       "id": 6,
-      "name": "Client Communication",
+      "name": "ارتباط مشتریان",
       "assigned_to": [
-        "Admin",
-        "Manager"
+        "سرپرست",
+        "مدیر"
       ],
-      "created_date": "15 Apr 2021, 11:30 AM"
+      "created_date": "15 فروردین 1401، 11:30 ق.ظ"
     },
     {
       "id": 7,
-      "name": "Only View",
+      "name": "فقط مشاهده",
       "assigned_to": [
-        "Admin",
-        "Restricted"
+        "سرپرست",
+        "محدود شده"
       ],
-      "created_date": "04 Dec 2021, 8:15 PM"
+      "created_date": "04 شهریور 1401، 8:15 ب.ظ"
     },
     {
       "id": 8,
-      "name": "Financial Management",
+      "name": "مدیریت مالی",
       "assigned_to": [
-        "Admin",
-        "Manager"
+        "سرپرست",
+        "مدیر"
       ],
-      "created_date": "25 Feb 2021, 10:30 AM"
+      "created_date": "25 مهر 1401، 10:30 ق.ظ"
     },
     {
       "id": 9,
-      "name": "Manage Others’ Tasks",
+      "name": "مدیریت دیگران، وظایف",
       "assigned_to": [
-        "Admin",
-        "Support"
+        "سرپرست",
+        "پشتیبانی"
       ],
-      "created_date": "04 Nov 2021, 11:45 AM"
+      "created_date": "04 آبان 1401، 11:45 ق.ظ"
     }
   ]
 }

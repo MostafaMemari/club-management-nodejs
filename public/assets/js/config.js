@@ -5,49 +5,49 @@
  * ! To clear local storage: (https://www.leadshook.com/help/how-to-clear-local-storage-in-google-chrome-browser/).
  */
 
-"use strict";
+'use strict';
 
 // JS global variables
 let config = {
   colors: {
-    primary: "#7367f0",
-    secondary: "#a8aaae",
-    success: "#28c76f",
-    info: "#00cfe8",
-    warning: "#ff9f43",
-    danger: "#ea5455",
-    dark: "#4b4b4b",
-    black: "#000",
-    white: "#fff",
-    cardColor: "#fff",
-    bodyBg: "#f8f7fa",
-    bodyColor: "#6f6b7d",
-    headingColor: "#5d596c",
-    textMuted: "#a5a3ae",
-    borderColor: "#dbdade",
+    primary: '#5a8dee',
+    secondary: '#69809a',
+    success: '#39da8a',
+    info: '#00cfdd',
+    warning: '#fdac41',
+    danger: '#ff5b5c',
+    dark: '#495563',
+    black: '#000',
+    white: '#fff',
+    cardColor: '#fff',
+    bodyBg: '#f2f2f6',
+    bodyColor: '#677788',
+    headingColor: '#516377',
+    textMuted: '#a8b1bb',
+    borderColor: '#e9ecee'
   },
   colors_label: {
-    primary: "#7367f029",
-    secondary: "#a8aaae29",
-    success: "#28c76f29",
-    info: "#00cfe829",
-    warning: "#ff9f4329",
-    danger: "#ea545529",
-    dark: "#4b4b4b29",
+    primary: '#5a8dee29',
+    secondary: '#69809a29',
+    success: '#39da8a29',
+    info: '#00cfdd29',
+    warning: '#fdac4129',
+    danger: '#ff5b5c29',
+    dark: '#49556329'
   },
   colors_dark: {
-    cardColor: "#2f3349",
-    bodyBg: "#25293c",
-    bodyColor: "#b6bee3",
-    headingColor: "#cfd3ec",
-    textMuted: "#7983bb",
-    borderColor: "#434968",
+    cardColor: '#283144',
+    bodyBg: '#1c222f',
+    bodyColor: '#a1b0cb',
+    headingColor: '#d8deea',
+    textMuted: '#8295ba',
+    borderColor: '#36445d'
   },
-  enableMenuLocalStorage: true, // Enable menu state with local storage support
+  enableMenuLocalStorage: true // Enable menu state with local storage support
 };
 
-let assetsPath = document.documentElement.getAttribute("data-assets-path"),
-  templateName = document.documentElement.getAttribute("data-template"),
+let assetsPath = document.documentElement.getAttribute('data-assets-path'),
+  templateName = document.documentElement.getAttribute('data-template'),
   rtlSupport = true; // set true for rtl support (rtl + ltr), false for ltr only.
 
 /**
@@ -75,33 +75,39 @@ TemplateCustomizer.LANGUAGES.fr = { ... };
  * themesPath: Theme CSS file path
  * displayCustomizer: true(Show customizer), false(Hide customizer)
  * lang: To set default language, Add more langues and set default. Fallback language is 'en'
- * controls: [ 'rtl', 'style', 'headerType', 'contentLayout', 'layoutCollapsed', 'layoutNavbarOptions', 'themes' ] | Show/Hide customizer controls
- * defaultTheme: 0(Default), 1(Bordered), 2(Semi Dark)
- * defaultStyle: 'light', 'dark', 'system' (Mode)
+ * controls: [ 'rtl','style','layoutType','showDropdownOnHover','layoutNavbarFixed','layoutFooterFixed','themes'] | Show/Hide customizer controls
+ * defaultTheme: 0(Default), 1(Semi Dark), 2(Bordered)
+ * defaultStyle: 'light', 'dark' (Mode)
  * defaultTextDir: 'ltr', 'rtl' (rtlSupport must be true for rtl mode)
- * defaultContentLayout: 'compact', 'wide' (compact=container-xxl, wide=container-fluid)
- * defaultHeaderType: 'static', 'fixed' (for horizontal layout only)
- * defaultMenuCollapsed: true, false (For vertical layout only)
- * defaultNavbarType: 'sticky', 'static', 'hidden' (For vertical layout only)
- * defaultFooterFixed: true, false (For vertical layout only)
+ * defaultLayoutType: 'static', 'fixed'
+ * defaultMenuCollapsed: true, false
+ * defaultNavbarFixed: true, false
+ * defaultFooterFixed: true, false
  * defaultShowDropdownOnHover : true, false (for horizontal layout only)
  */
 
-if (typeof TemplateCustomizer !== "undefined") {
+if (typeof TemplateCustomizer !== 'undefined') {
   window.templateCustomizer = new TemplateCustomizer({
-    cssPath: assetsPath + "vendor/css" + (rtlSupport ? "/rtl" : "") + "/",
-    themesPath: assetsPath + "vendor/css" + (rtlSupport ? "/rtl" : "") + "/",
+    cssPath: assetsPath + 'vendor/css' + (rtlSupport ? '/rtl' : '') + '/',
+    themesPath: assetsPath + 'vendor/css' + (rtlSupport ? '/rtl' : '') + '/',
     displayCustomizer: true,
-    lang: localStorage.getItem("templateCustomizer-" + templateName + "--Lang") || "en", // Set default language here
+    lang: 'fa',
     // defaultTheme: 2,
-    // defaultStyle: 'system',
-    defaultTextDir: "rtl",
-    // defaultContentLayout: 'wide',
-    // defaultHeaderType: 'static',
+    // defaultStyle: 'light',
+    // defaultTextDir: 'ltr',
+    // defaultLayoutType: 'fixed',
     // defaultMenuCollapsed: true,
-    // defaultNavbarType: 'sticky',
-    // defaultFooterFixed: false,
-    // defaultShowDropdownOnHover: false,
-    controls: ["rtl", "style", "headerType", "contentLayout", "layoutCollapsed", "layoutNavbarOptions", "themes"],
+    // defaultNavbarFixed: true,
+    // defaultFooterFixed: false
+    defaultShowDropdownOnHover: true
+    // controls: [
+    //   'rtl',
+    //   'style',
+    //   'layoutType',
+    //   'showDropdownOnHover',
+    //   'layoutNavbarFixed',
+    //   'layoutFooterFixed',
+    //   'themes'
+    // ],
   });
 }

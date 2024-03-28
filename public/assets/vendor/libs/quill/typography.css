@@ -650,7 +650,7 @@
 }
 .light-style .ql-editor .ql-font-serif,
 .light-style .ql-content .ql-font-serif {
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: "Rubik", "Times New Roman", serif;
 }
 .light-style .ql-editor .ql-font-monospace,
 .light-style .ql-content .ql-font-monospace {
@@ -658,7 +658,7 @@
 }
 .light-style .ql-editor .ql-size-large,
 .light-style .ql-content .ql-size-large {
-  font-size: 1rem;
+  font-size: 1.063rem;
 }
 .light-style .ql-editor .ql-size-huge,
 .light-style .ql-content .ql-size-huge {
@@ -666,7 +666,7 @@
 }
 .light-style .ql-editor .ql-size-small,
 .light-style .ql-content .ql-size-small {
-  font-size: 0.75rem;
+  font-size: 0.813rem;
 }
 
 .dark-style .ql-editor blockquote,
@@ -680,7 +680,7 @@
 }
 .dark-style .ql-editor .ql-font-serif,
 .dark-style .ql-content .ql-font-serif {
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: "Rubik", "Times New Roman", serif;
 }
 .dark-style .ql-editor .ql-size-huge,
 .dark-style .ql-content .ql-size-huge {
@@ -688,9 +688,9 @@
 }
 .dark-style .ql-editor .ql-size-large,
 .dark-style .ql-content .ql-size-large {
-  font-size: 1rem;
+  font-size: 1.063rem;
 }
 .dark-style .ql-editor .ql-size-small,
 .dark-style .ql-content .ql-size-small {
-  font-size: 0.75rem;
+  font-size: 0.813rem;
 }

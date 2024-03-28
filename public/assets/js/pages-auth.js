@@ -14,67 +14,67 @@ document.addEventListener('DOMContentLoaded', function (e) {
           username: {
             validators: {
               notEmpty: {
-                message: 'Please enter username'
+                message: 'لطفا نام کاربری را وارد کنید'
               },
               stringLength: {
                 min: 6,
-                message: 'Username must be more than 6 characters'
+                message: 'نام کاربری باید بیش از 6 کاراکتر باشد'
               }
             }
           },
           email: {
             validators: {
               notEmpty: {
-                message: 'Please enter your email'
+                message: 'لطفا ایمیل خود را وارد کنید'
               },
               emailAddress: {
-                message: 'Please enter valid email address'
+                message: 'لطفا یک آدرس ایمیل معتبر وارد کنید'
               }
             }
           },
           'email-username': {
             validators: {
               notEmpty: {
-                message: 'Please enter email / username'
+                message: 'لطفا ایمیل / نام کاربری را وارد کنید'
               },
               stringLength: {
                 min: 6,
-                message: 'Username must be more than 6 characters'
+                message: 'نام کاربری باید بیش از 6 کاراکتر باشد'
               }
             }
           },
           password: {
             validators: {
               notEmpty: {
-                message: 'Please enter your password'
+                message: 'لطفا رمز عبور خود را وارد کنید'
               },
               stringLength: {
                 min: 6,
-                message: 'Password must be more than 6 characters'
+                message: 'رمز عبور باید بیش از 6 کاراکتر باشد'
               }
             }
           },
           'confirm-password': {
             validators: {
               notEmpty: {
-                message: 'Please confirm password'
+                message: 'لطفا رمز عبور را تایید کنید'
               },
               identical: {
                 compare: function () {
                   return formAuthentication.querySelector('[name="password"]').value;
                 },
-                message: 'The password and its confirm are not the same'
+                message: 'رمز عبور و تایید آن یکسان نیستند'
               },
               stringLength: {
                 min: 6,
-                message: 'Password must be more than 6 characters'
+                message: 'رمز عبور باید بیش از 6 کاراکتر باشد'
               }
             }
           },
           terms: {
             validators: {
               notEmpty: {
-                message: 'Please agree terms & conditions'
+                message: 'لطفا با قوانین و مقررات موافقت کنید'
               }
             }
           }

@@ -57,10 +57,6 @@ html:not([dir=rtl]) div.dataTables_scrollHeadInner table.table-bordered tr th:fi
   border-left: 0 !important;
 }
 
-html:not([dir=rtl]) .dt-fixedcolumns.table-bordered > :not(caption) > * {
-  border-width: 0 !important;
-}
-
 [dir=rtl] table.dataTable thead th,
 [dir=rtl] table.dataTable thead td,
 [dir=rtl] table.dataTable tfoot th,
@@ -69,11 +65,11 @@ html:not([dir=rtl]) .dt-fixedcolumns.table-bordered > :not(caption) > * {
 }
 
 .light-style table.DTFC_Cloned tr {
-  border-color: var(--bs-border-color);
+  border-color: #d4d8dd;
 }
 .light-style div.dataTables_scrollFootInner table.table-bordered tr th:first-child,
 .light-style div.dataTables_scrollHeadInner table.table-bordered tr th:first-child {
-  border-left: 1px solid var(--bs-border-color);
+  border-left: 1px solid #d4d8dd;
 }
 .light-style table.dataTable thead tr > .dtfc-fixed-left,
 .light-style table.dataTable thead tr > .dtfc-fixed-right,
@@ -84,7 +80,7 @@ html:not([dir=rtl]) .dt-fixedcolumns.table-bordered > :not(caption) > * {
   background-color: #fff;
 }
 .light-style .dt-fixedcolumns thead {
-  border-top-color: var(--bs-border-color);
+  border-top-color: #d4d8dd;
 }
 .light-style[dir=rtl] div.dataTables_scrollHead table,
 .light-style[dir=rtl] div.dataTables_scrollBody table {
@@ -102,16 +98,16 @@ html:not([dir=rtl]) .dt-fixedcolumns.table-bordered > :not(caption) > * {
 }
 
 .dark-style table.DTFC_Cloned tr {
-  background-color: #2f3349;
-  border-color: var(--bs-border-color);
+  background-color: #283144;
+  border-color: #36445d;
 }
 .dark-style div.dataTables_scrollHead table,
 .dark-style div.DTFC_RightHeadWrapper table {
-  background-color: #2f3349;
+  background-color: #283144;
 }
 .dark-style div.dataTables_scrollFootInner table.table-bordered tr th:first-child,
 .dark-style div.dataTables_scrollHeadInner table.table-bordered tr th:first-child {
-  border-left: 1px solid var(--bs-border-color);
+  border-left: 1px solid #36445d;
 }
 .dark-style table.dataTable thead tr > .dtfc-fixed-left,
 .dark-style table.dataTable thead tr > .dtfc-fixed-right,
@@ -119,10 +115,10 @@ html:not([dir=rtl]) .dt-fixedcolumns.table-bordered > :not(caption) > * {
 .dark-style table.dataTable tbody tr > .dtfc-fixed-right,
 .dark-style div.dtfc-right-top-blocker,
 .dark-style div.dtfc-left-top-blocker {
-  background-color: #2f3349;
+  background-color: #283144;
 }
 .dark-style .dt-fixedcolumns thead {
-  border-top-color: var(--bs-border-color);
+  border-top-color: #36445d;
 }
 .dark-style[dir=rtl] div.dataTables_scrollHead table,
 .dark-style[dir=rtl] div.dataTables_scrollBody table {

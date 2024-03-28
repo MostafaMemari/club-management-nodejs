@@ -23,15 +23,15 @@ $(function () {
     select2 = $('.select2'),
     userView = 'app-user-view-account.html',
     statusObj = {
-      1: { title: 'Pending', class: 'bg-label-warning' },
-      2: { title: 'Active', class: 'bg-label-success' },
-      3: { title: 'Inactive', class: 'bg-label-secondary' }
+      1: { title: 'در انتظار', class: 'bg-label-warning' },
+      2: { title: 'فعال', class: 'bg-label-success' },
+      3: { title: 'غیرفعال', class: 'bg-label-secondary' }
     };
 
   if (select2.length) {
     var $this = select2;
     $this.wrap('<div class="position-relative"></div>').select2({
-      placeholder: 'Select Country',
+      placeholder: 'انتخاب کشور',
       dropdownParent: $this.parent()
     });
   }
@@ -73,29 +73,28 @@ $(function () {
             if ($image) {
               // For Avatar image
               var $output =
-                '<img src="' + assetsPath + 'img/avatars/' + $image + '" alt="Avatar" class="rounded-circle">';
+                '<img src="' + assetsPath + 'img/avatars/' + $image + '" alt="آواتار" class="rounded-circle">';
             } else {
               // For Avatar badge
               var stateNum = Math.floor(Math.random() * 6);
-              var states = ['success', 'danger', 'warning', 'info', 'primary', 'secondary'];
+              var states = ['success', 'danger', 'warning', 'info', 'dark', 'primary', 'secondary'];
               var $state = states[stateNum],
                 $name = full['full_name'],
-                $initials = $name.match(/\b\w/g) || [];
-              $initials = (($initials.shift() || '') + ($initials.pop() || '')).toUpperCase();
+                $initials = $name.split(' ').slice(0, 2).map(word => word[0]).join('‌') || '';
               $output = '<span class="avatar-initial rounded-circle bg-label-' + $state + '">' + $initials + '</span>';
             }
             // Creates full output for row
             var $row_output =
               '<div class="d-flex justify-content-start align-items-center user-name">' +
               '<div class="avatar-wrapper">' +
-              '<div class="avatar me-3">' +
+              '<div class="avatar avatar-sm me-3">' +
               $output +
               '</div>' +
               '</div>' +
               '<div class="d-flex flex-column">' +
               '<a href="' +
               userView +
-              '" class="text-body text-truncate"><span class="fw-medium">' +
+              '" class="text-body text-truncate"><span class="fw-semibold">' +
               $name +
               '</span></a>' +
               '<small class="text-muted">' +
@@ -112,16 +111,16 @@ $(function () {
           render: function (data, type, full, meta) {
             var $role = full['role'];
             var roleBadgeObj = {
-              Subscriber:
-                '<span class="badge badge-center rounded-pill bg-label-warning w-px-30 h-px-30 me-2"><i class="ti ti-user ti-sm"></i></span>',
-              Author:
-                '<span class="badge badge-center rounded-pill bg-label-success w-px-30 h-px-30 me-2"><i class="ti ti-circle-check ti-sm"></i></span>',
-              Maintainer:
-                '<span class="badge badge-center rounded-pill bg-label-primary w-px-30 h-px-30 me-2"><i class="ti ti-chart-pie-2 ti-sm"></i></span>',
-              Editor:
-                '<span class="badge badge-center rounded-pill bg-label-info w-px-30 h-px-30 me-2"><i class="ti ti-edit ti-sm"></i></span>',
-              Admin:
-                '<span class="badge badge-center rounded-pill bg-label-secondary w-px-30 h-px-30 me-2"><i class="ti ti-device-laptop ti-sm"></i></span>'
+              'مشترک':
+                '<span class="badge badge-center rounded-pill bg-label-warning w-px-30 h-px-30 me-2"><i class="bx bx-user bx-xs"></i></span>',
+              'نویسنده':
+                '<span class="badge badge-center rounded-pill bg-label-success w-px-30 h-px-30 me-2"><i class="bx bx-cog bx-xs"></i></span>',
+              'نگهدارنده':
+                '<span class="badge badge-center rounded-pill bg-label-primary w-px-30 h-px-30 me-2"><i class="bx bx-pie-chart-alt bx-xs"></i></span>',
+              'ویرایشگر':
+                '<span class="badge badge-center rounded-pill bg-label-info w-px-30 h-px-30 me-2"><i class="bx bx-edit bx-xs"></i></span>',
+              'مدیر':
+                '<span class="badge badge-center rounded-pill bg-label-secondary w-px-30 h-px-30 me-2"><i class="bx bx-mobile-alt bx-xs"></i></span>'
             };
             return "<span class='text-truncate d-flex align-items-center'>" + roleBadgeObj[$role] + $role + '</span>';
           }
@@ -132,7 +131,7 @@ $(function () {
           render: function (data, type, full, meta) {
             var $plan = full['current_plan'];
 
-            return '<span class="fw-medium">' + $plan + '</span>';
+            return '<span class="fw-semibold">' + $plan + '</span>';
           }
         },
         {
@@ -141,43 +140,37 @@ $(function () {
           render: function (data, type, full, meta) {
             var $status = full['status'];
 
-            return (
-              '<span class="badge ' +
-              statusObj[$status].class +
-              '" text-capitalized>' +
-              statusObj[$status].title +
-              '</span>'
-            );
+            return '<span class="badge ' + statusObj[$status].class + '">' + statusObj[$status].title + '</span>';
           }
         },
         {
           // Actions
           targets: -1,
-          title: 'Actions',
+          title: 'عمل‌ها',
           searchable: false,
           orderable: false,
           render: function (data, type, full, meta) {
             return (
-              '<div class="d-flex align-items-center">' +
-              '<a href="javascript:;" class="text-body"><i class="ti ti-edit ti-sm me-2"></i></a>' +
-              '<a href="javascript:;" class="text-body delete-record"><i class="ti ti-trash ti-sm mx-2"></i></a>' +
-              '<a href="javascript:;" class="text-body dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i class="ti ti-dots-vertical ti-sm mx-1"></i></a>' +
+              '<div class="d-inline-block text-nowrap">' +
+              '<button class="btn btn-sm btn-icon"><i class="bx bx-edit"></i></button>' +
+              '<button class="btn btn-sm btn-icon delete-record"><i class="bx bx-trash"></i></button>' +
+              '<button class="btn btn-sm btn-icon dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i class="bx bx-dots-vertical-rounded"></i></button>' +
               '<div class="dropdown-menu dropdown-menu-end m-0">' +
               '<a href="' +
               userView +
-              '" class="dropdown-item">View</a>' +
-              '<a href="javascript:;" class="dropdown-item">Suspend</a>' +
+              '" class="dropdown-item">نمایش</a>' +
+              '<a href="javascript:;" class="dropdown-item">تعلیق</a>' +
               '</div>' +
               '</div>'
             );
           }
         }
       ],
-      order: [[1, 'desc']],
+      order: [[1, 'asc']],
       dom:
-        '<"row me-2"' +
-        '<"col-md-2"<"me-3"l>>' +
-        '<"col-md-10"<"dt-action-buttons text-xl-end text-lg-start text-md-end text-start d-flex align-items-center justify-content-end flex-md-row flex-column mb-3 mb-md-0"fB>>' +
+        '<"row mx-2"' +
+        '<"col-md-2"l>' +
+        '<"col-md-10"<"dt-action-buttons text-xl-end text-lg-start text-md-end text-start d-flex align-items-center justify-content-end flex-md-row flex-column mb-3 mb-md-0"<"me-2 me-md-3"f>B>>' +
         '>t' +
         '<"row mx-2"' +
         '<"col-sm-12 col-md-6"i>' +
@@ -186,18 +179,18 @@ $(function () {
       language: {
         sLengthMenu: '_MENU_',
         search: '',
-        searchPlaceholder: 'Search..'
+        searchPlaceholder: 'جستجو ...'
       },
       // Buttons with Dropdown
       buttons: [
         {
           extend: 'collection',
-          className: 'btn btn-label-secondary dropdown-toggle mx-3 waves-effect waves-light',
-          text: '<i class="ti ti-screen-share me-1 ti-xs"></i>Export',
+          className: 'btn btn-label-secondary dropdown-toggle',
+          text: '<i class="bx bx-upload me-2"></i>برون‌بری',
           buttons: [
             {
               extend: 'print',
-              text: '<i class="ti ti-printer me-2" ></i>Print',
+              text: '<i class="bx bx-printer me-2" ></i>چاپ',
               className: 'dropdown-item',
               exportOptions: {
                 columns: [1, 2, 3, 4, 5],
@@ -234,7 +227,7 @@ $(function () {
             },
             {
               extend: 'csv',
-              text: '<i class="ti ti-file-text me-2" ></i>Csv',
+              text: '<i class="bx bx-file me-2" ></i>CSV',
               className: 'dropdown-item',
               exportOptions: {
                 columns: [1, 2, 3, 4, 5],
@@ -258,7 +251,7 @@ $(function () {
             },
             {
               extend: 'excel',
-              text: '<i class="ti ti-file-spreadsheet me-2"></i>Excel',
+              text: '<i class="bx bxs-file-export me-2"></i>Excel',
               className: 'dropdown-item',
               exportOptions: {
                 columns: [1, 2, 3, 4, 5],
@@ -282,7 +275,7 @@ $(function () {
             },
             {
               extend: 'pdf',
-              text: '<i class="ti ti-file-code-2 me-2"></i>Pdf',
+              text: '<i class="bx bxs-file-pdf me-2"></i>PDF',
               className: 'dropdown-item',
               exportOptions: {
                 columns: [1, 2, 3, 4, 5],
@@ -306,7 +299,7 @@ $(function () {
             },
             {
               extend: 'copy',
-              text: '<i class="ti ti-copy me-2" ></i>Copy',
+              text: '<i class="bx bx-copy me-2" ></i>کپی',
               className: 'dropdown-item',
               exportOptions: {
                 columns: [1, 2, 3, 4, 5],
@@ -331,8 +324,8 @@ $(function () {
           ]
         },
         {
-          text: '<i class="ti ti-plus me-0 me-sm-1 ti-xs"></i><span class="d-none d-sm-inline-block">Add New User</span>',
-          className: 'add-new btn btn-primary waves-effect waves-light',
+          text: '<i class="bx bx-plus me-0 me-lg-2"></i><span class="d-none d-lg-inline-block">افزودن کاربر جدید</span>',
+          className: 'add-new btn btn-primary ms-2',
           attr: {
             'data-bs-toggle': 'offcanvas',
             'data-bs-target': '#offcanvasAddUser'
@@ -345,7 +338,7 @@ $(function () {
           display: $.fn.dataTable.Responsive.display.modal({
             header: function (row) {
               var data = row.data();
-              return 'Details of ' + data['full_name'];
+              return 'جزئیات ' + data['full_name'];
             }
           }),
           type: 'column',
@@ -379,7 +372,7 @@ $(function () {
           .every(function () {
             var column = this;
             var select = $(
-              '<select id="UserRole" class="form-select text-capitalize"><option value=""> Select Role </option></select>'
+              '<select id="UserRole" class="form-select text-capitalize"><option value=""> انتخاب نقش </option></select>'
             )
               .appendTo('.user_role')
               .on('change', function () {
@@ -401,7 +394,7 @@ $(function () {
           .every(function () {
             var column = this;
             var select = $(
-              '<select id="UserPlan" class="form-select text-capitalize"><option value=""> Select Plan </option></select>'
+              '<select id="UserPlan" class="form-select text-capitalize"><option value=""> انتخاب پلن </option></select>'
             )
               .appendTo('.user_plan')
               .on('change', function () {
@@ -423,7 +416,7 @@ $(function () {
           .every(function () {
             var column = this;
             var select = $(
-              '<select id="FilterTransaction" class="form-select text-capitalize"><option value=""> Select Status </option></select>'
+              '<select id="FilterTransaction" class="form-select text-capitalize"><option value=""> انتخاب وضعیت </option></select>'
             )
               .appendTo('.user_status')
               .on('change', function () {
@@ -482,17 +475,17 @@ $(function () {
       userFullname: {
         validators: {
           notEmpty: {
-            message: 'Please enter fullname '
+            message: 'لطفا نام کامل را وارد کنید'
           }
         }
       },
       userEmail: {
         validators: {
           notEmpty: {
-            message: 'Please enter your email'
+            message: 'لطفا ایمیل را وارد کنید'
           },
           emailAddress: {
-            message: 'The value is not a valid email address'
+            message: 'مقدار وارد شده یک آدرس ایمیل معتبر نیست'
           }
         }
       }
